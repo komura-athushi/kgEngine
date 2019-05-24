@@ -1,5 +1,7 @@
 
 #pragma once
+
+#include "gameobject/GameObjectManager.h"
 //コピー禁止にするための基本クラス
 class NonCopyable
 {
@@ -16,7 +18,7 @@ private:
 	}
 };
 
-class Player;
+
 //メッセージプロシージャ
 LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //DirectXの終了処理
@@ -54,8 +56,8 @@ public:
 	}
 private:
 	HWND m_hWnd = NULL;
-	GraphicsEngine* m_graphicsEngine;
-	Player* player;
+	GraphicsEngine* m_graphicsEngine = nullptr;
+	CGameObjectManager* m_gameobjectmanager = nullptr;
 };
 
 

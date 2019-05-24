@@ -1,11 +1,12 @@
 #pragma once
-
+#include "..//Noncopyable.h"
 //typedef 既存の型を新しい型にするっていう、名前が変わるだけかな
 typedef unsigned char GameObjectPrio;
 //GameObject、エンジンの機能使いたかったらこれを継承しよう！
 class IGameObject :Noncopyable
 {
 public:
+	using IGameObjectIsBase = IGameObject;
 	//コンストラクタ、初期化子で初期化するべ
 	IGameObject() :
 		m_priority(0),
@@ -36,6 +37,9 @@ public:
 
 	//描画
 	virtual void Render() {}
+
+	//3Dモデル描画、今だけ
+	virtual void Draw() {}
 
 public :
 	//ポストエフェクトの後で実行するやつ、ポストエフェクトの影響を受けたくない場合はこっち
@@ -88,6 +92,13 @@ public:
 		}
 	}
 
+	void DrawWrapper()
+	{
+		if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
+			Draw();
+		}
+	}
+
 	//条件を満たせば一度だけStart関数を実行する
 	void StartWrapper()
 	{
@@ -99,7 +110,7 @@ public:
 	}
 
 	//GameObjectManagerでNewGOされたのを設定する
-	void SetMarkNewFromGameObjectmanager()
+	void SetMarkNewFromGameObjectManager()
 	{
 		m_isNewFromGameObjectManager = true;
 	}

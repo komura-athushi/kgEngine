@@ -1,7 +1,7 @@
 
 #include "KGstdafx.h"
 #include "KgEngine.h"
-#include "Player.h"
+
 CEngine::CEngine()
 {
 }
@@ -62,7 +62,8 @@ void CEngine::InitGame(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 	//DirectXの初期化。
 	m_graphicsEngine = new GraphicsEngine();
 	m_graphicsEngine->Init(m_hWnd);
-
+	m_gameobjectmanager = &GameObjectManager();
+	m_gameobjectmanager->Init(255);
 	//ゲームパッドの初期化。
 	//最大４つのコントローラーを接続できるようにしましょう。
 	g_pad[0].Init(0);
@@ -71,7 +72,6 @@ void CEngine::InitGame(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 	g_pad[3].Init(3);
 
 	g_physics.Init();
-	player = new Player;
 }
 
 //ウィンドウメッセージをディスパッチ。falseが返ってきたら、ゲーム終了。
@@ -122,9 +122,12 @@ void CEngine::Update()
 	//物理エンジンの更新。
 	g_physics.Update();
 	//プレイヤーの更新。
-	player->Update();
+	//player->Update();
 	//プレイヤーの描画。
-	player->Draw();
+	//player->Draw();
+	m_gameobjectmanager->Start();
+	m_gameobjectmanager->Update();
+	m_gameobjectmanager->Draw();
 	//カメラの更新。
 	g_camera3D.Update();
 	//描画終了。

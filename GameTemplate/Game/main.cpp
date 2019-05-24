@@ -18,9 +18,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	////プレイヤー
 	//Player player;
-
+	Player* player = NewGO<Player>(0);
 	//ゲームループ。
 	Engine().RunGameLoop();
+	
 		////描画開始。
 		//g_graphicsEngine->BegineRender();
 		////ゲームパッドの更新。	

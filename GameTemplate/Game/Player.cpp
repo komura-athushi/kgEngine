@@ -4,13 +4,19 @@
 
 Player::Player()
 {
-	//cmoファイルの読み込み。
-	m_model.Init(L"Assets/modelData/unityChan.cmo");
+	
 }
 
 
 Player::~Player()
 {
+}
+
+bool Player::Start()
+{
+	//cmoファイルの読み込み。
+	m_model.Init(L"Assets/modelData/unityChan.cmo");
+	return true;
 }
 
 void Player::Update()
