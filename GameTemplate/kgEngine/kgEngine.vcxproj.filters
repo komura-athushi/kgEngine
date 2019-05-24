@@ -25,6 +25,12 @@
     <Filter Include="system">
       <UniqueIdentifier>{48b58c60-bbe2-40d8-9d2f-e81d065b6820}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gameobject">
+      <UniqueIdentifier>{24ad14c3-d629-48c3-bf99-c437b9a910f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{76ff8ddb-6515-4edf-8618-5b045c28073d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="math\Vector.cpp">
@@ -100,6 +106,13 @@
       <Filter>level</Filter>
     </ClCompile>
     <ClCompile Include="KGstdafx.cpp" />
+    <ClCompile Include="kgEngine.cpp" />
+    <ClCompile Include="gameobject\GameObject.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\GameObjectManager.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -184,5 +197,16 @@
       <Filter>level</Filter>
     </ClInclude>
     <ClInclude Include="KGstdafx.h" />
+    <ClInclude Include="kgEngine.h" />
+    <ClInclude Include="gameobject\GameObject.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\GameObjectManager.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="Noncopyable.h" />
+    <ClInclude Include="util\Util.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -28,12 +28,12 @@ DirectX::Model* SkinModelDataManager::Load(const wchar_t* filePath, const Skelet
 	if (it == m_directXModelMap.end()) {
 		//未登録なので、新規でロードする。
 		//エフェクトファクトリ。
-		SkinModelEffectFactory effectFactory(g_graphicsEngine->GetD3DDevice());
+		SkinModelEffectFactory effectFactory(Engine().GetGraphicsEngine().GetD3DDevice());
 		//テクスチャがあるフォルダを設定する。
 		effectFactory.SetDirectory(L"Assets/modelData");
 		//CMOファイルのロード。
 		auto model = DirectX::Model::CreateFromCMO(	//CMOファイルからモデルを作成する関数の、CreateFromCMOを実行する。
-			g_graphicsEngine->GetD3DDevice(),			//第一引数はD3Dデバイス。
+			Engine().GetGraphicsEngine().GetD3DDevice(),			//第一引数はD3Dデバイス。
 			filePath,									//第二引数は読み込むCMOファイルのファイルパス。
 			effectFactory,								//第三引数はエフェクトファクトリ。
 			false,										//第四引数はCullモード。今は気にしなくてよい。

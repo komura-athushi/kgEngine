@@ -50,4 +50,4 @@ private:
 
 };
 
-extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン
+//extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン
