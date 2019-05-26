@@ -2,6 +2,12 @@
 class Camera
 {
 public:
+	//インスタンスを取得
+	static Camera& GetInstance()
+	{
+		static Camera instance;
+		return instance;
+	}
 	/*!
 	 * @brief	カメラ行列、プロジェクション行列の更新。
 	 *@details
@@ -98,4 +104,7 @@ private:
 	float m_near = 1.0f;							//近平面までの距離。
 };
 
-extern Camera g_camera3D;		//!<3Dカメラ。
+static inline Camera& MainCamera()
+{
+	return Camera::GetInstance();
+}

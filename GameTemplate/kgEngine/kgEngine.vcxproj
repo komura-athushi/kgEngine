@@ -124,6 +124,7 @@
     <ClCompile Include="graphics\SkinModel.cpp" />
     <ClCompile Include="graphics\SkinModelDataManager.cpp" />
     <ClCompile Include="graphics\SkinModelEffect.cpp" />
+    <ClCompile Include="graphics\SkinModelRender.cpp" />
     <ClCompile Include="HID\Pad.cpp" />
     <ClCompile Include="kgEngine.cpp" />
     <ClCompile Include="level\Level.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="graphics\SkinModel.h" />
     <ClInclude Include="graphics\SkinModelDataManager.h" />
     <ClInclude Include="graphics\SkinModelEffect.h" />
+    <ClInclude Include="graphics\SkinModelRender.h" />
     <ClInclude Include="graphics\SkinModelShaderConst.h" />
     <ClInclude Include="HID\Pad.h" />
     <ClInclude Include="kgEngine.h" />

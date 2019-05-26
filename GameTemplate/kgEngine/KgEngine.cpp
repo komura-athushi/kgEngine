@@ -129,7 +129,7 @@ void CEngine::Update()
 	m_gameobjectmanager->Update();
 	m_gameobjectmanager->Draw();
 	//カメラの更新。
-	g_camera3D.Update();
+	MainCamera().Update();
 	//描画終了。
 	m_graphicsEngine->EndRender();
 }

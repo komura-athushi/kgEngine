@@ -10,6 +10,7 @@ public:
 	void Update();
 	void Draw();
 private:
-	SkinModel m_model;									//スキンモデル。
+	CSkinModelRender* m_model;									//スキンモデル。
+	//SkinModel* m_model;
 };
 

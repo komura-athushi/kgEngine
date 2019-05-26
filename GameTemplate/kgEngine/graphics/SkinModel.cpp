@@ -104,7 +104,7 @@ void SkinModel::UpdateWorldMatrix(CVector3 position, CQuaternion rotation, CVect
 	//スケルトンの更新。
 	m_skeleton.Update(m_worldMatrix);
 }
-void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix)
+void SkinModel::Draw()
 {
 	DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
 
@@ -113,8 +113,8 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix)
 	//定数バッファの内容を更新。
 	SVSConstantBuffer vsCb;
 	vsCb.mWorld = m_worldMatrix;
-	vsCb.mProj = projMatrix;
-	vsCb.mView = viewMatrix;
+	vsCb.mProj = MainCamera().GetProjectionMatrix();
+	vsCb.mView = MainCamera().GetViewMatrix();
 	d3dDeviceContext->UpdateSubresource(m_cb, 0, nullptr, &vsCb, 0, 0);
 	//定数バッファをGPUに転送。
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_cb);
@@ -129,7 +129,7 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix)
 		d3dDeviceContext,
 		state,
 		m_worldMatrix,
-		viewMatrix,
-		projMatrix
+		MainCamera().GetViewMatrix(),
+		MainCamera().GetProjectionMatrix()
 	);
 }
