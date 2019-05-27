@@ -2,6 +2,8 @@
 #pragma once
 
 #include "gameobject/GameObjectManager.h"
+#include "timer/StopWatch.h"
+#include "timer/GameTime.h"
 //コピー禁止にするための基本クラス
 class NonCopyable
 {
@@ -58,6 +60,7 @@ private:
 	HWND m_hWnd = NULL;
 	GraphicsEngine* m_graphicsEngine = nullptr;
 	CGameObjectManager* m_gameobjectmanager = nullptr;
+	CStopWatch m_watch;
 };
 
 

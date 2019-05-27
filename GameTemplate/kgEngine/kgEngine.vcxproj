@@ -178,6 +178,8 @@
     <ClInclude Include="physics\PhysicsStaticObject.h" />
     <ClInclude Include="KGstdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="timer\GameTime.h" />
+    <ClInclude Include="timer\StopWatch.h" />
     <ClInclude Include="util\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

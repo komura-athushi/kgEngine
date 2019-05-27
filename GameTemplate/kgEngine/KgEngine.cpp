@@ -113,6 +113,8 @@ void CEngine::RunGameLoop()
 
 void CEngine::Update()
 {
+	//計測開始
+	m_watch.Start();
 	//描画開始。
 	m_graphicsEngine->BegineRender();
 	//ゲームパッドの更新。	
@@ -121,10 +123,6 @@ void CEngine::Update()
 	}
 	//物理エンジンの更新。
 	g_physics.Update();
-	//プレイヤーの更新。
-	//player->Update();
-	//プレイヤーの描画。
-	//player->Draw();
 	m_gameobjectmanager->Start();
 	m_gameobjectmanager->Update();
 	m_gameobjectmanager->Draw();
@@ -132,6 +130,12 @@ void CEngine::Update()
 	MainCamera().Update();
 	//描画終了。
 	m_graphicsEngine->EndRender();
+
+	//計測終了
+	m_watch.Stop();
+
+	//時間を記憶
+	GameTime().PushFrameDeltaTime((float)m_watch.GetElapsed());
 }
 
 void CEngine::Final()
