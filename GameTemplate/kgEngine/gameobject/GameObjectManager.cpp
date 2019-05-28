@@ -38,6 +38,25 @@ void CGameObjectManager::Draw()
 	}
 }
 
+void CGameObjectManager::Delete()
+{
+	//ゲームオブジェクトリストから削除予定のオブジェクトを削除する
+	for (GameObjectList& goList : m_GogameobjectList) {
+		auto it = goList.begin();
+		while (it != goList.end()) {
+			if ((*it)->m_isDead) {
+				it = goList.erase(it);
+			}
+			++it;
+		}
+	}
+	for (auto& GO : m_DeletegameobjectList) {
+		delete GO;
+	}
+	m_DeletegameobjectList.clear();
+	
+}
+
 void CGameObjectManager::Init(int gameObjectPrioMax)
 {
 	m_gameObjectPriorityMax = static_cast<GameObjectPrio>(gameObjectPrioMax);

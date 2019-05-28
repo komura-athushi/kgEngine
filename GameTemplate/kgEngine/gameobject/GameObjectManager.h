@@ -47,6 +47,8 @@ public:
 	void Update();
 	void PostRender();
 	void Draw();
+	//削除していくぅ
+	void Delete(); 
 public:
 	//インスタンスを取得
 	static CGameObjectManager& GetInstance()
@@ -96,11 +98,27 @@ public:
 		newobject->m_nameKey = hash;
 		return newobject;
 	}
+	//ゲームオブジェクトの無効化フラグを立てる、NewGOで作成したインスタンスはこれで削除するように
+	//ここで行うのは死亡判定だけ、ゲームオブジェクトのアップデートが終わった後にまとめて削除されます
+	bool DeleteGameObject(IGameObject* gameobject) {
+		if (gameobject == nullptr) {
+			return false;
+		}
+		if (gameobject->IsNewFromgameObjectManager()) {
+			if (!gameobject->m_isDead) {
+				gameobject->m_isDead = true;
+				gameobject->m_isRegist = false;
+				gameobject->m_isRegistDeadList = true;
+				m_DeletegameobjectList.emplace_back(gameobject);
+				return true;
+			}
+		}
+		return false;
+	}
 private:
 	typedef std::list<IGameObject*> GameObjectList;						//ゲームオブジェクトリスト
 	std::vector<GameObjectList> m_GogameobjectList;						//処理の優先度ごとにゲームオブジェクトリストが格納されている、スタートやらアプデやらを行うリスト
-	std::list<IGameObject*> m_list;
-	std::vector<GameObjectList> m_DeletegameobjectList;					//処理の優先度ごとにゲームオブジェクトリストが格納されている、デリートを行うリスト
+	std::list<IGameObject*> m_DeletegameobjectList;						//デリートを行うリスト
 
 	GameObjectPrio				m_gameObjectPriorityMax;				//!<ゲームオブジェクトの優先度の最大数、NewGOの引数の整数の最大数ってところですか
 };
@@ -121,4 +139,10 @@ template<class T>
 static inline T* NewGO(int priority, const wchar_t* objectName = nullptr , typename T::IGameObjectIsBase* = nullptr)
 {
 	return GameObjectManager().NewGameObject<T>((GameObjectPrio)priority, objectName);
+}
+
+//ゲームオブジェクトの削除
+static inline void DeleteGO(IGameObject* go)
+{
+	GameObjectManager().DeleteGameObject(go);
 }
