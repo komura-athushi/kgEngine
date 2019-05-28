@@ -30,7 +30,7 @@ DirectX::Model* SkinModelDataManager::Load(const wchar_t* filePath, const Skelet
 		//エフェクトファクトリ。
 		SkinModelEffectFactory effectFactory(Engine().GetGraphicsEngine().GetD3DDevice());
 		//テクスチャがあるフォルダを設定する。
-		effectFactory.SetDirectory(L"Assets/modelData");
+		effectFactory.SetDirectory(L"Resource/modelData");
 		//CMOファイルのロード。
 		auto model = DirectX::Model::CreateFromCMO(	//CMOファイルからモデルを作成する関数の、CreateFromCMOを実行する。
 			Engine().GetGraphicsEngine().GetD3DDevice(),			//第一引数はD3Dデバイス。

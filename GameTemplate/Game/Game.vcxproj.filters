@@ -3,20 +3,30 @@
   <ItemGroup>
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Ground.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Ground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
       <UniqueIdentifier>{3700eeae-5870-4565-b4dd-21f789ffeec7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\ground">
+      <UniqueIdentifier>{e5e9dee3-6e99-4079-8ded-013b5edfe962}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\unityChan.fbx">
+    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
+      <Filter>Asset\ground</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\unityChan.fbx">
       <Filter>Asset</Filter>
-    </None>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

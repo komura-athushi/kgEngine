@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "level/Level.h"
 #include "KgEngine.h"
+#include "Game.h"
 ///////////////////////////////////////////////////////////////////
 // ウィンドウプログラムのメイン関数。
 ///////////////////////////////////////////////////////////////////
@@ -18,7 +19,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	////プレイヤー
 	//Player player;
-	Player* player = NewGO<Player>(0);
+	//Player* player = NewGO<Player>(0);
+	Game* game = NewGO<Game>(0);
 	//ゲームループ。
 	Engine().RunGameLoop();
 	

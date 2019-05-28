@@ -33,7 +33,7 @@ bool Player::Start()
 	//m_animClip[enAnimationClip_Aria].SetLoopFlag(false);
 
 	m_skinModelRender = NewGO<CSkinModelRender>(0);
-	m_skinModelRender->Init(L"Assets/modelData/unityChan.cmo", m_animClip, enAnimationClip_num, enFbxUpAxisY);
+	m_skinModelRender->Init(L"Resource/modelData/unityChan.cmo", m_animClip, enAnimationClip_num, enFbxUpAxisY);
 	//cmoファイルの読み込み。
 	//m_skinModelRender->Init(L"Assets/modelData/unityChan.cmo");
 	m_skinModelRender->PlayAnimation(enAnimationClip_run, 0.2f);

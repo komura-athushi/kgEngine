@@ -7,7 +7,7 @@ public:
 	~CSkinModelRender();
 	/*!
 	* @brief	初期化。
-	*@param[in]	filePath			ロードしたいcmoファイルのファイルパス。
+	*@param[in]	filePath			ロードしたいcmoファイルのファイルパス、L"Resource/"から必要です
 	*@param[in]	animationClips		アニメーションクリップの配列の先頭アドレス
 	*@param[in]	numAnimClip			アニメーションクリップの数
 	*@param[in]	enUpdateAxis		fbxの上方向。
@@ -17,7 +17,7 @@ public:
 		int numAnimationClips = 0,
 		EnFbxUpAxis fbxUpAxis = enFbxUpAxisZ
 		);
-	//このクラスは継承させないからオーバーライドはここで終わり
+	//このクラスはこれ以上継承させないからオーバーライドはここで終わり
 	bool Start() override final;
 	void Update() override final;
 private:
