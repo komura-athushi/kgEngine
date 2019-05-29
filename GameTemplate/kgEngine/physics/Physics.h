@@ -1,9 +1,9 @@
 #pragma once
-
+#include "..//Noncopyable.h"
 
 class RigidBody;
 
-class PhysicsWorld
+class PhysicsWorld:Noncopyable
 {
 	btDefaultCollisionConfiguration*		collisionConfig = nullptr;
 	btCollisionDispatcher*					collisionDispatcher = nullptr;	//!<Õ“Ë‰ðŒˆˆ—B
@@ -49,6 +49,6 @@ public:
 	}
 };
 
-extern PhysicsWorld g_physics;
+
 
 

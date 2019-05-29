@@ -3,7 +3,7 @@
 #include "Physics/RigidBody.h"
 
 
-PhysicsWorld g_physics;
+
 
 PhysicsWorld::~PhysicsWorld()
 {

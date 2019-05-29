@@ -1,8 +1,9 @@
 #pragma once
+#include "..//Noncopyable.h"
 /*!
  *@brief	グラフィックスエンジン。
  */
-class GraphicsEngine
+class GraphicsEngine:Noncopyable
 {
 public:
 	GraphicsEngine();

@@ -4,6 +4,7 @@
 #include "gameobject/GameObjectManager.h"
 #include "timer/StopWatch.h"
 #include "timer/GameTime.h"
+#include "HID/Pad.h"
 //コピー禁止にするための基本クラス
 class NonCopyable
 {
@@ -56,11 +57,18 @@ public:
 	{
 		return *m_graphicsEngine;
 	}
+	//物理エンジンを取得
+	PhysicsWorld& GetPhysicsEngine() const
+	{
+		return *m_physicsEngine;
+	}
 private:
 	HWND m_hWnd = NULL;
 	GraphicsEngine* m_graphicsEngine = nullptr;
+	PhysicsWorld* m_physicsEngine = nullptr;
 	CGameObjectManager* m_gameobjectmanager = nullptr;
 	CStopWatch m_watch;
+	Pad m_pad[Pad::CONNECT_PAD_MAX];
 };
 
 

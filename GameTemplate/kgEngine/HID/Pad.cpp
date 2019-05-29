@@ -6,7 +6,6 @@
 #include <limits.h>
 
 #define INPUT_DEADZONE  ( 0.24f * FLOAT(0x7FFF) )  // 入力の遊びとなる範囲。
-Pad g_pad[Pad::CONNECT_PAD_MAX];		//g_padの定義。
 
 /*!
  *@brief	仮想ボタンとXBoxコントローラのボタンとの関連付けを表す構造体。

@@ -66,12 +66,14 @@ void CEngine::InitGame(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 	m_gameobjectmanager->Init(255);
 	//ゲームパッドの初期化。
 	//最大４つのコントローラーを接続できるようにしましょう。
-	g_pad[0].Init(0);
-	g_pad[1].Init(1);
-	g_pad[2].Init(2);
-	g_pad[3].Init(3);
+	m_pad[0].Init(0);
+	m_pad[1].Init(1);
+	m_pad[2].Init(2);
+	m_pad[3].Init(3);
 
-	g_physics.Init();
+	//物理エンジンの初期化
+	m_physicsEngine = new PhysicsWorld();
+	m_physicsEngine->Init();
 }
 
 //ウィンドウメッセージをディスパッチ。falseが返ってきたら、ゲーム終了。
@@ -118,11 +120,11 @@ void CEngine::Update()
 	//描画開始。
 	m_graphicsEngine->BegineRender();
 	//ゲームパッドの更新。	
-	for (auto& pad : g_pad) {
+	for (auto& pad : m_pad) {
 		pad.Update();
 	}
 	//物理エンジンの更新。
-	g_physics.Update();
+	m_physicsEngine->Update();
 	m_gameobjectmanager->Start();
 	m_gameobjectmanager->Update();
 	m_gameobjectmanager->Draw();
@@ -148,7 +150,7 @@ void CEngine::Final()
 	//	m_gameThread->join();
 	//}
 
-	g_physics.Release();
+	m_physicsEngine->Release();
 	//m_soundEngine.Release();
 	m_graphicsEngine->Release();
 

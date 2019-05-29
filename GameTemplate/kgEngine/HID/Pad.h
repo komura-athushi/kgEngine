@@ -6,7 +6,7 @@
 
  //XInputのヘッダーファイル。
 #include <Xinput.h>
-
+#include "..//Noncopyable.h"
 /*!
  *@brief	仮想ボタン定義。
  */
@@ -32,7 +32,7 @@ enum EnButton{
 /*!
  *@brief	パッド
  */
-class Pad{
+class Pad:Noncopyable{
 public:
 	static const int CONNECT_PAD_MAX = 4;		//接続可能なパッドの最大数。
 	/*!
@@ -199,4 +199,4 @@ private:
 
 //ゲームパッドのグローバル変数のextern宣言。
 //extern宣言は変数の定義ではないので注意する！
-extern Pad g_pad[ Pad::CONNECT_PAD_MAX ];
+

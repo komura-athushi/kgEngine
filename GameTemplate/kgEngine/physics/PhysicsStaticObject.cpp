@@ -12,7 +12,7 @@ PhysicsStaticObject::PhysicsStaticObject()
 }
 PhysicsStaticObject::~PhysicsStaticObject()
 {
-	g_physics.RemoveRigidBody(m_rigidBody);
+	Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
 }
 
 void PhysicsStaticObject::CreateMeshObject(SkinModel& skinModel, CVector3 pos, CQuaternion rot)
@@ -27,5 +27,5 @@ void PhysicsStaticObject::CreateMeshObject(SkinModel& skinModel, CVector3 pos, C
 	rbInfo.rot = rot;
 	m_rigidBody.Create(rbInfo);
 	//çÑëÃÇï®óùÉèÅ[ÉãÉhÇ…í«â¡Ç∑ÇÈÅB
-	g_physics.AddRigidBody(m_rigidBody);
+	Engine().GetPhysicsEngine().AddRigidBody(m_rigidBody);
 }
