@@ -9,7 +9,13 @@ Game::Game()
 
 Game::~Game()
 {
+	
+}
 
+void Game::OnDestroy()
+{
+	DeleteGO(m_player);
+	DeleteGO(m_ground);
 }
 
 bool Game::Start()
@@ -21,9 +27,5 @@ bool Game::Start()
 
 void Game::Update()
 {
-	m_timer++;
-	if (m_timer >= 10 && !m_is) {
-		DeleteGO(m_player);
-		m_is = true;
-	}
+	
 }

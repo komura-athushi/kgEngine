@@ -41,6 +41,8 @@ public:
 	//3Dモデル描画、今だけ
 	virtual void Draw() {}
 
+	//削除の直前に呼ばれる関数
+	virtual void OnDestroy() {}
 public :
 	//ポストエフェクトの後で実行するやつ、ポストエフェクトの影響を受けたくない場合はこっち
 	virtual void PostRender() {}

@@ -6,9 +6,10 @@ class Player:public IGameObject
 public:
 	Player();
 	~Player();
-	bool Start();
-	void Update();
-	void Draw();
+	bool Start() override;
+	void Update() override;
+	void Draw() override;
+	void OnDestroy() override;
 private:
 	//アニメーション
 	enum EnAnimationClip {
@@ -23,6 +24,6 @@ private:
 		enAnimationClip_num,
 	};
 	AnimationClip m_animClip[enAnimationClip_num];
-	CSkinModelRender* m_skinModelRender;									//スキンモデル。
+	CSkinModelRender* m_skinModelRender = nullptr;							//スキンモデル。
 };
 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-
+#include "Game.h"
 
 Player::Player()
 {
@@ -9,6 +9,11 @@ Player::Player()
 
 
 Player::~Player()
+{
+	
+}
+
+void Player::OnDestroy()
 {
 	DeleteGO(m_skinModelRender);
 }
@@ -47,6 +52,7 @@ void Player::Update()
 	//m_model->SetActive(false);
 	//ワールド行列の更新。
 	//m_model->UpdateWorldMatrix(CVector3::Zero(), CQuaternion::Identity(), CVector3::One());
+	DeleteGO(FindGO<Game>());
 }
 void Player::Draw()
 {

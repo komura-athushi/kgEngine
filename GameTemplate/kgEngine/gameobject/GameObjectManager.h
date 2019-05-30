@@ -1,7 +1,7 @@
 #pragma once
 
 #include <unordered_map>
-
+#include <list>
 
 #include "GameObject.h"
 #include "..///util/Util.h"
@@ -98,11 +98,32 @@ public:
 		newobject->m_nameKey = hash;
 		return newobject;
 	}
+	//ゲームオブジェクトのFindGO、指定されたゲームオブジェクトを検索する
+	template<class T>
+	T* FindGameObject(const wchar_t* objectName = nullptr) {
+		unsigned int nameKey = MakeGameObjectNameKey(objectName);
+		for (auto goList : m_GogameobjectList) {
+			for (auto go : goList) {
+				if (!go->m_isDead && go->m_isRegist) {
+					//名前が同じなら
+					if (go->m_nameKey == nameKey) {
+						//dynamic_castで型変換(基本クラスを派生クラスの型に変換する)
+						//後にポインタを返す
+						T* p = dynamic_cast<T*>(go);
+						return p;
+					}
+				}
+			}
+		}
+		//見つからなかったらnullptrを返す
+		return nullptr;
+	}
+	
 	//ゲームオブジェクトの無効化フラグを立てる、NewGOで作成したインスタンスはこれで削除するように
 	//ここで行うのは死亡判定だけ、ゲームオブジェクトのアップデートが終わった後にまとめて削除されます
-	bool DeleteGameObject(IGameObject* gameobject) {
+	void DeleteGameObject(IGameObject* gameobject) {
 		if (gameobject == nullptr) {
-			return false;
+			return;
 		}
 		if (gameobject->IsNewFromgameObjectManager()) {
 			if (!gameobject->m_isDead) {
@@ -110,16 +131,16 @@ public:
 				gameobject->m_isRegist = false;
 				gameobject->m_isRegistDeadList = true;
 				m_DeletegameobjectList.emplace_back(gameobject);
-				return true;
+				gameobject->OnDestroy();
+				return;
 			}
 		}
-		return false;
+		return;
 	}
 private:
 	typedef std::list<IGameObject*> GameObjectList;						//ゲームオブジェクトリスト
 	std::vector<GameObjectList> m_GogameobjectList;						//処理の優先度ごとにゲームオブジェクトリストが格納されている、スタートやらアプデやらを行うリスト
-	std::list<IGameObject*> m_DeletegameobjectList;						//デリートを行うリスト
-
+	std::vector<IGameObject*> m_DeletegameobjectList;						//デリートを行うリスト
 	GameObjectPrio				m_gameObjectPriorityMax;				//!<ゲームオブジェクトの優先度の最大数、NewGOの引数の整数の最大数ってところですか
 };
 
@@ -140,8 +161,24 @@ static inline T* NewGO(int priority, const wchar_t* objectName = nullptr , typen
 {
 	return GameObjectManager().NewGameObject<T>((GameObjectPrio)priority, objectName);
 }
+/*!
+*@brief	ゲームオブジェクトの検索のヘルパー関数。
+*@details
+* 名前の検索が入るため遅いです。
+*@param[in]	objectName	ゲームオブジェクトの名前。
+*@return 見つかったインスタンスのアドレス。見つからなかった場合はnullptrを返す。
+*/
+template<class T>
+static inline T* FindGO(const wchar_t* objectName = nullptr)
+{
+	return GameObjectManager().FindGameObject<T>(objectName);
+}
 
-//ゲームオブジェクトの削除
+/*!
+ *@brief	ゲームオブジェクト削除のヘルパー関数。
+ * NewGOを使用して作成したオブジェクトは必ずDeleteGOを実行するように。
+ *@param[in]	go		削除するゲームオブジェクト。
+ */
 static inline void DeleteGO(IGameObject* go)
 {
 	GameObjectManager().DeleteGameObject(go);
