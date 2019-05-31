@@ -118,7 +118,31 @@ public:
 		//見つからなかったらnullptrを返す
 		return nullptr;
 	}
-	
+	/*!
+	*@brief	ゲームオブジェクトの検索。
+	*@details
+	* 重いよ！
+	*@param[in]	objectName		オブジェクト名。
+	*/
+	template<class T>
+	void FindGameObjects(const wchar_t* objectName, std::function<bool(T* go)> func)
+	{
+		unsigned int nameKey = MakeGameObjectNameKey(objectName);
+		for (auto goList : m_GogameobjectList) {
+			for (auto go : goList) {
+				//名前が同じなら
+				if (go->m_nameKey == nameKey) {
+					//型変換
+					T* p = dynamic_cast<T*>(go);
+					//引数に設定してある関数実行してfalseならクエリ中断
+					if (func(p) == false) {
+						//クエリ中断
+						return;
+					}
+				}
+			}
+		}
+	}
 	//ゲームオブジェクトの無効化フラグを立てる、NewGOで作成したインスタンスはこれで削除するように
 	//ここで行うのは死亡判定だけ、ゲームオブジェクトのアップデートが終わった後にまとめて削除されます
 	void DeleteGameObject(IGameObject* gameobject) {
@@ -172,6 +196,19 @@ template<class T>
 static inline T* FindGO(const wchar_t* objectName = nullptr)
 {
 	return GameObjectManager().FindGameObject<T>(objectName);
+}
+
+/*!
+	*@brief	ゲームオブジェクトの検索のヘルパー関数。
+	*@details
+	* 同名のゲームオブジェクトに全てに対して、クエリを行いたい場合に使用してください。
+	*@param[in]	objectName	ゲームオブジェクトの名前、名前を特に指定しない場合はnullptrを指定してください
+	*@param[in]	func		ゲームオブジェクトが見つかったときに呼ばれるコールバック関数。
+	*/
+template<class T>
+static inline void QueryGOs(const wchar_t* objectName, std::function<bool(T* go)> func)
+{
+	return GameObjectManager().FindGameObjects<T>(objectName, func);
 }
 
 /*!

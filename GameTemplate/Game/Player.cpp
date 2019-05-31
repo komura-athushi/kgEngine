@@ -52,7 +52,10 @@ void Player::Update()
 	//m_model->SetActive(false);
 	//ワールド行列の更新。
 	//m_model->UpdateWorldMatrix(CVector3::Zero(), CQuaternion::Identity(), CVector3::One());
-	DeleteGO(FindGO<Game>());
+	QueryGOs<Game>(nullptr, [&](Game * game) {
+		DeleteGO(game);		
+		return true;
+	});
 }
 void Player::Draw()
 {
