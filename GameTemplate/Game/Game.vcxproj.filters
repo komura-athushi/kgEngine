@@ -5,6 +5,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="GameCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -12,6 +13,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -22,11 +24,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
-      <Filter>Asset\ground</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\unityChan.fbx">
+    <None Include="Assets\modelData\unityChan\unityChan.fbx">
       <Filter>Asset</Filter>
-    </MeshContentTask>
+    </None>
+    <None Include="Assets\modelData\ground\ground.FBX">
+      <Filter>Asset\ground</Filter>
+    </None>
   </ItemGroup>
 </Project>

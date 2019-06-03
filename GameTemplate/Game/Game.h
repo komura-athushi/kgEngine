@@ -1,6 +1,7 @@
 #pragma once
 class Ground;
 class Player;
+class GameCamera;
 //ƒQ[ƒ€ƒNƒ‰ƒX
 class Game:public IGameObject
 {
@@ -11,8 +12,9 @@ public:
 	void Update() override;
 	void OnDestroy() override;
 private:
-	Ground* m_ground;
-	Player* m_player;
+	Ground* m_ground = nullptr;
+	Player* m_player = nullptr;
+	GameCamera* m_gamecamera = nullptr;
 	float m_timer = 0.0f;
 };
 

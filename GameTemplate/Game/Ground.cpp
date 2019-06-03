@@ -20,6 +20,7 @@ bool Ground::Start()
 {
 	m_skinModelRender = NewGO<CSkinModelRender>(0);
 	m_skinModelRender->Init(L"Resource/modelData/ground.cmo");
+	m_skinModelRender->SetScale({ 1.0f, 1.0f, 1.0f });
 	return true;
 }
 

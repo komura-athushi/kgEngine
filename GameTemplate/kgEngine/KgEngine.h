@@ -62,6 +62,11 @@ public:
 	{
 		return *m_physicsEngine;
 	}
+	//CPadのインスタンスを取得
+	Pad& GetPad(int padNo)
+	{
+		return m_pad[padNo];
+	}
 private:
 	HWND m_hWnd = NULL;
 	GraphicsEngine* m_graphicsEngine = nullptr;
@@ -78,4 +83,9 @@ static inline CEngine& Engine()
 	return CEngine::GetInstance();
 }
 
-
+//パッドのインスタンスを取得、引数に接続されたパッドの番号
+//基本は引数に0
+static inline Pad& GetPad(int padNo)
+{
+	return Engine().GetPad(padNo);
+}
