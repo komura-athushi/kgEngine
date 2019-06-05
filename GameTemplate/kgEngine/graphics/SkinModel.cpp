@@ -160,6 +160,10 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	else {
 		vsCb.isShadowReciever = 0;
 	}
+	ID3D11ShaderResourceView* srvArray[]{
+		shadowMap->GetShadowMapSRV()
+	};
+	d3dDeviceContext->PSSetShaderResources(2, 1, srvArray);
 	//定数バッファをGPUに転送。
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_cb);
 	d3dDeviceContext->PSSetConstantBuffers(0, 1, &m_cb);
