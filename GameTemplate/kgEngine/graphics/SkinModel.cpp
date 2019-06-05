@@ -1,12 +1,33 @@
 #include "KGstdafx.h"
 #include "SkinModel.h"
 #include "SkinModelDataManager.h"
+#include "SkinModelEffect.h"
+#include "shadow/ShadowMap.h"
+
+SkinModel::SkinModel()
+{
+	m_dirLight.direction[0] = { 1.0f, 0.0f, 0.0f, 0.0f };
+	m_dirLight.color[0] = { 0.7f, 0.7f, 0.7f, 1.0f };
+
+	m_dirLight.direction[1] = { -0.707f, -0.707f, 0.0f, 0.0f };
+	m_dirLight.color[1] = { 0.4f, 0.4f, 0.4f, 1.0f };
+
+	m_dirLight.direction[2] = { 0.0f, -0.707f, 0.707f, 0.0f };
+	m_dirLight.color[2] = { 0.4f, 0.4f, 0.4f, 1.0f };
+
+	m_dirLight.direction[3] = { 1.0f, 0.0f, -1.0f, 0.0f };
+	m_dirLight.color[3] = { 0.4f, 0.4f, 0.4f, 1.0f };
+}
 
 SkinModel::~SkinModel()
 {
 	if (m_cb != nullptr) {
 		//定数バッファを解放。
 		m_cb->Release();
+	}
+	//ライト用の定数バッファの解放。
+	if (m_lightCb != nullptr) {
+		m_lightCb->Release();
 	}
 	if (m_samplerState != nullptr) {
 		//サンプラステートを解放。
@@ -67,6 +88,11 @@ void SkinModel::InitConstantBuffer()
 																//CPUアクセスが不要な場合は0。
 	//作成。
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_cb);
+
+	//続いて、ライト用の定数バッファを作成。
+	//作成するバッファのサイズを変更するだけ。
+	bufferDesc.ByteWidth = sizeof(SDirectionLight);				//SDirectionLightは16byteの倍数になっているので、切り上げはやらない。
+	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_lightCb);
 }
 void SkinModel::InitSamplerState()
 {
@@ -104,25 +130,54 @@ void SkinModel::UpdateWorldMatrix(CVector3 position, CQuaternion rotation, CVect
 	//スケルトンの更新。
 	m_skeleton.Update(m_worldMatrix);
 }
-void SkinModel::Draw()
+void SkinModel::Draw(EnRenderMode renderMode)
 {
 	DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
 
 	ID3D11DeviceContext* d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 
+	auto shadowMap = Engine().GetGraphicsEngine().GetShadowMap();
+
 	//定数バッファの内容を更新。
 	SVSConstantBuffer vsCb;
 	vsCb.mWorld = m_worldMatrix;
-	vsCb.mProj = MainCamera().GetProjectionMatrix();
-	vsCb.mView = MainCamera().GetViewMatrix();
-	d3dDeviceContext->UpdateSubresource(m_cb, 0, nullptr, &vsCb, 0, 0);
+	if (renderMode == enRenderMode_Normal) {
+		vsCb.mProj = MainCamera().GetProjectionMatrix();
+		vsCb.mView = MainCamera().GetViewMatrix();
+	}
+	//シャドウマップを作るときはらいとカメラの行列を使う
+	else if (renderMode == enRenderMode_CreateShadowMap) {
+		vsCb.mProj = shadowMap->GetLightProjMatrix();
+		vsCb.mView = shadowMap->GetLightViewMatrix();
+	}
+	//todo ライトカメラのビュー、プロジェクション行列を送る。
+	
+	vsCb.mLightProj = shadowMap->GetLightProjMatrix();
+	vsCb.mLightView = shadowMap->GetLightViewMatrix();
+	if (m_isShadowReceiver == true) {
+		vsCb.isShadowReciever = 1;
+	}
+	else {
+		vsCb.isShadowReciever = 0;
+	}
 	//定数バッファをGPUに転送。
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_cb);
 	d3dDeviceContext->PSSetConstantBuffers(0, 1, &m_cb);
+	
+	d3dDeviceContext->UpdateSubresource(m_cb, 0, nullptr, &vsCb, 0, 0);
+	//ライト用の定数バッファを更新
+	d3dDeviceContext->PSSetConstantBuffers(1, 1, &m_lightCb);
+	d3dDeviceContext->UpdateSubresource(m_lightCb, 0, nullptr, &m_dirLight, 0, 0);
 	//サンプラステートを設定。
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 	//ボーン行列をGPUに転送。
 	m_skeleton.SendBoneMatrixArrayToGPU();
+
+	//エフェクトにクエリを行う。
+	m_modelDx->UpdateEffects([&](DirectX::IEffect* material) {
+		auto modelMaterial = reinterpret_cast<ModelEffect*>(material);
+		modelMaterial->SetRenderMode(renderMode);
+	});
 
 	//描画。
 	m_modelDx->Draw(

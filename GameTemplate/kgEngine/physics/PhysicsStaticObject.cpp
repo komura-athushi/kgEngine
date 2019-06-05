@@ -29,3 +29,9 @@ void PhysicsStaticObject::CreateMeshObject(SkinModel& skinModel, CVector3 pos, C
 	//剛体を物理ワールドに追加する。
 	Engine().GetPhysicsEngine().AddRigidBody(m_rigidBody);
 }
+
+void PhysicsStaticObject::CreateMeshObject(CSkinModelRender* skinModelRender, CVector3 pos, CQuaternion rot)
+{
+	//スキンモデルで↑の関数呼び出すゾ～
+	CreateMeshObject(skinModelRender->GetSkinModel(), pos, rot);
+}

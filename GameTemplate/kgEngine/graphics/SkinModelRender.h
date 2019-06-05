@@ -20,6 +20,7 @@ public:
 	//このクラスはこれ以上継承させないからオーバーライドはここで終わり
 	bool Start() override final;
 	void Update() override final;
+	void PreUpdate() override final;
 private:
 	//アニメーションの初期化
 	void InitAnimation(AnimationClip* animationClips, int numAnimationClips);
@@ -86,6 +87,16 @@ public:
 	bool IsPlayingAnimation() const
 	{
 		return m_animation.IsPlaying();
+	}
+	//シャドウキャスターを設定
+	void SetShadowCaster(bool caster)
+	{
+		m_skinModel.SetShadowCaster(caster);
+	}
+	//シャドウレシーバーを設定
+	void SetShadowReceiver(bool receiver)
+	{
+		m_skinModel.SetShadowReceiver(receiver);
 	}
 private:
 	SkinModel m_skinModel;										//スキンモデル

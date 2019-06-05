@@ -1,6 +1,6 @@
 #include "KGstdafx.h"
 #include "GraphicsEngine.h"
-
+#include "shadow/ShadowMap.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -151,4 +151,41 @@ void GraphicsEngine::Init(HWND hWnd)
 	viewport.MaxDepth = 1.0f;
 	m_pd3dDeviceContext->RSSetViewports(1, &viewport);
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
+	m_shadowMap = new ShadowMap;
+}
+
+void GraphicsEngine::ShadowMapRender()
+{
+	//シャドウマップを更新。
+	m_shadowMap->UpdateFromLightTarget(
+		{ 000.0f, 1000.0f, 1000.0f },
+		{ 0.0f, 0.0f, 0.0f }
+	);
+	auto d3dDeviceContext = m_pd3dDeviceContext;
+	//現在のレンダリングターゲットをバックアップしておく。
+	ID3D11RenderTargetView* oldRenderTargetView;
+	ID3D11DepthStencilView* oldDepthStencilView;
+	d3dDeviceContext->OMGetRenderTargets(
+		1,
+		&oldRenderTargetView,
+		&oldDepthStencilView
+	);
+	//ビューポートもバックアップを取っておく。
+	unsigned int numViewport = 1;
+	D3D11_VIEWPORT oldViewports;
+	d3dDeviceContext->RSGetViewports(&numViewport, &oldViewports);
+
+	//シャドウマップにレンダリング
+	m_shadowMap->RenderToShadowMap();
+
+	//元に戻す。
+	d3dDeviceContext->OMSetRenderTargets(
+		1,
+		&oldRenderTargetView,
+		oldDepthStencilView
+	);
+	d3dDeviceContext->RSSetViewports(numViewport, &oldViewports);
+	//レンダリングターゲットとデプスステンシルの参照カウンタを下す。
+	oldRenderTargetView->Release();
+	oldDepthStencilView->Release();
 }

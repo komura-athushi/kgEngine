@@ -80,11 +80,13 @@ void ShadowMap::RenderToShadowMap()
 	float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 	m_shadowMapRT.ClearRenderTarget(clearColor);
 
-	//シャドウキャスターをシャドウマップにレンダリング。
-	for (auto& caster : m_shadowCasters) {
-		caster->Draw(
-			enRenderMode_CreateShadowMap
-		);
+	if (m_shadowCasters.size() >= 1) {
+		//シャドウキャスターをシャドウマップにレンダリング。
+		for (auto& caster : m_shadowCasters) {
+			caster->Draw(
+				enRenderMode_CreateShadowMap
+			);
+		}
 	}
 	//キャスターをクリア。
 	m_shadowCasters.clear();

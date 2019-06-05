@@ -29,6 +29,8 @@ public:
 	//Update
 	virtual void  Update() {}
 
+	//PreUpdate
+	virtual void PreUpdate() {}
 	//Às—Dæ“x‚ğæ“¾
 	GameObjectPrio GetPriority() const
 	{
@@ -98,6 +100,13 @@ public:
 	{
 		if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
 			Draw();
+		}
+	}
+
+	void PreUpdateWrapper()
+	{
+		if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
+			PreUpdate();
 		}
 	}
 

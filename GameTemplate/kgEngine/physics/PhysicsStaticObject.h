@@ -28,7 +28,13 @@ public:
 		*@param[in]	rot			回転。
 		*/
 	void CreateMeshObject(SkinModel& skinModel, CVector3 pos, CQuaternion rot);
-	
+	/*!
+		* @brief	メッシュの静的オブジェクトを作成(スキンモデルレンダラーVer)
+		*@param[in]	skinModelRender		スキンモデルレンダラー
+		*@param[in]	pos			座標。
+		*@param[in]	rot			回転。
+		*/
+	void CreateMeshObject(CSkinModelRender* skinModelRender, CVector3 pos, CQuaternion rot);
 private:
 	MeshCollider m_meshCollider;		//!<メッシュコライダー。
 	RigidBody m_rigidBody;				//!<剛体。

@@ -85,7 +85,7 @@
     <Link>
       <SubSystem>
       </SubSystem>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;kgEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;kgEngine.lib;XAudio2.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -157,12 +157,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\ground\ground.FBX">
+    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
       <FileType>Document</FileType>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
-    </None>
+    </MeshContentTask>
     <None Include="Assets\modelData\unityChan\unityChan.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
       <FileType>Document</FileType>

@@ -12,15 +12,19 @@ protected:
 	Shader* m_pPSShader = nullptr;
 	Shader m_vsShader;
 	Shader m_psShader;
+	Shader m_vsShadowMap;			//シャドウマップ生成用の頂点シェーダー。
+	Shader m_psShadowMap;		//シャドウマップ生成用のピクセルシェーダー。
 	bool isSkining;
 	ID3D11ShaderResourceView* m_albedoTex = nullptr;
-
+	EnRenderMode m_renderMode = enRenderMode_Invalid;	//レンダリングモード。
 public:
 	ModelEffect()
 	{
 		m_psShader.Load("Assets/shader/model.fx", "PSMain", Shader::EnType::PS);
 		
 		m_pPSShader = &m_psShader;
+		//todo シャドウマップ用のシェーダーをロード。
+		m_psShadowMap.Load("Assets/shader/model.fx", "PSMain_ShadowMap", Shader::EnType::PS);
 	}
 	virtual ~ModelEffect()
 	{
@@ -48,7 +52,10 @@ public:
 	{
 		return wcscmp(name, m_materialName.c_str()) == 0;
 	}
-	
+	void SetRenderMode(EnRenderMode renderMode)
+	{
+		m_renderMode = renderMode;
+	}
 };
 /*!
 *@brief
@@ -60,6 +67,8 @@ public:
 	{
 		m_vsShader.Load("Assets/shader/model.fx", "VSMain", Shader::EnType::VS);
 		m_pVSShader = &m_vsShader;
+		//スキン無しシャドウマップ
+		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMain_ShadowMap", Shader::EnType::VS);
 		isSkining = false;
 	}
 };
@@ -74,7 +83,8 @@ public:
 		wchar_t hoge[256];
 		GetCurrentDirectoryW(256, hoge);
 		m_vsShader.Load("Assets/shader/model.fx", "VSMainSkin", Shader::EnType::VS);
-		
+		//スキンありシャドウマップ
+		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMainSkin_ShadowMap", Shader::EnType::VS);
 		m_pVSShader = &m_vsShader;
 		isSkining = true;
 	}

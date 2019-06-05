@@ -119,6 +119,8 @@ void CEngine::Update()
 	m_watch.Start();
 	//描画開始。
 	m_graphicsEngine->BegineRender();
+	m_gameobjectmanager->PreUpdate();
+	m_graphicsEngine->ShadowMapRender();
 	//ゲームパッドの更新。	
 	for (auto& pad : m_pad) {
 		pad.Update();
@@ -130,7 +132,7 @@ void CEngine::Update()
 	m_gameobjectmanager->Draw();
 	m_gameobjectmanager->Delete();
 	//カメラの更新。
-	//MainCamera().Update();
+	MainCamera().Update();
 	//描画終了。
 	m_graphicsEngine->EndRender();
 

@@ -26,7 +26,8 @@ public:
 		m_position = pos;
 	}
 private:
-	CVector3 m_position = CVector3::Zero();
+	CharacterController m_characon;
+	CVector3 m_position = {0.0f,500.0f,0.0f};
 	CVector3 m_movespeed = CVector3::Zero();
 	CQuaternion m_rotation = CQuaternion::Identity();
 	//アニメーション
@@ -51,5 +52,6 @@ private:
 	EnState m_state = enState_idle;
 	CSkinModelRender* m_skinModelRender = nullptr;							//スキンモデル。
 	GameCamera* m_gamecamera = nullptr;
+	bool m_isjump = false;
 };
 

@@ -27,8 +27,10 @@
     <None Include="Assets\modelData\unityChan\unityChan.fbx">
       <Filter>Asset</Filter>
     </None>
-    <None Include="Assets\modelData\ground\ground.FBX">
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\ground</Filter>
-    </None>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

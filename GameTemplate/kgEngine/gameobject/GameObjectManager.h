@@ -47,6 +47,7 @@ public:
 	void Update();
 	void PostRender();
 	void Draw();
+	void PreUpdate();
 	//削除していくぅ
 	void Delete(); 
 public:
@@ -110,7 +111,6 @@ public:
 						//dynamic_castで型変換(基本クラスを派生クラスの型に変換する)
 						//後にポインタを返す
 						T* p = dynamic_cast<T*>(go);
-						//ダイナミックキャストしてnullptrじゃ無かったらポインタを返す
 						if (p != nullptr) {
 							return p;
 						}
@@ -137,10 +137,12 @@ public:
 				if (go->m_nameKey == nameKey) {
 					//型変換
 					T* p = dynamic_cast<T*>(go);
-					//引数に設定してある関数実行してfalseならクエリ中断
-					if (func(p) == false) {
-						//クエリ中断
-						return;
+					if (p != nullptr) {
+						//引数に設定してある関数実行してfalseならクエリ中断
+						if (func(p) == false) {
+							//クエリ中断
+							return;
+						}
 					}
 				}
 			}
@@ -192,8 +194,8 @@ static inline T* NewGO(int priority, const wchar_t* objectName = nullptr , typen
 *@brief	ゲームオブジェクトの検索のヘルパー関数。
 *@details
 * 名前の検索が入るため遅いです。
-*@param[in]	objectName	ゲームオブジェクトの名前、デフォルトではnullptrが入ってます
-*@return 見つかったインスタンスのアドレス。見つからなかった場合はnullptrを返す
+*@param[in]	objectName	ゲームオブジェクトの名前。
+*@return 見つかったインスタンスのアドレス。見つからなかった場合はnullptrを返す。
 */
 template<class T>
 static inline T* FindGO(const wchar_t* objectName = nullptr)

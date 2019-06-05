@@ -1,6 +1,7 @@
 #include "KGstdafx.h"
 #include "SkinModelRender.h"
 #include "SkinModelDataManager.h"
+#include "shadow/ShadowMap.h"
 CSkinModelRender::CSkinModelRender()
 {
 
@@ -52,4 +53,11 @@ void CSkinModelRender::Update()
 		m_skinModel.Draw();
 	}
 	
+}
+
+void CSkinModelRender::PreUpdate()
+{
+	if (m_skinModel.isShadowCaster()) {
+		Engine().GetGraphicsEngine().GetShadowMap()->RegistShadowCaster(&m_skinModel);
+	}
 }

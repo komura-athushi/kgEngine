@@ -34,6 +34,12 @@
     <Filter Include="timer">
       <UniqueIdentifier>{4de27da2-cfa3-4d2d-9a0c-23415e6d330a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="graphics\shadow">
+      <UniqueIdentifier>{c6ee7f5b-d58a-4abd-96ce-8fd738048bd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sound">
+      <UniqueIdentifier>{5148b3b0-4986-49c9-b676-e8ba7856b690}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="math\Vector.cpp">
@@ -118,6 +124,15 @@
     </ClCompile>
     <ClCompile Include="graphics\SkinModelRender.cpp">
       <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\RenderTarget.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\shadow\ShadowMap.cpp">
+      <Filter>graphics\shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\SundEngine.cpp">
+      <Filter>sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +237,15 @@
     </ClInclude>
     <ClInclude Include="timer\StopWatch.h">
       <Filter>timer</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\RenderTarget.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\shadow\ShadowMap.h">
+      <Filter>graphics\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\SundEngine.h">
+      <Filter>sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

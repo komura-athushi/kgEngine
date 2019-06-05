@@ -11,6 +11,16 @@ void CGameObjectManager::Start()
 	}
 }
 
+void CGameObjectManager::PreUpdate()
+{
+	for (GameObjectList objList : m_GogameobjectList) {
+		for (IGameObject* obj : objList) {
+			obj->PreUpdateWrapper();
+		}
+	}
+}
+
+
 void CGameObjectManager::Update()
 {
 	for (GameObjectList objList : m_GogameobjectList) {
