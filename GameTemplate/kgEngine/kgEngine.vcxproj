@@ -144,6 +144,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">KGstdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="physics\SphereCollider.cpp" />
     <ClCompile Include="sound\SundEngine.cpp" />
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
@@ -175,13 +176,13 @@
     <ClInclude Include="math\Vector.h" />
     <ClInclude Include="Noncopyable.h" />
     <ClInclude Include="physics\ICollider.h" />
-    <ClInclude Include="physics\MeshCollider.h" />
     <ClInclude Include="physics\Physics.h" />
     <ClInclude Include="physics\RigidBody.h" />
     <ClInclude Include="physics\CapsuleCollider.h" />
     <ClInclude Include="physics\CollisionAttr.h" />
     <ClInclude Include="physics\PhysicsStaticObject.h" />
     <ClInclude Include="KGstdafx.h" />
+    <ClInclude Include="physics\SphereCollider.h" />
     <ClInclude Include="sound\SundEngine.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="timer\GameTime.h" />

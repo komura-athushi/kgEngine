@@ -163,6 +163,7 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	ID3D11ShaderResourceView* srvArray[]{
 		shadowMap->GetShadowMapSRV()
 	};
+	//引数がポインタのポインタ、t2なので引数を2、1にしてる
 	d3dDeviceContext->PSSetShaderResources(2, 1, srvArray);
 	//定数バッファをGPUに転送。
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_cb);

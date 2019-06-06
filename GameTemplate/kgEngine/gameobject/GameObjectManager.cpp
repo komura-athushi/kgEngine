@@ -26,6 +26,9 @@ void CGameObjectManager::Update()
 	for (GameObjectList objList : m_GogameobjectList) {
 		for (IGameObject* obj : objList) {
 			obj->UpdateWrapper();
+			if (objList.size() > 5) {
+				int i = 0;
+			}
 		}
 	}
 }

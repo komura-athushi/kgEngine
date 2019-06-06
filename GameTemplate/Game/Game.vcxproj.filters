@@ -6,6 +6,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Object.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -14,6 +15,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -21,6 +23,9 @@
     </Filter>
     <Filter Include="Asset\ground">
       <UniqueIdentifier>{e5e9dee3-6e99-4079-8ded-013b5edfe962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\sphere">
+      <UniqueIdentifier>{4cc39c0f-1405-477b-a208-3115622572be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +36,12 @@
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\ground</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\sphere\sphere.FBX">
+      <Filter>Asset\sphere</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\sphere\sphere2.FBX">
+      <Filter>Asset\sphere</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>

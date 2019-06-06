@@ -3,7 +3,7 @@
 */
 
 #pragma once
-
+#include "Physics/SphereCollider.h"
 #include "Physics/CapsuleCollider.h"
 #include "Physics/RigidBody.h"
 
@@ -23,10 +23,9 @@ public:
 	/*!
 		* @brief	初期化。
 		*@param[in]	radius		カプセルコライダーの半径。
-		*@param[in]	height		カプセルコライダーの高さ。
 		*@param[in]	position	初期位置。
 		*/
-	void Init(float radius, float height, const CVector3& position);
+	void Init(float radius, const CVector3& position);
 	/*!
 		* @brief	実行。
 		*@param[in]	deltaTime		経過時間。単位は秒。
@@ -66,7 +65,7 @@ public:
 	/*!
 	* @brief	コライダーを取得。
 	*/
-	CapsuleCollider* GetCollider()
+	SphereCollider* GetCollider()
 	{
 		return &m_collider;
 	}
@@ -77,6 +76,12 @@ public:
 	{
 		return &m_rigidBody;
 	}
+	//半径を設定
+	void SetRadius(const float& radius)
+	{
+		m_radius = radius;
+		m_collider.SetRadius(m_radius);
+	}
 	/*!
 	* @brief	剛体を物理エンジンから削除。。
 	*/
@@ -85,8 +90,9 @@ private:
 	CVector3 			m_position = CVector3::Zero();	//座標。
 	bool 				m_isJump = false;				//ジャンプ中？
 	bool				m_isOnGround = true;			//地面の上にいる？
-	CapsuleCollider		m_collider;						//コライダー。
+	SphereCollider		m_collider;						//コライダー。
 	float				m_radius = 0.0f;
-	float				m_height = 0.0f;		
+	//float				m_height = 0.0f;		
+	bool				m_isSphere = false;				//球体かどうか
 	RigidBody			m_rigidBody;					//剛体。
 };

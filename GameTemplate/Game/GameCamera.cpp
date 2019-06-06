@@ -29,10 +29,16 @@ void GameCamera::Update()
 		m_player = FindGO<Player>();
 		return;
 	}
+	TransRadius();
 	Calculation();
 	MainCamera().SetPosition(m_position);
 	MainCamera().SetTarget(m_target);
 	MainCamera().Update();
+}
+
+void GameCamera::TransRadius()
+{
+	m_radius = m_protradius * (m_player->GetRadius() / m_player->GetProtRadius() / 0.5f);
 }
 
 void GameCamera::Calculation()
@@ -44,8 +50,6 @@ void GameCamera::Calculation()
 	const float LowerLimitDegreeXZ = -80.0f;
 	//注視点をプレイヤーより↑にする
 	const float HeightTarget = 140.0f;
-	//カメラの半径
-	const float Radius = 260.0f;
 
 	CVector3 stickR;
 	stickR.x = GetPad(0).GetRStickXF();			
@@ -74,6 +78,6 @@ void GameCamera::Calculation()
 	rotAxis.Normalize();
 	rot.SetRotationDeg(rotAxis, m_degreexz);
 	rot.Multiply(toPos);
-	toPos *= Radius;
+	toPos *= m_radius;
 	m_position = m_target + toPos;
 }

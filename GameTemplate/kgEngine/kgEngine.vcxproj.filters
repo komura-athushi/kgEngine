@@ -134,6 +134,9 @@
     <ClCompile Include="sound\SundEngine.cpp">
       <Filter>sound</Filter>
     </ClCompile>
+    <ClCompile Include="physics\SphereCollider.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -196,9 +199,6 @@
     <ClInclude Include="physics\ICollider.h">
       <Filter>physics</Filter>
     </ClInclude>
-    <ClInclude Include="physics\MeshCollider.h">
-      <Filter>physics</Filter>
-    </ClInclude>
     <ClInclude Include="physics\CapsuleCollider.h">
       <Filter>physics</Filter>
     </ClInclude>
@@ -246,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="sound\SundEngine.h">
       <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\SphereCollider.h">
+      <Filter>physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,9 +12,11 @@ public:
 	//移動
 	void Move();
 	//アニメーション
-	void AnimationController();
+	//void AnimationController();
 	//回転
 	void Turn();
+	//判定
+	void Judgment();
 	//座標を取得
 	CVector3 GetPosition() const
 	{
@@ -25,10 +27,26 @@ public:
 	{
 		m_position = pos;
 	}
+	//初期からどれだけ大きくなったかを取得
+	float GetMag() const
+	{
+		return m_scale.y / 1.0f;;
+	}
+	//球体の半径を取得
+	float GetRadius() const
+	{
+		return m_radius;
+	}
+	//球体の最初の半径を取得
+	float GetProtRadius() const
+	{
+		return m_protradius;
+	}
 private:
 	CharacterController m_characon;
-	CVector3 m_position = {0.0f,500.0f,0.0f};
+	CVector3 m_position = {0.0f,200.0f,0.0f};
 	CVector3 m_movespeed = CVector3::Zero();
+	CVector3 m_scale = CVector3::One();
 	CQuaternion m_rotation = CQuaternion::Identity();
 	//アニメーション
 	enum EnAnimationClip {
@@ -53,5 +71,7 @@ private:
 	CSkinModelRender* m_skinModelRender = nullptr;							//スキンモデル。
 	GameCamera* m_gamecamera = nullptr;
 	bool m_isjump = false;
+	float m_radius = 45.0f;
+	const float m_protradius = 45.0f;
 };
 

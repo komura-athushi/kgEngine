@@ -5,6 +5,7 @@
 #pragma once
 
 #include "physics/MeshCollider.h"
+#include "physics/SphereCollider.h"
 #include "physics/RigidBody.h"
 
 
@@ -35,7 +36,18 @@ public:
 		*@param[in]	rot			回転。
 		*/
 	void CreateMeshObject(CSkinModelRender* skinModelRender, CVector3 pos, CQuaternion rot);
+	/*!
+		* @brief	球体の静的オブジェクトを作成
+		*@param[in]	radius		半径
+		*@param[in]	pos			座標。
+		*@param[in]	rot			回転。
+	*/
+	void CreateSphereObject(const float& radius, const CVector3& pos, const CQuaternion& rot = CQuaternion::Identity());
 private:
 	MeshCollider m_meshCollider;		//!<メッシュコライダー。
+	SphereCollider m_sphereCollider;	//スフィアコライダー
 	RigidBody m_rigidBody;				//!<剛体。
+	float m_radius = 0.0f;				//半径
+	bool m_isMeshCollider = false;		//メッシュコライダーかどうか
+	bool m_isSphereCollider = false;	//スフィアコライダーかどうか
 };

@@ -98,13 +98,12 @@ namespace {
 }
 
 
-void CharacterController::Init(float radius, float height, const CVector3& position)
+void CharacterController::Init(float radius, const CVector3& position)
 {
 	m_position = position;
 	//コリジョン作成。
 	m_radius = radius;
-	m_height = height;
-	m_collider.Create(radius, height);
+	m_collider.Create(radius);
 
 	//剛体を初期化。
 	RigidBodyInfo rbInfo;
@@ -154,7 +153,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 			}
 			//カプセルコライダーの中心座標 + 高さ*0.1の座標をposTmpに求める。
 			CVector3 posTmp = m_position;
-			posTmp.y += m_height * 0.5f + m_radius + m_height * 0.1f;
+			posTmp.y += m_radius + m_radius * 0.1f;
 			//レイを作成。
 			btTransform start, end;
 			start.setIdentity();
@@ -237,7 +236,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 		start.setIdentity();
 		end.setIdentity();
 		//始点はカプセルコライダーの中心。
-		start.setOrigin(btVector3(m_position.x, m_position.y + m_height * 0.5f + m_radius, m_position.z));
+		start.setOrigin(btVector3(m_position.x, m_position.y + m_radius, m_position.z));
 		//終点は地面上にいない場合は1m下を見る。
 		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
 		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
