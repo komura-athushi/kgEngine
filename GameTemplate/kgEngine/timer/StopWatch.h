@@ -31,6 +31,7 @@ public:
 		::QueryPerformanceFrequency((LARGE_INTEGER*)& freq);
 		//計測終了時のカウント数を取得
 		::QueryPerformanceCounter((LARGE_INTEGER*)& end);
+		//↑の3つで時間が図れるらしい
 		elapsed = double(end - begin) / freq;
 		elapsedMill = elapsed * 1000.0;
 		elapsedMicro = elapsedMill * 1000.0;

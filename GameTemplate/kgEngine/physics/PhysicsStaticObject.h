@@ -23,14 +23,14 @@ public:
 		*/
 	~PhysicsStaticObject();
 	/*!
-		* @brief	メッシュの静的オブジェクトを作成。
+		* @brief	メッシュの静的オブジェクトを作成。ポリゴンが少ないときはこれを使おう
 		*@param[in]	skinModel	スキンモデル。
 		*@param[in]	pos			座標。
 		*@param[in]	rot			回転。
 		*/
 	void CreateMeshObject(SkinModel& skinModel, CVector3 pos, CQuaternion rot);
 	/*!
-		* @brief	メッシュの静的オブジェクトを作成(スキンモデルレンダラーVer)
+		* @brief	メッシュの静的オブジェクトを作成(スキンモデルレンダラーVer)ポリゴンが少ないときはこれを使おう
 		*@param[in]	skinModelRender		スキンモデルレンダラー
 		*@param[in]	pos			座標。
 		*@param[in]	rot			回転。

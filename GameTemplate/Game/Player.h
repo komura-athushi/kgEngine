@@ -1,6 +1,7 @@
 #pragma once
 #include "character/CharacterController.h"
 class GameCamera;
+//(⌒,_ゝ⌒)球体ですわぁ...
 class Player:public IGameObject
 {
 public:
@@ -11,8 +12,6 @@ public:
 	void OnDestroy() override;
 	//移動
 	void Move();
-	//アニメーション
-	//void AnimationController();
 	//回転
 	void Turn();
 	//判定
@@ -44,7 +43,7 @@ public:
 	}
 private:
 	CharacterController m_characon;
-	CVector3 m_position = {0.0f,200.0f,0.0f};
+	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();
 	CVector3 m_movespeed = CVector3::Zero();
 	CVector3 m_scale = CVector3::One();
 	CQuaternion m_rotation = CQuaternion::Identity();

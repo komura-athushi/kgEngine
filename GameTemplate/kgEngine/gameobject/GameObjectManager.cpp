@@ -26,9 +26,6 @@ void CGameObjectManager::Update()
 	for (GameObjectList objList : m_GogameobjectList) {
 		for (IGameObject* obj : objList) {
 			obj->UpdateWrapper();
-			if (objList.size() > 5) {
-				int i = 0;
-			}
 		}
 	}
 }
@@ -53,24 +50,15 @@ void CGameObjectManager::Draw()
 
 void CGameObjectManager::Delete()
 {
-	////ゲームオブジェクトリストから削除予定のオブジェクトを削除する
-	//for (GameObjectList& goList : m_GogameobjectList) {
-	//	/*auto it = goList.begin();
-	//	while (it != goList.end()) {
-	//		if ((*it)->m_isDead) {
-	//			it = goList.erase(it);
-	//		}
-	//		++it;
-	//	}*/
-	//	for (IGameObject* go : goList) {
-	//		goList.erase(go);
-	//	}
-	//}
+	//削除していくぅ
 	for (auto& GO : m_DeletegameobjectList) {
 		GameObjectPrio prio = GO->GetPriority();
 		GameObjectList& goExecList = m_GogameobjectList.at(prio);
+		//ゲームオブジェクトリストから該当のオブジェクトの箇所を探して
 		auto it = std::find(goExecList.begin(), goExecList.end(), GO);
+		//削除
 		delete (*it);
+		//ゲームオブジェクトリストから削除
 		goExecList.erase(it);
 	}
 	m_DeletegameobjectList.clear();

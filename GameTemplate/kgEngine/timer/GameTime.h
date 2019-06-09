@@ -9,6 +9,7 @@ private:
 	CGameTime(){}
 	~CGameTime(){}
 public:
+	//インスタンスを取得
 	static CGameTime& GetInstance()
 	{
 		static CGameTime instance;

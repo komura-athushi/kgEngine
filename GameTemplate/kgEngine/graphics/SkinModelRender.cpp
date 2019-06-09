@@ -42,13 +42,16 @@ void CSkinModelRender::InitAnimation(AnimationClip* animationClips, int numAnima
 
 void CSkinModelRender::Update()
 {
-	if (m_update || m_animationClip != nullptr) {
+	//更新がtrueであればモデルのアップデートを行う、Init関数が呼ばれたら必ず一回は行われる
+	if (m_update ) {
 		m_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		m_update = false;
 	}
-	if (m_animationClip != nullptr) {
+	//アニメーションの再生中であればアニメーションのアップデートを行う
+	if (m_animation.IsPlaying()) {
 		m_animation.Update(GameTime().GetFrameDeltaTime());
 	}
+	//アクティブならモデルをドローする
 	if (m_isActive) {
 		m_skinModel.Draw();
 	}
