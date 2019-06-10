@@ -72,7 +72,7 @@ void Player::Judgment()
 void Player::Move()
 {
 	//移動速度
-	const float MoveSpeedMultiply = 550.0f;
+	const float MoveSpeedMultiply = 5.0f;
 	//移動速度減衰
 	const float MoveSpeedAtten = 0.98f;
 	//重力
@@ -80,18 +80,23 @@ void Player::Move()
 	//ジャンプ速度
 	const float JumpMoveSpeed = 700.0f;
 
+	CVector3 Stick = CVector3::Zero();
 	//両方のスティックが入力されていたら
 	if (m_gamecamera->GetStateStick() == enStick_EnterStickBoth) {
-
+		CVector3 stickL;
+		stickL.x = GetPad(0).GetLStickXF();
+		stickL.y = GetPad(0).GetLStickYF();
+		stickL.z = 0.0f;
+		CVector3 stickR;
+		stickR.x = GetPad(0).GetRStickXF();
+		stickR.y = GetPad(0).GetRStickYF();
+		stickR.z = 0.0f;
+		Stick = stickL + stickR;
 	}
-	CVector3 stickL;
-	stickL.x = GetPad(0).GetLStickXF();
-	stickL.y = GetPad(0).GetLStickYF();
-	stickL.z = 0.0f;
 	CVector3 frontxz = MainCamera().GetFront();
 	CVector3 rightxz = MainCamera().GetRight();
-	frontxz *= stickL.y;
-	rightxz *= stickL.x;
+	frontxz *= Stick.y;
+	rightxz *= Stick.x;
 	m_movespeed += frontxz * MoveSpeedMultiply;
 	m_movespeed += rightxz * MoveSpeedMultiply;
 	m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
@@ -102,6 +107,7 @@ void Player::Move()
 			m_movespeed.y = JumpMoveSpeed;
 		}
 	}
+	m_movespeed *= MoveSpeedAtten;
 }
 
 void Player::Turn()
@@ -110,7 +116,7 @@ void Player::Turn()
 
 	CVector3 movespeedXZ = m_position - m_beforeposition;
 	movespeedXZ.y = 0.0f;
-	if (movespeedXZ.LengthSq() <= 0.1f) {
+	if (movespeedXZ.LengthSq() <= 0.001f) {
 		return;
 	}
 	float Lengh = movespeedXZ.Length();

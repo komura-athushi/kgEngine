@@ -44,19 +44,22 @@ void GameCamera::TransRadius()
 void GameCamera::Calculation()
 {
 	//パッドの入力量に乗算
-	const float PadMultiply = 100.0f;
-	const float ButtonMultiply = 70.0f;
+	const float StickMultiply = 100.0f;
 	//カメラの回転に制限
 	const float UpperLimitDegreeXZ = 80.0f;
 	const float LowerLimitDegreeXZ = -80.0f;
 	//注視点をプレイヤーより↑にする
-	const float HeightTarget = 140.0f;
+	const float HeightTarget = 80.0f + ((80.0f * (m_player->GetRadius() / m_player->GetProtRadius())) - 80.0f) * 0.5f;;
 	//スティックが入力されているかどうか
 	const float EnterStick = 0.1f * 0.1f;
+	//両方のスティックの入力ベクトルの角度、とりあえず90度
+	const float LimitStickDegree = 90.0f;
+	//スティック入力の補正
+	float MultiPly = 1.0f;
 
 	//スティックの入力量をはかる
 	CVector3 stickR;
-	stickR.x = GetPad(0).GetRStickXF();			
+	stickR.x = GetPad(0).GetRStickXF();
 	stickR.y = GetPad(0).GetRStickYF();
 	stickR.z = 0.0f;
 	CVector3 stickL;
@@ -69,7 +72,7 @@ void GameCamera::Calculation()
 		//左スティックの入力が無いなら
 		if (stickL.LengthSq() <= EnterStick) {
 			//右スティックの入力で回転する
-			Degree = stickR * PadMultiply * GameTime().GetFrameDeltaTime();
+			Degree = stickR;
 			m_state = enStick_EnterStickR;
 		}
 		else {
@@ -82,7 +85,7 @@ void GameCamera::Calculation()
 		//右スティックの入力が無いなら
 		if (stickR.LengthSq() <= EnterStick) {
 			//左スティックの入力で回転する
-			Degree = stickL * PadMultiply * GameTime().GetFrameDeltaTime();
+			Degree = stickL;
 			m_state = enStick_EnterStickL;
 		}
 		else {
@@ -93,24 +96,53 @@ void GameCamera::Calculation()
 	else {
 		m_state = enStick_NoEnterStick;
 	}
-	if (m_state == enStick_EnterStickBoth) {
-		Degree = stickR + stickL;
-		Degree /= 2;
+	//両方のスティックに入力があったら
+	/*if (m_state == enStick_EnterStickBoth) {
+		CVector3 R = stickR;
+		CVector3 L = stickL;
+		R.Normalize();
+		L.Normalize();
+		float Angle = acosf(R.Dot(L));
+		if (fabsf(Angle) <= LimitStickDegree) {
+			Degree = stickR + stickL;
+			Degree /= 2;
+		}
+		else {
+			m_state = enStick_NoEnterStick;
+		}
+	}*/
+	if (m_state != enStick_NoEnterStick && m_state != enStick_EnterStickBoth) {
+		CVector3 Front = MainCamera().GetFront();
+		CVector3 Back = Front * -1;
+		CVector3 Stick = Degree;
+		Stick.Normalize();
+		float Angle = fabsf(acosf(Stick.Dot(CVector3::AxisY())));
+		Angle *= 180.0f / M_PI;
+		if (Angle <= LimitStickDegree) {
+			MultiPly = (LimitStickDegree - Angle) / LimitStickDegree;
+			if (m_state == enStick_EnterStickL) {
+				Degree *= MultiPly;
+				m_degreey += Degree.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime();
+			}
+			else if (m_state == enStick_EnterStickR) {
+				Degree *= MultiPly;
+				m_degreey -= Degree.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime();
+			}
+		}
+		else {
+			float Angle2 = fabsf(acosf(Stick.Dot(CVector3::AxisY() * -1)));
+			Angle2 *= 180.0f / M_PI;
+			MultiPly = (LimitStickDegree - Angle2) / LimitStickDegree;
+			if (m_state == enStick_EnterStickL) {
+				Degree *= MultiPly;
+				m_degreey -= Degree.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime();
+			}
+			else if (m_state == enStick_EnterStickR) {
+				Degree *= MultiPly;
+				m_degreey += Degree.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime();
+			}
+		}
 	}
-	m_degreexz += Degree.LengthSq();
-	////十字キーの左右の入力
-	//if (GetPad(0).IsPress(enButtonRight)) {
-	//	m_degreey += ButtonMultiply * GameTime().GetFrameDeltaTime();
-	//}
-	//else if (GetPad(0).IsPress(enButtonLeft)) {
-	//	m_degreey -= ButtonMultiply * GameTime().GetFrameDeltaTime();
-	//}
-	//if (m_degreexz >= UpperLimitDegreeXZ) {
-	//	m_degreexz = UpperLimitDegreeXZ;
-	//}
-	//else if (m_degreexz <= LowerLimitDegreeXZ) {
-	//	m_degreexz = LowerLimitDegreeXZ;
-	//}
 	m_target = CVector3::Zero();
 	m_target = m_player->GetPosition();
 	m_target.y += HeightTarget;
