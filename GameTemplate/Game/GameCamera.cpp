@@ -38,7 +38,7 @@ void GameCamera::Update()
 
 void GameCamera::TransRadius()
 {
-	m_radius = m_protradius + ((m_protradius * (m_player->GetRadius() / m_player->GetProtRadius())) - m_protradius) * 0.5f;
+	m_radius = m_protradius + ((m_protradius * (m_player->GetRadius() / m_player->GetProtRadius())) - m_protradius) * 0.9f;
 }
 
 void GameCamera::Calculation()
@@ -49,7 +49,7 @@ void GameCamera::Calculation()
 	const float UpperLimitDegreeXZ = 80.0f;
 	const float LowerLimitDegreeXZ = -80.0f;
 	//注視点をプレイヤーより↑にする
-	const float HeightTarget = 80.0f + ((80.0f * (m_player->GetRadius() / m_player->GetProtRadius())) - 80.0f) * 0.5f;;
+	const float HeightTarget = 80.0f + ((80.0f * (m_player->GetRadius() / m_player->GetProtRadius())) - 80.0f) * 0.9f;
 	//スティックが入力されているかどうか
 	const float EnterStick = 0.1f * 0.1f;
 	//両方のスティックの入力ベクトルの角度、とりあえず90度

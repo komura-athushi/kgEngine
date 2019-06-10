@@ -7,6 +7,10 @@
     <ClInclude Include="Ground.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Object\Obj.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -16,6 +20,9 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Object\Obj.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -26,6 +33,12 @@
     </Filter>
     <Filter Include="Asset\sphere">
       <UniqueIdentifier>{4cc39c0f-1405-477b-a208-3115622572be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{924f0cf8-9016-4286-b8a2-20a2ced79636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Move">
+      <UniqueIdentifier>{12c33a7f-65b0-4903-be57-7e935c8d7b8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

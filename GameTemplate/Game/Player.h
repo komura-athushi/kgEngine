@@ -72,5 +72,7 @@ private:
 	bool m_isjump = false;
 	float m_radius = 45.0f;
 	const float m_protradius = 45.0f;
+	const float m_protmovespeedmultiply = 5.0f;
+	float m_movespeedmultiply = 5.0f;
 };
 

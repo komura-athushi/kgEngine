@@ -40,6 +40,9 @@
     <Filter Include="sound">
       <UniqueIdentifier>{5148b3b0-4986-49c9-b676-e8ba7856b690}</UniqueIdentifier>
     </Filter>
+    <Filter Include="graphics\2D">
+      <UniqueIdentifier>{3872a565-148c-4143-b097-3e8072dceabf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="math\Vector.cpp">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="physics\SphereCollider.cpp">
       <Filter>physics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\2D\Sprite.cpp">
+      <Filter>graphics\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +255,9 @@
     </ClInclude>
     <ClInclude Include="physics\SphereCollider.h">
       <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\2D\Sprite.h">
+      <Filter>graphics\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

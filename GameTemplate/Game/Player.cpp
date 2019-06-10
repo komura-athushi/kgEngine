@@ -72,7 +72,7 @@ void Player::Judgment()
 void Player::Move()
 {
 	//à⁄ìÆë¨ìx
-	const float MoveSpeedMultiply = 5.0f;
+	m_movespeedmultiply = 5.0f + ((5.0f * (m_radius / m_protradius)) - 5.0f) * 0.9f;
 	//à⁄ìÆë¨ìxå∏êä
 	const float MoveSpeedAtten = 0.98f;
 	//èdóÕ
@@ -97,8 +97,8 @@ void Player::Move()
 	CVector3 rightxz = MainCamera().GetRight();
 	frontxz *= Stick.y;
 	rightxz *= Stick.x;
-	m_movespeed += frontxz * MoveSpeedMultiply;
-	m_movespeed += rightxz * MoveSpeedMultiply;
+	m_movespeed += frontxz * m_movespeedmultiply;
+	m_movespeed += rightxz * m_movespeedmultiply;
 	m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
 	if (m_characon.IsOnGround()) {
@@ -112,7 +112,7 @@ void Player::Move()
 
 void Player::Turn()
 {
-	const float RotationSpeed = 1.0f;
+	const float RotationSpeed = 1.0f * (m_protmovespeedmultiply/m_movespeedmultiply); //-((1.0f * (m_radius / m_protradius)) - 1.0f);
 
 	CVector3 movespeedXZ = m_position - m_beforeposition;
 	movespeedXZ.y = 0.0f;
