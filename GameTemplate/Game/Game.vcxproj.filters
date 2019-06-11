@@ -11,6 +11,16 @@
     <ClInclude Include="Object\Obj.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="IMove.h">
+      <Filter>Object\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveLR.h">
+      <Filter>Object\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Moji.h" />
+    <ClInclude Include="MoveUp.h">
+      <Filter>Object\Move</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -22,6 +32,16 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Object\Obj.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="IMove.cpp">
+      <Filter>Object\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveLR.cpp">
+      <Filter>Object\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Moji.cpp" />
+    <ClCompile Include="MoveUp.cpp">
+      <Filter>Object\Move</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +75,9 @@
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\sphere\sphere2.FBX">
       <Filter>Asset\sphere</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\obj.FBX">
+      <Filter>Asset</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>

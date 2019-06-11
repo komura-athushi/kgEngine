@@ -1,4 +1,5 @@
 #pragma once
+#include "level/Level.h"
 class Ground;
 class Player;
 class GameCamera;
@@ -18,5 +19,7 @@ private:
 	GameCamera* m_gamecamera = nullptr;
 	Object* m_object = nullptr;
 	float m_timer = 0.0f;
+	//level
+	Level m_level;
 };
 

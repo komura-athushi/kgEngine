@@ -78,7 +78,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../kgEngine/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/../kgEngine/;$(ProjectDir)/</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -86,7 +86,7 @@
       <SubSystem>
       </SubSystem>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;kgEngine.lib;XAudio2.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug,$(SolutionDir)\Game</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -140,6 +140,10 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="IMove.h" />
+    <ClInclude Include="Moji.h" />
+    <ClInclude Include="MoveLR.h" />
+    <ClInclude Include="MoveUp.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Object\Obj.h" />
     <ClInclude Include="Player.h" />
@@ -150,7 +154,11 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="IMove.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Moji.cpp" />
+    <ClCompile Include="MoveLR.cpp" />
+    <ClCompile Include="MoveUp.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Object\Obj.cpp" />
     <ClCompile Include="Player.cpp">
@@ -167,6 +175,9 @@
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\obj.FBX">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\sphere\sphere.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>

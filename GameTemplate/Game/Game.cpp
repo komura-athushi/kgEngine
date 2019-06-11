@@ -4,6 +4,10 @@
 #include "Ground.h"
 #include "GameCamera.h"
 #include "Object.h"
+#include "Object/Obj.h"
+#include "IMove.h"
+#include "MoveLR.h"
+#include "Moji.h"
 Game::Game()
 {
 
@@ -39,6 +43,15 @@ bool Game::Start()
 	m_object = NewGO<Object>(0);
 	m_object->SetPosition({ -1100.0f,200.0f,-500.0f });
 	m_object->SetScale(1.1f);
+	m_level.Init(L"Assets/level/level00.tkl", [&](LevelObjectData& objdata) {
+		if (objdata.ForwardMatchName(L"obj")) {
+			Obj* obj = NewGO<Obj>(0);
+			MOVESTATUS ms = FindMove(objdata.name);
+			obj->Init(ms.s_state, objdata.position, ms.s_move, ms.s_limit, objdata.rotation);
+			return true;
+		}
+		return true;
+	});
 	return true;
 }
 

@@ -24,6 +24,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj",
 		{9CB90C92-58AF-482A-B34C-AC02496110F6} = {9CB90C92-58AF-482A-B34C-AC02496110F6}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "exlib", "exlib", "{61115570-9F61-4086-B110-7C45311E88BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -141,6 +143,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{28EF574A-84DB-3CB0-9B45-DB3545B2D05C} = {61115570-9F61-4086-B110-7C45311E88BC}
+		{9BF1ADF3-EB57-35E8-B156-ADE8FFC7E2F0} = {61115570-9F61-4086-B110-7C45311E88BC}
+		{4DCE52A5-106C-3D94-815D-C8EBC6133B5E} = {61115570-9F61-4086-B110-7C45311E88BC}
+		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E} = {61115570-9F61-4086-B110-7C45311E88BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80FF4484-F888-4845-9463-10363F9A1F22}
