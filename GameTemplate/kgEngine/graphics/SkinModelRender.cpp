@@ -40,11 +40,52 @@ void CSkinModelRender::InitAnimation(AnimationClip* animationClips, int numAnima
 	}
 }
 
+void CSkinModelRender::UpdateWorldMatrix()
+{
+	//3dsMaxと軸を合わせるためのバイアス。
+	CMatrix mBias = CMatrix::Identity();
+	if (m_enFbxUpAxis == enFbxUpAxisZ) {
+		//Z-up
+		mBias.MakeRotationX(CMath::PI * -0.5f);
+	}
+	CMatrix transMatrix, rotMatrix, scaleMatrix;
+	//平行移動行列を作成する。
+	transMatrix.MakeTranslation(m_position);
+	//回転行列を作成する。
+	rotMatrix.MakeRotationFromQuaternion(m_rotation);
+	rotMatrix.Mul(mBias, rotMatrix);
+	//拡大行列を作成する。
+	scaleMatrix.MakeScaling(m_scale);
+	//ワールド行列を作成する。
+	//拡大×回転×平行移動の順番で乗算するように！
+	//順番を間違えたら結果が変わるよ。
+	m_worldMatrix.Mul(scaleMatrix, rotMatrix);
+	m_worldMatrix.Mul(m_worldMatrix, transMatrix);
+
+	//スケルトンの更新。
+	m_skinModel.GetSkeleton().Update(m_worldMatrix);
+
+	//スキンモデルにワールド行列を設定
+	m_skinModel.SetWorldMatrix(m_worldMatrix);
+}
+
+//ワールド行列を設定
+void CSkinModelRender::SetWorldMatrix(const CMatrix& worldmatrix)
+{
+	m_worldMatrix = worldmatrix;
+	//スケルトンの更新。
+	m_skinModel.GetSkeleton().Update(m_worldMatrix);
+
+	//スキンモデルにワールド行列を設定
+	m_skinModel.SetWorldMatrix(m_worldMatrix);
+	m_update = false;
+}
+
 void CSkinModelRender::Update()
 {
 	//更新がtrueであればモデルのアップデートを行う、Init関数が呼ばれたら必ず一回は行われる
 	if (m_update ) {
-		m_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+		UpdateWorldMatrix();
 		m_update = false;
 	}
 	//アニメーションの再生中であればアニメーションのアップデートを行う

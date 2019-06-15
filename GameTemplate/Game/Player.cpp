@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "GameCamera.h"
 #include "Object.h"
+#include "Object/Obj.h"
 Player::Player()
 {
 	
@@ -52,18 +53,18 @@ void Player::Update()
 
 void Player::Judgment()
 {
-	const float SizeMultiply = 0.2f;
+	const float SizeMultiply = 0.01f;
 
-	QueryGOs<Object>(nullptr, [&](Object* object) {
+	QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		CVector3 pos = m_position + CVector3::AxisY() * m_radius - object->GetPosition();
 		if (pos.LengthSq() <= (pow(m_radius + object->GetSize(), 2.0f) * 1.3f) && m_radius >= object->GetSize()) {
-			float Radius = m_radius + (object->GetSize() / m_radius) * SizeMultiply * m_radius;
+			/*float Radius = m_radius + (object->GetSize() / m_radius) * SizeMultiply * m_radius;
 			float Quotient = Radius / m_radius;
 			m_radius = Radius;
 			m_characon.SetRadius(m_radius);
-			m_scale = CVector3::One() + CVector3::One() * (m_radius / m_protradius - 1);
-			m_skinModelRender->SetScale(m_scale);
-			DeleteGO(object);
+			m_scale = CVector3::One() + CVector3::One() * (m_radius / m_protradius - 1);*/
+			//m_skinModelRender->SetScale(m_scale);
+			object->ClcLocalMatrix(m_skinModelRender->GetSkinModel().GetWorldMatrix());
 		}
 		return true;
 		});
@@ -112,7 +113,7 @@ void Player::Move()
 
 void Player::Turn()
 {
-	const float RotationSpeed = 1.0f * (m_protmovespeedmultiply/m_movespeedmultiply); //-((1.0f * (m_radius / m_protradius)) - 1.0f);
+	const float RotationSpeed = 1.0f * (m_protmovespeedmultiply / m_movespeedmultiply); //-((1.0f * (m_radius / m_protradius)) - 1.0f);
 
 	CVector3 movespeedXZ = m_position - m_beforeposition;
 	movespeedXZ.y = 0.0f;
@@ -122,8 +123,8 @@ void Player::Turn()
 	float Lengh = movespeedXZ.Length();
 	//ノーマライズして移動方向の方向ベクトルを求める
 	movespeedXZ /= Lengh;
-	CVector3 pos;
 	//Y軸と方向ベクトルの外積ベクトルを求める
+	CVector3 pos;
 	pos.Cross(CVector3::AxisY(), movespeedXZ);
 	//外積ベクトルを元に回転させるクォータニオンを求める
 	CQuaternion rot;

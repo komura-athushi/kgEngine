@@ -35,6 +35,7 @@ void PhysicsStaticObject::CreateMeshObject(SkinModel& skinModel, CVector3 pos, C
 void PhysicsStaticObject::CreateMeshObject(CSkinModelRender* skinModelRender, CVector3 pos, CQuaternion rot)
 {
 	//ƒXƒLƒ“ƒ‚ƒfƒ‹‚Åª‚ÌŠÖ”ŒÄ‚Ño‚·ƒ]`
+	skinModelRender->UpdateMatrix();
 	CreateMeshObject(skinModelRender->GetSkinModel(), pos, rot);
 }
 

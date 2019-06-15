@@ -1,5 +1,6 @@
 #pragma once
 #include "IMove.h"
+//上下に移動
 class MoveUp:public IMove
 {
 public:
@@ -16,6 +17,11 @@ public:
 	void SetMoveState() override
 	{
 		IMove::SetMoveStateBasic(enMove_Up);
+	}
+	//移動ベクトルを取得
+	CVector3 GetMoveVector() const override
+	{
+		return m_movevector;
 	}
 	//移動後の座標を返す
 	CVector3 Move() override;

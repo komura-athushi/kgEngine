@@ -7,18 +7,29 @@
     <ClInclude Include="Ground.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="Moji.h" />
     <ClInclude Include="Object\Obj.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="IMove.h">
+    <ClInclude Include="Object\Rotation\IRot.h">
+      <Filter>Object\Rot</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Rotation\RotDirection.h">
+      <Filter>Object\Rot</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Rotation\RotSelf.h">
+      <Filter>Object\Rot</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Move\IMove.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
-    <ClInclude Include="MoveLR.h">
+    <ClInclude Include="Object\Move\MoveLR.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
-    <ClInclude Include="Moji.h" />
-    <ClInclude Include="MoveUp.h">
+    <ClInclude Include="Object\Move\MoveUp.h">
+      <Filter>Object\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Move\MoveFB.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
   </ItemGroup>
@@ -30,17 +41,29 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Moji.cpp" />
     <ClCompile Include="Object\Obj.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="IMove.cpp">
+    <ClCompile Include="Object\Rotation\IRot.cpp">
+      <Filter>Object\Rot</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Rotation\RotDirection.cpp">
+      <Filter>Object\Rot</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Rotation\RotSelf.cpp">
+      <Filter>Object\Rot</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Move\IMove.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
-    <ClCompile Include="MoveLR.cpp">
+    <ClCompile Include="Object\Move\MoveLR.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
-    <ClCompile Include="Moji.cpp" />
-    <ClCompile Include="MoveUp.cpp">
+    <ClCompile Include="Object\Move\MoveUp.cpp">
+      <Filter>Object\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Move\MoveFB.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,6 +82,9 @@
     </Filter>
     <Filter Include="Object\Move">
       <UniqueIdentifier>{12c33a7f-65b0-4903-be57-7e935c8d7b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rot">
+      <UniqueIdentifier>{70bf44a6-429c-4dc7-83c7-ad18c28fe9c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

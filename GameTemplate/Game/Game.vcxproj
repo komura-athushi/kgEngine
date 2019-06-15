@@ -88,6 +88,9 @@
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;kgEngine.lib;XAudio2.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug,$(SolutionDir)\Game</AdditionalLibraryDirectories>
     </Link>
+    <MeshContentTask>
+      <ContentOutput>$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
+    </MeshContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,7 +127,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../kgEngine/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/../kgEngine/;$(ProjectDir)/</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -140,27 +143,34 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Ground.h" />
-    <ClInclude Include="IMove.h" />
     <ClInclude Include="Moji.h" />
-    <ClInclude Include="MoveLR.h" />
-    <ClInclude Include="MoveUp.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Object\Move\IMove.h" />
+    <ClInclude Include="Object\Move\MoveFB.h" />
+    <ClInclude Include="Object\Move\MoveLR.h" />
+    <ClInclude Include="Object\Move\MoveUp.h" />
     <ClInclude Include="Object\Obj.h" />
+    <ClInclude Include="Object\Rotation\IRot.h" />
+    <ClInclude Include="Object\Rotation\RotDirection.h" />
+    <ClInclude Include="Object\Rotation\RotSelf.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="IMove.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Moji.cpp" />
-    <ClCompile Include="MoveLR.cpp" />
-    <ClCompile Include="MoveUp.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Object\Move\IMove.cpp" />
+    <ClCompile Include="Object\Move\MoveFB.cpp" />
+    <ClCompile Include="Object\Move\MoveLR.cpp" />
+    <ClCompile Include="Object\Move\MoveUp.cpp" />
     <ClCompile Include="Object\Obj.cpp" />
+    <ClCompile Include="Object\Rotation\IRot.cpp" />
+    <ClCompile Include="Object\Rotation\RotDirection.cpp" />
+    <ClCompile Include="Object\Rotation\RotSelf.cpp" />
     <ClCompile Include="Player.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -173,7 +183,7 @@
     <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
       <FileType>Document</FileType>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\obj\obj.FBX">

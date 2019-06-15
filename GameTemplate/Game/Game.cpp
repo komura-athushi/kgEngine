@@ -5,8 +5,8 @@
 #include "GameCamera.h"
 #include "Object.h"
 #include "Object/Obj.h"
-#include "IMove.h"
-#include "MoveLR.h"
+#include "Object/Move/IMove.h"
+#include "Object/Rotation/IRot.h"
 #include "Moji.h"
 Game::Game()
 {
@@ -47,7 +47,9 @@ bool Game::Start()
 		if (objdata.ForwardMatchName(L"obj")) {
 			Obj* obj = NewGO<Obj>(0);
 			MOVESTATUS ms = FindMove(objdata.name);
-			obj->Init(ms.s_state, objdata.position, ms.s_move, ms.s_limit, objdata.rotation);
+			obj->InitMove(ms.s_state, objdata.position, ms.s_move, ms.s_limit, objdata.rotation);
+			ROTSTATUS rs = FindRot(objdata.name);
+			obj->InitRot(rs.s_state, rs.s_speed);
 			return true;
 		}
 		return true;

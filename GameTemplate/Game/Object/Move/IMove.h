@@ -2,7 +2,7 @@
 enum EnMove {
 	enMove_Lr,									//左右に移動
 	enMove_Up,									//上下に移動
-	enMoce_Rot,									//回転
+	enMove_Rot,									//回転
 	enMove_No,									//移動しない
 	enMove_MoveHit,								//プレイヤー(球体に巻き込まれた)
 };
@@ -25,6 +25,8 @@ public:
 	*@param[in]	rot				回転
 	*/
 	virtual void Init(const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot = CQuaternion::Identity()) {}
+	//移動ベクトルを取得
+	virtual CVector3 GetMoveVector() const { return CVector3::Zero(); }
 	//ステートを取得
 	EnMove GetMoveState()
 	{

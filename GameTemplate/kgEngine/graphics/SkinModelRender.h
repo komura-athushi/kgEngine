@@ -21,6 +21,8 @@ public:
 	bool Start() override final;
 	void Update() override final;
 	void PreUpdate() override final;
+	//ワールド行列を更新
+	void UpdateWorldMatrix();
 private:
 	//アニメーションの初期化
 	void InitAnimation(AnimationClip* animationClips, int numAnimationClips);
@@ -98,6 +100,16 @@ public:
 	{
 		m_skinModel.SetShadowReceiver(receiver);
 	}
+	//スキンモデルの色々を更新
+	void UpdateMatrix()
+	{
+		if (m_update) {
+			m_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+			m_update = false;
+		}
+	}
+	//ワールド行列を設定
+	void SetWorldMatrix(const CMatrix& worldmatrix);
 private:
 	SkinModel m_skinModel;										//スキンモデル
 	AnimationClip* m_animationClip;								//アニメーションクリップの数
@@ -107,6 +119,7 @@ private:
 	CVector3 m_position = CVector3::Zero();						//座標
 	CVector3 m_scale = CVector3::One();							//大きさ
 	CQuaternion m_rotation = CQuaternion::Identity();			//回転
+	CMatrix m_worldMatrix;
 	bool m_isActive = false;									//アクティブかどうか
 	bool m_update = false;										//座標とか大きさが更新されたかどうか、初回は必ずtrueにして処理させる
 };

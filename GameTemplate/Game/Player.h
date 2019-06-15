@@ -41,6 +41,11 @@ public:
 	{
 		return m_protradius;
 	}
+	//CSkinModelRender‚ðŽæ“¾
+	CSkinModelRender* GetCSkinModelRender() const
+	{
+		return m_skinModelRender;
+	}
 private:
 	CharacterController m_characon;
 	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();

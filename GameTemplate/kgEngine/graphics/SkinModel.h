@@ -93,6 +93,16 @@ public:
 	{
 		m_isShadowReceiver = receiver;
 	}
+	//ワールド行列を取得
+	CMatrix GetWorldMatrix()  const
+	{
+		return m_worldMatrix;
+	}
+	//ワールド行列を設定
+	void SetWorldMatrix(const CMatrix& worldmatirx)
+	{
+		m_worldMatrix = worldmatirx;
+	}
 	/*!
 	*@brief	SRVのレジスタ番号。
 	*/

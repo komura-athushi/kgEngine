@@ -1,5 +1,17 @@
 #pragma once
 
+#define BUILD_LEVEL_DEBUG		0							//デバッグ
+#define BUILD_LEVEL_PREVIEW		1							//プレビュー
+#define BUILD_LEVEL_MASTER		2							//リリース
+
+#ifdef  _DEBUG
+#define BUILD_LEVEL		BUILD_LEVEL_DEBUG
+#elif _RELEASE
+#define BUILD_LEVEL		BUILD_LEVEL_MASTER
+#else
+#define BUILD_LEVEL		BUILD_LEVEL_PREVIEW
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory>
