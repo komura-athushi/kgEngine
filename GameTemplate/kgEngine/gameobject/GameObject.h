@@ -1,26 +1,17 @@
 #pragma once
 #include "..//Noncopyable.h"
+
 //typedef 既存の型を新しい型にするっていう、名前が変わるだけかな
 typedef unsigned char GameObjectPrio;
-//GameObject、エンジンの機能使いたかったらこれを継承しよう！
+//GameObject Update関数とか使いたかったらこれを継承
 class IGameObject :Noncopyable
 {
 public:
 	using IGameObjectIsBase = IGameObject;
 	//コンストラクタ、初期化子で初期化するべ
-	IGameObject() :
-		m_priority(0),
-		m_isStart(false),
-		m_isDead(false),
-		m_isNewFromGameObjectManager(false)
-	{
-
-	}
+	IGameObject();
 	//デストラクタ
-	virtual ~IGameObject()
-	{
-
-	}
+	virtual ~IGameObject();
 
 public:
 	//Update直前に呼ばれる開始処理

@@ -56,8 +56,11 @@ void CGameObjectManager::Delete()
 		GameObjectList& goExecList = m_GogameobjectList.at(prio);
 		//ゲームオブジェクトリストから該当のオブジェクトの箇所を探して
 		auto it = std::find(goExecList.begin(), goExecList.end(), GO);
-		//削除
-		delete (*it);
+		//ゲームオブジェクトマネージャーでNewされていたらdeleteする
+		if (GO->IsNewFromgameObjectManager()) {
+			//削除
+			delete (*it);
+		}
 		//ゲームオブジェクトリストから削除
 		goExecList.erase(it);
 	}

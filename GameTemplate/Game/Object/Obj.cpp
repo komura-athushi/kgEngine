@@ -13,7 +13,12 @@ Obj::Obj()
 
 Obj::~Obj()
 {
-
+	if (m_move != nullptr) {
+		delete m_move;
+	}
+	if (m_rot != nullptr) {
+		delete m_rot;
+	}
 }
 
 bool Obj::Start()

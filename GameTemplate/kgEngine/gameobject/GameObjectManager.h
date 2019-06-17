@@ -64,10 +64,9 @@ public:
 	*@param[in] gameobject		ゲームオブジェクト
 	*@param[in] objectName		オブジェクト名
 	*/
-	void AddGameObject(GameObjectPrio prio, IGameObject* gameobject, const wchar_t* name = nullptr)
+	void AddGameObject(GameObjectPrio prio, const wchar_t* name = nullptr, IGameObject* gameobject = nullptr)
 	{	//もしオブジェクトマネージャーに登録されていなかったら
 		if (!gameobject->m_isRegist) {
-			unsigned int hash = MakeGameObjectNameKey(name);
 			//at()でstd::vectorの要素にアクセス、GOリストに入れる
 			m_GogameobjectList.at(prio).push_back(gameobject);
 
@@ -75,6 +74,7 @@ public:
 			gameobject->m_isRegist = true;
 			gameobject->m_priority = prio;
 			gameobject->m_isStart = false;
+			unsigned int hash = MakeGameObjectNameKey(name);
 			gameobject->m_nameKey = hash;
 
 		}
@@ -92,10 +92,10 @@ public:
 		T* newobject = new T();
 		//NewGOされた！
 		newobject->SetMarkNewFromGameObjectManager();
-		m_GogameobjectList.at(prio).push_back(newobject);
-		unsigned int hash = MakeGameObjectNameKey(name);
+		/*m_GogameobjectList.at(prio).push_back(newobject);
 		newobject->m_isRegist = true;
-		newobject->m_priority = prio;
+		newobject->m_priority = prio;*/
+		unsigned int hash = MakeGameObjectNameKey(name);
 		newobject->m_nameKey = hash;
 		return newobject;
 	}
@@ -148,6 +148,20 @@ public:
 			}
 		}
 	}
+	//ゲームオブジェクトをリストから削除する
+	void DeleteList(IGameObject* GO) {
+		GameObjectPrio prio = GO->GetPriority();
+		GameObjectList& goExecList = m_GogameobjectList.at(prio);
+		//ゲームオブジェクトリストから該当のオブジェクトの箇所を探して
+		auto it = std::find(goExecList.begin(), goExecList.end(), GO);
+		//ゲームオブジェクトマネージャーでNewされていたらdeleteする
+		if (GO->IsNewFromgameObjectManager()) {
+			//削除
+			delete (*it);
+		}
+		//ゲームオブジェクトリストから削除
+		goExecList.erase(it);
+	}
 	//ゲームオブジェクトの無効化フラグを立てる、NewGOで作成したインスタンスはこれで削除するように
 	//ここで行うのは死亡判定だけ、ゲームオブジェクトのアップデートが終わった後にまとめて削除されます
 	void DeleteGameObject(IGameObject* gameobject) {
@@ -169,7 +183,7 @@ public:
 private:
 	typedef std::list<IGameObject*> GameObjectList;						//ゲームオブジェクトリスト
 	std::vector<GameObjectList> m_GogameobjectList;						//処理の優先度ごとにゲームオブジェクトリストが格納されている、スタートやらアプデやらを行うリスト
-	std::vector<IGameObject*> m_DeletegameobjectList;						//デリートを行うリスト
+	std::vector<IGameObject*> m_DeletegameobjectList;					//デリートを行うリスト
 	GameObjectPrio				m_gameObjectPriorityMax;				//!<ゲームオブジェクトの優先度の最大数、NewGOの引数の整数の最大数ってところですか
 };
 
@@ -177,6 +191,18 @@ private:
 static inline CGameObjectManager& GameObjectManager()
 {
 	return CGameObjectManager::GetInstance();
+}
+
+/*!
+*@brief	ゲームオブジェクトをゲームオブジェクトマネージャーに追加するための関数
+*@param[in]	priority	プライオリティ、処理の優先度
+*@param[in]	objectName	オブジェクト名。(NULLの指定可）
+*@details
+*/
+template<class T>
+static inline void AddGO(int priority = 0, const wchar_t* objectName = nullptr, IGameObject* go = nullptr)
+{
+	GameObjectManager().AddGameObject((GameObjectPrio)priority, objectName, go);
 }
 
 /*!
@@ -224,4 +250,14 @@ static inline void QueryGOs(const wchar_t* objectName, std::function<bool(T* go)
 static inline void DeleteGO(IGameObject* go)
 {
 	GameObjectManager().DeleteGameObject(go);
+}
+
+/*!
+ *@brief	ゲームオブジェクトをリストから削除するヘルパー関数
+ * リストから削除するだけ
+ *@param[in]	go		削除するゲームオブジェクト。
+ */
+static inline void DeleteList(IGameObject* go)
+{
+	GameObjectManager().DeleteList(go);
 }
