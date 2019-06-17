@@ -8,11 +8,6 @@ Object::Object()
 
 Object::~Object()
 {
-
-}
-
-void Object::OnDestroy()
-{
 	DeleteGO(m_skinModelRender);
 }
 

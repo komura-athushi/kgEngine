@@ -127,7 +127,7 @@ void GameCamera::Calculation()
 			else if (m_state == enStick_EnterStickR) {
 				Degree *= MultiPly;
 				m_degreey -= Degree.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime();
-			}
+			} 
 		}
 		else {
 			float Angle2 = fabsf(acosf(Stick.Dot(CVector3::AxisY() * -1)));

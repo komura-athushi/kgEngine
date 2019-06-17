@@ -32,6 +32,9 @@
     <ClInclude Include="Object\Move\MoveFB.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
+    <ClInclude Include="Object\ObjectData.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -66,6 +69,9 @@
     <ClCompile Include="Object\Move\MoveFB.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
+    <ClCompile Include="Object\ObjectData.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -91,19 +97,17 @@
     <None Include="Assets\modelData\unityChan\unityChan.fbx">
       <Filter>Asset</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
-      <Filter>Asset\ground</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\sphere\sphere.FBX">
-      <Filter>Asset\sphere</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\sphere\sphere2.FBX">
-      <Filter>Asset\sphere</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\obj.FBX">
+    <None Include="Assets\modelData\obj\obj.FBX">
       <Filter>Asset</Filter>
-    </MeshContentTask>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere2.FBX">
+      <Filter>Asset\sphere</Filter>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere.FBX">
+      <Filter>Asset\sphere</Filter>
+    </None>
+    <None Include="Assets\modelData\ground\ground.FBX">
+      <Filter>Asset\ground</Filter>
+    </None>
   </ItemGroup>
 </Project>

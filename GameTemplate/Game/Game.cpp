@@ -7,6 +7,7 @@
 #include "Object/Obj.h"
 #include "Object/Move/IMove.h"
 #include "Object/Rotation/IRot.h"
+#include "Object/ObjectData.h"
 #include "Moji.h"
 Game::Game()
 {
@@ -15,19 +16,15 @@ Game::Game()
 
 Game::~Game()
 {
-	
-}
-
-void Game::OnDestroy()
-{
-	//DeleteGO(m_player);
 	DeleteGO(m_ground);
+	DeleteGO(m_gamecamera);
+	DeleteGO(m_player);
 }
 
 bool Game::Start()
 {
 	m_gamecamera = NewGO<GameCamera>(0);
-	//m_player = NewGO<Player>(0);
+	m_player = NewGO<Player>(0);
 	m_ground = NewGO<Ground>(0);
 	m_object = NewGO<Object>(0);
 	m_object->SetScale(0.8f);
@@ -54,6 +51,7 @@ bool Game::Start()
 		}
 		return true;
 	});
+	ObjectData::GetInstance();
 	return true;
 }
 

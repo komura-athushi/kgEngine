@@ -18,7 +18,7 @@ with open('../../GameTemplate/Game/Assets/binarydata/test.cag','w') as file:
         for i in range(len(sheet.row_values(row_index + 1))):
             #列の最後の要素を書き込むとき、改行する
             if i + 1 == len(sheet.row_values(row_index + 1)):
-                file.write(str(col_values[i]) + "\n")
+                file.write(str(int(col_values[i])) + "\n")
             #そうでないときは空白を作る
             else:
                 file.write(str(col_values[i]) + " ")

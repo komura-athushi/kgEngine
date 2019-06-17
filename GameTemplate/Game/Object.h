@@ -7,7 +7,7 @@ public:
 	~Object();
 	bool Start() override;
 	void Update() override;
-	void OnDestroy() override;
+	//void OnDestroy() override;
 	//À•W‚ğæ“¾
 	CVector3 GetPosition() const
 	{

@@ -11,11 +11,6 @@ Ground::~Ground()
 
 }
 
-void Ground::OnDestroy()
-{
-	
-}
-
 bool Ground::Start()
 {
 	m_skinModelRender = NewGO<CSkinModelRender>(0);

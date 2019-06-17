@@ -9,7 +9,7 @@ public:
 	~Player();
 	bool Start() override;
 	void Update() override;
-	void OnDestroy() override;
+	//void OnDestroy() override;
 	//ˆÚ“®
 	void Move();
 	//‰ñ“]

@@ -7,7 +7,7 @@ public:
 	~Ground();
 	bool Start() override;
 	void Update() override;
-	void OnDestroy() override;
+	//void OnDestroy() override;
 private:
 	CSkinModelRender* m_skinModelRender;
 	PhysicsStaticObject m_staticobject1;

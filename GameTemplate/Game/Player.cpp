@@ -12,13 +12,9 @@ Player::Player()
 
 Player::~Player()
 {
-	
-}
-
-void Player::OnDestroy()
-{
 	DeleteGO(m_skinModelRender);
 }
+
 
 bool Player::Start()
 {
@@ -64,6 +60,7 @@ void Player::Judgment()
 			m_characon.SetRadius(m_radius);
 			m_scale = CVector3::One() + CVector3::One() * (m_radius / m_protradius - 1);*/
 			//m_skinModelRender->SetScale(m_scale);
+			//DeleteGO(FindGO<Game>());
 			object->ClcLocalMatrix(m_skinModelRender->GetSkinModel().GetWorldMatrix());
 		}
 		return true;

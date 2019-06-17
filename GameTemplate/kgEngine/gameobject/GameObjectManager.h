@@ -59,7 +59,7 @@ public:
 	}
 
 	/*!
-	*@brief	ゲームオブジェクトをゲームオブジェクトマネージャーのリストに追加する(GoリストやMapやらに)
+	*@brief	ゲームオブジェクトをゲームオブジェクトマネージャーのリストに追加する
 	*@param[in]	prio			実行優先順位。
 	*@param[in] gameobject		ゲームオブジェクト
 	*@param[in] objectName		オブジェクト名
