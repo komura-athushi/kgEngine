@@ -14,6 +14,7 @@ ObjectData::ObjectData()
 		int i = 1;
 		while (i != EOF) {
 			wchar_t* name = new wchar_t[20];
+			//fscanfでファイルを読み込む、戻り値がEOFだった場合処理を終了する
 			i = fscanf(fp, "%ls %f %f %f %f %d ", name, &x, &y, &z, &volume, &issphere);
 			if (i == EOF) {
 				break;
@@ -22,15 +23,7 @@ ObjectData::ObjectData()
 		}
 		fclose(fp);
 	}
-	wchar_t* a = m_objectdataList[0].s_name;
-	wchar_t* a1 = m_objectdataList[1].s_name;
- 	wchar_t* a2 = m_objectdataList[2].s_name;
- 	wchar_t* a3 = m_objectdataList[3].s_name;
-	const wchar_t* b = L"aiueo";
-	float y1 = m_objectdataList[0].s_issphere;
-	float y2 = m_objectdataList[1].s_issphere; 
-	float y3 = m_objectdataList[2].s_issphere;
-	float y4 = m_objectdataList[3].s_issphere;
+	int i = wcslen(m_objectdataList[0].s_name);
 	wchar_t c[20] = L"aiueo";
 	const wchar_t* d = L"aiueo";
 	if (wcscmp(c, d) == 0) {

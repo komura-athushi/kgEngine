@@ -12,18 +12,17 @@ Player::Player()
 
 Player::~Player()
 {
-	DeleteGO(m_skinModelRender);
+	
 }
 
 
 bool Player::Start()
 {
-	m_skinModelRender = NewGO<CSkinModelRender>(0);
 	//cmoファイルの読み込み。
-	m_skinModelRender->Init(L"Resource/modelData/sphere.cmo");
-	m_skinModelRender->SetShadowCaster(true);
-	m_skinModelRender->SetShadowReceiver(true);
-	m_skinModelRender->SetScale(m_scale);
+	m_skinModelRender.Init(L"Resource/modelData/sphere.cmo");
+	m_skinModelRender.SetShadowCaster(true);
+	m_skinModelRender.SetShadowReceiver(true);
+	m_skinModelRender.SetScale(m_scale);
 	//キャラコン、スフィアコライダーを使う
 	m_characon.Init(
 		m_radius,			//半径。 
@@ -43,8 +42,8 @@ void Player::Update()
 	Turn();
 	m_characon.SetPosition(m_position);
 	m_beforeposition = m_position;
-	m_skinModelRender->SetPosition(m_position + CVector3::AxisY() * m_radius);
-	m_skinModelRender->SetRotation(m_rotation);
+	m_skinModelRender.SetPosition(m_position + CVector3::AxisY() * m_radius);
+	m_skinModelRender.SetRotation(m_rotation);
 }
 
 void Player::Judgment()
@@ -54,14 +53,7 @@ void Player::Judgment()
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		CVector3 pos = m_position + CVector3::AxisY() * m_radius - object->GetPosition();
 		if (pos.LengthSq() <= (pow(m_radius + object->GetSize(), 2.0f) * 1.3f) && m_radius >= object->GetSize()) {
-			/*float Radius = m_radius + (object->GetSize() / m_radius) * SizeMultiply * m_radius;
-			float Quotient = Radius / m_radius;
-			m_radius = Radius;
-			m_characon.SetRadius(m_radius);
-			m_scale = CVector3::One() + CVector3::One() * (m_radius / m_protradius - 1);*/
-			//m_skinModelRender->SetScale(m_scale);
-			//DeleteGO(FindGO<Game>());
-			object->ClcLocalMatrix(m_skinModelRender->GetSkinModel().GetWorldMatrix());
+			object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 		}
 		return true;
 		});
@@ -77,6 +69,11 @@ void Player::Move()
 	const float GravityMoveSpeed = 900.0f;
 	//ジャンプ速度
 	const float JumpMoveSpeed = 700.0f;
+	//一定以上のyの速度があったらバウンドする～
+	const float LimitBoundMoveSpeed = -20.0f;
+	const float BoundMultiply = 0.7f;
+	//地面と衝突する前のyベクトルを記憶する
+	float MoveSpeedY = 0.0f;
 
 	CVector3 Stick = CVector3::Zero();
 	//両方のスティックが入力されていたら
@@ -98,11 +95,23 @@ void Player::Move()
 	m_movespeed += frontxz * m_movespeedmultiply;
 	m_movespeed += rightxz * m_movespeedmultiply;
 	m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
+	if (m_movespeed.y <= LimitBoundMoveSpeed) {
+		m_isbound = true;
+		MoveSpeedY = m_movespeed.y;
+	}
+	else {
+		m_isbound = false;
+	}
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
 	if (m_characon.IsOnGround()) {
-		m_movespeed.y = 0.0f;
-		if (GetPad(0).IsTrigger(enButtonB)) {
-			m_movespeed.y = JumpMoveSpeed;
+		if (m_isbound) {
+			m_movespeed.y = -MoveSpeedY * BoundMultiply;
+		}
+		else {
+			m_movespeed.y = 0.0f;
+			if (GetPad(0).IsTrigger(enButtonB)) {
+				m_movespeed.y = JumpMoveSpeed;
+			}
 		}
 	}
 	m_movespeed *= MoveSpeedAtten;

@@ -84,7 +84,7 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 
 void Obj::ClcMatrix()
 {
-	m_worldMatrix.Mul(m_localMatrix, m_player->GetCSkinModelRender()->GetSkinModel().GetWorldMatrix());
+	m_worldMatrix.Mul(m_localMatrix, m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
 }
 
 void Obj::Update()

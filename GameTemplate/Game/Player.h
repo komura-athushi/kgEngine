@@ -42,7 +42,7 @@ public:
 		return m_protradius;
 	}
 	//CSkinModelRenderを取得
-	CSkinModelRender* GetCSkinModelRender() const
+	CSkinModelRender& GetCSkinModelRender()
 	{
 		return m_skinModelRender;
 	}
@@ -72,12 +72,13 @@ private:
 		enState_num
 	};
 	EnState m_state = enState_idle;
-	CSkinModelRender* m_skinModelRender = nullptr;							//スキンモデル。
+	CSkinModelRender m_skinModelRender;									//スキンモデル。
 	GameCamera* m_gamecamera = nullptr;
 	bool m_isjump = false;
 	float m_radius = 45.0f;
 	const float m_protradius = 45.0f;
 	const float m_protmovespeedmultiply = 5.0f;
 	float m_movespeedmultiply = 5.0f;
+	bool m_isbound = false;
 };
 
