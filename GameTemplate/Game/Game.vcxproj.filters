@@ -92,12 +92,12 @@
     <Filter Include="Object\Rot">
       <UniqueIdentifier>{70bf44a6-429c-4dc7-83c7-ad18c28fe9c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\obj">
+      <UniqueIdentifier>{985b6ba9-b72f-4429-9367-3f33c92b57a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\unityChan\unityChan.fbx">
-      <Filter>Asset</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\obj.FBX">
       <Filter>Asset</Filter>
     </None>
     <None Include="Assets\modelData\sphere\sphere2.FBX">
@@ -105,6 +105,18 @@
     </None>
     <None Include="Assets\modelData\sphere\sphere.FBX">
       <Filter>Asset\sphere</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox4R200L1000.FBX">
+      <Filter>Asset\obj</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox3.FBX">
+      <Filter>Asset\obj</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox2R300L300.FBX">
+      <Filter>Asset\obj</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox.FBX">
+      <Filter>Asset\obj</Filter>
     </None>
     <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\ground</Filter>

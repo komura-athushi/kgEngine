@@ -43,6 +43,13 @@ public:
 		*@param[in]	rot			回転。
 	*/
 	void CreateSphereObject(const float& radius, const CVector3& pos, const CQuaternion& rot = CQuaternion::Identity());
+	//剛体を破棄
+	void Release()
+	{
+		Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
+		m_isdeleterigidbody = true;
+	}
+	void SetPosition(CVector3& pos);
 private:
 	MeshCollider m_meshCollider;		//!<メッシュコライダー。
 	SphereCollider m_sphereCollider;	//スフィアコライダー
@@ -50,4 +57,5 @@ private:
 	float m_radius = 0.0f;				//半径
 	bool m_isMeshCollider = false;		//メッシュコライダーかどうか
 	bool m_isSphereCollider = false;	//スフィアコライダーかどうか
+	bool m_isdeleterigidbody = false;	//剛体を削除したかどうか
 };

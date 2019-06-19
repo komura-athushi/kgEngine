@@ -9,8 +9,8 @@ ObjectData::ObjectData()
 	int issphere = 0;
 	//fopen_sでファイルのオープンに成功したら0が返るらしい
 	if(fopen_s(&fp, fname, "r") == 0) {
-		//fscanfの戻り値がEOFになるまでループさせる
-		//読みこんだデータをリストに保存する
+		//fscanfの戻り値がEOF(-1)になるまでループさせる
+		//読みこんだデータを構造体として保存する
 		int i = 1;
 		while (i != EOF) {
 			wchar_t* name = new wchar_t[20];

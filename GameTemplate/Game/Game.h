@@ -5,6 +5,7 @@ class Ground;
 class Player;
 class GameCamera;
 class Object;
+class Obj;
 //ÉQÅ[ÉÄÉNÉâÉX
 class Game:public IGameObject
 {
@@ -18,6 +19,7 @@ private:
 	Ground* m_ground = nullptr;
 	Player* m_player;
 	GameCamera* m_gamecamera = nullptr;
+	std::vector<Obj*> m_objList;
 	Object* m_object = nullptr;
 	float m_timer = 0.0f;
 	//level

@@ -124,7 +124,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(ProjectDir)/../kgEngine/;$(ProjectDir)/</AdditionalIncludeDirectories>
@@ -188,9 +188,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="Assets\modelData\obj\obj.FBX">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    <None Include="Assets\modelData\obj\obox.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\obox2R300L300.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\obox3.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\obox4R200L1000.FBX">
       <FileType>Document</FileType>
     </None>
     <None Include="Assets\modelData\sphere\sphere.FBX">

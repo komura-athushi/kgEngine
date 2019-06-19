@@ -7,12 +7,14 @@ public:
 	~Ground();
 	bool Start() override;
 	void Update() override;
-	//void OnDestroy() override;
+	//ç¿ïWÇê›íË
+	void SetPosition(const CVector3& pos)
+	{
+		m_position = pos;
+	}
 private:
-	CSkinModelRender* m_skinModelRender;
-	PhysicsStaticObject m_staticobject1;
-	PhysicsStaticObject m_staticobject2;
-	PhysicsStaticObject m_staticobject3;
+	CSkinModelRender m_skinModelRender;
+	PhysicsStaticObject m_staticobject;
 	CVector3 m_position = CVector3::Zero();
 };
 

@@ -1,6 +1,8 @@
 #pragma once
 #include "Move/IMove.h"
 #include "Rotation/IRot.h"
+#include "ObjectData.h"
+#include "physics/PhysicsStaticObject.h"
 class Player;
 class Obj : public IGameObject{
 public:
@@ -31,17 +33,26 @@ public:
 	{
 		m_movestate = enMove_MoveHit;
 	}
+	//オブジェクトデータを設定
+	void SetObjData(const StructObjectData& objdata)
+	{
+		m_objdata = objdata;
+	}
+	//ファイルパスを設定、cmoファイルを読み込む
+	void SetFilePath(const wchar_t* path);
 private:
-	CSkinModelRender* m_skin = nullptr;
+	CSkinModelRender m_skin;
 	CVector3 m_position = CVector3::Zero();
 	CQuaternion m_rotation = CQuaternion::Identity();
 	CMatrix m_localMatrix;
 	CMatrix m_worldMatrix;
-	const wchar_t* m_filepath = nullptr;
 	EnMove m_movestate;
 	EnRotate m_rotstate;
 	IMove*  m_move = nullptr;
 	IRotate* m_rot = nullptr;
 	Player* m_player = nullptr;
-	float m_size = 10.0f;							//オブジェクトの半径
+	float m_size = 0.0f;							//オブジェクトの半径
+	const wchar_t* m_filepath = nullptr;
+	StructObjectData m_objdata;
+	PhysicsStaticObject m_staticobject;
 };

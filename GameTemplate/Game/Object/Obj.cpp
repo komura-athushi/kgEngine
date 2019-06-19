@@ -21,12 +21,21 @@ Obj::~Obj()
 	}
 }
 
+void Obj::SetFilePath(const wchar_t* path)
+{
+	wchar_t filepath[256];
+	swprintf_s(filepath, L"Resource/modelData/%ls.cmo", path);
+	m_skin.Init(filepath);
+}
+
 bool Obj::Start()
 {
-	m_skin = NewGO<CSkinModelRender>(0);
-	m_skin->Init(L"Resource/modelData/obj.cmo");
-	m_skin->SetPosition(m_position);
-	m_skin->SetRotation(m_rotation);
+	m_skin.SetPosition(m_position);
+	m_skin.SetRotation(m_rotation);
+	m_staticobject.CreateMeshObject(&m_skin,m_position,m_rotation);
+	m_size = 10.0f;
+	m_size = m_objdata.s_x + m_objdata.s_y + m_objdata.s_z;
+	m_size = 5.0f;
 	return true;
 }
 
@@ -77,9 +86,10 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	ReverseMatrix.Inverse(worldMatrix);
 	//オブジェクトのワールド行列とプレイヤーの逆行列を乗算して、
 	//プレイヤーを基準としたオブジェクトのローカル行列を求める
-	m_localMatrix.Mul(m_skin->GetSkinModel().GetWorldMatrix(),ReverseMatrix);
+	m_localMatrix.Mul(m_skin.GetSkinModel().GetWorldMatrix(),ReverseMatrix);
 	m_player = FindGO<Player>();
 	m_movestate = enMove_MoveHit;
+	m_staticobject.Release();
 }
 
 void Obj::ClcMatrix()
@@ -91,16 +101,17 @@ void Obj::Update()
 {
 	if (m_movestate == enMove_MoveHit) {
 		ClcMatrix();
-		m_skin->SetWorldMatrix(m_worldMatrix);
+		m_skin.SetWorldMatrix(m_worldMatrix);
 	}
 	else {
 		if (m_movestate != enMove_No) {
 			m_position = m_move->Move();
+			m_staticobject.SetPosition(m_position);
 		}
 		if (m_rotstate != enRot_No) {
 			m_rotation = m_rot->Rot(m_move->GetMoveVector());
 		}
-		m_skin->SetPosition(m_position);
-		m_skin->SetRotation(m_rotation);
+		m_skin.SetPosition(m_position);
+		m_skin.SetRotation(m_rotation);
 	}	
 }

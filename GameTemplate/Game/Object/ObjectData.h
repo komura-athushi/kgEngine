@@ -18,8 +18,20 @@ private:
 public:
 	static ObjectData& GetInstance()
 	{
-		ObjectData instance;
+		static ObjectData instance;
 		return instance;
+	}
+public:
+	//配列のサイズを取得
+	int GetListSize() const
+	{
+		int i = m_objectdataList.size();
+		return i;
+	}
+	//構造体を取得
+	StructObjectData* GetObjectData(const int& number)
+	{
+		return &m_objectdataList[number];
 	}
 private:
 	std::vector<StructObjectData> m_objectdataList;

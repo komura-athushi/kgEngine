@@ -12,7 +12,9 @@ PhysicsStaticObject::PhysicsStaticObject()
 }
 PhysicsStaticObject::~PhysicsStaticObject()
 {
-	Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
+	if (!m_isdeleterigidbody) {
+		Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
+	}
 }
 
 void PhysicsStaticObject::CreateMeshObject(SkinModel& skinModel, CVector3 pos, CQuaternion rot)
@@ -54,4 +56,13 @@ void PhysicsStaticObject::CreateSphereObject(const float& radius, const CVector3
 	Engine().GetPhysicsEngine().AddRigidBody(m_rigidBody);
 	m_isSphereCollider = true;
 	m_isMeshCollider = false;
+}
+
+void PhysicsStaticObject::SetPosition(CVector3& pos)
+{
+	btTransform& worldTrans = m_rigidBody.GetBody()->getWorldTransform();
+	auto& origin = worldTrans.getOrigin();
+	origin.setX(pos.x);
+	origin.setY(pos.y);
+	origin.setZ(pos.z);
 }
