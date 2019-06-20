@@ -4,6 +4,11 @@
 #include "ObjectData.h"
 #include "physics/PhysicsStaticObject.h"
 class Player;
+struct  Vertex
+{
+	CVector3 s_list[22];
+};
+
 class Obj : public IGameObject{
 public:
 	Obj();
@@ -18,6 +23,8 @@ public:
 	void ClcLocalMatrix(const CMatrix& worldMatrix);
 	//プレイヤーに巻き込まれたときの移動や回転の処理
 	void ClcMatrix();
+	//当たり判定用の頂点データを生成
+	void ClcVertex();
 	//大きさを取得
 	float GetSize() const
 	{
@@ -33,10 +40,36 @@ public:
 	{
 		m_movestate = enMove_MoveHit;
 	}
+	//プレイヤーにくっついているかどうかを取得
+	bool GetisStickPlayer()
+	{
+		return m_movestate == enMove_MoveHit;
+	}
 	//オブジェクトデータを設定
-	void SetObjData(const StructObjectData& objdata)
+	void SetObjData(StructObjectData* objdata)
 	{
 		m_objdata = objdata;
+	}
+	//オブジェクトデータを取得
+	StructObjectData& GetObjData()
+	{
+		return *m_objdata;
+	}
+	//当たり判定用の頂点配列の大きさを取得
+	int GetVertexSize() const
+	{
+		int i = sizeof(m_bufferList) / sizeof(m_bufferList[0]);
+		return i;
+	}
+	//該当の番号の当たり判定用の頂点データを取得
+	CVector3 GetBuffer(const int& number) 
+	{
+		return m_bufferList[number];
+	}
+	//球体かどうか
+	bool GetisSphere() const
+	{
+		return m_issphere;
 	}
 	//ファイルパスを設定、cmoファイルを読み込む
 	void SetFilePath(const wchar_t* path);
@@ -46,13 +79,32 @@ private:
 	CQuaternion m_rotation = CQuaternion::Identity();
 	CMatrix m_localMatrix;
 	CMatrix m_worldMatrix;
-	EnMove m_movestate;
-	EnRotate m_rotstate;
+	EnMove m_movestate = enMove_No;
+	EnRotate m_rotstate = enRot_No;
 	IMove*  m_move = nullptr;
 	IRotate* m_rot = nullptr;
 	Player* m_player = nullptr;
 	float m_size = 0.0f;							//オブジェクトの半径
 	const wchar_t* m_filepath = nullptr;
-	StructObjectData m_objdata;
+	StructObjectData* m_objdata;
 	PhysicsStaticObject m_staticobject;
+	CVector3 m_bufferList[22];					//当たり判定用の頂点
+	//CVector3 m_vertexList[14];					//当たり判定用のベクトル(座標からのベクトル)
+	bool m_issphere = false;
+};
+
+class VertexFactory
+{
+private:
+	VertexFactory() {};
+	~VertexFactory() {};
+public:
+	static VertexFactory& GetInstance()
+	{
+		static VertexFactory instance;
+		return instance;
+	}
+	friend Obj;
+private:
+	std::unordered_map<const wchar_t*, Vertex> m_vertexList;
 };

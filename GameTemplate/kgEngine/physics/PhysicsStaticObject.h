@@ -6,6 +6,7 @@
 
 #include "physics/MeshCollider.h"
 #include "physics/SphereCollider.h"
+#include "physics/BoxCollider.h"
 #include "physics/RigidBody.h"
 
 
@@ -43,6 +44,8 @@ public:
 		*@param[in]	rot			回転。
 	*/
 	void CreateSphereObject(const float& radius, const CVector3& pos, const CQuaternion& rot = CQuaternion::Identity());
+	//ボックスの静的オブジェクトを作成
+	void CreateBoxObject(CVector3 pos, CQuaternion rot, CVector3 size);
 	//剛体を破棄
 	void Release()
 	{
@@ -53,9 +56,11 @@ public:
 private:
 	MeshCollider m_meshCollider;		//!<メッシュコライダー。
 	SphereCollider m_sphereCollider;	//スフィアコライダー
+	BoxCollider m_boxCollider;			//ボックスコライダー
 	RigidBody m_rigidBody;				//!<剛体。
 	float m_radius = 0.0f;				//半径
 	bool m_isMeshCollider = false;		//メッシュコライダーかどうか
 	bool m_isSphereCollider = false;	//スフィアコライダーかどうか
+	bool m_isboxcollider = false;		//ボックスコライダーかどうか
 	bool m_isdeleterigidbody = false;	//剛体を削除したかどうか
 };

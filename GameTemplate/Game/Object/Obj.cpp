@@ -23,6 +23,7 @@ Obj::~Obj()
 
 void Obj::SetFilePath(const wchar_t* path)
 {
+	m_filepath = path;
 	wchar_t filepath[256];
 	swprintf_s(filepath, L"Resource/modelData/%ls.cmo", path);
 	m_skin.Init(filepath);
@@ -32,10 +33,17 @@ bool Obj::Start()
 {
 	m_skin.SetPosition(m_position);
 	m_skin.SetRotation(m_rotation);
-	m_staticobject.CreateMeshObject(&m_skin,m_position,m_rotation);
-	m_size = 10.0f;
-	m_size = m_objdata.s_x + m_objdata.s_y + m_objdata.s_z;
-	m_size = 5.0f;
+	m_size = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) / 3;
+	if (m_objdata->s_issphere == 1) {
+		//‹…‘Ì‚Å‚ ‚é
+		m_issphere = true;
+		m_size = m_objdata->s_x;
+	}
+	else {
+		//m_staticobject.CreateMeshObject(&m_skin, m_position, m_rotation);
+		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x,m_objdata->s_y,m_objdata->s_z});
+	}
+	ClcVertex();
 	return true;
 }
 
@@ -57,7 +65,7 @@ void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const f
 	}
 	m_movestate = state;
 	m_position = pos;
-	m_rotation = rot;
+	//m_rotation = rot;
 }
 
 void Obj::InitRot(EnRotate state, const float& speed)
@@ -77,6 +85,48 @@ void Obj::InitRot(EnRotate state, const float& speed)
 		m_rot->Init(m_rotation, speed);
 	}
 	m_rotstate = state;
+}
+
+void Obj::ClcVertex()
+{
+	const float Multiply = 1.1f;
+
+	if (!m_issphere && VertexFactory::GetInstance().m_vertexList.count(m_objdata->s_name) == 0) {
+		Vertex vertex;
+		CVector3 pos = CVector3::Zero();
+		vertex.s_list[0] = pos += CVector3::AxisY() * m_objdata->s_y;
+		vertex.s_list[1] = pos += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[2] = pos -= CVector3::AxisZ() * m_objdata->s_z * 2;
+		vertex.s_list[3] = pos -= CVector3::AxisX() * m_objdata->s_x * 2;
+		vertex.s_list[4] = pos += CVector3::AxisZ() * m_objdata->s_z * 2;
+		CVector3 pos2 = CVector3::Zero();
+		vertex.s_list[5] = pos2 -= CVector3::AxisY() * m_objdata->s_y;
+		vertex.s_list[6] = pos2 += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[7] = pos2 -= CVector3::AxisZ() * m_objdata->s_z * 2;
+		vertex.s_list[8] = pos2 -= CVector3::AxisX() * m_objdata->s_x * 2;
+		vertex.s_list[9] = pos2 += CVector3::AxisZ() * m_objdata->s_z * 2;
+		CVector3 pos3 = CVector3::Zero();
+		vertex.s_list[10] = pos3 += CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[11] = pos3 -= CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[12] = pos3 += CVector3::AxisX() * m_objdata->s_x * 2;
+		vertex.s_list[13] = pos3 -= CVector3::AxisZ() * m_objdata->s_z;
+		CVector3 pos4 = CVector3::Zero() + CVector3::AxisY() * m_objdata->s_y;
+		vertex.s_list[14] = pos4 + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[15] = pos4 - CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[16] = pos4 + CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[17] = pos4 - CVector3::AxisZ() * m_objdata->s_z;
+		CVector3 pos5 = CVector3::Zero() - CVector3::AxisY() * m_objdata->s_y;
+		vertex.s_list[18] = pos5 + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[19] = pos5 - CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[20] = pos5 + CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[21] = pos5 - CVector3::AxisZ() * m_objdata->s_z;
+		VertexFactory::GetInstance().m_vertexList[m_filepath] = vertex;
+	}
+	Vertex vertex = VertexFactory::GetInstance().m_vertexList[m_filepath];
+		for (int i = 0; i < sizeof(m_bufferList) / sizeof(m_bufferList[0]); i++) {
+			m_bufferList[i] = m_position + m_rotation.ReturnMultiply(vertex.s_list[i]) * Multiply;
+			//m_bufferList[i] = m_position + vertex.s_list[i];
+		}
 }
 
 void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
@@ -110,6 +160,9 @@ void Obj::Update()
 		}
 		if (m_rotstate != enRot_No) {
 			m_rotation = m_rot->Rot(m_move->GetMoveVector());
+		}
+		if (m_movestate != enMove_No || m_rotstate != enRot_No) {
+			ClcVertex();
 		}
 		m_skin.SetPosition(m_position);
 		m_skin.SetRotation(m_rotation);

@@ -577,6 +577,12 @@ public:
 		DirectX::XMVECTOR xmv = DirectX::XMVector3Rotate(_v, *this);
 		DirectX::XMStoreFloat3(&_v.vec, xmv);
 	}
+	CVector3 ReturnMultiply(CVector3 v) 
+	{
+		DirectX::XMVECTOR xmv = DirectX::XMVector3Rotate(v, *this);
+		DirectX::XMStoreFloat3(&v.vec, xmv);
+		return v;
+	}
 	static CQuaternion Identity()
 	{
 		static const CQuaternion identity = { 0.0f,  0.0f, 0.0f, 1.0f };

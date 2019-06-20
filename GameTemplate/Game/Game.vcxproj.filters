@@ -6,7 +6,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="Moji.h" />
     <ClInclude Include="Object\Obj.h">
       <Filter>Object</Filter>
@@ -43,7 +42,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Moji.cpp" />
     <ClCompile Include="Object\Obj.cpp">
       <Filter>Object</Filter>
@@ -115,11 +113,19 @@
     <None Include="Assets\modelData\obj\obox2R300L300.FBX">
       <Filter>Asset\obj</Filter>
     </None>
-    <None Include="Assets\modelData\obj\obox.FBX">
-      <Filter>Asset\obj</Filter>
-    </None>
     <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\ground</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\obj\obox5R300L1200.FBX">
+      <Filter>Asset\obj</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\obox6R400L1500.FBX">
+      <Filter>Asset\obj</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\obox1.FBX">
+      <Filter>Asset\obj</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

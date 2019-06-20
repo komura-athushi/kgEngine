@@ -3,7 +3,6 @@
 #include "Player.h"
 #include "Ground.h"
 #include "GameCamera.h"
-#include "Object.h"
 #include "Object/Obj.h"
 #include "Object/Move/IMove.h"
 #include "Object/Rotation/IRot.h"
@@ -33,7 +32,7 @@ bool Game::Start()
 			for (int i = 0; i < ObjectData::GetInstance().GetListSize(); i++ ) {
 				if (objdata.ForwardMatchName(ObjectData::GetInstance().GetObjectData(i)->s_name)) {
 					Obj* obj = NewGO<Obj>(0);
-					obj->SetObjData(*ObjectData::GetInstance().GetObjectData(i));
+					obj->SetObjData(ObjectData::GetInstance().GetObjectData(i));
 					MOVESTATUS ms = FindMove(objdata.name);
 					obj->InitMove(ms.s_state, objdata.position, ms.s_move, ms.s_limit, objdata.rotation);
 					ROTSTATUS rs = FindRot(objdata.name);

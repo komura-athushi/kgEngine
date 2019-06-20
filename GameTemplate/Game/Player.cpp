@@ -2,7 +2,6 @@
 #include "Player.h"
 #include "Game.h"
 #include "GameCamera.h"
-#include "Object.h"
 #include "Object/Obj.h"
 Player::Player()
 {
@@ -26,9 +25,11 @@ bool Player::Start()
 	//キャラコン、スフィアコライダーを使う
 	m_characon.Init(
 		m_radius,			//半径。 
-		m_position			//初期位置。
+		m_position - CVector3::AxisY() * m_radius			//初期位置。
 	);
 	m_beforeposition = m_position;
+	//体積を求める
+	m_volume = m_PI * pow(m_radius, 3.0f) * 4 / 3;
 	return true;
 }
 
@@ -48,15 +49,44 @@ void Player::Update()
 
 void Player::Judgment()
 {
-	const float SizeMultiply = 0.01f;
+	const float Multiply = 1.1f;
+	const float SizeMultiply = 5.0f;
+	bool a = false;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
-		CVector3 pos = m_position + CVector3::AxisY() * m_radius - object->GetPosition();
-		if (pos.LengthSq() <= (pow(m_radius + object->GetSize(), 2.0f) * 1.3f) && m_radius >= object->GetSize()) {
-			object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
+		if (object->GetisStickPlayer()) {
+			return true;
+		}
+		if (m_radius >= object->GetSize() / 2) {
+			if (object->GetisSphere()) {
+				CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
+				if (diff.LengthSq() <= pow(m_radius + object->GetSize(), 2.0f) * Multiply) {
+					object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
+					m_volume += object->GetObjData().s_volume * SizeMultiply;
+					m_radius = pow(3 * m_volume / (4 * m_PI), 1.0 / 3.0f);
+					m_characon.SetRadius(m_radius);
+					return true;
+				}
+			}
+			else {
+				for (int i = 0; i < object->GetVertexSize(); i++) {
+					if (pow(m_radius, 2.0f) * Multiply >= (object->GetBuffer(i) - m_position - CVector3::AxisY() * m_radius).LengthSq()) {
+						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
+						m_volume += object->GetObjData().s_volume * SizeMultiply;
+						m_radius = pow(3 * m_volume / (4 * m_PI), 1.0 / 3.0f);
+						m_characon.SetRadius(m_radius);
+						a = true;
+						return true;
+					}
+				}
+			}
 		}
 		return true;
-		});
+	});
+	if (a) {
+		float b = m_radius;
+		b += 0.0f;
+	}
 }
 
 void Player::Move()
@@ -70,7 +100,7 @@ void Player::Move()
 	//ジャンプ速度
 	const float JumpMoveSpeed = 700.0f;
 	//一定以上のyの速度があったらバウンドする～
-	const float LimitBoundMoveSpeed = -20.0f;
+	const float LimitBoundMoveSpeed = -50.0f;
 	const float BoundMultiply = 0.7f;
 	//地面と衝突する前のyベクトルを記憶する
 	float MoveSpeedY = 0.0f;

@@ -29,7 +29,7 @@ public:
 	//‰Šú‚©‚ç‚Ç‚ê‚¾‚¯‘å‚«‚­‚È‚Á‚½‚©‚ğæ“¾
 	float GetMag() const
 	{
-		return m_scale.y / 1.0f;;
+		return m_scale.y / 1.0f;
 	}
 	//‹…‘Ì‚Ì”¼Œa‚ğæ“¾
 	float GetRadius() const
@@ -77,8 +77,10 @@ private:
 	bool m_isjump = false;
 	float m_radius = 45.0f;
 	const float m_protradius = 45.0f;
+	float m_volume = 0.0f;
 	const float m_protmovespeedmultiply = 5.0f;
 	float m_movespeedmultiply = 5.0f;
 	bool m_isbound = false;
+	const float m_PI = 3.14f;
 };
 

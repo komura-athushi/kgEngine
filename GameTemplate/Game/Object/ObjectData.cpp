@@ -24,6 +24,9 @@ ObjectData::ObjectData()
 		fclose(fp);
 	}
 	int i = wcslen(m_objectdataList[0].s_name);
+	int p = wcslen(m_objectdataList[1].s_name);
+	int k = m_objectdataList[3].s_z;
+	int l = m_objectdataList[4].s_y;
 	wchar_t c[20] = L"aiueo";
 	const wchar_t* d = L"aiueo";
 	if (wcscmp(c, d) == 0) {
@@ -31,3 +34,5 @@ ObjectData::ObjectData()
 	}
 	return;
 }
+
+ 

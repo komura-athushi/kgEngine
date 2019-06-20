@@ -135,6 +135,7 @@
     <ClCompile Include="math\kMath.cpp" />
     <ClCompile Include="math\Matrix.cpp" />
     <ClCompile Include="math\Vector.cpp" />
+    <ClCompile Include="physics\BoxCollider.cpp" />
     <ClCompile Include="physics\MeshCollider.cpp" />
     <ClCompile Include="physics\Physics.cpp" />
     <ClCompile Include="physics\RigidBody.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="math\Matrix.h" />
     <ClInclude Include="math\Vector.h" />
     <ClInclude Include="Noncopyable.h" />
+    <ClInclude Include="physics\BoxCollider.h" />
     <ClInclude Include="physics\ICollider.h" />
     <ClInclude Include="physics\Physics.h" />
     <ClInclude Include="physics\RigidBody.h" />

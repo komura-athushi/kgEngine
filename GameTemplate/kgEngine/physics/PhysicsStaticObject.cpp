@@ -58,6 +58,21 @@ void PhysicsStaticObject::CreateSphereObject(const float& radius, const CVector3
 	m_isMeshCollider = false;
 }
 
+void PhysicsStaticObject::CreateBoxObject(CVector3 pos, CQuaternion rot, CVector3 size)
+{
+	//Boxコライダーを作成。
+	m_boxCollider.Create(size);
+
+	RigidBodyInfo rbInfo;
+	rbInfo.collider = &m_boxCollider;
+	rbInfo.mass = 0.0f;
+	rbInfo.pos = pos;
+	rbInfo.rot = rot;
+	m_rigidBody.Create(rbInfo);
+	//剛体を物理ワールドに追加する。
+	Engine().GetPhysicsEngine().AddRigidBody(m_rigidBody);
+}
+
 void PhysicsStaticObject::SetPosition(CVector3& pos)
 {
 	btTransform& worldTrans = m_rigidBody.GetBody()->getWorldTransform();

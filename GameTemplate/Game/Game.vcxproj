@@ -138,13 +138,15 @@
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Release</AdditionalLibraryDirectories>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;kgEngine.lib;XAudio2.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <MeshContentTask>
+      <ContentOutput>$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
+    </MeshContentTask>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Moji.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="Object\Move\IMove.h" />
     <ClInclude Include="Object\Move\MoveFB.h" />
     <ClInclude Include="Object\Move\MoveLR.h" />
@@ -163,7 +165,6 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Moji.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Object\Move\IMove.cpp" />
     <ClCompile Include="Object\Move\MoveFB.cpp" />
     <ClCompile Include="Object\Move\MoveLR.cpp" />
@@ -187,9 +188,6 @@
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <None Include="Assets\modelData\obj\obox.FBX">
-      <FileType>Document</FileType>
     </None>
     <None Include="Assets\modelData\obj\obox2R300L300.FBX">
       <FileType>Document</FileType>
@@ -217,6 +215,11 @@
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\obj\obox1.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\obox5R300L1200.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\obox6R400L1500.FBX" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
