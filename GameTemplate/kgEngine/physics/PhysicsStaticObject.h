@@ -53,6 +53,7 @@ public:
 		m_isdeleterigidbody = true;
 	}
 	void SetPosition(CVector3& pos);
+	void SetRotation(CQuaternion& rot);
 private:
 	MeshCollider m_meshCollider;		//!<メッシュコライダー。
 	SphereCollider m_sphereCollider;	//スフィアコライダー

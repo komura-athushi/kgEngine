@@ -77,6 +77,17 @@ public:
 			DirectX::XMVector3Transform(vOut, *this)
 		);
 	}
+	/*!
+	*@brief	ベクトルに行列を乗算
+	*@param[in,out]		v	乗算されるベクトル。
+	*/
+	void Apply(CVector3& vOut) const
+	{
+		DirectX::XMStoreFloat3(
+			&vOut.vec,
+			DirectX::XMVector3Transform(vOut, *this)
+		);
+	}
 	void Mul(CVector4& vOut) const
 	{
 		DirectX::XMStoreFloat4( 

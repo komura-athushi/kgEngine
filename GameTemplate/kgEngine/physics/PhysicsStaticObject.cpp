@@ -81,3 +81,11 @@ void PhysicsStaticObject::SetPosition(CVector3& pos)
 	origin.setY(pos.y);
 	origin.setZ(pos.z);
 }
+
+void PhysicsStaticObject::SetRotation(CQuaternion& rot)
+{
+	btQuaternion btq(rot.x, rot.y, rot.z, rot.w);
+	btTransform& worldTrans = m_rigidBody.GetBody()->getWorldTransform();
+	auto rotation = worldTrans.getRotation();
+	rotation = btq;
+}

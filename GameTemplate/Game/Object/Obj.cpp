@@ -38,10 +38,13 @@ bool Obj::Start()
 		//‹…‘Ì‚Å‚ ‚é
 		m_issphere = true;
 		m_size = m_objdata->s_x;
+		m_lenght = m_size * 2;
 	}
 	else {
 		//m_staticobject.CreateMeshObject(&m_skin, m_position, m_rotation);
-		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x,m_objdata->s_y,m_objdata->s_z});
+		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2});
+		//m_staticobject.CreateBoxObject(m_position, m_rotation, { m_objdata->s_x,m_objdata->s_y,m_objdata->s_z});
+		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
 	}
 	ClcVertex();
 	return true;
@@ -95,36 +98,39 @@ void Obj::ClcVertex()
 		Vertex vertex;
 		CVector3 pos = CVector3::Zero();
 		vertex.s_list[0] = pos += CVector3::AxisY() * m_objdata->s_y;
-		vertex.s_list[1] = pos += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
+		/*vertex.s_list[1] = pos += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
 		vertex.s_list[2] = pos -= CVector3::AxisZ() * m_objdata->s_z * 2;
 		vertex.s_list[3] = pos -= CVector3::AxisX() * m_objdata->s_x * 2;
-		vertex.s_list[4] = pos += CVector3::AxisZ() * m_objdata->s_z * 2;
+		vertex.s_list[4] = pos += CVector3::AxisZ() * m_objdata->s_z * 2;*/
 		CVector3 pos2 = CVector3::Zero();
-		vertex.s_list[5] = pos2 -= CVector3::AxisY() * m_objdata->s_y;
-		vertex.s_list[6] = pos2 += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[1] = pos2 -= CVector3::AxisY() * m_objdata->s_y;
+		/*vertex.s_list[6] = pos2 += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
 		vertex.s_list[7] = pos2 -= CVector3::AxisZ() * m_objdata->s_z * 2;
 		vertex.s_list[8] = pos2 -= CVector3::AxisX() * m_objdata->s_x * 2;
-		vertex.s_list[9] = pos2 += CVector3::AxisZ() * m_objdata->s_z * 2;
+		vertex.s_list[9] = pos2 += CVector3::AxisZ() * m_objdata->s_z * 2;*/
 		CVector3 pos3 = CVector3::Zero();
-		vertex.s_list[10] = pos3 += CVector3::AxisZ() * m_objdata->s_z;
-		vertex.s_list[11] = pos3 -= CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[12] = pos3 += CVector3::AxisX() * m_objdata->s_x * 2;
-		vertex.s_list[13] = pos3 -= CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[2] = pos3 += CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[3] = pos3 -= CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[4] = pos3 += CVector3::AxisX() * m_objdata->s_x * 2;
+		vertex.s_list[5] = pos3 -= CVector3::AxisZ() * m_objdata->s_z;
 		CVector3 pos4 = CVector3::Zero() + CVector3::AxisY() * m_objdata->s_y;
-		vertex.s_list[14] = pos4 + CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[15] = pos4 - CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[16] = pos4 + CVector3::AxisZ() * m_objdata->s_z;
-		vertex.s_list[17] = pos4 - CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[6] = pos4 + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[7] = pos4 - CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[8] = pos4 + CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[9] = pos4 - CVector3::AxisZ() * m_objdata->s_z;
 		CVector3 pos5 = CVector3::Zero() - CVector3::AxisY() * m_objdata->s_y;
-		vertex.s_list[18] = pos5 + CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[19] = pos5 - CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[20] = pos5 + CVector3::AxisZ() * m_objdata->s_z;
-		vertex.s_list[21] = pos5 - CVector3::AxisZ() * m_objdata->s_z;
-		VertexFactory::GetInstance().m_vertexList[m_filepath] = vertex;
-	}
-	Vertex vertex = VertexFactory::GetInstance().m_vertexList[m_filepath];
+		vertex.s_list[10] = pos5 + CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[11] = pos5 - CVector3::AxisX() * m_objdata->s_x;
+		vertex.s_list[12] = pos5 + CVector3::AxisZ() * m_objdata->s_z;
+		vertex.s_list[13] = pos5 - CVector3::AxisZ() * m_objdata->s_z;
 		for (int i = 0; i < sizeof(m_bufferList) / sizeof(m_bufferList[0]); i++) {
-			m_bufferList[i] = m_position + m_rotation.ReturnMultiply(vertex.s_list[i]) * Multiply;
+			vertex.s_list[i] = vertex.s_list[i] * Multiply;
+		}
+		VertexFactory::GetInstance().m_vertexList[m_objdata->s_name] = vertex;
+	}
+	Vertex vertex = VertexFactory::GetInstance().m_vertexList[m_objdata->s_name];
+		for (int i = 0; i < sizeof(m_bufferList) / sizeof(m_bufferList[0]); i++) {
+			m_bufferList[i] = m_position + m_rotation.ReturnMultiply(vertex.s_list[i]);// * Multiply;
 			//m_bufferList[i] = m_position + vertex.s_list[i];
 		}
 }
@@ -160,6 +166,7 @@ void Obj::Update()
 		}
 		if (m_rotstate != enRot_No) {
 			m_rotation = m_rot->Rot(m_move->GetMoveVector());
+			m_staticobject.SetRotation(m_rotation);
 		}
 		if (m_movestate != enMove_No || m_rotstate != enRot_No) {
 			ClcVertex();

@@ -50,14 +50,18 @@ void Player::Update()
 void Player::Judgment()
 {
 	const float Multiply = 1.1f;
-	const float SizeMultiply = 5.0f;
+	const float SizeMultiply = 6.0f;
 	bool a = false;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		if (object->GetisStickPlayer()) {
 			return true;
 		}
-		if (m_radius >= object->GetSize() / 2) {
+		CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
+		if (diff.LengthSq() >= pow(object->GetLenght(), 2.0f)) {
+			return true;
+		}
+		if (m_radius >= object->GetSize() * 2) {
 			if (object->GetisSphere()) {
 				CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
 				if (diff.LengthSq() <= pow(m_radius + object->GetSize(), 2.0f) * Multiply) {
@@ -75,7 +79,6 @@ void Player::Judgment()
 						m_volume += object->GetObjData().s_volume * SizeMultiply;
 						m_radius = pow(3 * m_volume / (4 * m_PI), 1.0 / 3.0f);
 						m_characon.SetRadius(m_radius);
-						a = true;
 						return true;
 					}
 				}
@@ -83,10 +86,6 @@ void Player::Judgment()
 		}
 		return true;
 	});
-	if (a) {
-		float b = m_radius;
-		b += 0.0f;
-	}
 }
 
 void Player::Move()

@@ -6,7 +6,7 @@
 class Player;
 struct  Vertex
 {
-	CVector3 s_list[22];
+	CVector3 s_list[14];
 };
 
 class Obj : public IGameObject{
@@ -58,8 +58,12 @@ public:
 	//当たり判定用の頂点配列の大きさを取得
 	int GetVertexSize() const
 	{
-		int i = sizeof(m_bufferList) / sizeof(m_bufferList[0]);
-		return i;
+		return sizeof(m_bufferList) / sizeof(m_bufferList[0]);
+	}
+	//当たり判定用のオブジェクトの長さを取得
+	int GetLenght() const
+	{
+		return m_lenght;
 	}
 	//該当の番号の当たり判定用の頂点データを取得
 	CVector3 GetBuffer(const int& number) 
@@ -88,9 +92,10 @@ private:
 	const wchar_t* m_filepath = nullptr;
 	StructObjectData* m_objdata;
 	PhysicsStaticObject m_staticobject;
-	CVector3 m_bufferList[22];					//当たり判定用の頂点
+	CVector3 m_bufferList[14];					//当たり判定用の頂点
 	//CVector3 m_vertexList[14];					//当たり判定用のベクトル(座標からのベクトル)
 	bool m_issphere = false;
+	float m_lenght = 0.0f;
 };
 
 class VertexFactory
