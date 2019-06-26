@@ -1,4 +1,12 @@
 #pragma once
+
+enum Enxyz {
+	enState_X,
+	enState_Y,
+	enState_Z,
+	enState_No
+};
+
 //オブジェクトのデータ
 struct StructObjectData {
 	wchar_t* s_name;						//オブジェクトの名前
@@ -7,6 +15,9 @@ struct StructObjectData {
 	float s_z;								//奥行
 	float s_volume;							//体積
 	int s_issphere;							//球体かどうか
+	int s_islinesegment;					//線分を生成するかどうか
+	CVector3 s_linevector = CVector3::Zero();	//線分のベクトル
+	Enxyz s_state = enState_No;
 };
 
 //オブジェクトのデータをバイナリファイルから読み込む

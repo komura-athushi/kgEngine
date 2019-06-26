@@ -149,6 +149,9 @@
     <ClCompile Include="math\Box.cpp">
       <Filter>math</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\2D\CFont.cpp">
+      <Filter>graphics\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -270,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="math\Box.h">
       <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\2D\CFont.h">
+      <Filter>graphics\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

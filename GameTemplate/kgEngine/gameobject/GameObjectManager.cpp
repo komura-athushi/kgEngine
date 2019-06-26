@@ -32,11 +32,17 @@ void CGameObjectManager::Update()
 
 void CGameObjectManager::PostRender()
 {
+	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin(DirectX::SpriteSortMode_BackToFront);
+	DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
+	Engine().GetGraphicsEngine().GetSpriteBatchPMA()->Begin(DirectX::SpriteSortMode_BackToFront, state.NonPremultiplied());
 	for (GameObjectList objList : m_GogameobjectList) {
 		for (IGameObject* obj : objList) {
 			obj->PostRenderWrapper();
 		}
 	}
+	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
+	Engine().GetGraphicsEngine().GetSpriteBatchPMA()->End();
+	Engine().GetGraphicsEngine().ResetLayerDepthCnt();
 }
 
 void CGameObjectManager::Draw()

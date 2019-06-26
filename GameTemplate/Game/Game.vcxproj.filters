@@ -34,6 +34,7 @@
     <ClInclude Include="Object\ObjectData.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="LineSegment.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -70,6 +71,7 @@
     <ClCompile Include="Object\ObjectData.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="LineSegment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -95,14 +97,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\unityChan\unityChan.fbx">
-      <Filter>Asset</Filter>
+    <None Include="Assets\modelData\ground\ground.FBX">
+      <Filter>Asset\ground</Filter>
     </None>
-    <None Include="Assets\modelData\sphere\sphere2.FBX">
-      <Filter>Asset\sphere</Filter>
+    <None Include="Assets\modelData\obj\obox1.FBX">
+      <Filter>Asset\obj</Filter>
     </None>
-    <None Include="Assets\modelData\sphere\sphere.FBX">
-      <Filter>Asset\sphere</Filter>
+    <None Include="Assets\modelData\obj\obox2R300L300.FBX">
+      <Filter>Asset\obj</Filter>
     </None>
     <None Include="Assets\modelData\obj\obox4R200L1000.FBX">
       <Filter>Asset\obj</Filter>
@@ -110,22 +112,17 @@
     <None Include="Assets\modelData\obj\obox3.FBX">
       <Filter>Asset\obj</Filter>
     </None>
-    <None Include="Assets\modelData\obj\obox2R300L300.FBX">
+    <None Include="Assets\modelData\obj\obox5R300L1200.FBX">
       <Filter>Asset\obj</Filter>
     </None>
-    <None Include="Assets\modelData\ground\ground.FBX">
-      <Filter>Asset\ground</Filter>
+    <None Include="Assets\modelData\obj\obox6R400L1500.FBX">
+      <Filter>Asset\obj</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\obox5R300L1200.FBX">
-      <Filter>Asset\obj</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\obox6R400L1500.FBX">
-      <Filter>Asset\obj</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\obox1.FBX">
-      <Filter>Asset\obj</Filter>
-    </MeshContentTask>
+    <None Include="Assets\modelData\sphere\sphere.FBX">
+      <Filter>Asset\sphere</Filter>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere2.FBX">
+      <Filter>Asset\sphere</Filter>
+    </None>
   </ItemGroup>
 </Project>

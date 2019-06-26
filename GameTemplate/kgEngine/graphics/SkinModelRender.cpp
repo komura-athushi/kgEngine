@@ -83,8 +83,14 @@ void CSkinModelRender::SetWorldMatrix(const CMatrix& worldmatrix)
 
 void CSkinModelRender::Update()
 {
+	
+	
+}
+
+void CSkinModelRender::Draw()
+{
 	//更新がtrueであればモデルのアップデートを行う、Init関数が呼ばれたら必ず一回は行われる
-	if (m_update ) {
+	if (m_update) {
 		UpdateWorldMatrix();
 		m_update = false;
 	}
@@ -96,7 +102,6 @@ void CSkinModelRender::Update()
 	if (m_isActive) {
 		m_skinModel.Draw();
 	}
-	
 }
 
 void CSkinModelRender::PreUpdate()

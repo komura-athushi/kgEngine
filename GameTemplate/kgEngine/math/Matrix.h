@@ -88,6 +88,16 @@ public:
 			DirectX::XMVector3Transform(vOut, *this)
 		);
 	}
+	//ベクトルに行列を乗算
+	//返り値あり
+	CVector3 ReturnApply(CVector3 vOut) const
+	{
+		DirectX::XMStoreFloat3(
+			&vOut.vec,
+			DirectX::XMVector3Transform(vOut, *this)
+		);
+		return vOut;
+	}
 	void Mul(CVector4& vOut) const
 	{
 		DirectX::XMStoreFloat4( 

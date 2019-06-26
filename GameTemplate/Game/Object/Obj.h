@@ -3,6 +3,9 @@
 #include "Rotation/IRot.h"
 #include "ObjectData.h"
 #include "physics/PhysicsStaticObject.h"
+#include "LineSegment.h"
+#include "math/Box.h"
+#include "graphics/2D/CFont.h"
 class Player;
 struct  Vertex
 {
@@ -15,6 +18,7 @@ public:
 	~Obj();
 	bool Start() override;
 	void Update() override;
+	void PostRender() override;
 	//移動ステータスを設定
 	void InitMove(EnMove state ,const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot = CQuaternion::Identity());
 	//回転ステータスを設定
@@ -95,7 +99,13 @@ private:
 	CVector3 m_bufferList[14];					//当たり判定用の頂点
 	//CVector3 m_vertexList[14];					//当たり判定用のベクトル(座標からのベクトル)
 	bool m_issphere = false;
+	bool m_islinesegment = false;
 	float m_lenght = 0.0f;
+	LineSegment m_linesegment;
+	CVector3 m_linevector;
+	bool m_isclclinesegment = false;
+	CBox m_box;										//バウンディングボックス
+	CFont m_font;
 };
 
 class VertexFactory

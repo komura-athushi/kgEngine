@@ -6,6 +6,11 @@ CBox::CBox()
 
 }
 
+CBox::~CBox()
+{
+
+}
+
 void CBox::Init(const CVector3& halfSize)
 {
 	m_halfSize = halfSize;
@@ -57,5 +62,48 @@ void CBox::Update(const CMatrix& worldMatrix)
 	//‰ñ“]‚ð‰ÁŽZ
 	for (auto& pos : m_vertexPosition) {
 		worldMatrix.Apply(pos);
+	}
+
+	//‰E‚Ì–Ê
+	m_vertexPosition2[0] = (m_vertexPosition[1] + m_vertexPosition[3] + m_vertexPosition[5] + m_vertexPosition[7]) / 4;
+
+	//¶‚Ì–Ê
+	m_vertexPosition2[1] = (m_vertexPosition[0] + m_vertexPosition[2] + m_vertexPosition[4] + m_vertexPosition[6]) / 4;
+
+	//ˆê”Ôã‚Ì–Ê
+	m_vertexPosition2[2] = (m_vertexPosition[2] + m_vertexPosition[3] + m_vertexPosition[6] + m_vertexPosition[7]) / 4;
+
+	//ˆê”Ô‰º‚Ì–Ê‚ÌÀ•W
+	m_vertexPosition2[3] = (m_vertexPosition[0] + m_vertexPosition[1] + m_vertexPosition[4] + m_vertexPosition[5]) / 4;
+
+	//‘O•û‚Ì–Ê
+	m_vertexPosition2[4] = (m_vertexPosition[4] + m_vertexPosition[5] + m_vertexPosition[6] + m_vertexPosition[7]) / 4;
+
+	//Œã•û‚Ì–Ê
+	m_vertexPosition2[5] = (m_vertexPosition[0] + m_vertexPosition[1] + m_vertexPosition[2] + m_vertexPosition[3]) / 4;
+}
+
+CVector3 CBox::SurfaceLineSegment(XYZ xyz) 
+{
+	if (xyz == enXYZ_X) {
+		return m_vertexPosition2[0] - m_vertexPosition2[1];
+	}
+	else if (xyz == enXYZ_Y) {
+		return m_vertexPosition2[2] - m_vertexPosition2[3];
+	}
+	else {
+		if (m_vertexPosition2[4].y >= m_vertexPosition2[5].y) {
+			return m_vertexPosition2[5];
+		}
+		else {
+			return m_vertexPosition2[0];
+		}
+		/*if (m_vertexPosition2[4].y >= m_vertexPosition2[5].y) {
+			return m_vertexPosition2[5];
+		}
+		else {
+			return m_vertexPosition2[0];
+		}*/
+		//return m_vertexPosition2[4] - m_vertexPosition2[5];
 	}
 }

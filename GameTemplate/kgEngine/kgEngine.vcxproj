@@ -113,6 +113,7 @@
     <ClCompile Include="character\CharacterController.cpp" />
     <ClCompile Include="gameobject\GameObject.cpp" />
     <ClCompile Include="gameobject\GameObjectManager.cpp" />
+    <ClCompile Include="graphics\2D\CFont.cpp" />
     <ClCompile Include="graphics\2D\Sprite.cpp" />
     <ClCompile Include="graphics\animation\Animation.cpp" />
     <ClCompile Include="graphics\animation\AnimationClip.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="character\CharacterController.h" />
     <ClInclude Include="gameobject\GameObject.h" />
     <ClInclude Include="gameobject\GameObjectManager.h" />
+    <ClInclude Include="graphics\2D\CFont.h" />
     <ClInclude Include="graphics\2D\Sprite.h" />
     <ClInclude Include="graphics\animation\Animation.h" />
     <ClInclude Include="graphics\animation\AnimationClip.h" />

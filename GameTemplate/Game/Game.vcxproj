@@ -146,6 +146,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="LineSegment.h" />
     <ClInclude Include="Moji.h" />
     <ClInclude Include="Object\Move\IMove.h" />
     <ClInclude Include="Object\Move\MoveFB.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Moji.cpp" />
     <ClCompile Include="Object\Move\IMove.cpp" />
@@ -191,12 +193,15 @@
     </None>
     <None Include="Assets\modelData\obj\obox2R300L300.FBX">
       <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </None>
     <None Include="Assets\modelData\obj\obox3.FBX">
       <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </None>
     <None Include="Assets\modelData\obj\obox4R200L1000.FBX">
       <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </None>
     <None Include="Assets\modelData\sphere\sphere.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
@@ -210,16 +215,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </None>
-    <None Include="Assets\modelData\unityChan\unityChan.fbx">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\obox1.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\obox5R300L1200.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\obox6R400L1500.FBX" />
+    <None Include="Assets\modelData\obj\obox1.FBX">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\obox5R300L1200.FBX">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\obox6R400L1500.FBX">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

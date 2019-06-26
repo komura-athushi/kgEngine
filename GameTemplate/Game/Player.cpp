@@ -133,7 +133,7 @@ void Player::Move()
 	}
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
 	if (m_characon.IsOnGround()) {
-		if (m_isbound) {
+		/*if (m_isbound) {
 			m_movespeed.y = -MoveSpeedY * BoundMultiply;
 		}
 		else {
@@ -141,7 +141,8 @@ void Player::Move()
 			if (GetPad(0).IsTrigger(enButtonB)) {
 				m_movespeed.y = JumpMoveSpeed;
 			}
-		}
+		}*/
+		m_movespeed.y = 0.0f;
 	}
 	m_movespeed *= MoveSpeedAtten;
 }
@@ -166,4 +167,12 @@ void Player::Turn()
 	rot.SetRotationDeg(pos, Lengh * RotationSpeed);
 	//求めたクォータニオンを乗算する
 	m_rotation.Multiply(rot,m_rotation);
+}
+
+void Player::PostRender()
+{
+	/*wchar_t output[256];
+	swprintf_s(output, L"%f %f %f", m_position.x, m_position.y, m_position.z);
+	m_font.DrawScreenPos(output, CVector2::Zero());*/
+
 }

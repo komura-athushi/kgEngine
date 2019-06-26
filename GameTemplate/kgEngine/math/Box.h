@@ -1,5 +1,9 @@
 #pragma once
-
+enum XYZ {
+	enXYZ_X,
+	enXYZ_Y,
+	enXYZ_Z
+};
 //バウンディングボックス
 class CBox {
 public:
@@ -9,8 +13,10 @@ public:
 	void Init(const CVector3& halfSize);
 	//更新
 	void Update(const CMatrix& worldMatrix);
-
+	CVector3 SurfaceLineSegment(XYZ xyz);
 private:
 	CVector3 m_halfSize = CVector3::Zero();					//ベクトルの各要素の最大値の半分の値
 	CVector3 m_vertexPosition[8];							//バウンディングボックスの各頂点座標
+	CVector3 m_vertexPosition2[6];							//各面の中心座標
 };
+

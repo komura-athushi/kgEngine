@@ -16,10 +16,14 @@ with open('../../GameTemplate/Game/Assets/binarydata/test.cag','w') as file:
         col_values = sheet.row_values(row_index + 1)
         #シートの列の数だけ繰り返す
         for i in range(len(sheet.row_values(row_index + 1))):
-            #列の最後の要素を書き込むとき、改行する
-            if i + 1 == len(sheet.row_values(row_index + 1)):
-                #一旦int型に変換しないと小数点がつくのでint型に変換する
-                file.write(str(int(col_values[i])) + "\n")
-            #そうでないときは空白を作る
+            if i == 0:
+                 file.write(str(col_values[i]) + " ")
             else:
-                file.write(str(col_values[i]) + " ")
+                #列の最後の要素を書き込むとき、改行する
+                if i + 1 == len(sheet.row_values(row_index + 1)):
+                 file.write(str(int(col_values[i])) + "\n")
+                else:
+                 file.write(str(int(col_values[i])) + " ")
+
+
+ 

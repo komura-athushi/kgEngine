@@ -17,7 +17,6 @@ Game::~Game()
 {
 	DeleteGO(m_ground);
 	DeleteGO(m_gamecamera);
-	DeleteGO(m_player);
 	for (Obj* obj : m_objList) {
 		DeleteGO(obj);
 	}
@@ -31,7 +30,7 @@ bool Game::Start()
 		if (objdata.ForwardMatchName(L"o")) {
 			for (int i = 0; i < ObjectData::GetInstance().GetListSize(); i++ ) {
 				if (objdata.ForwardMatchName(ObjectData::GetInstance().GetObjectData(i)->s_name)) {
-					Obj* obj = NewGO<Obj>(0);
+					Obj* obj = NewGO<Obj>(1);
 					obj->SetObjData(ObjectData::GetInstance().GetObjectData(i));
 					MOVESTATUS ms = FindMove(objdata.name);
 					obj->InitMove(ms.s_state, objdata.position, ms.s_move, ms.s_limit, objdata.rotation);
@@ -45,8 +44,7 @@ bool Game::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"sphere")) {
-			Player* m_player = NewGO<Player>(0);
-			m_player->SetPosition(objdata.position);
+			m_player.SetPosition(objdata.position);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"ground")) {

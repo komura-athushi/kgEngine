@@ -20,6 +20,7 @@ public:
 	//このクラスはこれ以上継承させないからオーバーライドはここで終わり
 	bool Start() override final;
 	void Update() override final;
+	void Draw() override final;
 	void PreUpdate() override final;
 	//ワールド行列を更新
 	void UpdateWorldMatrix();

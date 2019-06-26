@@ -56,6 +56,28 @@ public:
 	{
 		return m_shadowMap;
 	}
+	//Sprite取得
+	DirectX::SpriteBatch* GetSpriteBatch() const
+	{
+		return m_spriteBatch.get();
+	}
+	//乗算済みアルファ版
+	DirectX::SpriteBatch* GetSpriteBatchPMA() const
+	{
+		return m_spriteBatchPMA.get();
+	}
+	//デフォルトフォント取得
+	DirectX::SpriteFont* GetSpriteFont() const
+	{
+		return m_spriteFont.get();
+	}
+	float AddAndGetLayerDepthCnt() {
+		m_layerDepthCnt += 0.001f / 2048.0f;
+		return m_layerDepthCnt;
+	}
+	void ResetLayerDepthCnt() {
+		m_layerDepthCnt = 0.0f;
+	}
 private:
 	D3D_FEATURE_LEVEL		m_featureLevel;				//Direct3D デバイスのターゲットとなる機能セット。
 	ID3D11Device*			m_pd3dDevice = NULL;		//D3D11デバイス。
@@ -67,6 +89,12 @@ private:
 	ID3D11DepthStencilView* m_depthStencilView = NULL;	//デプスステンシルビュー。
 	ShadowMap*				m_shadowMap;
 	//RenderTarget			m_mainRenderTarget;			//!<メインレンダリングターゲット。
+
+	//Sprite
+	std::unique_ptr<DirectX::SpriteFont> m_spriteFont;
+	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatchPMA;
+	float m_layerDepthCnt = 0.0f;
 };
 
 //extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン

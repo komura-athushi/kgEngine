@@ -1,5 +1,6 @@
 #pragma once
 #include "character/CharacterController.h"
+#include "graphics/2D/CFont.h"
 class GameCamera;
 //(Ü,_TÜ)‹…‘Ì‚Å‚·‚í‚Ÿ...
 class Player:public IGameObject
@@ -9,6 +10,7 @@ public:
 	~Player();
 	bool Start() override;
 	void Update() override;
+	void PostRender() override;
 	//void OnDestroy() override;
 	//ˆÚ“®
 	void Move();
@@ -19,12 +21,14 @@ public:
 	//À•W‚ğæ“¾
 	CVector3 GetPosition() const
 	{
-		return m_position;
+		return m_position + CVector3::AxisY() * m_radius;
 	}
 	//À•W‚ğİ’è
 	void SetPosition(const CVector3& pos)
 	{
 		m_position = pos;
+		m_characon.SetPosition(pos);
+		m_skinModelRender.SetPosition(pos + CVector3::AxisY() * m_radius);
 	}
 	//‰Šú‚©‚ç‚Ç‚ê‚¾‚¯‘å‚«‚­‚È‚Á‚½‚©‚ğæ“¾
 	float GetMag() const
@@ -82,5 +86,6 @@ private:
 	float m_movespeedmultiply = 5.0f;
 	bool m_isbound = false;
 	const float m_PI = 3.14f;
+	CFont m_font;
 };
 
