@@ -199,6 +199,7 @@ void Obj::ClcVertex()
 					m_position = m_bufferList[5];
 					m_linevector = m_bufferList[2] - m_bufferList[5];
 				}*/
+				CVector3 p = m_box.SurfaceLineSegment(enXYZ_Z);
 				m_linevector = m_box.SurfaceLineSegment(enXYZ_Z) - m_player->GetPosition();
 				m_isclclinesegment = true;
 			}

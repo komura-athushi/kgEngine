@@ -40,6 +40,7 @@ void CGameObjectManager::PostRender()
 			obj->PostRenderWrapper();
 		}
 	}
+	GameTime().Draw();
 	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
 	Engine().GetGraphicsEngine().GetSpriteBatchPMA()->End();
 	Engine().GetGraphicsEngine().ResetLayerDepthCnt();

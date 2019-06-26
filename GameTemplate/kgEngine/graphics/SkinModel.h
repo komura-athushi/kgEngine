@@ -110,6 +110,10 @@ public:
 		enSkinModelSRVReg_DiffuseTexture = 0,		//!<ディフューズテクスチャ。
 		enSkinModelSRVReg_BoneMatrix,				//!<ボーン行列。
 	};
+	bool IsFbxZUp() const
+	{
+		return m_enFbxUpAxis == enFbxUpAxisZ;
+	}
 private:
 	/*!
 	*@brief	サンプラステートの初期化。

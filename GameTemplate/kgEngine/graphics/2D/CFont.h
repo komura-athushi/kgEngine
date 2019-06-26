@@ -19,15 +19,9 @@ public:
 	void LoadFont(const wchar_t* path) {
 		m_spriteFont = m_fontfactory.Load(path);
 	}
-	//初期設定のシステムフォントを使用する
-	void UseSystemFont()
-	{
-		m_spriteFont = Engine().GetGraphicsEngine().GetSpriteFont();
-	}
-
 	//描画する
-		//※layerDepthの第三小数点以下は使わないほうがいいと思う
-		//const CVector2& pos は0.0f～1.0fの範囲。{0.0f,0.0f}で画面左上
+	//※layerDepthの第三小数点以下は使わないほうがいいと思う
+	//const CVector2& pos は0.0f～1.0fの範囲。{0.0f,0.0f}で画面左上
 	void Draw(
 		wchar_t const* text,
 		const CVector2& pos,

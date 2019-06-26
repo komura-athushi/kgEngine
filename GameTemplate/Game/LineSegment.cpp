@@ -145,27 +145,14 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 		start.setIdentity();
 		end.setIdentity();
 		//始点はカプセルコライダーの中心。
-		start.setOrigin(btVector3(m_position.x, m_position.y + m_radius, m_position.z));
+		start.setOrigin(btVector3(position.x, position.y + m_radius, position.z));
 		//終点は地面上にいない場合は1m下を見る。
 		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
 		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
 		CVector3 endPos;
 		endPos.Set(start.getOrigin());
-		if (m_isOnGround == false) {
-			if (addPos.y > 0.0f) {
-				//ジャンプ中とかで上昇中。
-				//上昇中でもXZに移動した結果めり込んでいる可能性があるので下を調べる。
-				endPos.y -= addPos.y * 0.01f;
-			}
-			else {
-				//落下している場合はそのまま下を調べる。
-				endPos.y += addPos.y;
-			}
-		}
-		else {
-			//地面上にいない場合は1m下を見る。
-			endPos.y -= 1.0f;
-		}
+		//落下している場合はそのまま下を調べる。
+		endPos.y += addPos.y;
 		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
 		SweepResultGround callback;
 		callback.me = m_rigidBody.GetBody();
@@ -180,17 +167,15 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 				m_isOnGround = true;
 				nextPosition.y = callback.hitPos.y;
 			}
-			else {
-				//地面上にいない。
-				m_isOnGround = false;
-
-			}
 		}
 	}
 	//@todo 未対応。 trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
 	CVector3 vector = nextPosition2 - nextPosition;
 	CVector3 pos = m_player->GetPosition();
-	pos.y += vector.y;
+	if (fabsf(pos.y) >= 0.1f) {
+		m_player->SetMoveSpeedYZero();
+	}
+	pos.y -= vector.y;
 	//pos += vector;
 	m_player->SetPosition(pos - CVector3::AxisY() * m_player->GetRadius());
 }

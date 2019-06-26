@@ -26,6 +26,11 @@ public:
 	//À•W‚ğİ’è
 	void SetPosition(const CVector3& pos)
 	{
+#ifdef _DEBUG
+		if (isnan(pos.x) || isnan(pos.y) || isnan(pos.z)) {
+			std::abort();
+		}
+#endif
 		m_position = pos;
 		m_characon.SetPosition(pos);
 		m_skinModelRender.SetPosition(pos + CVector3::AxisY() * m_radius);
@@ -49,6 +54,11 @@ public:
 	CSkinModelRender& GetCSkinModelRender()
 	{
 		return m_skinModelRender;
+	}
+	//MoveSpeed‚Ìy‚ğ0‚É‚·‚é
+	void SetMoveSpeedYZero()
+	{
+		m_movespeed.y = 0.0f;
 	}
 private:
 	CharacterController m_characon;

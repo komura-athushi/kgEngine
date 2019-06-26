@@ -19,8 +19,11 @@ MeshCollider::~MeshCollider()
  */
 void MeshCollider::CreateFromSkinModel( const SkinModel& model, const CMatrix* offsetMatrix )
 {
-	CMatrix mBias;
-	mBias.MakeRotationX(CMath::PI * -0.5f);
+	CMatrix mBias = CMatrix::Identity();
+	if (model.IsFbxZUp()) {
+		mBias.MakeRotationX(CMath::PI * -0.5f);
+	}
+	
 	m_stridingMeshInterface = std::make_unique<btTriangleIndexVertexArray>();
 
 	model.FindMesh([&](const auto& mesh){

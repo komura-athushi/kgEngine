@@ -90,11 +90,13 @@ public:
 	T* NewGameObject(GameObjectPrio prio, const wchar_t* name = nullptr)
 	{
 		T* newobject = new T();
+		//コンストラクタでゲームオブジェクトマネージャーに登録されてるから一旦リストから削除する
+		DeleteList(newobject);
 		//NewGOされた！
 		newobject->SetMarkNewFromGameObjectManager();
-		/*m_GogameobjectList.at(prio).push_back(newobject);
+		m_GogameobjectList.at(prio).push_back(newobject);
 		newobject->m_isRegist = true;
-		newobject->m_priority = prio;*/
+		newobject->m_priority = prio;
 		unsigned int hash = MakeGameObjectNameKey(name);
 		newobject->m_nameKey = hash;
 		return newobject;
