@@ -7,10 +7,6 @@
 #include "math/Box.h"
 #include "graphics/2D/CFont.h"
 class Player;
-struct  Vertex
-{
-	CVector3 s_list[14];
-};
 
 class Obj : public IGameObject{
 public:
@@ -59,25 +55,20 @@ public:
 	{
 		return *m_objdata;
 	}
-	//当たり判定用の頂点配列の大きさを取得
-	int GetVertexSize() const
-	{
-		return sizeof(m_bufferList) / sizeof(m_bufferList[0]);
-	}
 	//当たり判定用のオブジェクトの長さを取得
 	int GetLenght() const
 	{
 		return m_lenght;
 	}
-	//該当の番号の当たり判定用の頂点データを取得
-	CVector3 GetBuffer(const int& number) 
-	{
-		return m_bufferList[number];
-	}
 	//球体かどうか
 	bool GetisSphere() const
 	{
 		return m_issphere;
+	}
+	//バウンディングボックスを取得
+	CBox* GetBox()
+	{
+		return &m_box;
 	}
 	//ファイルパスを設定、cmoファイルを読み込む
 	void SetFilePath(const wchar_t* path);
@@ -96,8 +87,6 @@ private:
 	const wchar_t* m_filepath = nullptr;
 	StructObjectData* m_objdata;
 	PhysicsStaticObject m_staticobject;
-	CVector3 m_bufferList[14];					//当たり判定用の頂点
-	//CVector3 m_vertexList[14];					//当たり判定用のベクトル(座標からのベクトル)
 	bool m_issphere = false;
 	bool m_islinesegment = false;
 	float m_lenght = 0.0f;
@@ -108,18 +97,3 @@ private:
 	CFont m_font;
 };
 
-class VertexFactory
-{
-private:
-	VertexFactory() {};
-	~VertexFactory() {};
-public:
-	static VertexFactory& GetInstance()
-	{
-		static VertexFactory instance;
-		return instance;
-	}
-	friend Obj;
-private:
-	std::unordered_map<const wchar_t*, Vertex> m_vertexList;
-};

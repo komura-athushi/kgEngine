@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "GameCamera.h"
 #include "Object/Obj.h"
+#include "math/Box.h"
 Player::Player()
 {
 	
@@ -49,7 +50,7 @@ void Player::Update()
 
 void Player::Judgment()
 {
-	const float Multiply = 1.1f;
+	const float Multiply = 1.2f;
 	const float SizeMultiply = 6.0f;
 	bool a = false;
 
@@ -73,8 +74,8 @@ void Player::Judgment()
 				}
 			}
 			else {
-				for (int i = 0; i < object->GetVertexSize(); i++) {
-					if (pow(m_radius, 2.0f) * Multiply >= (object->GetBuffer(i) - m_position - CVector3::AxisY() * m_radius).LengthSq()) {
+				for (int i = 0; i < CBox::m_SurfaceVectorNumber; i++) {
+					if (pow(m_radius, 2.0f) * Multiply >= (object->GetBox()->SurfaceVector(i)- m_position - CVector3::AxisY() * m_radius).LengthSq()) {
 						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 						m_volume += object->GetObjData().s_volume * SizeMultiply;
 						m_radius = pow(3 * m_volume / (4 * m_PI), 1.0 / 3.0f);
@@ -171,8 +172,9 @@ void Player::Turn()
 
 void Player::PostRender()
 {
-	/*wchar_t output[256];
-	swprintf_s(output, L"%f %f %f", m_position.x, m_position.y, m_position.z);
-	m_font.DrawScreenPos(output, CVector2::Zero());*/
+	wchar_t output[256];
+	int i = m_radius;
+	swprintf_s(output, L"”¼Œa  %d", i);
+	m_font.DrawScreenPos(output, CVector2(0.0f,200.0f));
 
 }

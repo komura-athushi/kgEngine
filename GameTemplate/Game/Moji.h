@@ -6,6 +6,7 @@ struct MOVESTATUS {
 	EnMove s_state;					//MOVEの種類
 	int s_move;						//移動速度
 	int s_limit;					//移動範囲
+	int s_pathnumber = 0;
 };
 
 struct ROTSTATUS {
@@ -30,7 +31,8 @@ public:
 	//定義はcppファイルに
     std::vector <const wchar_t*> MOVE;
 	std::vector <EnMove> MOVESTATE;
-	static const wchar_t* MOVELIMIT;				//動く範囲
+	static const wchar_t* MOVELIMIT;
+	static const wchar_t* PATHNUMBER;
 	//定義はcppファイルに
 	std::vector <const wchar_t*> ROT;
 	std::vector <EnRotate> ROTSTATE;

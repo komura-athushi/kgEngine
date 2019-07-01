@@ -151,7 +151,9 @@
     <ClInclude Include="Object\Move\IMove.h" />
     <ClInclude Include="Object\Move\MoveFB.h" />
     <ClInclude Include="Object\Move\MoveLR.h" />
+    <ClInclude Include="Object\Move\MovePath.h" />
     <ClInclude Include="Object\Move\MoveUp.h" />
+    <ClInclude Include="Object\Move\Path.h" />
     <ClInclude Include="Object\Obj.h" />
     <ClInclude Include="Object\ObjectData.h" />
     <ClInclude Include="Object\Rotation\IRot.h" />
@@ -170,7 +172,9 @@
     <ClCompile Include="Object\Move\IMove.cpp" />
     <ClCompile Include="Object\Move\MoveFB.cpp" />
     <ClCompile Include="Object\Move\MoveLR.cpp" />
+    <ClCompile Include="Object\Move\MovePath.cpp" />
     <ClCompile Include="Object\Move\MoveUp.cpp" />
+    <ClCompile Include="Object\Move\Path.cpp" />
     <ClCompile Include="Object\Obj.cpp" />
     <ClCompile Include="Object\ObjectData.cpp" />
     <ClCompile Include="Object\Rotation\IRot.cpp" />

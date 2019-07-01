@@ -17,9 +17,10 @@ Game::~Game()
 {
 	DeleteGO(m_ground);
 	DeleteGO(m_gamecamera);
-	for (Obj* obj : m_objList) {
-		DeleteGO(obj);
-	}
+	QueryGOs<Obj>(nullptr, [&](Obj* object) {
+		DeleteGO(object);
+		return true;
+	});
 }
 
 bool Game::Start()
@@ -44,7 +45,8 @@ bool Game::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"sphere")) {
-			m_player.SetPosition(objdata.position);
+			m_player = NewGO<Player>(0);
+			m_player->SetPosition(objdata.position);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"ground")) {

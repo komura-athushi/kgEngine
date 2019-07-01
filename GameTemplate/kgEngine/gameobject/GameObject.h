@@ -1,6 +1,6 @@
 #pragma once
-#include "..//Noncopyable.h"
 
+#include "..//Noncopyable.h"
 //typedef 既存の型を新しい型にするっていう、名前が変わるだけかな
 typedef unsigned char GameObjectPrio;
 //GameObject Update関数とか使いたかったらこれを継承
@@ -122,6 +122,8 @@ public:
 	{
 		return m_isNewFromGameObjectManager;
 	}
+	inline void SetPriority(int priority);
+	inline void SetName(const wchar_t* name);
 	//friend宣言、フレンドクラスは指定されたクラスのprivateやprotectedメンバにアクセスすることができる
 	friend class CGameObjectManager;
 protected:

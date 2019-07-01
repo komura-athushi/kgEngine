@@ -3,6 +3,7 @@ enum EnMove {
 	enMove_Lr,									//左右に移動
 	enMove_Up,									//上下に移動
 	enMove_Rot,									//回転
+	enMove_Path,
 	enMove_No,									//移動しない
 	enMove_MoveHit,								//プレイヤー(球体に巻き込まれた)
 };

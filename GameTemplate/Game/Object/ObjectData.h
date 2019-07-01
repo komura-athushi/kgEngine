@@ -1,11 +1,6 @@
 #pragma once
 
-enum Enxyz {
-	enState_X,
-	enState_Y,
-	enState_Z,
-	enState_No
-};
+#include "math/Box.h"
 
 //オブジェクトのデータ
 struct StructObjectData {

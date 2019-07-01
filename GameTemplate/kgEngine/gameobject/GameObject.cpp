@@ -7,12 +7,22 @@ IGameObject::IGameObject() :
 	m_isDead(false),
 	m_isNewFromGameObjectManager(false)
 {
-	GameObjectManager().AddGameObject(0, nullptr, this);
+	AddGO(0, nullptr, this);
 }
 
 IGameObject::~IGameObject() {
 	//ゲームオブジェクトマネージャでNewされてなかったらここでリストから削除する
 	if (!this->m_isNewFromGameObjectManager) {
-		GameObjectManager().DeleteList(this);
+		DeleteList(this);
 	}
+}
+
+inline void IGameObject::SetPriority(int priority)
+{
+	SetPriorityGO(this, priority);
+}
+
+inline void IGameObject::SetName(const wchar_t* name)
+{
+	SetNameGO(this, name);
 }

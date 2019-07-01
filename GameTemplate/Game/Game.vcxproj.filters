@@ -35,6 +35,12 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="LineSegment.h" />
+    <ClInclude Include="Object\Move\MovePath.h">
+      <Filter>Object\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Move\Path.h">
+      <Filter>Object\Move</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -72,6 +78,12 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="LineSegment.cpp" />
+    <ClCompile Include="Object\Move\MovePath.cpp">
+      <Filter>Object\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Move\Path.cpp">
+      <Filter>Object\Move</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">

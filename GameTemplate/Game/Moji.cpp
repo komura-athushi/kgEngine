@@ -2,6 +2,7 @@
 #include "Moji.h"
 
 const wchar_t* MOJI::MOVELIMIT = L"L";
+const wchar_t* MOJI::PATHNUMBER = L"N";
 MOJI::MOJI()
 {
 	//左右に移動
@@ -13,6 +14,9 @@ MOJI::MOJI()
 	//回転
 	MOVE.push_back(L"S");
 	MOVESTATE.push_back(enMove_Rot);
+	//パス移動
+	MOVE.push_back(L"P");
+	MOVESTATE.push_back(enMove_Path);
 
 	//自転
 	ROT.push_back(L"M");
@@ -47,6 +51,14 @@ MOVESTATUS MOJI::FindMove(const wchar_t* moji)
 			int MoveLimit = wcstof(Moji, &mo);
 			//ステートを設定
 			EnMove State = MOVESTATE[i];
+			if (State == enMove_Path) {
+				const wchar_t* M = moji;
+				const wchar_t* dest = wcsstr(M, PATHNUMBER);
+				int r = (int)(dest - M + 1);
+				M += r;
+				int Number = wcstof(M, &mo);
+				return MOVESTATUS{ State, Move, MoveLimit,Number };
+			}
 			return MOVESTATUS{ State, Move, MoveLimit };
 		}
 	}

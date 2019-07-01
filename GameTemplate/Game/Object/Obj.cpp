@@ -50,6 +50,7 @@ bool Obj::Start()
 		m_islinesegment = true;
 		m_linevector = m_objdata->s_linevector;
 	}
+	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
 	return true;
 }
@@ -96,113 +97,17 @@ void Obj::InitRot(EnRotate state, const float& speed)
 
 void Obj::ClcVertex()
 {
-	const float Multiply = 1.1f;
-	if (!m_issphere && VertexFactory::GetInstance().m_vertexList.count(m_objdata->s_name) == 0) {
-		Vertex vertex;
-		CVector3 pos = CVector3::Zero();
-		vertex.s_list[0] = pos += CVector3::AxisY() * m_objdata->s_y;					//+y
-		/*vertex.s_list[1] = pos += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[2] = pos -= CVector3::AxisZ() * m_objdata->s_z * 2;
-		vertex.s_list[3] = pos -= CVector3::AxisX() * m_objdata->s_x * 2;
-		vertex.s_list[4] = pos += CVector3::AxisZ() * m_objdata->s_z * 2;*/
-		CVector3 pos2 = CVector3::Zero();
-		vertex.s_list[1] = pos2 -= CVector3::AxisY() * m_objdata->s_y;					//-y
-		/*vertex.s_list[6] = pos2 += CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[7] = pos2 -= CVector3::AxisZ() * m_objdata->s_z * 2;
-		vertex.s_list[8] = pos2 -= CVector3::AxisX() * m_objdata->s_x * 2;
-		vertex.s_list[9] = pos2 += CVector3::AxisZ() * m_objdata->s_z * 2;*/
-		CVector3 pos3 = CVector3::Zero();
-		vertex.s_list[2] = pos3 += CVector3::AxisZ() * m_objdata->s_z;					//+z
-		vertex.s_list[3] = pos3 -= CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;			//-x
-		vertex.s_list[4] = pos3 += CVector3::AxisX() * m_objdata->s_x * 2;											//+x
-		vertex.s_list[5] = pos3 -= CVector3::AxisZ() * m_objdata->s_z + CVector3::AxisX() * m_objdata->s_x;			//-z
-		CVector3 pos4 = CVector3::Zero() + CVector3::AxisY() * m_objdata->s_y;
-		vertex.s_list[6] = pos4 + CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[7] = pos4 - CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[8] = pos4 + CVector3::AxisZ() * m_objdata->s_z;
-		vertex.s_list[9] = pos4 - CVector3::AxisZ() * m_objdata->s_z;
-		CVector3 pos5 = CVector3::Zero() - CVector3::AxisY() * m_objdata->s_y;
-		vertex.s_list[10] = pos5 + CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[11] = pos5 - CVector3::AxisX() * m_objdata->s_x;
-		vertex.s_list[12] = pos5 + CVector3::AxisZ() * m_objdata->s_z;
-		vertex.s_list[13] = pos5 - CVector3::AxisZ() * m_objdata->s_z;
-		for (int i = 0; i < sizeof(m_bufferList) / sizeof(m_bufferList[0]); i++) {
-			vertex.s_list[i] = vertex.s_list[i] * Multiply;
-		}
-		VertexFactory::GetInstance().m_vertexList[m_objdata->s_name] = vertex;
-	}
-	Vertex vertex = VertexFactory::GetInstance().m_vertexList[m_objdata->s_name];
 	if (m_movestate != enMove_MoveHit) {
-		for (int i = 0; i < sizeof(m_bufferList) / sizeof(m_bufferList[0]); i++) {
-			m_bufferList[i] = m_position + m_rotation.ReturnMultiply(vertex.s_list[i]);
-		}
+		m_box.Update(m_skin.GetSkinModel().GetWorldMatrix());
 	}
 	else {
-		CVector3 pos;
-		pos.x = m_worldMatrix.m[3][0];
-		pos.y = m_worldMatrix.m[3][1];
-		pos.z = m_worldMatrix.m[3][2];
-		CQuaternion rot;
-		rot.SetRotation(m_worldMatrix);
-		m_rotation = rot;
 		m_box.Update(m_worldMatrix);
-		if (m_objdata->s_state == enState_X) {
-			m_bufferList[4] = pos + rot.ReturnMultiply(vertex.s_list[4]);
-			m_bufferList[3] = pos + rot.ReturnMultiply(vertex.s_list[3]);
-			CVector3 diff = m_bufferList[4] - m_player->GetPosition();
-			CVector3 diff2 = m_bufferList[3] - m_player->GetPosition();
-			if (diff.LengthSq() <= diff2.LengthSq()) {
-				m_position = m_bufferList[4];
-				m_linevector = m_bufferList[3] - m_bufferList[4];
-			}
-			else {
-				m_position = m_bufferList[3];
-				m_linevector = m_bufferList[4] - m_bufferList[3];
-			}
+		if (m_box.GetisLowPositionY(m_player->GetPosition(),m_objdata->s_state)) {
+			m_isclclinesegment = false;
 		}
-		else if(m_objdata->s_state == enState_Y){
-			m_bufferList[0] = pos + rot.ReturnMultiply(vertex.s_list[0]);
-			m_bufferList[1] = pos + rot.ReturnMultiply(vertex.s_list[1]);
-			CVector3 diff = m_bufferList[0] - m_player->GetPosition();
-			CVector3 diff2 = m_bufferList[1] - m_player->GetPosition();
-			if (diff.LengthSq() <= diff2.LengthSq()) {
-				m_position = m_bufferList[0];
-				m_linevector = m_bufferList[1] - m_bufferList[0];
-			}
-			else {
-				m_position = m_bufferList[1];
-				m_linevector = m_bufferList[0] - m_bufferList[1];
-			}
-		}
-		else if (m_objdata->s_state == enState_Z) {
-			CVector3 po = m_worldMatrix.ReturnApply(vertex.s_list[2]);
-			CVector3 po2 = rot.ReturnMultiply(vertex.s_list[2]);
-			CVector3 po3 = m_worldMatrix.ReturnApply(vertex.s_list[5]);
-			CVector3 po4 = rot.ReturnMultiply(vertex.s_list[5]);
-			//m_bufferList[2] = pos + rot.ReturnMultiply(vertex.s_list[2]);
-			//m_bufferList[5] = pos + rot.ReturnMultiply(vertex.s_list[5]);
-			m_bufferList[2] = po;
-			m_bufferList[5] = po3;
-			CVector3 diff = m_bufferList[2] - m_player->GetPosition();
-			CVector3 diff2 = m_bufferList[5] - m_player->GetPosition();
-			CVector3 line = m_box.SurfaceLineSegment(enXYZ_Z);
-
-			if (m_bufferList[2].y >= m_player->GetPosition().y && m_bufferList[5].y >= m_player->GetPosition().y) {
-				m_isclclinesegment = false;
-			}
-			else {
-				/*if (m_bufferList[2].y >= m_bufferList[5].y) {
-					m_position = m_bufferList[2];
-					m_linevector = m_bufferList[5] - m_bufferList[2];
-				}
-				else {
-					m_position = m_bufferList[5];
-					m_linevector = m_bufferList[2] - m_bufferList[5];
-				}*/
-				CVector3 p = m_box.SurfaceLineSegment(enXYZ_Z);
-				m_linevector = m_box.SurfaceLineSegment(enXYZ_Z) - m_player->GetPosition();
-				m_isclclinesegment = true;
-			}
+		else {
+			m_linevector = m_box.SurfaceLineSegment(m_objdata->s_state) - m_player->GetPosition();
+			m_isclclinesegment = true;
 		}
 	}
 }
