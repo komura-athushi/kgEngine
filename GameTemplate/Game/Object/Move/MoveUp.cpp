@@ -39,19 +39,17 @@ CVector3 MoveUp::Move()
 		if (m_isaccessup) {
 			m_movevector = m_movelimitUp - m_position;
 			m_movevector.Normalize();
-			m_movevector *= m_movespeed;
 			m_isculcmovevector = true;
 		}
 		//âEë§
 		else {
 			m_movevector = m_movelimitDown - m_position;
 			m_movevector.Normalize();
-			m_movevector *= m_movespeed;
 			m_isculcmovevector = true;
 		}
 	}
 	//ç¿ïWÇåvéZ
-	m_position += m_movevector * GameTime().GetFrameDeltaTime();
+	m_position += m_movevector * GameTime().GetFrameDeltaTime() * m_movespeed;
 	if (m_isstart) {
 		m_timer += GameTime().GetFrameDeltaTime() * 2;
 	}

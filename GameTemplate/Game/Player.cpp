@@ -96,7 +96,7 @@ void Player::Move()
 	//移動速度減衰
 	const float MoveSpeedAtten = 0.98f;
 	//重力
-	const float GravityMoveSpeed = 900.0f;
+	const float GravityMoveSpeed = 2000.0f;
 	//ジャンプ速度
 	const float JumpMoveSpeed = 700.0f;
 	//一定以上のyの速度があったらバウンドする～
@@ -173,8 +173,8 @@ void Player::Turn()
 void Player::PostRender()
 {
 	wchar_t output[256];
-	int i = m_radius;
-	swprintf_s(output, L"半径  %d", i);
+	//int i = m_radius;
+	swprintf_s(output, L"半径  %.1f", m_radius);
 	m_font.DrawScreenPos(output, CVector2(0.0f,200.0f));
 
 }

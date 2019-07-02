@@ -127,6 +127,7 @@ void CEngine::Update()
 	}
 	//物理エンジンの更新。
 	m_physicsEngine->Update();
+	//ゲームオブジェクトの処理
 	m_gameobjectmanager->Start();
 	m_gameobjectmanager->Update();
 	m_gameobjectmanager->Draw();

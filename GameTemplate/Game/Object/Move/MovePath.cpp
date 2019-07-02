@@ -21,19 +21,26 @@ void MovePath::Init(const CVector3& pos, const float& move, const float& movelim
 void MovePath::ReadPath(const wchar_t* filePath)
 {
 	m_path.Load(filePath);
+	m_point = m_path.GetFirstPoint();
 }
 
 CVector3 MovePath::Move()
 {
 	const float Molecule = 10.0f;
 
-	m_movevector = m_point->s_vector - m_position;
-	if (m_movevector.LengthSq() >= m_movespeed / Molecule) {
-		m_point = m_path.GetPoint(m_point->s_number);
+	if (m_isstart) {
 		m_movevector = m_point->s_vector - m_position;
+		m_movevector.Normalize();
+		m_isstart = false;
 	}
-	m_movevector.Normalize();
-	m_movevector *= m_movespeed * GameTime().GetFrameDeltaTime();
-	m_position += m_movevector;
+	else {
+		CVector3 Distance = m_point->s_vector - m_position;
+		if (Distance.LengthSq() <= m_movespeed / Molecule) {
+			m_point = m_path.GetPoint(m_point->s_number);
+			m_movevector = m_point->s_vector - m_position;
+			m_movevector.Normalize();
+		}
+	}
+	m_position += m_movevector * GameTime().GetFrameDeltaTime() * m_movespeed;
 	return m_position;
 }

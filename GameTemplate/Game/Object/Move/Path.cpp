@@ -19,16 +19,19 @@ void Path::Load(const wchar_t* filePath)
 		return;
 	}
 	m_pointList.resize(skl.GetNumBones() - 1);
-	for (int i = 0; i < skl.GetNumBones(); i++) {
+	for (int i = 1; i < skl.GetNumBones(); i++) {
 		Bone* bone = skl.GetBone(i);
 		CMatrix ma = bone->GetBindPoseMatrix();
 		CVector3 pos;
 		pos.x = ma.m[3][0];
-		pos.y = ma.m[3][1];
-		pos.z = ma.m[3][2];
+		pos.y = ma.m[3][2];
+		pos.z = ma.m[3][1];
 		//•¶Žš—ñ‚ðintŒ^‚É•ÏŠ·
 		int pointNm = _wtoi(bone->GetName());
-		m_pointList[pointNm - 1] = Point(pos, pointNm);
+		Point point;
+		point.s_vector = pos;
+		point.s_number = pointNm;
+		m_pointList[pointNm - 1] = point;
 	}
 }
 

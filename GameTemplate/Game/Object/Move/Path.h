@@ -1,9 +1,5 @@
 #pragma once
 struct Point {
-	Point(CVector3 pos, int number) {
-		s_vector = pos;
-		s_number = number;
-	}
 	CVector3 s_vector = CVector3::Zero();				//À•W
 	int s_number;										//”Ô†
 };

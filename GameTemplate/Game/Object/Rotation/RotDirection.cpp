@@ -18,9 +18,6 @@ void RotDirection::Init(const CQuaternion& rot, const float& speed)
 
 CQuaternion RotDirection::Rot(const CVector3& move)
 {
-	if (move.LengthSq() <= 0.01f) {
-		return m_rotation;
-	}
 	CVector3 pos = move;
 	pos.y = 0.0f;
 	pos.Normalize();

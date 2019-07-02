@@ -8,7 +8,7 @@ ObjectData::ObjectData()
 	float x = 0, y = 0, z = 0, volume = 0;
 	int issphere = 0,islinesegment = 0;
 	//fopen_sでファイルのオープンに成功したら0が返るらしい
-	if(fopen_s(&fp, fname, "r") == 0) {
+	if(fopen_s(&fp, fname, "rb") == 0) {
 		//fscanfの戻り値がEOF(-1)になるまでループさせる
 		//読みこんだデータを構造体として保存する
 		int i = 1;

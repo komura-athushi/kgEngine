@@ -478,12 +478,54 @@ public:
 		xmv = DirectX::XMVectorScale(xmv, s);
 		DirectX::XMStoreFloat4(&vec, xmv);
 	}
+	//à»â∫êFä÷åWÅADirectXColors.hÇéQè∆
 	static CVector4 White()
 	{
 		static const CVector4 white = { 1.0f, 1.0f, 1.0f, 1.0f };
 		return white;
 
 	}
+	static CVector4 Red()
+	{
+		static const CVector4 red = { 1.000000000f, 0.000000000f, 0.000000000f, 1.000000000f };
+		return red;
+	}
+	static CVector4 Yellow()
+	{
+		static const CVector4 yellow = { 1.000000000f, 1.000000000f, 0.000000000f, 1.000000000f };
+		return yellow;
+	}
+	static CVector4 Greean()
+	{
+		static const CVector4 green = { 0.000000000f, 0.501960814f, 0.000000000f, 1.000000000f };
+		return green;
+	}
+	static CVector4 Blue()
+	{
+		static const CVector4 blue = { 0.000000000f, 0.000000000f, 1.000000000f, 1.000000000f };
+		return blue;
+	}
+	static CVector4 LightBlue()
+	{
+		static const CVector4 lightblue = { 0.678431392f, 0.847058892f, 0.901960850f, 1.000000000f };
+		return lightblue;
+	}
+	static CVector4 LightGreean()
+	{
+		static const CVector4 lightgreen = { 0.564705908f, 0.933333397f, 0.564705908f, 1.000000000f };
+		return lightgreen;
+	}
+	static CVector4 LightYellow()
+	{
+		static const CVector4 lightyellow = { 1.000000000f, 1.000000000f, 0.878431439f, 1.000000000f };
+		return lightyellow;
+	}
+	static CVector4 Pink()
+	{
+		static const CVector4 pink = { 1.000000000f, 0.752941251f, 0.796078503f, 1.000000000f };
+		return pink;
+	}
+
 };
 
 class CQuaternion : public CVector4{

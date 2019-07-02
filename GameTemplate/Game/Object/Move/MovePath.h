@@ -34,8 +34,8 @@ private:
 	CVector3 m_movevector = CVector3::Zero();				//移動ベクトル
 	bool m_isaccessup = true;								//上側の座標に近づくかどうか
 	bool m_isculcmovevector = false;						//移動ベクトルを計算したかどうか
-	bool m_isstart = true;
 	Path m_path;
 	Point* m_point = nullptr;
+	bool m_isstart = true;
 };
 

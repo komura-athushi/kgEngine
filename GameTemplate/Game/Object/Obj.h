@@ -72,6 +72,8 @@ public:
 	}
 	//ファイルパスを設定、cmoファイルを読み込む
 	void SetFilePath(const wchar_t* path);
+	//パス移動用のファイルパスを読みこむ
+	void ReadMovePath(const int& number);
 private:
 	CSkinModelRender m_skin;
 	CVector3 m_position = CVector3::Zero();
@@ -95,5 +97,6 @@ private:
 	bool m_isclclinesegment = false;
 	CBox m_box;										//バウンディングボックス
 	CFont m_font;
+	
 };
 

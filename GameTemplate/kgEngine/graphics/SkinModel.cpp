@@ -111,8 +111,9 @@ void SkinModel::UpdateWorldMatrix(CVector3 position, CQuaternion rotation, CVect
 	CMatrix mBias = CMatrix::Identity();
 	if (m_enFbxUpAxis == enFbxUpAxisZ) {
 		//Z-up
-		mBias.MakeRotationX(CMath::PI * -0.5f);
+	
 	}
+	mBias.MakeRotationX(CMath::PI * -0.5f);
 	CMatrix transMatrix, rotMatrix, scaleMatrix;
 	//•½sˆÚ“®s—ñ‚ğì¬‚·‚éB
 	transMatrix.MakeTranslation( position );

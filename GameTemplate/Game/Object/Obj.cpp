@@ -2,6 +2,7 @@
 #include "Obj.h"
 #include "Move/MoveLR.h"
 #include "Move/MoveUp.h"
+#include "Move/MovePath.h"
 #include "Rotation/IRot.h"
 #include "Rotation/RotSelf.h"
 #include "Rotation/RotDirection.h"
@@ -55,6 +56,15 @@ bool Obj::Start()
 	return true;
 }
 
+void Obj::ReadMovePath(const int& number)
+{
+	MovePath* mp = new MovePath();
+	wchar_t aiueo[256];
+	swprintf_s(aiueo, L"Assets/path/%ls%d.tks", m_objdata->s_name, number);
+	mp->ReadPath(aiueo);
+	m_move = mp;
+}
+
 void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot)
 {
 	switch (state)
@@ -64,6 +74,10 @@ void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const f
 		break;
 	case enMove_Up:
 		m_move = new MoveUp();
+		break;
+		case enMove_Path:
+		//‚±‚±‚Ånew‚µ‚È‚¢
+		break;
 	default:
 		break;
 	}

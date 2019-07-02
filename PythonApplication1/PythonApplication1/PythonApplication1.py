@@ -5,7 +5,7 @@ import pprint
 
 
 #ファイルをオープンする、withでcloseをしなくていいらしい
-with open('../../GameTemplate/Game/Assets/binarydata/test.cag','w') as file:
+with open('../../GameTemplate/Game/Assets/binarydata/test.cag','w+b') as file:
     #Excelのファイルを読み込む
     book = xlrd.open_workbook('file/Book1.xlsx')
     #エクセルファイルの一枚目のシートを取得
@@ -17,13 +17,19 @@ with open('../../GameTemplate/Game/Assets/binarydata/test.cag','w') as file:
         #シートの列の数だけ繰り返す
         for i in range(len(sheet.row_values(row_index + 1))):
             if i == 0:
-                 file.write(str(col_values[i]) + " ")
+                 dat =  (str(col_values[i]) + " ").encode()
+                 print(type(dat),dat)
+                 file.write(dat)
             else:
                 #列の最後の要素を書き込むとき、改行する
                 if i + 1 == len(sheet.row_values(row_index + 1)):
-                 file.write(str(int(col_values[i])) + "\n")
+                 dat =  (str(int(col_values[i])) + "\n").encode()
+                 print(type(dat),dat)
+                 file.write(dat)
                 else:
-                 file.write(str(int(col_values[i])) + " ")
+                 dat =  (str(int(col_values[i])) + " ").encode()
+                 print(type(dat),dat)
+                 file.write(dat)
 
 
  

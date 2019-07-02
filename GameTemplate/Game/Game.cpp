@@ -34,10 +34,13 @@ bool Game::Start()
 					Obj* obj = NewGO<Obj>(1);
 					obj->SetObjData(ObjectData::GetInstance().GetObjectData(i));
 					MOVESTATUS ms = FindMove(objdata.name);
+					if (ms.s_state == enMove_Path) {
+						obj->ReadMovePath(ms.s_pathnumber);
+					}
 					obj->InitMove(ms.s_state, objdata.position, ms.s_move, ms.s_limit, objdata.rotation);
 					ROTSTATUS rs = FindRot(objdata.name);
 					obj->InitRot(rs.s_state, rs.s_speed);
-					obj->SetFilePath(objdata.name);
+					obj->SetFilePath(ObjectData::GetInstance().GetObjectData(i)->s_name);
 					m_objList.push_back(obj);
 					return true;
 				}
