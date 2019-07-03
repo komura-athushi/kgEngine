@@ -78,7 +78,7 @@ public:
 		return m_isActive;
 	}
 	/*!
-	* @brief	アニメーションを再生。
+	*@brief	アニメーションを再生。
 	*@param[in]	clipNo	アニメーションクリップの番号。コンストラクタに渡したanimClipListの並びとなる。
 	*@param[in]	interpolateTime		補完時間(単位：秒)
 	*/

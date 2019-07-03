@@ -172,7 +172,7 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 	//@todo –¢‘Î‰žB trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
 	CVector3 vector = nextPosition2 - nextPosition;
 	CVector3 pos = m_player->GetPosition();
-	if (fabsf(pos.y) >= 1.0f) {
+	if (fabsf(pos.y) >= 0.1f) {
 		m_player->SetMoveSpeedYZero();
 	}
 	pos.y -= vector.y;

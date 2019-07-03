@@ -231,9 +231,9 @@
     <None Include="Assets\modelData\obj\obox6.FBX">
       <FileType>Document</FileType>
     </None>
-    <None Include="Assets\modelData\obj\oboxpath1.FBX">
+    <MeshContentTask Include="Assets\modelData\obj\oboxpath1.FBX">
       <FileType>Document</FileType>
-    </None>
+    </MeshContentTask>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

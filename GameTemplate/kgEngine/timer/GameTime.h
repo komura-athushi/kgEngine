@@ -42,6 +42,7 @@ public:
 	}
 	void Draw()
 	{
+		//リリース以外だったらFPS表示する
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		wchar_t output[256];
 		swprintf_s(output, L"FPS %f", 1.0f / m_frameDeltaTime);

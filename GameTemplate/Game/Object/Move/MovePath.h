@@ -37,5 +37,9 @@ private:
 	Path m_path;
 	Point* m_point = nullptr;
 	bool m_isstart = true;
+	bool m_isstop = false;
+	bool m_isadddegree = true;
+	float m_time = 0.0f;
+	float m_timer = 0.0f;
 };
 
