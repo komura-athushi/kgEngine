@@ -31,6 +31,9 @@ bool Player::Start()
 	m_beforeposition = m_position;
 	//ëÃêœÇãÅÇﬂÇÈ
 	m_volume = m_PI * pow(m_radius, 3.0f) * 4 / 3;
+
+	//êlå^ÇÃÉÇÉfÉã
+	m_skinModelRender2.Init(L"Resource/modelData/zunko.cmo");
 	return true;
 }
 
@@ -46,6 +49,14 @@ void Player::Update()
 	m_beforeposition = m_position;
 	m_skinModelRender.SetPosition(m_position + CVector3::AxisY() * m_radius);
 	m_skinModelRender.SetRotation(m_rotation);
+	CVector3 pos = MainCamera().GetFront();
+	CQuaternion rot;
+	rot.SetRotation(CVector3::AxisY(), atan2f(pos.x, pos.z));
+	m_skinModelRender2.SetRotation(rot);
+	pos = pos * m_radius * 1.2f;
+	pos = m_position - pos;
+	m_skinModelRender2.SetPosition(pos);
+	
 }
 
 void Player::Judgment()

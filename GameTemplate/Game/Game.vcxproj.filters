@@ -141,5 +141,8 @@
     <MeshContentTask Include="Assets\modelData\obj\oboxpath1.FBX">
       <Filter>Asset\obj</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\zunko\zunko.FBX">
+      <Filter>Asset</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

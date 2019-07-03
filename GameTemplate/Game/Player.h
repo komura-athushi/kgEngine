@@ -87,6 +87,7 @@ private:
 	};
 	EnState m_state = enState_idle;
 	CSkinModelRender m_skinModelRender;									//スキンモデル。
+	CSkinModelRender m_skinModelRender2;								//人のモデル
 	GameCamera* m_gamecamera = nullptr;
 	bool m_isjump = false;
 	float m_radius = 45.0f;

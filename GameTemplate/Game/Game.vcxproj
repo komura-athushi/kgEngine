@@ -219,6 +219,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\zunko\zunko.FBX" />
     <None Include="Assets\modelData\obj\obox2.FBX">
       <FileType>Document</FileType>
     </None>
