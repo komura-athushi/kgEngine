@@ -91,8 +91,7 @@ private:
 	bool 				m_isJump = false;				//ジャンプ中？
 	bool				m_isOnGround = true;			//地面の上にいる？
 	SphereCollider		m_collider;						//コライダー。
-	float				m_radius = 0.0f;
-	//float				m_height = 0.0f;		
+	float				m_radius = 0.0f;				//スフィアコライダーの半径
 	bool				m_isSphere = false;				//球体かどうか
 	RigidBody			m_rigidBody;					//剛体。
 };

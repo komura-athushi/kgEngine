@@ -91,6 +91,9 @@
     <MeshContentTask>
       <ContentOutput>$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
+    <ImageContentTask>
+      <ContentOutput>$(ProjectDir)\Resource\sprite\%(Filename).dds</ContentOutput>
+    </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -148,6 +151,7 @@
     <ClInclude Include="Ground.h" />
     <ClInclude Include="LineSegment.h" />
     <ClInclude Include="Moji.h" />
+    <ClInclude Include="Object\Anim\Anim.h" />
     <ClInclude Include="Object\Move\IMove.h" />
     <ClInclude Include="Object\Move\MoveFB.h" />
     <ClInclude Include="Object\Move\MoveLR.h" />
@@ -169,6 +173,7 @@
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Moji.cpp" />
+    <ClCompile Include="Object\Anim\Anim.cpp" />
     <ClCompile Include="Object\Move\IMove.cpp" />
     <ClCompile Include="Object\Move\MoveFB.cpp" />
     <ClCompile Include="Object\Move\MoveLR.cpp" />
@@ -219,6 +224,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\obj\ozunko.FBX" />
     <MeshContentTask Include="Assets\modelData\zunko\zunko.FBX" />
     <None Include="Assets\modelData\obj\obox2.FBX">
       <FileType>Document</FileType>
@@ -235,6 +241,9 @@
     <MeshContentTask Include="Assets\modelData\obj\oboxpath1.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\sprite\a.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

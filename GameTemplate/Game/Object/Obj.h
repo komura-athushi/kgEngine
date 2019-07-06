@@ -1,11 +1,12 @@
 #pragma once
 #include "Move/IMove.h"
 #include "Rotation/IRot.h"
+#include "Anim/Anim.h"
 #include "ObjectData.h"
 #include "physics/PhysicsStaticObject.h"
 #include "LineSegment.h"
-#include "math/Box.h"
-#include "graphics/2D/CFont.h"
+#include "math/kgBox.h"
+#include "graphics/2D/kgFont.h"
 class Player;
 
 class Obj : public IGameObject{
@@ -15,9 +16,20 @@ public:
 	bool Start() override;
 	void Update() override;
 	void PostRender() override;
-	//移動ステータスを設定
+	/// <summary>
+	/// 移動に関するステータスを設定
+	/// </summary>
+	/// <param name="state">ステート</param>
+	/// <param name="pos">座標</param>
+	/// <param name="move">移動速度</param>
+	/// <param name="movelimit">移動範囲</param>
+	/// <param name="rot">回転</param>
 	void InitMove(EnMove state ,const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot = CQuaternion::Identity());
-	//回転ステータスを設定
+	/// <summary>
+	/// 回転に関するステータスを設定
+	/// </summary>
+	/// <param name="state">ステート</param>
+	/// <param name="speed">回転速度</param>
 	void InitRot(EnRotate state, const float& speed);
 	//プレイヤーを基準としたローカル行列を計算
 	void ClcLocalMatrix(const CMatrix& worldMatrix);
@@ -75,28 +87,28 @@ public:
 	//パス移動用のファイルパスを読みこむ
 	void ReadMovePath(const int& number);
 private:
-	CSkinModelRender m_skin;
-	CVector3 m_position = CVector3::Zero();
-	CQuaternion m_rotation = CQuaternion::Identity();
-	CMatrix m_localMatrix;
-	CMatrix m_worldMatrix;
-	EnMove m_movestate = enMove_No;
-	EnRotate m_rotstate = enRot_No;
-	IMove*  m_move = nullptr;
-	IRotate* m_rot = nullptr;
-	Player* m_player = nullptr;
+	CSkinModelRender m_skin;												//スキンモデル
+	CVector3 m_position = CVector3::Zero();									//座標								
+	CQuaternion m_rotation = CQuaternion::Identity();						//回転
+	CMatrix m_localMatrix;													//ローカル行列
+	CMatrix m_worldMatrix;													//ワールド行列
+	EnMove m_movestate = enMove_No;											//移動ステート
+	EnRotate m_rotstate = enRot_No;											//回転ステート
+	IMove*  m_move = nullptr;												//移動処理をするクラス
+	IRotate* m_rot = nullptr;												//回転処理をするクラス
+	Anim m_anim;															//アニメーション再生をするクラス
+	Player* m_player = nullptr;												//プレイヤー
 	float m_size = 0.0f;							//オブジェクトの半径
-	const wchar_t* m_filepath = nullptr;
-	StructObjectData* m_objdata;
-	PhysicsStaticObject m_staticobject;
-	bool m_issphere = false;
-	bool m_islinesegment = false;
-	float m_lenght = 0.0f;
-	LineSegment m_linesegment;
-	CVector3 m_linevector;
-	bool m_isclclinesegment = false;
-	CBox m_box;										//バウンディングボックス
-	CFont m_font;
+	StructObjectData* m_objdata;											//オブジェクトのデータ
+	PhysicsStaticObject m_staticobject;										//スタティックオブジェクト
+	bool m_issphere = false;												//球体かどうか
+	bool m_islinesegment = false;											//線分生成するかどうか
+	float m_lenght = 0.0f;													
+	LineSegment m_linesegment;												//線分クラス
+	CVector3 m_linevector;													//線分ベクトル
+	bool m_isclclinesegment = false;										//線分を計算するかどうか
+	CBox m_box;																//バウンディングボックス
+	CFont m_font;															//文字
 	
 };
 

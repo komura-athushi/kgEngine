@@ -111,9 +111,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="character\CharacterController.cpp" />
-    <ClCompile Include="gameobject\GameObject.cpp" />
-    <ClCompile Include="gameobject\GameObjectManager.cpp" />
-    <ClCompile Include="graphics\2D\CFont.cpp" />
+    <ClCompile Include="gameobject\kgGameObject.cpp" />
+    <ClCompile Include="gameobject\kgGameObjectManager.cpp" />
+    <ClCompile Include="graphics\2D\kgFont.cpp" />
     <ClCompile Include="graphics\2D\Sprite.cpp" />
     <ClCompile Include="graphics\animation\Animation.cpp" />
     <ClCompile Include="graphics\animation\AnimationClip.cpp" />
@@ -123,17 +123,17 @@
     <ClCompile Include="graphics\RenderTarget.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\ShaderResources.cpp" />
-    <ClCompile Include="graphics\shadow\ShadowMap.cpp" />
+    <ClCompile Include="graphics\shadow\kgShadowMap.cpp" />
     <ClCompile Include="graphics\Skeleton.cpp" />
     <ClCompile Include="graphics\SkinModel.cpp" />
     <ClCompile Include="graphics\SkinModelDataManager.cpp" />
     <ClCompile Include="graphics\SkinModelEffect.cpp" />
-    <ClCompile Include="graphics\SkinModelRender.cpp" />
+    <ClCompile Include="graphics\kgSkinModelRender.cpp" />
     <ClCompile Include="HID\Pad.cpp" />
     <ClCompile Include="kgEngine.cpp" />
     <ClCompile Include="level\Level.cpp" />
     <ClCompile Include="level\MapChip.cpp" />
-    <ClCompile Include="math\Box.cpp" />
+    <ClCompile Include="math\kgBox.cpp" />
     <ClCompile Include="math\kMath.cpp" />
     <ClCompile Include="math\Matrix.cpp" />
     <ClCompile Include="math\Vector.cpp" />
@@ -154,9 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character\CharacterController.h" />
-    <ClInclude Include="gameobject\GameObject.h" />
-    <ClInclude Include="gameobject\GameObjectManager.h" />
-    <ClInclude Include="graphics\2D\CFont.h" />
+    <ClInclude Include="gameobject\kgGameObject.h" />
+    <ClInclude Include="gameobject\kgGameObjectManager.h" />
+    <ClInclude Include="graphics\2D\kgFont.h" />
     <ClInclude Include="graphics\2D\Sprite.h" />
     <ClInclude Include="graphics\animation\Animation.h" />
     <ClInclude Include="graphics\animation\AnimationClip.h" />
@@ -166,18 +166,18 @@
     <ClInclude Include="graphics\RenderTarget.h" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\ShaderResources.h" />
-    <ClInclude Include="graphics\shadow\ShadowMap.h" />
+    <ClInclude Include="graphics\shadow\kgShadowMap.h" />
     <ClInclude Include="graphics\Skeleton.h" />
     <ClInclude Include="graphics\SkinModel.h" />
     <ClInclude Include="graphics\SkinModelDataManager.h" />
     <ClInclude Include="graphics\SkinModelEffect.h" />
-    <ClInclude Include="graphics\SkinModelRender.h" />
+    <ClInclude Include="graphics\kgSkinModelRender.h" />
     <ClInclude Include="graphics\SkinModelShaderConst.h" />
     <ClInclude Include="HID\Pad.h" />
     <ClInclude Include="kgEngine.h" />
     <ClInclude Include="level\Level.h" />
     <ClInclude Include="level\MapChip.h" />
-    <ClInclude Include="math\Box.h" />
+    <ClInclude Include="math\kgBox.h" />
     <ClInclude Include="math\kMath.h" />
     <ClInclude Include="math\Matrix.h" />
     <ClInclude Include="math\Vector.h" />

@@ -1,5 +1,5 @@
 #include "KGstdafx.h"
-#include "Box.h"
+#include "kgBox.h"
 
 CBox::CBox()
 {

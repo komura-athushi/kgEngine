@@ -49,6 +49,7 @@ MOVESTATUS MOJI::FindMove(const wchar_t* moji)
 			Move = wcstof(Moji, &mo);
 			//ステートを設定
 			State = MOVESTATE[i];
+			//ステートがパスだったら番号読み込む、移動範囲の取得は必要無し	
 			if (State == enMove_Path) {
 				const wchar_t* M = moji;
 				const wchar_t* dest = wcsstr(M, PATHNUMBER);

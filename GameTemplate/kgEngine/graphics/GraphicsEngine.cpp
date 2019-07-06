@@ -1,6 +1,6 @@
 #include "KGstdafx.h"
 #include "GraphicsEngine.h"
-#include "shadow/ShadowMap.h"
+#include "shadow/kgShadowMap.h"
 
 GraphicsEngine::GraphicsEngine()
 {

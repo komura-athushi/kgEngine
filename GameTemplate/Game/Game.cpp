@@ -17,6 +17,8 @@ Game::~Game()
 {
 	DeleteGO(m_ground);
 	DeleteGO(m_gamecamera);
+	DeleteGO(m_player);
+	DeleteGO(m_ground);
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		DeleteGO(object);
 		return true;

@@ -33,6 +33,6 @@ private:
 	float m_radius = 0.0f;								//カメラの半径
 	const float m_protradius = 260.0f;					//カメラの最初の半径
 	StateEnterStick m_state = enStick_NoEnterStick;		//スティックの入力について
-	float m_Multiply = 1.0f;
+	float m_Multiply = 1.0f;							//カメラと塊の距離の倍率
 };
 

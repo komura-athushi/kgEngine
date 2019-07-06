@@ -119,20 +119,8 @@
     </ClCompile>
     <ClCompile Include="KGstdafx.cpp" />
     <ClCompile Include="kgEngine.cpp" />
-    <ClCompile Include="gameobject\GameObject.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="gameobject\GameObjectManager.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics\SkinModelRender.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
     <ClCompile Include="graphics\RenderTarget.cpp">
       <Filter>graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics\shadow\ShadowMap.cpp">
-      <Filter>graphics\shadow</Filter>
     </ClCompile>
     <ClCompile Include="sound\SundEngine.cpp">
       <Filter>sound</Filter>
@@ -146,10 +134,22 @@
     <ClCompile Include="physics\BoxCollider.cpp">
       <Filter>physics</Filter>
     </ClCompile>
-    <ClCompile Include="math\Box.cpp">
+    <ClCompile Include="graphics\shadow\kgShadowMap.cpp">
+      <Filter>graphics\shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\kgSkinModelRender.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\kgGameObjectManager.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\kgGameObject.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="math\kgBox.cpp">
       <Filter>math</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\2D\CFont.cpp">
+    <ClCompile Include="graphics\2D\kgFont.cpp">
       <Filter>graphics\2D</Filter>
     </ClCompile>
   </ItemGroup>
@@ -234,30 +234,12 @@
     </ClInclude>
     <ClInclude Include="KGstdafx.h" />
     <ClInclude Include="kgEngine.h" />
-    <ClInclude Include="gameobject\GameObject.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="gameobject\GameObjectManager.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
     <ClInclude Include="Noncopyable.h" />
     <ClInclude Include="util\Util.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\SkinModelRender.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="timer\GameTime.h">
-      <Filter>timer</Filter>
-    </ClInclude>
-    <ClInclude Include="timer\StopWatch.h">
-      <Filter>timer</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\RenderTarget.h">
       <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics\shadow\ShadowMap.h">
-      <Filter>graphics\shadow</Filter>
     </ClInclude>
     <ClInclude Include="sound\SundEngine.h">
       <Filter>sound</Filter>
@@ -271,10 +253,28 @@
     <ClInclude Include="physics\BoxCollider.h">
       <Filter>physics</Filter>
     </ClInclude>
-    <ClInclude Include="math\Box.h">
+    <ClInclude Include="graphics\shadow\kgShadowMap.h">
+      <Filter>graphics\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\kgSkinModelRender.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="timer\StopWatch.h">
+      <Filter>timer</Filter>
+    </ClInclude>
+    <ClInclude Include="timer\GameTime.h">
+      <Filter>timer</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\kgGameObjectManager.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\kgGameObject.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="math\kgBox.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\2D\CFont.h">
+    <ClInclude Include="graphics\2D\kgFont.h">
       <Filter>graphics\2D</Filter>
     </ClInclude>
   </ItemGroup>

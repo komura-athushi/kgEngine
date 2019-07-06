@@ -1,5 +1,5 @@
 #pragma once
-#include "shadow/ShadowMap.h"
+#include "shadow/kgShadowMap.h"
 class ShadowMap;
 /*!
  *@brief	グラフィックスエンジン。

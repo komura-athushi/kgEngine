@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "gameobject/GameObjectManager.h"
+#include "gameobject/kgGameObjectManager.h"
 #include "timer/StopWatch.h"
 #include "timer/GameTime.h"
 #include "HID/Pad.h"
@@ -68,12 +68,12 @@ public:
 		return m_pad[padNo];
 	}
 private:
-	HWND m_hWnd = NULL;
-	GraphicsEngine* m_graphicsEngine = nullptr;
-	PhysicsWorld* m_physicsEngine = nullptr;
-	CGameObjectManager* m_gameobjectmanager = nullptr;
-	CStopWatch m_watch;
-	Pad m_pad[Pad::CONNECT_PAD_MAX];
+	HWND m_hWnd = NULL;				
+	GraphicsEngine* m_graphicsEngine = nullptr;							//グラフィックエンジン
+	PhysicsWorld* m_physicsEngine = nullptr;							//物理エンジン
+	CGameObjectManager* m_gameobjectmanager = nullptr;					//ゲームオブジェクトマネージャー
+	CStopWatch m_watch;													//ゲーム内時間を図る
+	Pad m_pad[Pad::CONNECT_PAD_MAX];									//パッド
 };
 
 

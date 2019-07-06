@@ -12,8 +12,16 @@ public:
 	{
 		Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
 	};
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="position">座標</param>
 	void Init(const CVector3& position);
-	//実行
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="position">座標</param>
+	/// <param name="linesegment">線分</param>
 	void Execute(const CVector3& position, const CVector3& linesegment);
 private:
 	CVector3 			m_position = CVector3::Zero();	//座標。
@@ -23,6 +31,6 @@ private:
 	float				m_radius = 0.01f;				//半径
 	bool				m_isSphere = false;				//球体かどうか
 	RigidBody			m_rigidBody;					//剛体。		
-	Player* m_player = nullptr;
+	Player* m_player = nullptr;							//プレイヤー
 };
 

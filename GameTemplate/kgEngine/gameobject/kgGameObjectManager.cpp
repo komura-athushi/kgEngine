@@ -1,5 +1,5 @@
 #include "KGstdafx.h"
-#include "GameObjectManager.h"
+#include "kgGameObjectManager.h"
 
 
 void CGameObjectManager::Start()

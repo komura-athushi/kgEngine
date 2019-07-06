@@ -24,7 +24,6 @@ public:
 	void PreUpdate() override final;
 	//ワールド行列を更新
 	void UpdateWorldMatrix();
-private:
 	//アニメーションの初期化
 	void InitAnimation(AnimationClip* animationClips, int numAnimationClips);
 public:
@@ -120,8 +119,9 @@ private:
 	CVector3 m_position = CVector3::Zero();						//座標
 	CVector3 m_scale = CVector3::One();							//大きさ
 	CQuaternion m_rotation = CQuaternion::Identity();			//回転
-	CMatrix m_worldMatrix;
+	CMatrix m_worldMatrix;										//ワールド行列
 	bool m_isActive = false;									//アクティブかどうか
 	bool m_update = false;										//座標とか大きさが更新されたかどうか、初回は必ずtrueにして処理させる
+	bool m_isInitAnimation = false;								//アニメーションを初期化したかどうか
 };
 

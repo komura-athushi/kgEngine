@@ -24,10 +24,15 @@ Obj::~Obj()
 
 void Obj::SetFilePath(const wchar_t* path)
 {
-	m_filepath = path;
 	wchar_t filepath[256];
 	swprintf_s(filepath, L"Resource/modelData/%ls.cmo", path);
-	m_skin.Init(filepath);
+	if (wcscmp(path, L"ozunko") == 0) {
+		m_skin.Init(filepath,nullptr,0,enFbxUpAxisY);
+	}
+	else {
+		m_skin.Init(filepath);
+	}
+	
 }
 
 bool Obj::Start()
@@ -42,14 +47,15 @@ bool Obj::Start()
 		m_lenght = m_size * 2;
 	}
 	else {
-		//m_staticobject.CreateMeshObject(&m_skin, m_position, m_rotation);
 		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2});
-		//m_staticobject.CreateBoxObject(m_position, m_rotation, { m_objdata->s_x,m_objdata->s_y,m_objdata->s_z});
 		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
 	}
 	if (m_objdata->s_islinesegment == 1) {
 		m_islinesegment = true;
 		m_linevector = m_objdata->s_linevector;
+	}
+	if (m_objdata->s_isanimation == 1) {
+		m_anim.Init(m_objdata->s_name, &m_skin);
 	}
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
@@ -173,6 +179,7 @@ void Obj::Update()
 		if (m_movestate != enMove_No || m_rotstate != enRot_No) {
 			ClcVertex();
 		}
+		m_anim.PlayAnimation(m_movestate);
 		m_skin.SetPosition(m_position);
 		m_skin.SetRotation(m_rotation);
 	}	

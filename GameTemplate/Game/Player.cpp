@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "GameCamera.h"
 #include "Object/Obj.h"
-#include "math/Box.h"
+#include "math/kgBox.h"
 Player::Player()
 {
 	
@@ -30,10 +30,11 @@ bool Player::Start()
 	);
 	m_beforeposition = m_position;
 	//ëÃêœÇãÅÇﬂÇÈ
-	m_volume = m_PI * pow(m_radius, 3.0f) * 4 / 3;
+	m_volume = CMath::PI * pow(m_radius, 3.0f) * 4 / 3;
 
 	//êlå^ÇÃÉÇÉfÉã
 	m_skinModelRender2.Init(L"Resource/modelData/zunko.cmo");
+	m_sprite.Init(L"Resource/sprite/a.dds");
 	return true;
 }
 
@@ -79,7 +80,7 @@ void Player::Judgment()
 				if (diff.LengthSq() <= pow(m_radius + object->GetSize(), 2.0f) * Multiply) {
 					object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 					m_volume += object->GetObjData().s_volume * SizeMultiply;
-					m_radius = pow(3 * m_volume / (4 * m_PI), 1.0 / 3.0f);
+					m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
 					m_characon.SetRadius(m_radius);
 					return true;
 				}
@@ -89,7 +90,7 @@ void Player::Judgment()
 					if (pow(m_radius, 2.0f) * Multiply >= (object->GetBox()->SurfaceVector(i)- m_position - CVector3::AxisY() * m_radius).LengthSq()) {
 						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 						m_volume += object->GetObjData().s_volume * SizeMultiply;
-						m_radius = pow(3 * m_volume / (4 * m_PI), 1.0 / 3.0f);
+						m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
 						m_characon.SetRadius(m_radius);
 						return true;
 					}
@@ -145,7 +146,7 @@ void Player::Move()
 	}
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
 	if (m_characon.IsOnGround()) {
-		/*if (m_isbound) {
+		if (m_isbound) {
 			m_movespeed.y = -MoveSpeedY * BoundMultiply;
 		}
 		else {
@@ -153,8 +154,8 @@ void Player::Move()
 			if (GetPad(0).IsTrigger(enButtonB)) {
 				m_movespeed.y = JumpMoveSpeed;
 			}
-		}*/
-		m_movespeed.y = 0.0f;
+		}
+		//m_movespeed.y = 0.0f;
 	}
 	m_movespeed *= MoveSpeedAtten;
 }
@@ -184,8 +185,7 @@ void Player::Turn()
 void Player::PostRender()
 {
 	wchar_t output[256];
-	//int i = m_radius;
 	swprintf_s(output, L"îºåa  %.1f", m_radius);
 	m_font.DrawScreenPos(output, CVector2(0.0f,200.0f));
-
+	m_sprite.DrawScreenPos(CVector2::Zero());
 }

@@ -41,6 +41,9 @@
     <ClInclude Include="Object\Move\Path.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Anim\Anim.h">
+      <Filter>Object\Anim</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -84,16 +87,13 @@
     <ClCompile Include="Object\Move\Path.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Anim\Anim.cpp">
+      <Filter>Object\Anim</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
       <UniqueIdentifier>{3700eeae-5870-4565-b4dd-21f789ffeec7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset\ground">
-      <UniqueIdentifier>{e5e9dee3-6e99-4079-8ded-013b5edfe962}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset\sphere">
-      <UniqueIdentifier>{4cc39c0f-1405-477b-a208-3115622572be}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{924f0cf8-9016-4286-b8a2-20a2ced79636}</UniqueIdentifier>
@@ -104,45 +104,68 @@
     <Filter Include="Object\Rot">
       <UniqueIdentifier>{70bf44a6-429c-4dc7-83c7-ad18c28fe9c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\obj">
+    <Filter Include="Object\Anim">
+      <UniqueIdentifier>{00b1ff9c-0754-4c0c-afad-391158bf1bc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\modelData">
+      <UniqueIdentifier>{9358ac17-ecd0-4559-810c-5bee9d8ec9dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\modelData\sphere">
+      <UniqueIdentifier>{4cc39c0f-1405-477b-a208-3115622572be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\modelData\obj">
       <UniqueIdentifier>{985b6ba9-b72f-4429-9367-3f33c92b57a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\modelData\ground">
+      <UniqueIdentifier>{e5e9dee3-6e99-4079-8ded-013b5edfe962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\sprite">
+      <UniqueIdentifier>{5632e855-b420-423b-98aa-0b47586477d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\ground\ground.FBX">
-      <Filter>Asset\ground</Filter>
+      <Filter>Asset\modelData\ground</Filter>
     </None>
     <None Include="Assets\modelData\obj\obox1.FBX">
-      <Filter>Asset\obj</Filter>
+      <Filter>Asset\modelData\obj</Filter>
     </None>
     <None Include="Assets\modelData\obj\obox3.FBX">
-      <Filter>Asset\obj</Filter>
+      <Filter>Asset\modelData\obj</Filter>
     </None>
     <None Include="Assets\modelData\sphere\sphere.FBX">
-      <Filter>Asset\sphere</Filter>
+      <Filter>Asset\modelData\sphere</Filter>
     </None>
     <None Include="Assets\modelData\sphere\sphere2.FBX">
-      <Filter>Asset\sphere</Filter>
+      <Filter>Asset\modelData\sphere</Filter>
     </None>
     <None Include="Assets\modelData\obj\obox2.FBX">
-      <Filter>Asset\obj</Filter>
+      <Filter>Asset\modelData\obj</Filter>
     </None>
     <None Include="Assets\modelData\obj\obox4.FBX">
-      <Filter>Asset\obj</Filter>
+      <Filter>Asset\modelData\obj</Filter>
     </None>
     <None Include="Assets\modelData\obj\obox5.FBX">
-      <Filter>Asset\obj</Filter>
+      <Filter>Asset\modelData\obj</Filter>
     </None>
     <None Include="Assets\modelData\obj\obox6.FBX">
-      <Filter>Asset\obj</Filter>
+      <Filter>Asset\modelData\obj</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\obj\oboxpath1.FBX">
-      <Filter>Asset\obj</Filter>
+      <Filter>Asset\modelData\obj</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\ozunko.FBX">
+      <Filter>Asset\modelData\obj</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\zunko\zunko.FBX">
-      <Filter>Asset</Filter>
+      <Filter>Asset\modelData</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\sprite\a.png">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

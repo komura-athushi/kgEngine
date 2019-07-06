@@ -1,5 +1,5 @@
 #include "KGstdafx.h"
-#include "ShadowMap.h"
+#include "kgShadowMap.h"
 
 ShadowMap::ShadowMap()
 {

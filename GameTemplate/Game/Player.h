@@ -1,6 +1,6 @@
 #pragma once
 #include "character/CharacterController.h"
-#include "graphics/2D/CFont.h"
+#include "graphics/2D/kgFont.h"
 class GameCamera;
 //(⌒,_ゝ⌒)球体ですわぁ...
 class Player:public IGameObject
@@ -11,7 +11,6 @@ public:
 	bool Start() override;
 	void Update() override;
 	void PostRender() override;
-	//void OnDestroy() override;
 	//移動
 	void Move();
 	//回転
@@ -61,11 +60,11 @@ public:
 		m_movespeed.y = 0.0f;
 	}
 private:
-	CharacterController m_characon;
-	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();
-	CVector3 m_movespeed = CVector3::Zero();
-	CVector3 m_scale = CVector3::One();
-	CQuaternion m_rotation = CQuaternion::Identity();
+	CharacterController m_characon;																//キャラコン
+	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();			//座標
+	CVector3 m_movespeed = CVector3::Zero();													//移動ベクトル
+	CVector3 m_scale = CVector3::One();															//大きさ
+	CQuaternion m_rotation = CQuaternion::Identity();											//回転
 	//アニメーション
 	enum EnAnimationClip {
 		enAnimationClip_idle,
@@ -86,17 +85,17 @@ private:
 		enState_num
 	};
 	EnState m_state = enState_idle;
-	CSkinModelRender m_skinModelRender;									//スキンモデル。
-	CSkinModelRender m_skinModelRender2;								//人のモデル
-	GameCamera* m_gamecamera = nullptr;
-	bool m_isjump = false;
-	float m_radius = 45.0f;
-	const float m_protradius = 45.0f;
-	float m_volume = 0.0f;
-	const float m_protmovespeedmultiply = 5.0f;
-	float m_movespeedmultiply = 5.0f;
-	bool m_isbound = false;
-	const float m_PI = 3.14f;
-	CFont m_font;
+	CSkinModelRender m_skinModelRender;															//スキンモデル。
+	CSkinModelRender m_skinModelRender2;														//人のモデル
+	GameCamera* m_gamecamera = nullptr;															//カメラ
+	bool m_isjump = false;																		//ジャンプ中かどうか
+	float m_radius = 45.0f;																		//球体の半径
+	const float m_protradius = 45.0f;															//最初の球体の半径	
+	float m_volume = 0.0f;																		
+	const float m_protmovespeedmultiply = 5.0f;													//最初の移動速度
+	float m_movespeedmultiply = 5.0f;															//移動速度
+	bool m_isbound = false;																		//バウンド中かどうか
+	CFont m_font;																				//文字
+	CSprite m_sprite;
 };
 

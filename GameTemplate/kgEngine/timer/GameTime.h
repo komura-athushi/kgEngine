@@ -3,7 +3,7 @@
 #include <queue>
 #include <list>
 #include <minwindef.h>
-#include "graphics/2D/CFont.h"
+#include "graphics/2D/kgFont.h"
 //ゲーム時間、1フレームごとの経過時間(秒)を測ったりとか
 class CGameTime {
 private:

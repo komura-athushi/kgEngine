@@ -1,6 +1,6 @@
 #include "KGstdafx.h"
-#include "GameObject.h"
-#include "GameObjectManager.h"
+#include "kgGameObject.h"
+#include "kgGameObjectManager.h"
 IGameObject::IGameObject() :
 	m_priority(0),
 	m_isStart(false),

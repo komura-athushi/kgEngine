@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..//Noncopyable.h"
+#include "Noncopyable.h"
 //typedef 既存の型を新しい型にするっていう、名前が変わるだけかな
 typedef unsigned char GameObjectPrio;
 //GameObject Update関数とか使いたかったらこれを継承

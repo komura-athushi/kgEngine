@@ -1,7 +1,7 @@
 #include "KGstdafx.h"
-#include "SkinModelRender.h"
+#include "kgSkinModelRender.h"
 #include "SkinModelDataManager.h"
-#include "shadow/ShadowMap.h"
+#include "shadow/kgShadowMap.h"
 CSkinModelRender::CSkinModelRender()
 {
 
@@ -33,10 +33,14 @@ void CSkinModelRender::Init(
 
 void CSkinModelRender::InitAnimation(AnimationClip* animationClips, int numAnimationClips)
 {
+	if (m_isInitAnimation) {
+		return;
+	}
 	m_animationClip = animationClips;
 	m_numAnimationClips = numAnimationClips;
 	if (m_animationClip != nullptr) {
 		m_animation.Init(m_skinModel, m_animationClip, m_numAnimationClips);
+		m_isInitAnimation = true;
 	}
 }
 

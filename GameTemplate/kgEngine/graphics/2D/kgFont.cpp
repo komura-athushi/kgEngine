@@ -1,5 +1,5 @@
 #include "KGstdafx.h"
-#include "CFont.h"
+#include "kgFont.h"
 
 DirectX::SpriteFont* FontFactory::Load(const wchar_t* path)
 {

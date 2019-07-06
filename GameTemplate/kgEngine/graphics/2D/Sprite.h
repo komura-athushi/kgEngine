@@ -9,24 +9,20 @@ public:
 	CSprite();
 	//デストラクタ
 	~CSprite();
-	/*!
-	* @brief	初期化。
-	*@param[in]	filePath	ファイルパス
-	*@param[in]	w		幅。
-	*@param[in]	h		高さ。
-	*/
+	//初期化
+	void Init(const wchar_t* fileName);
+	//スクリーン座標指定で画像を描画
+	void DrawScreenPos(const CVector2& pos,
+		const CVector2& scale = CVector2::One(),
+		const CVector2& pivot = CVector2::Zero(),
+		float rotation = 0.0f,
+		const CVector4 & color = CVector4::White(),
+		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
+		float layerDepth = 0.5f);
 private:
-	struct SSpriteCB {
-		CMatrix WVP;				//ワールドビュープロジェクション行列
-		CVector4 mulColor;			//乗算カラー
-	};
-		CVector3 _position = CVector3::Zero();
-		CQuaternion m_rotation = CQuaternion::Identity();
-		CVector3 m_scale = CVector3::One();
-		CMatrix m_world = CMatrix::Identity();
-		Shader* m_ps;
-		Shader* m_vs;
-		CVector4 m_mulcolor = CVector4::White();
-
-
+	CVector2 m_screenSize = CVector2::Zero();
+	DirectX::SpriteBatch* m_spriteBatch = nullptr;
+	ID3D11ShaderResourceView* m_srv = nullptr;
+	ID3D11Resource* m_tex = nullptr;
+	unsigned int m_width, m_height;
 };

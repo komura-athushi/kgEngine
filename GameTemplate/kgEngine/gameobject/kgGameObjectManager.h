@@ -3,9 +3,9 @@
 #include <unordered_map>
 #include <list>
 
-#include "GameObject.h"
-#include "..///util/Util.h"
-#include "..//Noncopyable.h"
+#include "kgGameObject.h"
+#include "util/Util.h"
+#include "Noncopyable.h"
 //GameObject‚ğŠÇ—‚·‚é‚â‚Â
 class CGameObjectManager :Noncopyable
 {

@@ -51,13 +51,14 @@
 
 #include "KgEngine.h"
 #include "Noncopyable.h"
-#include "gameobject/GameObject.h"
-#include "gameobject/GameObjectManager.h"
-#include "graphics/SkinModelRender.h"
+#include "gameobject/kgGameObject.h"
+#include "gameobject/kgGameObjectManager.h"
+#include "graphics/kgSkinModelRender.h"
 #include "timer/GameTime.h"
 #include "timer/StopWatch.h"
-#include "graphics/shadow/ShadowMap.h"
+#include "graphics/shadow/kgShadowMap.h"
 #include "graphics/RenderTarget.h"
+#include "graphics/2D/Sprite.h"
 const float FRAME_BUFFER_W = 1280.0f;				//フレームバッファの幅。
 const float FRAME_BUFFER_H = 720.0f;				//フレームバッファの高さ。
 
