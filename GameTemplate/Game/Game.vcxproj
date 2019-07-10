@@ -224,8 +224,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\ozunko.FBX" />
-    <MeshContentTask Include="Assets\modelData\zunko\zunko.FBX" />
+    <None Include="Assets\modelData\obj\ozunko.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\zunko\zunko.FBX">
+      <FileType>Document</FileType>
+    </None>
     <None Include="Assets\modelData\obj\obox2.FBX">
       <FileType>Document</FileType>
     </None>
@@ -238,9 +242,9 @@
     <None Include="Assets\modelData\obj\obox6.FBX">
       <FileType>Document</FileType>
     </None>
-    <MeshContentTask Include="Assets\modelData\obj\oboxpath1.FBX">
+    <None Include="Assets\modelData\obj\oboxpath1.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\a.png" />

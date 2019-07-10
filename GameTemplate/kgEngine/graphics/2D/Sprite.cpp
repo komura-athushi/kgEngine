@@ -25,6 +25,22 @@ void CSprite::Init(const wchar_t* fileName)
 		std::abort();
 #endif
 	}
+	//作成するバッファのサイズをsizeof演算子で求める。
+	int bufferSize = sizeof(ConstantBuffer);
+	//どんなバッファを作成するのかをせてbufferDescに設定する。
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(bufferDesc));				//０でクリア。
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;						//バッファで想定されている、読み込みおよび書き込み方法。
+	bufferDesc.ByteWidth = (((bufferSize - 1) / 16) + 1) * 16;	//バッファは16バイトアライメントになっている必要がある。
+																//アライメントって→バッファのサイズが16の倍数ということです。
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;			//バッファをどのようなパイプラインにバインドするかを指定する。
+																//定数バッファにバインドするので、D3D11_BIND_CONSTANT_BUFFERを指定する。
+	bufferDesc.CPUAccessFlags = 0;								//CPU アクセスのフラグです。
+																//CPUアクセスが不要な場合は0。
+	m_ps.Load("Assets/shader/sprite.fx", "PSMain", Shader::EnType::PS);
+	m_vs.Load("Assets/shader/sprite.fx", "VSMain", Shader::EnType::VS);
+	//作成。
+	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_cb);
 }
 
 void CSprite::DrawScreenPos(
@@ -38,8 +54,21 @@ void CSprite::DrawScreenPos(
 )
 {
 	if (!m_srv) { return; }
+	ConstantBuffer cb;
+	cb.mulColor = m_mulColor;
 	layerDepth *= 0.999f; layerDepth += 0.001f;
 	layerDepth -= Engine().GetGraphicsEngine().AddAndGetLayerDepthCnt();
+	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin(DirectX::SpriteSortMode_BackToFront, nullptr, nullptr, nullptr, nullptr, [=]
+		{
+			auto device = Engine().GetGraphicsEngine().GetD3DDeviceContext();
+			device->UpdateSubresource(m_cb, 0, NULL, &cb, 0, 0);
+			//device->VSSetConstantBuffers(0,1, &m_cb);
+			device->PSSetConstantBuffers(0, 1, &m_cb);
+			device->PSSetShader((ID3D11PixelShader*)m_ps.GetBody(),NULL,0);
+			//device->VSSetShader((ID3D11VertexShader*)m_vs.GetBody(), NULL, 0);
+		}
+	);
 	m_spriteBatch->Draw(m_srv, pos.vec, nullptr, color, rotation, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(scale.x, scale.y), effects, layerDepth);
+	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
 }
 

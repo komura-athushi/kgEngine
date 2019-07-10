@@ -58,7 +58,7 @@ void CFont::DrawScreenPos(
 
 	layerDepth *= 0.999f; layerDepth += 0.001f;
 	layerDepth -= Engine().GetGraphicsEngine().AddAndGetLayerDepthCnt();
-
+	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin(DirectX::SpriteSortMode_BackToFront);
 	m_spriteFont->DrawString(
 		m_spriteBatch,
 		text,
@@ -70,5 +70,6 @@ void CFont::DrawScreenPos(
 		effects,
 		layerDepth
 	);
+	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
 }
 

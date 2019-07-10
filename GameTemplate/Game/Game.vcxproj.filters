@@ -151,17 +151,15 @@
     <None Include="Assets\modelData\obj\obox6.FBX">
       <Filter>Asset\modelData\obj</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\oboxpath1.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\ozunko.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\zunko\zunko.FBX">
+    <None Include="Assets\modelData\zunko\zunko.FBX">
       <Filter>Asset\modelData</Filter>
-    </MeshContentTask>
+    </None>
+    <None Include="Assets\modelData\obj\ozunko.FBX">
+      <Filter>Asset\modelData\obj</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\oboxpath1.FBX">
+      <Filter>Asset\modelData\obj</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\a.png">
