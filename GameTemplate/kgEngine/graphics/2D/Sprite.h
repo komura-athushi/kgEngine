@@ -29,7 +29,9 @@ private:
 	ID3D11Resource* m_tex = nullptr;
 	unsigned int m_width, m_height;
 	ID3D11Buffer* m_cb = nullptr;							//!<定数バッファ。
+	ID3D11Buffer* m_dg = nullptr;							//定数バッファ(角度)
 	Shader m_ps;
 	Shader m_vs;
-	CVector4 m_mulColor = CVector4::Blue();				//乗算カラー
+	CVector4 m_mulColor = CVector4::White();				//乗算カラー
+	float m_degree = 0.0f;
 };
