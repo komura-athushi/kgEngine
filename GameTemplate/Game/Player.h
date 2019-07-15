@@ -96,6 +96,8 @@ private:
 	float m_movespeedmultiply = 5.0f;															//移動速度
 	bool m_isbound = false;																		//バウンド中かどうか
 	CFont m_font;																				//文字
-	CSprite m_sprite;
+	/*CSprite m_sprite;
+	CSprite m_sprite2;
+	float m_degree = 0.0f;*/
 };
 

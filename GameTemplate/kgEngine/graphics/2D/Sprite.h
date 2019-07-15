@@ -3,22 +3,31 @@
 //スプライト
 class CSprite {
 public:
-	//デフォルトのUV座標
-	static const CVector2 DEFAULT_PIVOT;
 	//コンストラクタ
 	CSprite();
 	//デストラクタ
 	~CSprite();
 	//初期化
-	void Init(const wchar_t* fileName);
-	//スクリーン座標指定で画像を描画
+	void Init(const wchar_t* fileName, bool isCircleGauge  = false);
+	/// <summary>
+	/// スクリーン座標指定で描画
+	/// </summary>
+	/// <param name="pos">座標</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="pivot">ユニティ基準のピボット</param>
+	/// <param name="rotation">回転</param>
+	/// <param name="color">透明度(z)</param>
+	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
+	/// <param name="layerDepth">描画する順番</param>
+	/// <param name="degree">ピクセルを表示する角度</param>
 	void DrawScreenPos(const CVector2& pos,
 		const CVector2& scale = CVector2::One(),
-		const CVector2& pivot = CVector2::Zero(),
+		const CVector2& pivot = CVector2(0.5f,0.5f),
 		float rotation = 0.0f,
 		const CVector4 & color = CVector4::White(),
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
-		float layerDepth = 0.5f);
+		float layerDepth = 0.5f,
+		float degree = 0.0f);
 private:
 	struct ConstantBuffer {
 		CVector4 mulColor;
@@ -31,7 +40,7 @@ private:
 	ID3D11Buffer* m_cb = nullptr;							//!<定数バッファ。
 	ID3D11Buffer* m_dg = nullptr;							//定数バッファ(角度)
 	Shader m_ps;
-	Shader m_vs;
-	CVector4 m_mulColor = CVector4::White();				//乗算カラー
 	float m_degree = 0.0f;
+	bool m_isCircleGauge = false;							//円形ゲージにするかどうか
+	RECT m_sourceRectangle;									//画像サイズ
 };

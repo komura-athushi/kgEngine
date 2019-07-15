@@ -5,6 +5,7 @@ class Ground;
 class Player;
 class GameCamera;
 class Obj;
+class Time;
 //ƒQ[ƒ€ƒNƒ‰ƒX
 class Game:public IGameObject
 {
@@ -22,5 +23,6 @@ private:
 	float m_timer = 0.0f;
 	//level
 	Level m_level;
+	Time* m_time;
 };
 

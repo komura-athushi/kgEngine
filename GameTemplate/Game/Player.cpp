@@ -34,7 +34,6 @@ bool Player::Start()
 
 	//êlå^ÇÃÉÇÉfÉã
 	m_skinModelRender2.Init(L"Resource/modelData/zunko.cmo");
-	m_sprite.Init(L"Resource/sprite/a.dds");
 	return true;
 }
 
@@ -186,7 +185,5 @@ void Player::PostRender()
 {
 	wchar_t output[256];
 	swprintf_s(output, L"îºåa  %.1f", m_radius);
-	m_font.DrawScreenPos(output, CVector2(0.0f,200.0f));
-	m_sprite.DrawScreenPos(CVector2::Zero());
-
+	m_font.DrawScreenPos(output, CVector2(0.0f, 200.0f));
 }

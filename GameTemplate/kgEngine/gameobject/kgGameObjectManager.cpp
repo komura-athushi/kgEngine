@@ -43,7 +43,7 @@ void CGameObjectManager::PostRender()
 	}
 	GameTime().Draw();
 	/*Engine().GetGraphicsEngine().GetSpriteBatchPMA()->End();*/
-	Engine().GetGraphicsEngine().ResetLayerDepthCnt();
+	//Engine().GetGraphicsEngine().ResetLayerDepthCnt();
 }
 
 void CGameObjectManager::Draw()

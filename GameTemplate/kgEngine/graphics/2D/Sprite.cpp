@@ -12,8 +12,9 @@ CSprite::~CSprite()
 
 }
 
-void CSprite::Init(const wchar_t* fileName)
+void CSprite::Init(const wchar_t* fileName, bool isCircleGauge)
 {
+	m_isCircleGauge = isCircleGauge;
 	HRESULT hr;
 	hr = DirectX::CreateDDSTextureFromFile(Engine().GetGraphicsEngine().GetD3DDevice(), fileName, &m_tex, &m_srv);
 	m_spriteBatch = Engine().GetGraphicsEngine().GetSpriteBatch();
@@ -25,31 +26,54 @@ void CSprite::Init(const wchar_t* fileName)
 		std::abort();
 #endif
 	}
+	//画像サイズの取得
+	D3D11_RESOURCE_DIMENSION resType = D3D11_RESOURCE_DIMENSION_UNKNOWN;
+	m_tex->GetType(&resType);
+	switch (resType) {
+	case D3D11_RESOURCE_DIMENSION_TEXTURE2D:
+	{
+		ID3D11Texture2D* tex2d = static_cast<ID3D11Texture2D*>(m_tex);
+		D3D11_TEXTURE2D_DESC desc;
+		tex2d->GetDesc(&desc);
+
+		//画像サイズの取得
+		m_width = desc.Width;
+		m_height = desc.Height;
+		m_sourceRectangle.top = 0;
+		m_sourceRectangle.left = 0;
+		m_sourceRectangle.bottom = desc.Height;
+		m_sourceRectangle.right = desc.Width;
+	}
+	break;
+	default:
+		break;
+	}
 	//作成するバッファのサイズをsizeof演算子で求める。
 	int bufferSize = sizeof(ConstantBuffer);
 	//どんなバッファを作成するのかをせてbufferDescに設定する。
 	D3D11_BUFFER_DESC bufferDesc;
-	ZeroMemory(&bufferDesc, sizeof(bufferDesc));				//０でクリア。
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;						//バッファで想定されている、読み込みおよび書き込み方法。
-	bufferDesc.ByteWidth = (((bufferSize - 1) / 16) + 1) * 16;	//バッファは16バイトアライメントになっている必要がある。
-																//アライメントって→バッファのサイズが16の倍数ということです。
-	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;			//バッファをどのようなパイプラインにバインドするかを指定する。
-																//定数バッファにバインドするので、D3D11_BIND_CONSTANT_BUFFERを指定する。
-	bufferDesc.CPUAccessFlags = 0;								//CPU アクセスのフラグです。
-																//CPUアクセスが不要な場合は0。
+	{
+		ZeroMemory(&bufferDesc, sizeof(bufferDesc));				//０でクリア。
+		bufferDesc.Usage = D3D11_USAGE_DEFAULT;						//バッファで想定されている、読み込みおよび書き込み方法。
+		bufferDesc.ByteWidth = (((bufferSize - 1) / 16) + 1) * 16;	//バッファは16バイトアライメントになっている必要がある。
+																	//アライメントって→バッファのサイズが16の倍数ということです。
+		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;			//バッファをどのようなパイプラインにバインドするかを指定する。
+																	//定数バッファにバインドするので、D3D11_BIND_CONSTANT_BUFFERを指定する。
+		bufferDesc.CPUAccessFlags = 0;								//CPU アクセスのフラグです。
+	}											//CPUアクセスが不要な場合は0。
 	int bufferSize2 = sizeof(float);
 	//どんなバッファを作成するのかをせてbufferDescに設定する。
 	D3D11_BUFFER_DESC bufferDesc2;
-	ZeroMemory(&bufferDesc2, sizeof(bufferDesc2));				//０でクリア。
-	bufferDesc2.Usage = D3D11_USAGE_DEFAULT;						//バッファで想定されている、読み込みおよび書き込み方法。
-	bufferDesc2.ByteWidth = (((bufferSize2 - 1) / 16) + 1) * 16;	//バッファは16バイトアライメントになっている必要がある。
-																	//アライメントって→バッファのサイズが16の倍数ということです。
-	bufferDesc2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;			//バッファをどのようなパイプラインにバインドするかを指定する。
-																	//定数バッファにバインドするので、D3D11_BIND_CONSTANT_BUFFERを指定する。
-	bufferDesc2.CPUAccessFlags = 0;								//CPU アクセスのフラグです。
-																	//CPUアクセスが不要な場合は0。
+	{
+		ZeroMemory(&bufferDesc2, sizeof(bufferDesc2));				//０でクリア。
+		bufferDesc2.Usage = D3D11_USAGE_DEFAULT;						//バッファで想定されている、読み込みおよび書き込み方法。
+		bufferDesc2.ByteWidth = (((bufferSize2 - 1) / 16) + 1) * 16;	//バッファは16バイトアライメントになっている必要がある。
+																		//アライメントって→バッファのサイズが16の倍数ということです。
+		bufferDesc2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;			//バッファをどのようなパイプラインにバインドするかを指定する。
+																		//定数バッファにバインドするので、D3D11_BIND_CONSTANT_BUFFERを指定する。
+		bufferDesc2.CPUAccessFlags = 0;								//CPU アクセスのフラグです。
+	}
 	m_ps.Load("Assets/shader/sprite.fx", "PSMain", Shader::EnType::PS);
-	m_vs.Load("Assets/shader/sprite.fx", "VSMain", Shader::EnType::VS);
 	//作成。
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_cb);
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc2, NULL, &m_dg);
@@ -62,29 +86,33 @@ void CSprite::DrawScreenPos(
 	float rotation,
 	const CVector4& color,
 	DirectX::SpriteEffects effects,
-	float layerDepth
+	float layerDepth,
+	float degree
 )
 {
-	m_degree += 0.5f;
 	if (!m_srv) { return; }
 	ConstantBuffer cb;
-	cb.mulColor = m_mulColor;
+	cb.mulColor = color;
 	layerDepth *= 0.999f; layerDepth += 0.001f;
 	layerDepth -= Engine().GetGraphicsEngine().AddAndGetLayerDepthCnt();
 	auto device = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin(DirectX::SpriteSortMode_BackToFront, nullptr, nullptr, nullptr, nullptr, [=]
 		{
-			device->UpdateSubresource(m_cb, 0, NULL, &cb, 0, 0);
-			//device->VSSetConstantBuffers(0,1, &m_cb);
+			device->UpdateSubresource(m_cb, 0, nullptr, &cb, 0, 0);
 			device->PSSetConstantBuffers(0, 1, &m_cb);
-			float Angle = m_degree * CMath::PI / 180.0f;
-			device->UpdateSubresource(m_dg, 0, NULL, &Angle, 0, 0);
+			float Angle;
+			if (m_isCircleGauge) {
+				Angle = degree * CMath::PI / 180.0f;
+			}
+			else {
+				Angle = CMath::PI * 2;
+			}
+			device->UpdateSubresource(m_dg, 0, nullptr, &Angle, 0, 0);
 			device->PSSetConstantBuffers(1, 1, &m_dg);
-			device->PSSetShader((ID3D11PixelShader*)m_ps.GetBody(),NULL,0);
-			//device->VSSetShader((ID3D11VertexShader*)m_vs.GetBody(), NULL, 0);
+			device->PSSetShader((ID3D11PixelShader*)m_ps.GetBody(), nullptr, 0);
 		}
 	);
-	m_spriteBatch->Draw(m_srv, pos.vec, nullptr, color, rotation, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(scale.x, scale.y), effects, layerDepth);
+	m_spriteBatch->Draw(m_srv, pos.vec, &m_sourceRectangle, CVector4::White(), rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(scale.x, scale.y), effects, layerDepth);
 	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
 }
 

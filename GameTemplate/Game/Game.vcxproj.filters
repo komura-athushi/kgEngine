@@ -44,6 +44,7 @@
     <ClInclude Include="Object\Anim\Anim.h">
       <Filter>Object\Anim</Filter>
     </ClInclude>
+    <ClInclude Include="Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="Object\Anim\Anim.cpp">
       <Filter>Object\Anim</Filter>
     </ClCompile>
+    <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -162,7 +164,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\a.png">
+    <ImageContentTask Include="Assets\sprite\clockkari.png">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\clockkari2.png">
       <Filter>Asset\sprite</Filter>
     </ImageContentTask>
   </ItemGroup>

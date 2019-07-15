@@ -16,12 +16,21 @@ public:
 	CFont();
 	~CFont();
 	//フォントをロードする
-	void LoadFont(const wchar_t* path) {
+	void LoadFont(const wchar_t* path) 
+	{
 		m_spriteFont = m_fontfactory.Load(path);
 	}
-	//描画する
-	//※layerDepthの第三小数点以下は使わないほうがいいと思う
-	//const CVector2& pos は0.0f～1.0fの範囲。{0.0f,0.0f}で画面左上
+	/// <summary>
+	/// 描画する
+	/// </summary>
+	/// <param name="text">文字</param>
+	/// <param name="pos">座標、{0.0f,0.0f}～{1.0f,1.0f}の間</param>
+	/// <param name="color">色</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="pivot">ピボット</param>
+	/// <param name="rotation">回転</param>
+	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
+	/// <param name="layerDepth">描画する順番</param>
 	void Draw(
 		wchar_t const* text,
 		const CVector2& pos,
@@ -32,7 +41,17 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layerDepth = 0.5f
 	);
-	//const CVector2& pos をスクリーン座標で指定する版。右下の座標=画面解像度　
+	/// <summary>
+	///描画、座標をスクリーン座標で指定 
+	/// </summary>
+	/// <param name="text">文字</param>
+	/// <param name="pos">スクリーン座標</param>
+	/// <param name="color">色</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="pivot">ピボット</param>
+	/// <param name="rotation">回転</param>
+	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
+	/// <param name="layerDepth">描画する順番</param>
 	void DrawScreenPos(
 		wchar_t const* text,
 		const CVector2& pos,

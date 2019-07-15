@@ -8,6 +8,7 @@
 #include "Object/Rotation/IRot.h"
 #include "Object/ObjectData.h"
 #include "Moji.h"
+#include "Time.h"
 Game::Game()
 {
 
@@ -61,6 +62,8 @@ bool Game::Start()
 		}
 		return true;
 	});
+	m_time = NewGO<Time>(0);
+	m_time->SetTime(20.0f * 60.0f);
 	return true;
 }
 
