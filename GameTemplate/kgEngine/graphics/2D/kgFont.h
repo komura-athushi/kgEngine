@@ -30,7 +30,7 @@ public:
 	/// <param name="pivot">ピボット</param>
 	/// <param name="rotation">回転</param>
 	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
-	/// <param name="layerDepth">描画する順番</param>
+	/// <param name="layerDepth">描画する順番(今は機能してません。。。)</param>
 	void Draw(
 		wchar_t const* text,
 		const CVector2& pos,

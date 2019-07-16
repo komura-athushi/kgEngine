@@ -171,4 +171,9 @@
       <Filter>Asset\sprite</Filter>
     </ImageContentTask>
   </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\obj\ohito.FBX">
+      <Filter>Asset\modelData\obj</Filter>
+    </MeshContentTask>
+  </ItemGroup>
 </Project>

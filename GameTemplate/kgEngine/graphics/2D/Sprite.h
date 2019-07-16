@@ -18,7 +18,7 @@ public:
 	/// <param name="rotation">回転</param>
 	/// <param name="color">透明度(z)</param>
 	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
-	/// <param name="layerDepth">描画する順番</param>
+	/// <param name="layerDepth">描画する順番(今は機能してません。。。)</param>
 	/// <param name="degree">ピクセルを表示する角度</param>
 	void DrawScreenPos(const CVector2& pos,
 		const CVector2& scale = CVector2::One(),

@@ -185,5 +185,5 @@ void Player::PostRender()
 {
 	wchar_t output[256];
 	swprintf_s(output, L"”¼Œa  %.1f", m_radius);
-	m_font.DrawScreenPos(output, CVector2(0.0f, 200.0f));
+	m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
 }
