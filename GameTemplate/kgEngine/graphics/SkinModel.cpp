@@ -78,7 +78,7 @@ void SkinModel::InitConstantBuffer()
 	int bufferSize = sizeof(SVSConstantBuffer);
 	//どんなバッファを作成するのかをせてbufferDescに設定する。
 	D3D11_BUFFER_DESC bufferDesc;
-	ZeroMemory(&bufferDesc, sizeof(bufferDesc));				//０でクリア。
+	{ZeroMemory(&bufferDesc, sizeof(bufferDesc));				//０でクリア。
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;						//バッファで想定されている、読み込みおよび書き込み方法。
 	bufferDesc.ByteWidth = (((bufferSize - 1) / 16) + 1) * 16;	//バッファは16バイトアライメントになっている必要がある。
 																//アライメントって→バッファのサイズが16の倍数ということです。
@@ -86,6 +86,7 @@ void SkinModel::InitConstantBuffer()
 																//定数バッファにバインドするので、D3D11_BIND_CONSTANT_BUFFERを指定する。
 	bufferDesc.CPUAccessFlags = 0;								//CPU アクセスのフラグです。
 																//CPUアクセスが不要な場合は0。
+	}
 	//作成。
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_cb);
 
@@ -93,6 +94,10 @@ void SkinModel::InitConstantBuffer()
 	//作成するバッファのサイズを変更するだけ。
 	bufferDesc.ByteWidth = sizeof(SDirectionLight);				//SDirectionLightは16byteの倍数になっているので、切り上げはやらない。
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_lightCb);
+	bufferDesc.ByteWidth = ((sizeof(int) - 1) / 16 + 1) * 16;
+	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_isuvscroll);
+	bufferDesc.ByteWidth = ((sizeof(float) - 1) / 16 + 1) * 16;
+	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_uvscroll);
 }
 void SkinModel::InitSamplerState()
 {
@@ -178,7 +183,8 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 	//ボーン行列をGPUに転送。
 	m_skeleton.SendBoneMatrixArrayToGPU();
-
+	//UV関係
+	//d3dDeviceContext->PSSetConstantBuffers
 	//エフェクトにクエリを行う。
 	m_modelDx->UpdateEffects([&](DirectX::IEffect* material) {
 		auto modelMaterial = reinterpret_cast<ModelEffect*>(material);

@@ -145,8 +145,12 @@ private:
 	DirectX::Model*		m_modelDx;						//!<DirectXTKが提供するモデルクラス。
 	ID3D11SamplerState* m_samplerState = nullptr;		//!<サンプラステート。
 	ID3D11Buffer* m_lightCb = nullptr;	//!<ライト用の定数バッファ。
+	ID3D11Buffer* m_isuvscroll = nullptr;
+	ID3D11Buffer* m_uvscroll = nullptr;
 	SDirectionLight						m_dirLight;				//!<ディレクションライト。
 	bool m_isShadowCaster = false;
 	bool m_isShadowReceiver = false;
+	int m_isUVscroll = true;
+	float m_UVscroll = 0.0f;
 };
 

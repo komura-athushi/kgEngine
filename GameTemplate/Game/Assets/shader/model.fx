@@ -12,6 +12,9 @@ Texture2D<float4> shadowMap : register(t2);		//todo シャドウマップ。
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t1);
 
+//UVスクロール関係
+int isuvscroll : register(t3);
+float uvscroll : register(t4);
 /////////////////////////////////////////////////////////////
 // SamplerState
 /////////////////////////////////////////////////////////////

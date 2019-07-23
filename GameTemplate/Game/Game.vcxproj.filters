@@ -126,9 +126,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\ground\ground.FBX">
-      <Filter>Asset\modelData\ground</Filter>
-    </None>
     <None Include="Assets\modelData\obj\obox1.FBX">
       <Filter>Asset\modelData\obj</Filter>
     </None>
@@ -174,6 +171,9 @@
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\obj\ohito.FBX">
       <Filter>Asset\modelData\obj</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
+      <Filter>Asset\modelData\ground</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>
