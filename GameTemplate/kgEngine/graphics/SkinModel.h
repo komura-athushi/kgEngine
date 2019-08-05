@@ -38,6 +38,7 @@ public:
 	*@param[in] enFbxUpAxis		fbxの上軸。デフォルトはenFbxUpAxisZ。
 	*/
 	void Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis = enFbxUpAxisZ);
+	void InitInstancingData(const int& numInstancing);
 	/*!
 	*@brief	モデルをワールド座標系に変換するためのワールド行列を更新する。
 	*@param[in]	position	モデルの座標。
@@ -103,6 +104,11 @@ public:
 	{
 		m_worldMatrix = worldmatirx;
 	}
+	//インスタンシング描画する時の番号を設定
+	void SetInstancingNumber(const int& instancnumber)
+	{
+		m_numInstance = instancnumber;
+	}
 	/*!
 	*@brief	SRVのレジスタ番号。
 	*/
@@ -150,6 +156,10 @@ private:
 	SDirectionLight						m_dirLight;				//!<ディレクションライト。
 	bool m_isShadowCaster = false;
 	bool m_isShadowReceiver = false;
+	std::unique_ptr<CMatrix[]>	m_instancingData;		//!<インスタンシング描画用のデータ。
+	ID3D11Buffer* m_instancingDataSB;					//!<インスタンシング描画用の定数バッファ
+	int m_maxInstance = 1;
+	int m_numInstance = 0;
 	int m_isUVscroll = true;
 	float m_UVscroll = 0.0f;
 };

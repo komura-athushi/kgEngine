@@ -11,7 +11,7 @@ Texture2D<float4> albedoTexture : register(t0);
 Texture2D<float4> shadowMap : register(t2);		//todo シャドウマップ。
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t1);
-
+StructuredBuffer<float4x4> instanceMatrix : register(t5);
 //UVスクロール関係
 int isuvscroll : register(t3);
 float uvscroll : register(t4);
@@ -135,7 +135,27 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
 	return psInput;
 }
-
+PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID)
+{
+	PSInput psInput = (PSInput)0;
+	//ローカル座標系からワールド座標系に変換する
+	float4 worldPos = mul(mWorld, instanceMatrix[instanceID]);
+	//ワールド座標系からカメラ座標系に変換する
+	psInput.Position = mul(mView, worldPos);
+	//カメラ座標系からスクリーン座標系に変換する
+	psInput.Position = mul(mProj, psInput.Position);
+	if (isShadowReciever == 1) {
+		//続いて、ライトビュープロジェクション空間に変換。
+		//ワールド座標系からライトビュー座標系に変換
+		psInput.posInLVP = mul(mLightView, worldPos);
+		//ライトビュー座標系からライトプロジェクション行列に変換
+		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
+	}
+	psInput.TexCoord = In.TexCoord;
+	psInput.Normal = normalize(mul(mWorld, In.Normal));
+	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
+	return psInput;
+}
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンありモデル用の頂点シェーダー。
  * 全ての頂点に対してこのシェーダーが呼ばれる。

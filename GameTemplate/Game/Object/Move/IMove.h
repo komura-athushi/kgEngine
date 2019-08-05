@@ -18,13 +18,13 @@ public:
 	virtual CVector3 Move() { return CVector3::Zero(); }
 	//ステートを設定、派生クラスで設定する用
 	virtual void SetMoveState() {}
-	/*!
-	* @brief	初期化。
-	*@param[in] pos				座標
-	*@param[in]	move			移動速度	
-	*@param[in]	movelimit		移動範囲
-	*@param[in]	rot				回転
-	*/
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="pos">座標</param>
+	/// <param name="move">移動速度</param>
+	/// <param name="movelimit">移動範囲</param>
+	/// <param name="rot">回転</param>
 	virtual void Init(const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot = CQuaternion::Identity()) {}
 	//移動ベクトルを取得
 	virtual CVector3 GetMoveVector() const { return CVector3::Zero(); }

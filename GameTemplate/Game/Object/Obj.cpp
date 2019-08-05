@@ -7,6 +7,20 @@
 #include "Rotation/RotSelf.h"
 #include "Rotation/RotDirection.h"
 #include "Player.h"
+
+CSkinModelRender* ObjModelDataFactory::Load(const wchar_t* filepath) 
+{
+	int key = Util::MakeHash(filepath);
+	if (m_modelmap.count(key) == 0) {
+		//std::make_unique  スマートポインタ生成のヘルパー関数
+		//newが不要になる、()に初期値
+		m_modelmap.emplace(key, std::make_unique<CSkinModelRender>());
+		m_modelmap[key].get()->Init(filepath);
+	}
+	//getでマッピングされている値
+	return m_modelmap[key].get();
+}
+
 Obj::Obj()
 {
 
@@ -26,13 +40,7 @@ void Obj::SetFilePath(const wchar_t* path)
 {
 	wchar_t filepath[256];
 	swprintf_s(filepath, L"Resource/modelData/%ls.cmo", path);
-	if (wcscmp(path, L"ozunko") == 0) {
-		m_skin.Init(filepath,nullptr,0,enFbxUpAxisY);
-	}
-	else {
-		m_skin.Init(filepath);
-	}
-	
+	m_skin.Init(filepath);
 }
 
 bool Obj::Start()

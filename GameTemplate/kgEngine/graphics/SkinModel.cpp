@@ -50,6 +50,11 @@ void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 
 	m_enFbxUpAxis = enFbxUpAxis;
 }
+void SkinModel::InitInstancingData(const int& numInstancing)
+{
+	m_numInstance = numInstancing;
+	
+}
 void SkinModel::InitSkeleton(const wchar_t* filePath)
 {
 	//スケルトンのデータを読み込む。
@@ -192,11 +197,24 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	});
 
 	//描画。
-	m_modelDx->Draw(
-		d3dDeviceContext,
-		state,
-		m_worldMatrix,
-		MainCamera().GetViewMatrix(),
-		MainCamera().GetProjectionMatrix()
-	);
+	if (m_numInstance == 0) {
+		m_modelDx->Draw(
+			d3dDeviceContext,
+			state,
+			m_worldMatrix,
+			MainCamera().GetViewMatrix(),
+			MainCamera().GetProjectionMatrix()
+		);
+	}
+	else {
+		m_modelDx->Draw(
+			d3dDeviceContext,
+			state,
+			m_worldMatrix,
+			MainCamera().GetViewMatrix(),
+			MainCamera().GetProjectionMatrix(),
+			false,
+			m_numInstance
+		);
+	}
 }

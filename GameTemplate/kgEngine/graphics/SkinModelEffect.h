@@ -12,11 +12,13 @@ protected:
 	Shader* m_pPSShader = nullptr;
 	Shader m_vsShader;
 	Shader m_psShader;
+	Shader m_vsShaderInstancing;
 	Shader m_vsShadowMap;			//シャドウマップ生成用の頂点シェーダー。
 	Shader m_psShadowMap;		//シャドウマップ生成用のピクセルシェーダー。
 	bool isSkining;
 	ID3D11ShaderResourceView* m_albedoTex = nullptr;
 	EnRenderMode m_renderMode = enRenderMode_Invalid;	//レンダリングモード。
+	int m_numInstance = 1;
 public:
 	ModelEffect()
 	{
@@ -56,6 +58,10 @@ public:
 	{
 		m_renderMode = renderMode;
 	}
+	void SetNumInstance(int numInstance)
+	{
+		m_numInstance = numInstance;
+	}
 };
 /*!
 *@brief
@@ -66,6 +72,8 @@ public:
 	NonSkinModelEffect()
 	{
 		m_vsShader.Load("Assets/shader/model.fx", "VSMain", Shader::EnType::VS);
+		//インスタンシング描画用の頂点シェーダーをロード
+		m_vsShaderInstancing.Load("Assets/shader/model.fx", "VSMainInstancing", Shader::EnType::VS);
 		m_pVSShader = &m_vsShader;
 		//スキン無しシャドウマップ
 		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMain_ShadowMap", Shader::EnType::VS);

@@ -9,6 +9,24 @@
 #include "graphics/2D/kgFont.h"
 class Player;
 
+class ObjModelDataFactory {
+private:
+	ObjModelDataFactory() {}
+	~ObjModelDataFactory() {}
+public:
+	ObjModelDataFactory& GetInstance()
+	{
+		static ObjModelDataFactory instance;
+		return instance;
+	}
+public:
+	CSkinModelRender* Load(const wchar_t* filepath);
+private:
+	//unique_ptr  スマートポインタ、newしたメモリを指すポインタが存在しなければ自動的に
+	//deleteされる
+	std::unordered_map<int, std::unique_ptr<CSkinModelRender>> m_modelmap;
+};
+
 class Obj : public IGameObject{
 public:
 	Obj();
