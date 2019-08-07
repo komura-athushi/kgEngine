@@ -9,23 +9,36 @@
 #include "graphics/2D/kgFont.h"
 class Player;
 
+struct ObjModelData {
+	CSkinModelRender s_skinmodel;
+	int s_maxInstance = 1;
+};
+
 class ObjModelDataFactory {
 private:
 	ObjModelDataFactory() {}
 	~ObjModelDataFactory() {}
 public:
-	ObjModelDataFactory& GetInstance()
+	static ObjModelDataFactory& GetInstance()
 	{
 		static ObjModelDataFactory instance;
 		return instance;
 	}
+	//各SkinModelのインスタンスデータを初期化する
+	void InitInstancingData();
+	void BeginUpdateInstancingData();
 public:
-	CSkinModelRender* Load(const wchar_t* filepath);
+	ObjModelData* Load(const wchar_t* path);
 private:
 	//unique_ptr  スマートポインタ、newしたメモリを指すポインタが存在しなければ自動的に
 	//deleteされる
-	std::unordered_map<int, std::unique_ptr<CSkinModelRender>> m_modelmap;
+	std::unordered_map<int, std::unique_ptr<ObjModelData>> m_modelmap;
 };
+
+static inline ObjModelDataFactory& GetObjModelDataFactory()
+{
+	return ObjModelDataFactory::GetInstance();
+}
 
 class Obj : public IGameObject{
 public:
@@ -105,7 +118,7 @@ public:
 	//パス移動用のファイルパスを読みこむ
 	void ReadMovePath(const int& number);
 private:
-	CSkinModelRender m_skin;												//スキンモデル
+	ObjModelData* m_modeldata;												//スキンモデル
 	CVector3 m_position = CVector3::Zero();									//座標								
 	CQuaternion m_rotation = CQuaternion::Identity();						//回転
 	CMatrix m_localMatrix;													//ローカル行列

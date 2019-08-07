@@ -17,6 +17,13 @@ public:
 		int numAnimationClips = 0,
 		EnFbxUpAxis fbxUpAxis = enFbxUpAxisZ
 		);
+	//インスタンシング描画のインスタンスの数を初期化
+	void SetInstanceNumber(const int& maxInstance);
+	//インスタンシング描画のデータを初期化
+	void InitInstancing()
+	{
+		m_skinModel.InitInstancingData();
+	}
 	//このクラスはこれ以上継承させないからオーバーライドはここで終わり
 	bool Start() override final;
 	void Update() override final;
@@ -107,6 +114,25 @@ public:
 			m_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 			m_update = false;
 		}
+	}
+	void BeginUpdateInstancingData()
+	{
+		m_skinModel.BeginUpdateInstancingData();
+	}
+	/// <summary>
+	/// iインスタンシング描画のデータを更新します
+	/// </summary>
+	/// <param name="pos">座標</param>
+	/// <param name="rot">回転</param>
+	/// <param name="scale">拡大</param>
+	void UpdateInstancingData(const CVector3& pos, const CQuaternion& rot, const CVector3& scale = CVector3::One())
+	{
+		m_skinModel.UpdateInstancingData(pos, rot, scale);
+	}
+	//インスタンシング用のデータを更新、ワールド行列を直接設定する用
+	void UpdateInstancingData(const CMatrix& worldMatrix)
+	{
+		m_skinModel.UpdateInstancingData(worldMatrix);
 	}
 	//ワールド行列を設定
 	void SetWorldMatrix(const CMatrix& worldmatrix);

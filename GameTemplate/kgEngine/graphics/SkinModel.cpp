@@ -50,10 +50,19 @@ void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 
 	m_enFbxUpAxis = enFbxUpAxis;
 }
-void SkinModel::InitInstancingData(const int& numInstancing)
+void SkinModel::InitInstancingData()
 {
-	m_numInstance = numInstancing;
-	
+	if (m_maxInstance > 1) {
+		//インスタンシング用のデータを作成。
+		m_instancingData.reset(new CMatrix[m_maxInstance]);
+		D3D11_BUFFER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	//SRVとしてバインド可能。
+		desc.ByteWidth = sizeof(CMatrix) * m_maxInstance;
+		desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		desc.StructureByteStride = sizeof(CMatrix);
+		Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&desc, NULL, &m_instancingDataSB);
+	}
 }
 void SkinModel::InitSkeleton(const wchar_t* filePath)
 {
@@ -141,6 +150,29 @@ void SkinModel::UpdateWorldMatrix(CVector3 position, CQuaternion rotation, CVect
 	//スケルトンの更新。
 	m_skeleton.Update(m_worldMatrix);
 }
+
+void SkinModel::UpdateInstancingData(
+	const CVector3& pos,
+	const CQuaternion& rot,
+	const CVector3& scale,
+	EnFbxUpAxis enUpdateAxis)
+{
+	UpdateWorldMatrix(pos, rot, scale);
+	if (m_numInstance < m_maxInstance) {
+		m_instancingData[m_numInstance] = m_worldMatrix;
+		m_numInstance++;
+	}
+}
+
+void SkinModel::UpdateInstancingData(const CMatrix& worldMatrix)
+{
+	m_worldMatrix = worldMatrix;
+	if (m_numInstance < m_maxInstance) {
+		m_instancingData[m_numInstance] = m_worldMatrix;
+		m_numInstance++;
+	}
+}
+
 void SkinModel::Draw(EnRenderMode renderMode)
 {
 	DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
@@ -148,6 +180,12 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	ID3D11DeviceContext* d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 
 	auto shadowMap = Engine().GetGraphicsEngine().GetShadowMap();
+
+	if (m_maxInstance > 1) {
+		//インスタンシング用のデータを更新
+		d3dDeviceContext->UpdateSubresource(m_instancingDataSB, 0 ,NULL, m_instancingData.get(), 0, 0);
+		d3dDeviceContext->VSSetConstantBuffers(3, 1, &m_instancingDataSB);
+	}
 
 	//定数バッファの内容を更新。
 	SVSConstantBuffer vsCb;
@@ -194,6 +232,14 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	m_modelDx->UpdateEffects([&](DirectX::IEffect* material) {
 		auto modelMaterial = reinterpret_cast<ModelEffect*>(material);
 		modelMaterial->SetRenderMode(renderMode);
+		if (renderMode == enRenderMode_Normal) {
+			if (m_maxInstance > 1) {
+				modelMaterial->SetNumInstance(m_numInstance);
+			}
+			else {
+				modelMaterial->SetNumInstance(1);
+			}
+		}
 	});
 
 	//描画。

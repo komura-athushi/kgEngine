@@ -11,10 +11,10 @@ Texture2D<float4> albedoTexture : register(t0);
 Texture2D<float4> shadowMap : register(t2);		//todo シャドウマップ。
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t1);
-StructuredBuffer<float4x4> instanceMatrix : register(t5);
+StructuredBuffer<float4x4> instanceMatrix : register(t3);
 //UVスクロール関係
-int isuvscroll : register(t3);
-float uvscroll : register(t4);
+//int isuvscroll : register(t3);
+//float uvscroll : register(t4);
 /////////////////////////////////////////////////////////////
 // SamplerState
 /////////////////////////////////////////////////////////////
@@ -139,18 +139,18 @@ PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID
 {
 	PSInput psInput = (PSInput)0;
 	//ローカル座標系からワールド座標系に変換する
-	float4 worldPos = mul(mWorld, instanceMatrix[instanceID]);
+	float4 worldPos = mul(instanceMatrix[instanceID], In.Position);
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
 	//カメラ座標系からスクリーン座標系に変換する
 	psInput.Position = mul(mProj, psInput.Position);
-	if (isShadowReciever == 1) {
+	/*if (isShadowReciever == 1) {
 		//続いて、ライトビュープロジェクション空間に変換。
 		//ワールド座標系からライトビュー座標系に変換
 		psInput.posInLVP = mul(mLightView, worldPos);
 		//ライトビュー座標系からライトプロジェクション行列に変換
 		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
-	}
+	}*/
 	psInput.TexCoord = In.TexCoord;
 	psInput.Normal = normalize(mul(mWorld, In.Normal));
 	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
@@ -219,7 +219,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}
 
-	if (isShadowReciever == 1) {	//シャドウレシーバー。
+	/*if (isShadowReciever == 1) {	//シャドウレシーバー。
 		//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。
 		//プロジェクション行列をシャドウマップのUV座標に変換している
 		float2 shadowMapUV = In.posInLVP.xy / In.posInLVP.w;
@@ -242,7 +242,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 				lig *= 0.5f;
 			}
 		}
-	}
+	}*/
 	float4 finalColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	finalColor.xyz = albedoColor.xyz * lig;
 	return finalColor;

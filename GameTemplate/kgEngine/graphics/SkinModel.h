@@ -38,7 +38,13 @@ public:
 	*@param[in] enFbxUpAxis		fbxの上軸。デフォルトはenFbxUpAxisZ。
 	*/
 	void Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis = enFbxUpAxisZ);
-	void InitInstancingData(const int& numInstancing);
+	//インスタンシング描画のデータの数を設定
+	void SetInstancingNumber(const int& numInstance)
+	{
+		m_maxInstance = numInstance;
+	}
+	//インスタンシング描画のデータの初期化
+	void InitInstancingData();
 	/*!
 	*@brief	モデルをワールド座標系に変換するためのワールド行列を更新する。
 	*@param[in]	position	モデルの座標。
@@ -104,11 +110,6 @@ public:
 	{
 		m_worldMatrix = worldmatirx;
 	}
-	//インスタンシング描画する時の番号を設定
-	void SetInstancingNumber(const int& instancnumber)
-	{
-		m_numInstance = instancnumber;
-	}
 	/*!
 	*@brief	SRVのレジスタ番号。
 	*/
@@ -120,7 +121,33 @@ public:
 	{
 		return m_enFbxUpAxis == enFbxUpAxisZ;
 	}
-private:
+	/// <summary>
+	/// インスタンシング用データの更新
+	/// </summary>
+	/// <param name="pos">座標</param>
+	/// <param name="rot">回転</param>
+	/// <param name="scale">拡大</param>
+	/// <param name="enUpdateAxis">fbxの上方向</param>
+	void UpdateInstancingData(
+		const CVector3& pos,
+		const CQuaternion& rot,
+		const CVector3& scale,
+		EnFbxUpAxis enUpdateAxis = enFbxUpAxisZ
+	);
+	//インスタンシング用データの更新、行列を直接設定する用
+	void UpdateInstancingData(const CMatrix& worldMatrix);
+	//インスタンスの数を初期化する、インスタンシングデータの更新前に呼び出す
+	void BeginUpdateInstancingData()
+	{
+		if (m_maxInstance > 1) {
+			m_numInstance = 1;
+		}
+	}
+	//インスタンシングデータの更新が終わったら呼び出す、インスタンスの数を確定する
+	void EndUpdateInstancingData()
+	{
+
+	}
 	/*!
 	*@brief	サンプラステートの初期化。
 	*/

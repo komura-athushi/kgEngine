@@ -9,6 +9,7 @@
 #include "Object/ObjectData.h"
 #include "Moji.h"
 #include "Time.h"
+
 Game::Game()
 {
 
@@ -64,10 +65,11 @@ bool Game::Start()
 	});
 	m_time = NewGO<Time>(0);
 	m_time->SetTime(20.0f * 60.0f);
+	GetObjModelDataFactory().InitInstancingData();
 	return true;
 }
 
 void Game::Update()
 {
-	
+	GetObjModelDataFactory().BeginUpdateInstancingData();
 }

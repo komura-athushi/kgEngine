@@ -13,7 +13,7 @@ Anim::~Anim()
 
 void Anim::Init(const wchar_t* filepath, CSkinModelRender* skin)
 {
-	m_skinModelRender = skin;
+	/*m_skinModelRender = skin;
 	wchar_t path[256];
 	swprintf_s(path, L"Assets/animData/%ls/walk.tka",filepath);
 	m_animClip[enAnimationClip_walk].Load(path);
@@ -23,7 +23,7 @@ void Anim::Init(const wchar_t* filepath, CSkinModelRender* skin)
 	m_animClip[enAnimationClip_walk].SetLoopFlag(true);
 	m_animClip[enAnimationClip_idle].SetLoopFlag(true);
 	m_skinModelRender->InitAnimation(m_animClip, enAnimationClip_num);
-	m_isInit = true;
+	m_isInit = true;*/
 }
 
 void Anim::PlayAnimation(EnMove state)

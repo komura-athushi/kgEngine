@@ -8,17 +8,35 @@
 #include "Rotation/RotDirection.h"
 #include "Player.h"
 
-CSkinModelRender* ObjModelDataFactory::Load(const wchar_t* filepath) 
+ObjModelData* ObjModelDataFactory::Load(const wchar_t* path) 
 {
-	int key = Util::MakeHash(filepath);
+	int key = Util::MakeHash(path);
 	if (m_modelmap.count(key) == 0) {
+		wchar_t filepath[256];
+		swprintf_s(filepath, L"Resource/modelData/%ls.cmo", path);
 		//std::make_unique  スマートポインタ生成のヘルパー関数
 		//newが不要になる、()に初期値
-		m_modelmap.emplace(key, std::make_unique<CSkinModelRender>());
-		m_modelmap[key].get()->Init(filepath);
+		m_modelmap.emplace(key, std::make_unique<ObjModelData>());
+		m_modelmap[key].get()->s_skinmodel.Init(filepath);
 	}
+	m_modelmap[key].get()->s_maxInstance += 1;
+	m_modelmap[key].get()->s_skinmodel.SetInstanceNumber(m_modelmap[key].get()->s_maxInstance);
 	//getでマッピングされている値
 	return m_modelmap[key].get();
+}
+
+void ObjModelDataFactory::InitInstancingData()
+{
+	for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
+		itr->second.get()->s_skinmodel.InitInstancing();
+	}
+}
+
+void ObjModelDataFactory::BeginUpdateInstancingData()
+{
+	for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
+		itr->second.get()->s_skinmodel.BeginUpdateInstancingData();
+	}
 }
 
 Obj::Obj()
@@ -38,15 +56,11 @@ Obj::~Obj()
 
 void Obj::SetFilePath(const wchar_t* path)
 {
-	wchar_t filepath[256];
-	swprintf_s(filepath, L"Resource/modelData/%ls.cmo", path);
-	m_skin.Init(filepath);
+	m_modeldata = GetObjModelDataFactory().Load(path);
 }
 
 bool Obj::Start()
 {
-	m_skin.SetPosition(m_position);
-	m_skin.SetRotation(m_rotation);
 	m_size = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) / 3;
 	if (m_objdata->s_issphere == 1) {
 		//球体である
@@ -62,11 +76,12 @@ bool Obj::Start()
 		m_islinesegment = true;
 		m_linevector = m_objdata->s_linevector;
 	}
-	if (m_objdata->s_isanimation == 1) {
-		m_anim.Init(m_objdata->s_name, &m_skin);
-	}
+	/*if (m_objdata->s_isanimation == 1) {
+		m_anim.Init(m_objdata->s_name, m_skin);
+	}*/
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
+	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation);
 	return true;
 }
 
@@ -126,7 +141,7 @@ void Obj::InitRot(EnRotate state, const float& speed)
 void Obj::ClcVertex()
 {
 	if (m_movestate != enMove_MoveHit) {
-		m_box.Update(m_skin.GetSkinModel().GetWorldMatrix());
+		m_box.Update(m_modeldata->s_skinmodel.GetSkinModel().GetWorldMatrix());
 	}
 	else {
 		m_box.Update(m_worldMatrix);
@@ -147,7 +162,23 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	ReverseMatrix.Inverse(worldMatrix);
 	//オブジェクトのワールド行列とプレイヤーの逆行列を乗算して、
 	//プレイヤーを基準としたオブジェクトのローカル行列を求める
-	m_localMatrix.Mul(m_skin.GetSkinModel().GetWorldMatrix(),ReverseMatrix);
+	//3dsMaxと軸を合わせるためのバイアス。
+	CMatrix mBias = CMatrix::Identity();
+	mBias.MakeRotationX(CMath::PI * -0.5f);
+	CMatrix objworldMatrix,transMatrix, rotMatrix, scaleMatrix;
+	//平行移動行列を作成する。
+	transMatrix.MakeTranslation(m_position);
+	//回転行列を作成する。
+	rotMatrix.MakeRotationFromQuaternion(m_rotation);
+	rotMatrix.Mul(mBias, rotMatrix);
+	//拡大行列を作成する。
+	scaleMatrix.MakeScaling(CVector3::One());
+	//ワールド行列を作成する。
+	//拡大×回転×平行移動の順番で乗算するように！
+	//順番を間違えたら結果が変わるよ。
+	objworldMatrix.Mul(scaleMatrix, rotMatrix);
+	objworldMatrix.Mul(m_worldMatrix, transMatrix);
+	m_localMatrix.Mul(objworldMatrix, ReverseMatrix);
 	m_player = FindGO<Player>();
 	m_movestate = enMove_MoveHit;
 	m_staticobject.Release();
@@ -166,7 +197,7 @@ void Obj::Update()
 {
 	if (m_movestate == enMove_MoveHit) {
 		ClcMatrix();
-		m_skin.SetWorldMatrix(m_worldMatrix);
+		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix);
 		if (m_islinesegment) {
 			ClcVertex();
 			if (m_isclclinesegment) {
@@ -188,8 +219,7 @@ void Obj::Update()
 			ClcVertex();
 		}
 		m_anim.PlayAnimation(m_movestate);
-		m_skin.SetPosition(m_position);
-		m_skin.SetRotation(m_rotation);
+		m_modeldata->s_skinmodel.UpdateInstancingData(m_position,m_rotation);
 	}	
 }
 

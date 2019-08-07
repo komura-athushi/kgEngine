@@ -31,6 +31,11 @@ void CSkinModelRender::Init(
 	m_update = true;
 }
 
+void CSkinModelRender::SetInstanceNumber(const int& maxInstance)
+{
+	m_skinModel.SetInstancingNumber(maxInstance);
+}
+
 void CSkinModelRender::InitAnimation(AnimationClip* animationClips, int numAnimationClips)
 {
 	if (m_isInitAnimation) {
