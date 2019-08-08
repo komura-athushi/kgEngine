@@ -140,6 +140,7 @@ PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID
 	PSInput psInput = (PSInput)0;
 	//ローカル座標系からワールド座標系に変換する
 	float4 worldPos = mul(instanceMatrix[instanceID], In.Position);
+	//float4 worldPos = mul(mWorld, In.Position);
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
 	//カメラ座標系からスクリーン座標系に変換する

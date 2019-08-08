@@ -140,7 +140,7 @@ public:
 	void BeginUpdateInstancingData()
 	{
 		if (m_maxInstance > 1) {
-			m_numInstance = 1;
+			m_numInstance = 0;
 		}
 	}
 	//インスタンシングデータの更新が終わったら呼び出す、インスタンスの数を確定する
@@ -185,6 +185,7 @@ private:
 	bool m_isShadowReceiver = false;
 	std::unique_ptr<CMatrix[]>	m_instancingData;		//!<インスタンシング描画用のデータ。
 	ID3D11Buffer* m_instancingDataSB;					//!<インスタンシング描画用の定数バッファ
+	ID3D11ShaderResourceView* m_srv;
 	int m_maxInstance = 1;
 	int m_numInstance = 0;
 	int m_isUVscroll = true;

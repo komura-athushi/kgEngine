@@ -61,7 +61,27 @@ void SkinModel::InitInstancingData()
 		desc.ByteWidth = sizeof(CMatrix) * m_maxInstance;
 		desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 		desc.StructureByteStride = sizeof(CMatrix);
-		Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&desc, NULL, &m_instancingDataSB);
+		D3D11_SUBRESOURCE_DATA InitData;
+		InitData.pSysMem = m_instancingData.get();
+		Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&desc, &InitData, &m_instancingDataSB);
+		{
+			ID3D11Buffer* pBuf = m_instancingDataSB;
+			if (pBuf != nullptr) {
+				D3D11_BUFFER_DESC descBuf;
+				ZeroMemory(&descBuf, sizeof(descBuf));
+				pBuf->GetDesc(&descBuf);
+
+				D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+				ZeroMemory(&desc, sizeof(desc));
+				desc.ViewDimension = D3D11_SRV_DIMENSION_BUFFEREX;
+				desc.BufferEx.FirstElement = 0;
+
+				desc.Format = DXGI_FORMAT_UNKNOWN;
+				desc.BufferEx.NumElements = descBuf.ByteWidth / descBuf.StructureByteStride;
+
+				Engine().GetGraphicsEngine().GetD3DDevice()->CreateShaderResourceView(pBuf, &desc, &m_srv);
+			}
+		}
 	}
 }
 void SkinModel::InitSkeleton(const wchar_t* filePath)
@@ -184,7 +204,8 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	if (m_maxInstance > 1) {
 		//インスタンシング用のデータを更新
 		d3dDeviceContext->UpdateSubresource(m_instancingDataSB, 0 ,NULL, m_instancingData.get(), 0, 0);
-		d3dDeviceContext->VSSetConstantBuffers(3, 1, &m_instancingDataSB);
+		//d3dDeviceContext->VSSetConstantBuffers(3, 1, &m_instancingDataSB);
+		d3dDeviceContext->VSSetShaderResources(3, 1, &m_srv);
 	}
 
 	//定数バッファの内容を更新。
