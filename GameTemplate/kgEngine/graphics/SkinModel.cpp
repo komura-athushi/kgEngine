@@ -52,7 +52,7 @@ void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 }
 void SkinModel::InitInstancingData()
 {
-	if (m_maxInstance > 1) {
+	if (m_maxInstance >= 1) {
 		//インスタンシング用のデータを作成。
 		m_instancingData.reset(new CMatrix[m_maxInstance]);
 		D3D11_BUFFER_DESC desc;

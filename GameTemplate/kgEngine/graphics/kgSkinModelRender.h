@@ -11,18 +11,22 @@ public:
 	*@param[in]	animationClips		アニメーションクリップの配列の先頭アドレス
 	*@param[in]	numAnimClip			アニメーションクリップの数
 	*@param[in]	enUpdateAxis		fbxの上方向。
+	*@param[in]	isInstancing		インスタンシングするかどうか
 	*/
 	void Init(const wchar_t* filePath,
 		AnimationClip* animationClips = nullptr,
 		int numAnimationClips = 0,
-		EnFbxUpAxis fbxUpAxis = enFbxUpAxisZ
+		EnFbxUpAxis fbxUpAxis = enFbxUpAxisZ,
+		bool isInstancing = false
 		);
 	//インスタンシング描画のインスタンスの数を初期化
 	void SetInstanceNumber(const int& maxInstance);
 	//インスタンシング描画のデータを初期化
 	void InitInstancing()
 	{
-		m_skinModel.InitInstancingData();
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second.get()->s_skinModel.InitInstancingData();
+		}
 	}
 	//このクラスはこれ以上継承させないからオーバーライドはここで終わり
 	bool Start() override final;
@@ -32,14 +36,13 @@ public:
 	//ワールド行列を更新
 	void UpdateWorldMatrix();
 	//アニメーションの初期化
-	void InitAnimation(AnimationClip* animationClips, int numAnimationClips);
+	void InitAnimation(AnimationClip* animationClips, int numAnimationClips, const wchar_t* filePath = nullptr);
 public:
 	//スキンモデルを取得
 	SkinModel& GetSkinModel()
 	{
-		return m_skinModel;
+		return m_skinModelList[0].get()->s_skinModel;
 	}
-
 	//座標を設定
 	void SetPosition(const CVector3& pos)
 	{
@@ -90,34 +93,40 @@ public:
 	*/
 	void PlayAnimation(int animNo, float interpolateTime = 0.0f)
 	{
-		m_animation.Play(animNo, interpolateTime);
+		m_skinModelList[0].get()->s_animation.Play(animNo, interpolateTime);
 	}
 	//アニメーションが再生中かどうかを取得
-	bool IsPlayingAnimation() const
+	/*bool IsPlayingAnimation() const
 	{
-		return m_animation.IsPlaying();
-	}
+		return m_skinModelList[0].get()->s_animation.IsPlaying();
+	}*/
 	//シャドウキャスターを設定
 	void SetShadowCaster(bool caster)
 	{
-		m_skinModel.SetShadowCaster(caster);
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second.get()->s_skinModel.SetShadowCaster(caster);
+		}
 	}
 	//シャドウレシーバーを設定
 	void SetShadowReceiver(bool receiver)
 	{
-		m_skinModel.SetShadowReceiver(receiver);
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second.get()->s_skinModel.SetShadowReceiver(receiver);
+		}
 	}
 	//スキンモデルの色々を更新
 	void UpdateMatrix()
 	{
 		if (m_update) {
-			m_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+			m_skinModelList[0].get()->s_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 			m_update = false;
 		}
 	}
 	void BeginUpdateInstancingData()
 	{
-		m_skinModel.BeginUpdateInstancingData();
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second.get()->s_skinModel.BeginUpdateInstancingData();
+		}
 	}
 	/// <summary>
 	/// iインスタンシング描画のデータを更新します
@@ -125,22 +134,31 @@ public:
 	/// <param name="pos">座標</param>
 	/// <param name="rot">回転</param>
 	/// <param name="scale">拡大</param>
-	void UpdateInstancingData(const CVector3& pos, const CQuaternion& rot, const CVector3& scale = CVector3::One())
+	void UpdateInstancingData(const CVector3& pos, const CQuaternion& rot, const CVector3& scale = CVector3::One(),int animNo = 0, float interpolateTime = 0.0f)
 	{
-		m_skinModel.UpdateInstancingData(pos, rot, scale);
+		if (m_animationClip == nullptr) {
+			m_skinModelList[0].get()->s_skinModel.UpdateInstancingData(pos, rot, scale);
+		}
+		else {
+			m_skinModelList[animNo + 1]->s_skinModel.UpdateInstancingData(pos, rot, scale);
+		}
 	}
 	//インスタンシング用のデータを更新、ワールド行列を直接設定する用
-	void UpdateInstancingData(const CMatrix& worldMatrix)
+	void UpdateInstancingData(const CMatrix& worldMatrix, int animNo = 0, float interpolateTime = 0.0f)
 	{
-		m_skinModel.UpdateInstancingData(worldMatrix);
+		if (m_animationClip == nullptr) {
+			m_skinModelList[0].get()->s_skinModel.UpdateInstancingData(worldMatrix);
+		}
+		else {
+			m_skinModelList[animNo]->s_skinModel.UpdateInstancingData(worldMatrix);
+		}
 	}
-	//ワールド行列を設定
 	void SetWorldMatrix(const CMatrix& worldmatrix);
 private:
-	SkinModel m_skinModel;										//スキンモデル
+	//SkinModel m_skinModel;										//スキンモデル
 	AnimationClip* m_animationClip;								//アニメーションクリップの数
 	int	m_numAnimationClips = 0;								//!<アニメーションクリップの数。
-	Animation m_animation;										//アニメーション
+	//Animation m_animation;										//アニメーション
 	EnFbxUpAxis	m_enFbxUpAxis = enFbxUpAxisZ;					//!<FBXの上方向。
 	CVector3 m_position = CVector3::Zero();						//座標
 	CVector3 m_scale = CVector3::One();							//大きさ
@@ -149,5 +167,14 @@ private:
 	bool m_isActive = false;									//アクティブかどうか
 	bool m_update = false;										//座標とか大きさが更新されたかどうか、初回は必ずtrueにして処理させる
 	bool m_isInitAnimation = false;								//アニメーションを初期化したかどうか
+	struct  AnimModel {
+		SkinModel s_skinModel;
+		Animation s_animation;
+	};
+	std::unordered_map<int, std::unique_ptr<AnimModel>> m_skinModelList;
+	const wchar_t* m_filepath;
+	bool m_isInstancing = false;
+	int m_maxInstance = 0;
+	bool m_isSetInstance = false;
 };
 

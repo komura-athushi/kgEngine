@@ -7,6 +7,10 @@ public:
 	~Anim();
 	void Init(const wchar_t* filepath,CSkinModelRender* skin);
 	void PlayAnimation(EnMove state);
+	int GetPlayAnimationType()
+	{
+		return m_animationState;
+	}
 private:
 	CSkinModelRender* m_skinModelRender = nullptr;
 	//アニメーション
@@ -16,6 +20,7 @@ private:
 		enAnimationClip_num
 	};
 	AnimationClip m_animClip[enAnimationClip_num];
+	EnAnimationClip m_animationState = enAnimationClip_idle;
 	bool m_isInit = false;
 };
 

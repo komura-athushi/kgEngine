@@ -19,6 +19,26 @@ void CBox::Init(const CVector3& halfSize)
 	m_halfSize.z = halfSize.y;
 }
 
+void CBox::Update(const CVector3& pos, const CQuaternion& rot, const CVector3& scale)
+{
+	CMatrix mBias = CMatrix::Identity();
+	mBias.MakeRotationX(CMath::PI * -0.5f);
+	CMatrix worldMatrix, transMatrix, rotMatrix, scaleMatrix;
+	//平行移動行列を作成する。
+	transMatrix.MakeTranslation(pos);
+	//回転行列を作成する。
+	rotMatrix.MakeRotationFromQuaternion(rot);
+	rotMatrix.Mul(mBias, rotMatrix);
+	//拡大行列を作成する。
+	scaleMatrix.MakeScaling(CVector3::One());
+	//ワールド行列を作成する。
+	//拡大×回転×平行移動の順番で乗算するように！
+	//順番を間違えたら結果が変わるよ。
+	worldMatrix.Mul(scaleMatrix, rotMatrix);
+	worldMatrix.Mul(worldMatrix, transMatrix);
+	Update(worldMatrix);
+}
+
 void CBox::Update(const CMatrix& worldMatrix)
 {
 	//8頂点の座標を計算。

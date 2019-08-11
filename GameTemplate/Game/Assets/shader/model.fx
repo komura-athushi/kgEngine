@@ -112,7 +112,7 @@ float4x4 CalcSkinMatrix(VSInputNmTxWeights In)
     return skinning;
 }
 /*!--------------------------------------------------------------------------------------
- * @brief	スキンなしモデル用の頂点シェーダー。
+ * @brief	スキンなしモデル用の頂点シェーダー
 -------------------------------------------------------------------------------------- */
 PSInput VSMain( VSInputNmTxVcTangent In ) 
 {
@@ -135,6 +135,7 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
 	return psInput;
 }
+//インスタンシング用のスキンなしモデル用頂点シェーダー
 PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID)
 {
 	PSInput psInput = (PSInput)0;
@@ -205,7 +206,52 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	psInput.TexCoord = In.TexCoord;
     return psInput;
 }
+//インスタンシング用のスキンありモデル用の頂点シェーダー
+PSInput VSMainSkinInstancing(VSInputNmTxWeights In, uint instanceID : SV_InstanceID)
+{
+	PSInput psInput = (PSInput)0;
+	///////////////////////////////////////////////////
+	//ここからスキニングを行っている箇所。
+	//スキン行列を計算。
+	///////////////////////////////////////////////////
+	float4x4 skinning = 0;
+	//ローカル座標系からワールド座標系に変換する
+	float4 worldPos = 0; 
+	{
 
+		float w = 0.0f;
+		for (int i = 0; i < 3; i++)
+		{
+			//boneMatrixにボーン行列が設定されていて、
+			//In.indicesは頂点に埋め込まれた、関連しているボーンの番号。
+			//In.weightsは頂点に埋め込まれた、関連しているボーンのウェイト。
+			skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
+			w += In.Weights[i];
+		}
+		//最後のボーンを計算する。
+		skinning += boneMatrix[In.Indices[3]] * (1.0f - w);
+		skinning = mul(instanceMatrix[instanceID], skinning);
+		//頂点座標にスキン行列を乗算して、頂点をワールド空間に変換。
+		//mulは乗算命令。
+		worldPos = mul(skinning, In.Position);
+	}
+	psInput.Normal = normalize(mul(skinning, In.Normal));
+	psInput.Tangent = normalize(mul(skinning, In.Tangent));
+
+	//ワールド座標系からカメラ座標系に変換する
+	psInput.Position = mul(mView, worldPos);
+	//カメラ座標系からスクリーン座標系に変換する
+	psInput.Position = mul(mProj, psInput.Position);
+	if (isShadowReciever == 1) {
+		//続いて、ライトビュープロジェクション空間に変換。
+		//ワールド座標系からライトビュー座標系に変換
+		psInput.posInLVP = mul(mLightView, worldPos);
+		//ライトビュー座標系からライトプロジェクション行列に変換
+		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
+	}
+	psInput.TexCoord = In.TexCoord;
+	return psInput;
+}
 //--------------------------------------------------------------------------------------
 // ピクセルシェーダーのエントリ関数。
 //--------------------------------------------------------------------------------------

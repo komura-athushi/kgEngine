@@ -180,7 +180,7 @@ private:
 	ID3D11Buffer* m_lightCb = nullptr;	//!<ライト用の定数バッファ。
 	ID3D11Buffer* m_isuvscroll = nullptr;
 	ID3D11Buffer* m_uvscroll = nullptr;
-	SDirectionLight						m_dirLight;				//!<ディレクションライト。
+	SDirectionLight	m_dirLight;				//!<ディレクションライト。
 	bool m_isShadowCaster = false;
 	bool m_isShadowReceiver = false;
 	std::unique_ptr<CMatrix[]>	m_instancingData;		//!<インスタンシング描画用のデータ。

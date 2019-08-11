@@ -17,7 +17,7 @@ ObjModelData* ObjModelDataFactory::Load(const wchar_t* path)
 		//std::make_unique  スマートポインタ生成のヘルパー関数
 		//newが不要になる、()に初期値
 		m_modelmap.emplace(key, std::make_unique<ObjModelData>());
-		m_modelmap[key].get()->s_skinmodel.Init(filepath);
+		m_modelmap[key].get()->s_skinmodel.Init(filepath, nullptr, 0, enFbxUpAxisZ, true);
 	}
 	m_modelmap[key].get()->s_maxInstance += 1;
 	m_modelmap[key].get()->s_skinmodel.SetInstanceNumber(m_modelmap[key].get()->s_maxInstance);
@@ -57,6 +57,9 @@ Obj::~Obj()
 void Obj::SetFilePath(const wchar_t* path)
 {
 	m_modeldata = GetObjModelDataFactory().Load(path);
+	if (m_objdata->s_isanimation == 1) {
+		m_anim.Init(m_objdata->s_name, &m_modeldata->s_skinmodel);
+	}
 }
 
 bool Obj::Start()
@@ -76,9 +79,6 @@ bool Obj::Start()
 		m_islinesegment = true;
 		m_linevector = m_objdata->s_linevector;
 	}
-	/*if (m_objdata->s_isanimation == 1) {
-		m_anim.Init(m_objdata->s_name, m_skin);
-	}*/
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
 	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation);
@@ -141,7 +141,7 @@ void Obj::InitRot(EnRotate state, const float& speed)
 void Obj::ClcVertex()
 {
 	if (m_movestate != enMove_MoveHit) {
-		m_box.Update(m_modeldata->s_skinmodel.GetSkinModel().GetWorldMatrix());
+		m_box.Update(m_position,m_rotation);
 	}
 	else {
 		m_box.Update(m_worldMatrix);
@@ -177,7 +177,7 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	//拡大×回転×平行移動の順番で乗算するように！
 	//順番を間違えたら結果が変わるよ。
 	objworldMatrix.Mul(scaleMatrix, rotMatrix);
-	objworldMatrix.Mul(m_worldMatrix, transMatrix);
+	objworldMatrix.Mul(objworldMatrix, transMatrix);
 	m_localMatrix.Mul(objworldMatrix, ReverseMatrix);
 	m_player = FindGO<Player>();
 	m_movestate = enMove_MoveHit;
@@ -197,7 +197,7 @@ void Obj::Update()
 {
 	if (m_movestate == enMove_MoveHit) {
 		ClcMatrix();
-		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix);
+		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());
 		if (m_islinesegment) {
 			ClcVertex();
 			if (m_isclclinesegment) {
@@ -219,7 +219,7 @@ void Obj::Update()
 			ClcVertex();
 		}
 		m_anim.PlayAnimation(m_movestate);
-		m_modeldata->s_skinmodel.UpdateInstancingData(m_position,m_rotation);
+		m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation, CVector3::One(), m_anim.GetPlayAnimationType());
 	}	
 }
 

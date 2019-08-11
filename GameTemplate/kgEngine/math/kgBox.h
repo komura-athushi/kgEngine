@@ -16,6 +16,7 @@ public:
 	void Init(const CVector3& halfSize);
 	//更新
 	void Update(const CMatrix& worldMatrix);
+	void Update(const CVector3& pos,const CQuaternion& rot,const CVector3& scale = CVector3::One());
 	//該当の面の中心のy座標がプレイヤーの座標より低いかどうか
 	bool GetisLowPositionY(const CVector3& position, Enxyz xyz);
 	//線分に使うための該当の面の中心の座標を取得
