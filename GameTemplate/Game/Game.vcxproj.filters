@@ -159,6 +159,9 @@
     <None Include="Assets\modelData\obj\oboxpath1.FBX">
       <Filter>Asset\modelData\obj</Filter>
     </None>
+    <None Include="Assets\modelData\obj\ohito.FBX">
+      <Filter>Asset\modelData\obj</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\clockkari.png">
@@ -169,9 +172,6 @@
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\ohito.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </MeshContentTask>

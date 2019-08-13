@@ -255,7 +255,9 @@
     <ImageContentTask Include="Assets\sprite\clockkari2.png" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\ohito.FBX" />
+    <None Include="Assets\modelData\obj\ohito.FBX">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

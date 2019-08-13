@@ -11,7 +11,7 @@ class Player;
 
 struct ObjModelData {
 	CSkinModelRender s_skinmodel;
-	int s_maxInstance = 1;
+	int s_maxInstance = 0;
 };
 
 class ObjModelDataFactory {

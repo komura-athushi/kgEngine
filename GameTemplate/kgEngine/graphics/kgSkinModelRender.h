@@ -25,7 +25,7 @@ public:
 	void InitInstancing()
 	{
 		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-			itr->second.get()->s_skinModel.InitInstancingData();
+			itr->second->s_skinModel.InitInstancingData();
 		}
 	}
 	//このクラスはこれ以上継承させないからオーバーライドはここで終わり
@@ -41,7 +41,7 @@ public:
 	//スキンモデルを取得
 	SkinModel& GetSkinModel()
 	{
-		return m_skinModelList[0].get()->s_skinModel;
+		return m_skinModelList[0]->s_skinModel;
 	}
 	//座標を設定
 	void SetPosition(const CVector3& pos)
@@ -93,39 +93,39 @@ public:
 	*/
 	void PlayAnimation(int animNo, float interpolateTime = 0.0f)
 	{
-		m_skinModelList[0].get()->s_animation.Play(animNo, interpolateTime);
+		m_skinModelList[0]->s_animation.Play(animNo, interpolateTime);
 	}
 	//アニメーションが再生中かどうかを取得
 	/*bool IsPlayingAnimation() const
 	{
-		return m_skinModelList[0].get()->s_animation.IsPlaying();
+		return m_skinModelList[0]->s_animation.IsPlaying();
 	}*/
 	//シャドウキャスターを設定
 	void SetShadowCaster(bool caster)
 	{
 		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-			itr->second.get()->s_skinModel.SetShadowCaster(caster);
+			itr->second->s_skinModel.SetShadowCaster(caster);
 		}
 	}
 	//シャドウレシーバーを設定
 	void SetShadowReceiver(bool receiver)
 	{
 		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-			itr->second.get()->s_skinModel.SetShadowReceiver(receiver);
+			itr->second->s_skinModel.SetShadowReceiver(receiver);
 		}
 	}
 	//スキンモデルの色々を更新
 	void UpdateMatrix()
 	{
 		if (m_update) {
-			m_skinModelList[0].get()->s_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+			m_skinModelList[0]->s_skinModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 			m_update = false;
 		}
 	}
 	void BeginUpdateInstancingData()
 	{
 		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-			itr->second.get()->s_skinModel.BeginUpdateInstancingData();
+			itr->second->s_skinModel.BeginUpdateInstancingData();
 		}
 	}
 	/// <summary>
@@ -137,7 +137,7 @@ public:
 	void UpdateInstancingData(const CVector3& pos, const CQuaternion& rot, const CVector3& scale = CVector3::One(),int animNo = 0, float interpolateTime = 0.0f)
 	{
 		if (m_animationClip == nullptr) {
-			m_skinModelList[0].get()->s_skinModel.UpdateInstancingData(pos, rot, scale);
+			m_skinModelList[0]->s_skinModel.UpdateInstancingData(pos, rot, scale);
 		}
 		else {
 			m_skinModelList[animNo + 1]->s_skinModel.UpdateInstancingData(pos, rot, scale);
@@ -147,10 +147,10 @@ public:
 	void UpdateInstancingData(const CMatrix& worldMatrix, int animNo = 0, float interpolateTime = 0.0f)
 	{
 		if (m_animationClip == nullptr) {
-			m_skinModelList[0].get()->s_skinModel.UpdateInstancingData(worldMatrix);
+			m_skinModelList[0]->s_skinModel.UpdateInstancingData(worldMatrix);
 		}
 		else {
-			m_skinModelList[animNo]->s_skinModel.UpdateInstancingData(worldMatrix);
+			m_skinModelList[animNo + 1]->s_skinModel.UpdateInstancingData(worldMatrix);
 		}
 	}
 	void SetWorldMatrix(const CMatrix& worldmatrix);
@@ -171,7 +171,7 @@ private:
 		SkinModel s_skinModel;
 		Animation s_animation;
 	};
-	std::unordered_map<int, std::unique_ptr<AnimModel>> m_skinModelList;
+	std::unordered_map<int, AnimModel*> m_skinModelList;
 	const wchar_t* m_filepath;
 	bool m_isInstancing = false;
 	int m_maxInstance = 0;

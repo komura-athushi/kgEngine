@@ -21,14 +21,11 @@ void CBox::Init(const CVector3& halfSize)
 
 void CBox::Update(const CVector3& pos, const CQuaternion& rot, const CVector3& scale)
 {
-	CMatrix mBias = CMatrix::Identity();
-	mBias.MakeRotationX(CMath::PI * -0.5f);
 	CMatrix worldMatrix, transMatrix, rotMatrix, scaleMatrix;
 	//平行移動行列を作成する。
 	transMatrix.MakeTranslation(pos);
 	//回転行列を作成する。
 	rotMatrix.MakeRotationFromQuaternion(rot);
-	rotMatrix.Mul(mBias, rotMatrix);
 	//拡大行列を作成する。
 	scaleMatrix.MakeScaling(CVector3::One());
 	//ワールド行列を作成する。

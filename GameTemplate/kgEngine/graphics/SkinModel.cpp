@@ -82,6 +82,7 @@ void SkinModel::InitInstancingData()
 				Engine().GetGraphicsEngine().GetD3DDevice()->CreateShaderResourceView(pBuf, &desc, &m_srv);
 			}
 		}
+		m_isInstancing = true;
 	}
 }
 void SkinModel::InitSkeleton(const wchar_t* filePath)
@@ -168,7 +169,12 @@ void SkinModel::UpdateWorldMatrix(CVector3 position, CQuaternion rotation, CVect
 	m_worldMatrix.Mul(m_worldMatrix, transMatrix);
 
 	//スケルトンの更新。
-	m_skeleton.Update(m_worldMatrix);
+	if (m_isInstancing) {
+		m_skeleton.Update(CMatrix::Identity());
+	}
+	else {
+		m_skeleton.Update(m_worldMatrix);
+	}
 }
 
 void SkinModel::UpdateInstancingData(
@@ -187,6 +193,13 @@ void SkinModel::UpdateInstancingData(
 void SkinModel::UpdateInstancingData(const CMatrix& worldMatrix)
 {
 	m_worldMatrix = worldMatrix;
+	//スケルトンの更新。
+	if (m_isInstancing) {
+		m_skeleton.Update(CMatrix::Identity());
+	}
+	else {
+		m_skeleton.Update(m_worldMatrix);
+	}
 	if (m_numInstance < m_maxInstance) {
 		m_instancingData[m_numInstance] = m_worldMatrix;
 		m_numInstance++;
@@ -195,13 +208,16 @@ void SkinModel::UpdateInstancingData(const CMatrix& worldMatrix)
 
 void SkinModel::Draw(EnRenderMode renderMode)
 {
+	if (m_isInstancing && m_numInstance == 0) {
+		return;
+	}
 	DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
 
 	ID3D11DeviceContext* d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 
 	auto shadowMap = Engine().GetGraphicsEngine().GetShadowMap();
 
-	if (m_maxInstance > 1) {
+	if (m_numInstance >= 1) {
 		//インスタンシング用のデータを更新
 		d3dDeviceContext->UpdateSubresource(m_instancingDataSB, 0 ,NULL, m_instancingData.get(), 0, 0);
 		//d3dDeviceContext->VSSetConstantBuffers(3, 1, &m_instancingDataSB);
@@ -254,11 +270,11 @@ void SkinModel::Draw(EnRenderMode renderMode)
 		auto modelMaterial = reinterpret_cast<ModelEffect*>(material);
 		modelMaterial->SetRenderMode(renderMode);
 		if (renderMode == enRenderMode_Normal) {
-			if (m_maxInstance > 1) {
+			if (m_isInstancing) {
 				modelMaterial->SetNumInstance(m_numInstance);
 			}
 			else {
-				modelMaterial->SetNumInstance(1);
+				modelMaterial->SetNumInstance(0);
 			}
 		}
 	});

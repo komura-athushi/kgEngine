@@ -81,7 +81,7 @@ bool Obj::Start()
 	}
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
-	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation);
+	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation,CVector3::One(),m_anim.GetPlayAnimationType());
 	return true;
 }
 
@@ -204,7 +204,6 @@ void Obj::Update()
 				m_linesegment.Execute(m_player->GetPosition(), m_linevector);
 			}
 		}
-		//m_skin.SetRotation(m_rotation);
 	}
 	else {
 		if (m_movestate != enMove_No) {
@@ -218,9 +217,9 @@ void Obj::Update()
 		if (m_movestate != enMove_No || m_rotstate != enRot_No) {
 			ClcVertex();
 		}
-		m_anim.PlayAnimation(m_movestate);
 		m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation, CVector3::One(), m_anim.GetPlayAnimationType());
-	}	
+	}
+	m_anim.PlayAnimation(m_movestate);
 }
 
 void Obj::PostRender()

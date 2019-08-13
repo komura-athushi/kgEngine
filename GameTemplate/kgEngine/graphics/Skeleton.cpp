@@ -53,7 +53,6 @@ void Skeleton::UpdateBoneWorldMatrix(Bone& bone, const CMatrix& parentMatrix)
 	//親の行列とローカル行列を乗算して、ワールド行列を計算する。
 	mBoneWorld.Mul(localMatrix, parentMatrix);
 	bone.SetWorldMatrix(mBoneWorld);
-
 	//子供のワールド行列も計算する。
 	std::vector<Bone*>& children = bone.GetChildren();
 	for (int childNo = 0; childNo < children.size(); childNo++ ) {

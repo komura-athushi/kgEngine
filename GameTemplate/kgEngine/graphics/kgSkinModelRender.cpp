@@ -28,8 +28,8 @@ void CSkinModelRender::Init(
 	m_enFbxUpAxis = fbxUpAxis;
 	m_filepath = filePath;
 	m_isInstancing = isInstancing;
-	m_skinModelList.emplace(0, std::make_unique<AnimModel>());
-	m_skinModelList[0].get()->s_skinModel.Init(filePath, fbxUpAxis);
+	m_skinModelList.emplace(0, new AnimModel());
+	m_skinModelList[0]->s_skinModel.Init(filePath, fbxUpAxis);
 	InitAnimation(animationClip, numAnimationClips);
 	m_isActive = true;
 	m_update = true;
@@ -39,7 +39,7 @@ void CSkinModelRender::SetInstanceNumber(const int& maxInstance)
 {
 	m_maxInstance = maxInstance;
 	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-		itr->second.get()->s_skinModel.SetInstancingNumber(maxInstance);
+		itr->second->s_skinModel.SetInstancingNumber(maxInstance);
 	}
 	m_isSetInstance = true;
 }
@@ -54,19 +54,15 @@ void CSkinModelRender::InitAnimation(AnimationClip* animationClips, int numAnima
 	if (m_animationClip != nullptr) {
 		if (m_isInstancing) {
 			for (int i = 1; i <= m_numAnimationClips; i++) {
-				m_skinModelList.emplace(i, std::make_unique<AnimModel>());
-				m_skinModelList[i].get()->s_skinModel.Init(filePath, m_enFbxUpAxis);
-				m_skinModelList[i].get()->s_animation.Init(m_skinModelList[i].get()->s_skinModel, m_animationClip, m_numAnimationClips);
-				m_skinModelList[i].get()->s_animation.Play(i - 1, 0.0f);
-			}
-			if (!m_isSetInstance) {
-				for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-					itr->second.get()->s_skinModel.SetInstancingNumber(m_maxInstance);
-				}
+				m_skinModelList.emplace(i, new AnimModel());
+				m_skinModelList[i]->s_skinModel.Init(filePath, m_enFbxUpAxis);
+				m_skinModelList[i]->s_animation.Init(m_skinModelList[i]->s_skinModel, m_animationClip, m_numAnimationClips);
+				m_skinModelList[i]->s_animation.Play(i - 1, 0.0f);
+				m_skinModelList[i]->s_skinModel.SetInstancingNumber(m_maxInstance);
 			}
 		}
 		else {
-			m_skinModelList[0].get()->s_animation.Init(m_skinModelList[0].get()->s_skinModel, m_animationClip, m_numAnimationClips);
+			m_skinModelList[0]->s_animation.Init(m_skinModelList[0]->s_skinModel, m_animationClip, m_numAnimationClips);
 		}
 		m_isInitAnimation = true;
 	}
@@ -95,10 +91,10 @@ void CSkinModelRender::UpdateWorldMatrix()
 	m_worldMatrix.Mul(m_worldMatrix, transMatrix);
 
 	//スケルトンの更新。
-	m_skinModelList[0].get()->s_skinModel.GetSkeleton().Update(m_worldMatrix);
+	m_skinModelList[0]->s_skinModel.GetSkeleton().Update(m_worldMatrix);
 
 	//スキンモデルにワールド行列を設定
-	m_skinModelList[0].get()->s_skinModel.SetWorldMatrix(m_worldMatrix);
+	m_skinModelList[0]->s_skinModel.SetWorldMatrix(m_worldMatrix);
 }
 
 //ワールド行列を設定
@@ -106,10 +102,10 @@ void CSkinModelRender::SetWorldMatrix(const CMatrix& worldmatrix)
 {
 	m_worldMatrix = worldmatrix;
 	//スケルトンの更新。
-	m_skinModelList[0].get()->s_skinModel.GetSkeleton().Update(m_worldMatrix);
+	m_skinModelList[0]->s_skinModel.GetSkeleton().Update(m_worldMatrix);
 
 	//スキンモデルにワールド行列を設定
-	m_skinModelList[0].get()->s_skinModel.SetWorldMatrix(m_worldMatrix);
+	m_skinModelList[0]->s_skinModel.SetWorldMatrix(m_worldMatrix);
 	m_update = false;
 }
 
@@ -135,14 +131,13 @@ void CSkinModelRender::Draw()
 		m_skinModel.Draw();
 	}*/
 	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-		itr->second.get()->s_skinModel.SetInstancingNumber(m_maxInstance);
 		//アニメーションの再生中であればアニメーションのアップデートを行う
-		if (itr->second.get()->s_animation.IsPlaying()) {
-			itr->second.get()->s_animation.Update(GameTime().GetFrameDeltaTime());
+		if (itr->second->s_animation.IsPlaying()) {
+			itr->second->s_animation.Update(GameTime().GetFrameDeltaTime());
 		}
 		//アクティブならモデルをドローする
 		if (m_isActive) {
-			itr->second.get()->s_skinModel.Draw();
+			itr->second->s_skinModel.Draw();
 		}
 	}
 }
@@ -150,8 +145,8 @@ void CSkinModelRender::Draw()
 void CSkinModelRender::PreUpdate()
 {
 	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-		if (itr->second.get()->s_skinModel.isShadowCaster()) {
-			Engine().GetGraphicsEngine().GetShadowMap()->RegistShadowCaster(&itr->second.get()->s_skinModel);
+		if (itr->second->s_skinModel.isShadowCaster()) {
+			Engine().GetGraphicsEngine().GetShadowMap()->RegistShadowCaster(&itr->second->s_skinModel);
 		}
 	}
 }

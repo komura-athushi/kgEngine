@@ -26,7 +26,7 @@ void MovePath::ReadPath(const wchar_t* filePath)
 
 CVector3 MovePath::Move()
 {
-	const float Molecule = 10.0f;
+	const float Molecule = 5.0f;
 	const float AddDegree = 180.0f / 2 / 180.0f * CMath::PI;
 
 	if (m_isstart) {
