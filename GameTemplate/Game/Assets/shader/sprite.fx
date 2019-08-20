@@ -5,7 +5,7 @@
 cbuffer cb : register(b0){
 	float4 mulColor;	//乗算カラー。
 };
-
+//float4 mulColor : register(b0);
 Texture2D<float4> Texture : register(t0);	//カラーテクスチャ。
 sampler TextureSampler : register(s0);
 //角度
@@ -13,7 +13,8 @@ float Angle : register(t1);
 //サークルゲージ用かどうか
 //bool isCircleGauge : register(t5);
 
-float4 PSMain(float4 color : COLOR0,
+float4 PSMain(
+	float4 color : COLOR0,
 	float2 texCoord : TEXCOORD0) : SV_Target0
 {
 	float PI = 3.14159f;
@@ -36,6 +37,6 @@ float4 PSMain(float4 color : COLOR0,
 		}
 	}
 	float4 Color = Texture.Sample(TextureSampler, texCoord);
-	Color.w *= mulColor.w;
+	//Color *= mulColor;
 	return Color;
 }

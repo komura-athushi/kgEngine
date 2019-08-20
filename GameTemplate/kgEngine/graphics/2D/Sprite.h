@@ -12,15 +12,15 @@ public:
 	/// <summary>
 	/// スクリーン座標指定で描画
 	/// </summary>
-	/// <param name="pos">座標</param>
-	/// <param name="scale">大きさ</param>
+	/// <param name="pos">座標、(0.0f,0.0f)で左上、デフォルトは中央</param>
+	/// <param name="scale">大きさ、(1.0f,1.0f)で1倍</param>
 	/// <param name="pivot">ユニティ基準のピボット</param>
 	/// <param name="rotation">回転</param>
 	/// <param name="color">透明度(z)</param>
 	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
 	/// <param name="layerDepth">描画する順番(今は機能してません。。。)</param>
 	/// <param name="degree">ピクセルを表示する角度</param>
-	void DrawScreenPos(const CVector2& pos,
+	void DrawScreenPos(const CVector2& pos = { 1280.0f / 2, 720.0f / 2},
 		const CVector2& scale = CVector2::One(),
 		const CVector2& pivot = CVector2(0.5f,0.5f),
 		float rotation = 0.0f,

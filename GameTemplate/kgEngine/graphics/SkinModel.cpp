@@ -33,6 +33,14 @@ SkinModel::~SkinModel()
 		//サンプラステートを解放。
 		m_samplerState->Release();
 	}
+	if (m_instancingDataSB != nullptr) {
+		//インスタンシング用のストラクチャーバッファを解放
+		m_instancingDataSB->Release();
+	}
+	if (m_srv != nullptr) {
+		//
+		m_srv->Release();
+	}
 }
 void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 {

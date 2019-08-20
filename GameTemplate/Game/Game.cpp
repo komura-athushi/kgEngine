@@ -9,7 +9,9 @@
 #include "Object/ObjectData.h"
 #include "Moji.h"
 #include "Time.h"
-
+#include "Fade.h"
+#include "GameData.h"
+#include "Result.h"
 Game::Game()
 {
 
@@ -29,9 +31,11 @@ Game::~Game()
 
 bool Game::Start()
 {
-	ObjectData::GetInstance();
+	m_gameData = &GetGameData();
+	wchar_t filePath[256];
+	swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber() ));
 	m_gamecamera = NewGO<GameCamera>(0);
-	m_level.Init(L"Assets/level/level00.tkl", [&](LevelObjectData& objdata) {
+	m_level.Init(filePath, [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"o")) {
 			for (int i = 0; i < ObjectData::GetInstance().GetListSize(); i++ ) {
 				if (objdata.ForwardMatchName(ObjectData::GetInstance().GetObjectData(i)->s_name)) {
@@ -64,12 +68,29 @@ bool Game::Start()
 		return true;
 	});
 	m_time = NewGO<Time>(0);
-	m_time->SetTime(20.0f * 60.0f);
+	m_time->SetTime(m_gameData->GetStageLimitTime());
 	GetObjModelDataFactory().InitInstancingData();
 	return true;
 }
 
 void Game::Update()
 {
+	const float Time = 30.0f;
+	if (m_owaOwari) {
+		m_timer2 += GameTime().GetFrameDeltaTime();
+		if (m_timer2 >= Time) {
+			NewGO<Result>(0);
+			DeleteGO(this);
+		}
+	}
 	GetObjModelDataFactory().BeginUpdateInstancingData();
+}
+
+void Game::PostRender()
+{
+	if (m_owaOwari) {
+		wchar_t hoge[256];
+		swprintf_s(hoge, L"èIóπ");
+		m_font.DrawScreenPos(hoge, { 300.0f,300.0f });
+	}
 }

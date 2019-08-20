@@ -4,6 +4,7 @@
 #include "GameCamera.h"
 #include "Object/Obj.h"
 #include "math/kgBox.h"
+#include "GameData.h"
 Player::Player()
 {
 	
@@ -19,7 +20,12 @@ Player::~Player()
 bool Player::Start()
 {
 	//cmoファイルの読み込み。
-	m_skinModelRender.Init(L"Resource/modelData/sphere.cmo");
+	wchar_t filePath[256];
+	GameData* gameData = &GetGameData();
+	m_protradius = gameData->GetPlayerSize();
+	m_radius = gameData->GetPlayerSize();
+	swprintf_s(filePath, L"Resource/modelData/sphere%d.cmo", (int)gameData->GetStageNumber());
+	m_skinModelRender.Init(filePath);
 	m_skinModelRender.SetShadowCaster(true);
 	m_skinModelRender.SetShadowReceiver(true);
 	m_skinModelRender.SetScale(m_scale);

@@ -45,6 +45,11 @@
       <Filter>Object\Anim</Filter>
     </ClInclude>
     <ClInclude Include="Time.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="Fade.h" />
+    <ClInclude Include="GameData.h" />
+    <ClInclude Include="Result.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -92,6 +97,11 @@
       <Filter>Object\Anim</Filter>
     </ClCompile>
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="Fade.cpp" />
+    <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="Result.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -132,9 +142,6 @@
     <None Include="Assets\modelData\obj\obox3.FBX">
       <Filter>Asset\modelData\obj</Filter>
     </None>
-    <None Include="Assets\modelData\sphere\sphere.FBX">
-      <Filter>Asset\modelData\sphere</Filter>
-    </None>
     <None Include="Assets\modelData\sphere\sphere2.FBX">
       <Filter>Asset\modelData\sphere</Filter>
     </None>
@@ -162,18 +169,32 @@
     <None Include="Assets\modelData\obj\ohito.FBX">
       <Filter>Asset\modelData\obj</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\clockkari.png">
-      <Filter>Asset\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Assets\sprite\clockkari2.png">
-      <Filter>Asset\sprite</Filter>
-    </ImageContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
+    <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
-    </MeshContentTask>
+    </None>
+    <None Include="Assets\sprite\title.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\stageselect.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\loading.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\clockkari2.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\clockkari.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\arrow.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere1.FBX" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\sprite\result.png">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

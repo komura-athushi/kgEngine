@@ -89,8 +89,8 @@ private:
 	CSkinModelRender m_skinModelRender2;														//人のモデル
 	GameCamera* m_gamecamera = nullptr;															//カメラ
 	bool m_isjump = false;																		//ジャンプ中かどうか
-	float m_radius = 45.0f;																		//球体の半径
-	const float m_protradius = 45.0f;															//最初の球体の半径	
+	float m_radius = 0.0f;																		//球体の半径
+	float m_protradius = 0.0f;															//最初の球体の半径	
 	float m_volume = 0.0f;																		
 	const float m_protmovespeedmultiply = 5.0f;													//最初の移動速度
 	float m_movespeedmultiply = 5.0f;															//移動速度

@@ -5,16 +5,16 @@ const wchar_t* MOJI::MOVELIMIT = L"L";
 const wchar_t* MOJI::PATHNUMBER = L"N";
 MOJI::MOJI()
 {
-	//左右に移動
+	//左右に移動、移動速度
 	MOVE.push_back(L"R");
 	MOVESTATE.push_back(enMove_Lr);
-	//上下に移動
+	//上下に移動、移動速度
 	MOVE.push_back(L"U");
 	MOVESTATE.push_back(enMove_Up);
 	//回転
 	MOVE.push_back(L"S");
 	MOVESTATE.push_back(enMove_Rot);
-	//パス移動
+	//パス移動、移動速度
 	MOVE.push_back(L"P");
 	MOVESTATE.push_back(enMove_Path);
 

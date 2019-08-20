@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Time.h"
-
+#include "Game.h"
 Time::Time()
 {
 
@@ -18,12 +18,19 @@ bool Time::Start()
 	//â©êF
 	m_sprite2.Init(L"Resource/sprite/clockkari2.dds", true);
 	m_degree = (m_time / 60.0f) * 360.0f / 60.0f;
+	m_game = FindGO<Game>();
 	return true;
 }
 
 void Time::PostRender()
 {
-	m_timer -= GameTime().GetFrameDeltaTime();
+	if (m_timer <= 0.0000001f) {
+		m_timer = 0.0f;
+		m_game->SetOwaOwari();
+	}
+	else {
+		m_timer -= GameTime().GetFrameDeltaTime();
+	}
 	m_degree = (m_timer / 60.0f) * 360.0f / 60.0f;
 	m_sprite1.DrawScreenPos(CVector2(200.0f, 200.0f), CVector2(0.8f, 0.8f), CVector2(0.5f, 0.5f), 0.0f, CVector4(1.0f, 1.0f, 1.0f, 0.5f),
 		DirectX::SpriteEffects_None, 0.5f);

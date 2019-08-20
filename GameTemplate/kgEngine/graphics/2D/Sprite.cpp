@@ -9,7 +9,18 @@ CSprite::CSprite()
 
 CSprite::~CSprite()
 {
-
+	if (m_srv != nullptr) {
+		m_srv->Release();
+	}
+	if (m_cb != nullptr) {
+		m_cb->Release();
+	}
+	if (m_tex != nullptr) {
+		m_tex->Release();
+	}
+	if (m_dg != nullptr) {
+		m_dg->Release();
+	}
 }
 
 void CSprite::Init(const wchar_t* fileName, bool isCircleGauge)
@@ -60,6 +71,7 @@ void CSprite::Init(const wchar_t* fileName, bool isCircleGauge)
 		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;			//バッファをどのようなパイプラインにバインドするかを指定する。
 																	//定数バッファにバインドするので、D3D11_BIND_CONSTANT_BUFFERを指定する。
 		bufferDesc.CPUAccessFlags = 0;								//CPU アクセスのフラグです。
+		Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_cb);
 	}											//CPUアクセスが不要な場合は0。
 	int bufferSize2 = sizeof(float);
 	//どんなバッファを作成するのかをせてbufferDescに設定する。
@@ -75,7 +87,6 @@ void CSprite::Init(const wchar_t* fileName, bool isCircleGauge)
 	}
 	m_ps.Load("Assets/shader/sprite.fx", "PSMain", Shader::EnType::PS);
 	//作成。
-	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_cb);
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc2, NULL, &m_dg);
 }
 
@@ -90,16 +101,17 @@ void CSprite::DrawScreenPos(
 	float degree
 )
 {
-	if (!m_srv) { return; }
+	if (m_srv == nullptr) { return; }
 	ConstantBuffer cb;
 	cb.mulColor = color;
 	layerDepth *= 0.999f; layerDepth += 0.001f;
 	layerDepth -= Engine().GetGraphicsEngine().AddAndGetLayerDepthCnt();
 	auto device = Engine().GetGraphicsEngine().GetD3DDeviceContext();
+
 	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin(DirectX::SpriteSortMode_BackToFront, nullptr, nullptr, nullptr, nullptr, [=]
 		{
 			device->UpdateSubresource(m_cb, 0, nullptr, &cb, 0, 0);
-			device->PSSetConstantBuffers(0, 1, &m_cb);
+			device->PSSetConstantBuffers(0, 0, &m_cb);
 			float Angle;
 			if (m_isCircleGauge) {
 				Angle = degree * CMath::PI / 180.0f;
@@ -111,8 +123,12 @@ void CSprite::DrawScreenPos(
 			device->PSSetConstantBuffers(1, 1, &m_dg);
 			device->PSSetShader((ID3D11PixelShader*)m_ps.GetBody(), nullptr, 0);
 		}
+        
 	);
-	m_spriteBatch->Draw(m_srv, pos.vec, &m_sourceRectangle, CVector4::White(), rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(scale.x, scale.y), effects, layerDepth);
+	//Engine().GetGraphicsEngine().GetSpriteBatch()->Begin();
+	m_spriteBatch->Draw(m_srv, pos.vec, &m_sourceRectangle, color, rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(scale.x, scale.y), effects, layerDepth);
+	//m_spriteBatch->Draw(m_srv, pos.vec);
+	//m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(0.0f,0.0f));
 	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
 }
 

@@ -97,20 +97,28 @@ void GameCamera::Calculation()
 		m_state = enStick_NoEnterStick;
 	}
 	//両方のスティックに入力があったら
-	/*if (m_state == enStick_EnterStickBoth) {
+	if (m_state == enStick_EnterStickBoth) {
 		CVector3 R = stickR;
 		CVector3 L = stickL;
+		CVector3 Rx(stickR.x,0.0f,0.0f);
+		CVector3 Lx(stickL.x,0.0f,0.0f);
 		R.Normalize();
 		L.Normalize();
+		float LimitStickX = 0.3f;
 		float Angle = acosf(R.Dot(L));
-		if (fabsf(Angle) <= LimitStickDegree) {
-			Degree = stickR + stickL;
+		Angle *= 180.0f / M_PI;
+		const float LimitStickDegree = 140.0f;
+		if (fabsf(Angle) >= LimitStickDegree && Rx.LengthSq() <= LimitStickX && Lx.LengthSq() <= LimitStickX) {
+			if (stickR.y >= stickL.y) {
+				m_degreey -= stickR.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime() * 1.5f;
+			}
+			else {
+				m_degreey += stickL.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime() * 1.5f;
+			}
+			Degree = stickR + stickL; 
 			Degree /= 2;
 		}
-		else {
-			m_state = enStick_NoEnterStick;
-		}
-	}*/
+	}
 	if (m_state != enStick_NoEnterStick && m_state != enStick_EnterStickBoth) {
 		CVector3 Front = MainCamera().GetFront();
 		CVector3 Back = Front * -1;

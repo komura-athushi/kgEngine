@@ -36,14 +36,16 @@ void CGameObjectManager::PostRender()
 	//DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
 	//乗算ステートを設定
 	/*Engine().GetGraphicsEngine().GetSpriteBatchPMA()->Begin(DirectX::SpriteSortMode_BackToFront, state.NonPremultiplied());*/
+	//Engine().GetGraphicsEngine().GetSpriteBatch()->Begin(DirectX::SpriteSortMode_BackToFront);
 	for (GameObjectList objList : m_GogameobjectList) {
 		for (IGameObject* obj : objList) {
 			obj->PostRenderWrapper();
 		}
 	}
 	GameTime().Draw();
-	/*Engine().GetGraphicsEngine().GetSpriteBatchPMA()->End();*/
-	//Engine().GetGraphicsEngine().ResetLayerDepthCnt();
+	//Engine().GetGraphicsEngine().GetSpriteBatch()->End();
+	//Engine().GetGraphicsEngine().GetSpriteBatchPMA()->End();
+	Engine().GetGraphicsEngine().ResetLayerDepthCnt();
 }
 
 void CGameObjectManager::Draw()

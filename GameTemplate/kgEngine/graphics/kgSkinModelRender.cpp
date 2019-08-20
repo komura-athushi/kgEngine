@@ -9,7 +9,9 @@ CSkinModelRender::CSkinModelRender()
 
 CSkinModelRender::~CSkinModelRender()
 {
-
+	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+		delete itr->second;
+	}
 }
 
 bool CSkinModelRender::Start()
