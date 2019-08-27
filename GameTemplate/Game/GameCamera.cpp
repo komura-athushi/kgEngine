@@ -29,6 +29,7 @@ void GameCamera::Update()
 		m_player = FindGO<Player>();
 		return;
 	}
+	TransView();
 	TransRadius();
 	Calculation();
 	MainCamera().SetPosition(m_position);
@@ -44,7 +45,7 @@ void GameCamera::TransRadius()
 void GameCamera::Calculation()
 {
 	//パッドの入力量に乗算
-	const float StickMultiply = 100.0f;
+	const float StickMultiply = 80.0f;
 	//カメラの回転に制限
 	const float UpperLimitDegreeXZ = 80.0f;
 	const float LowerLimitDegreeXZ = -80.0f;
@@ -56,7 +57,7 @@ void GameCamera::Calculation()
 	const float LimitStickDegree = 90.0f;
 	//スティック入力の補正
 	float MultiPly = 1.0f;
-
+	const float Angle = m_degreey;
 	//スティックの入力量をはかる
 	CVector3 stickR;
 	stickR.x = GetPad(0).GetRStickXF();
@@ -96,6 +97,9 @@ void GameCamera::Calculation()
 	else {
 		m_state = enStick_NoEnterStick;
 	}
+	if (m_transView) {
+		m_state = enStick_NoEnterStick;
+	}
 	//両方のスティックに入力があったら
 	if (m_state == enStick_EnterStickBoth) {
 		CVector3 R = stickR;
@@ -108,12 +112,15 @@ void GameCamera::Calculation()
 		float Angle = acosf(R.Dot(L));
 		Angle *= 180.0f / M_PI;
 		const float LimitStickDegree = 140.0f;
+		const float Multiply = 2.0f;
 		if (fabsf(Angle) >= LimitStickDegree && Rx.LengthSq() <= LimitStickX && Lx.LengthSq() <= LimitStickX) {
 			if (stickR.y >= stickL.y) {
-				m_degreey -= stickR.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime() * 1.5f;
+				m_degreey -= stickR.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime() * Multiply;
+				m_state = enStick_EnterStickBothOppositeRight;
 			}
 			else {
-				m_degreey += stickL.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime() * 1.5f;
+				m_degreey += stickL.LengthSq() * StickMultiply * GameTime().GetFrameDeltaTime() * Multiply;
+				m_state = enStick_EnterStickBothOppositeLeft;
 			}
 			Degree = stickR + stickL; 
 			Degree /= 2;
@@ -151,6 +158,9 @@ void GameCamera::Calculation()
 			}
 		}
 	}
+	if (m_player->GetCount() > 0) {
+		m_degreey = Angle;
+	}
 	m_target = CVector3::Zero();
 	m_target = m_player->GetPosition();
 	m_target.y += HeightTarget;
@@ -167,4 +177,19 @@ void GameCamera::Calculation()
 	rot.Multiply(toPos);
 	toPos *= m_radius;
 	m_position = m_target + toPos;
+}
+
+void GameCamera::TransView()
+{
+	if (GetPad(0).IsTrigger(enButtonLB3) && GetPad(0).IsTrigger(enButtonRB3) && !m_transView) {
+		m_transView = true;
+	}
+	if (m_transView) {
+		m_timer += GameTime().GetFrameDeltaTime();
+		m_degreey += 180.0f * GameTime().GetFrameDeltaTime();
+		if (m_timer >= 1.0f) {
+			m_transView = false;
+			m_timer = 0.0f;
+		}
+	}
 }

@@ -121,6 +121,8 @@ void Player::Move()
 	const float BoundMultiply = 0.7f;
 	//地面と衝突する前のyベクトルを記憶する
 	float MoveSpeedY = 0.0f;
+	const float TimeLimit = 0.4f;
+	const int CountLimit = 5;
 
 	CVector3 Stick = CVector3::Zero();
 	//両方のスティックが入力されていたら
@@ -134,13 +136,58 @@ void Player::Move()
 		stickR.y = GetPad(0).GetRStickYF();
 		stickR.z = 0.0f;
 		Stick = stickL + stickR;
+
 	}
+	else if (m_gamecamera->GetStateStick() == enStick_EnterStickBothOppositeLeft) {
+		if (m_count == 0) {
+			m_timer = 0.0f;
+			m_isRight = true;
+		}
+		if (m_timer <= TimeLimit && m_isRight) {
+			m_isRight = false;
+			m_count++;
+			m_timer = 0;
+			m_timer = 0.0f;
+		}
+		
+	}
+	else if (m_gamecamera->GetStateStick() == enStick_EnterStickBothOppositeRight) {
+		if (m_count == 0) {
+			m_timer = 0.0f;
+			m_isRight = false;
+		}
+		if (m_timer <= TimeLimit && !m_isRight) {
+			m_count++;
+			m_isRight = true;
+			m_timer = 0.0f;
+		}
+	}
+
+	if (m_timer >= TimeLimit) {
+		m_count = 0;
+		m_isDush = false;
+	}
+	m_timer += GameTime().GetFrameDeltaTime();
 	CVector3 frontxz = MainCamera().GetFront();
 	CVector3 rightxz = MainCamera().GetRight();
-	frontxz *= Stick.y;
-	rightxz *= Stick.x;
-	m_movespeed += frontxz * m_movespeedmultiply;
-	m_movespeed += rightxz * m_movespeedmultiply;
+	if (m_count >= CountLimit) {
+		if (m_isDush) {
+			m_movespeed += frontxz * m_movespeedmultiply * 3;
+		}
+		else {
+			for (int i = 0; i < 30; i++) {
+				m_movespeed += frontxz * m_movespeedmultiply * 3;
+				m_movespeed *= MoveSpeedAtten;
+			}
+			m_isDush = true;
+		}
+	}
+	else {
+		frontxz *= Stick.y;
+		rightxz *= Stick.x;
+		m_movespeed += frontxz * m_movespeedmultiply;
+		m_movespeed += rightxz * m_movespeedmultiply;
+	}
 	m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
 	if (m_movespeed.y <= LimitBoundMoveSpeed) {
 		m_isbound = true;

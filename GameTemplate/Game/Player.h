@@ -59,6 +59,11 @@ public:
 	{
 		m_movespeed.y = 0.0f;
 	}
+	//カウントを取得
+	int GetCount()
+	{
+		return m_count;
+	}
 private:
 	CharacterController m_characon;																//キャラコン
 	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();			//座標
@@ -96,6 +101,10 @@ private:
 	float m_movespeedmultiply = 5.0f;															//移動速度
 	bool m_isbound = false;																		//バウンド中かどうか
 	CFont m_font;																				//文字
+	float m_timer = 0.0f;
+	int m_count = 0;
+	bool m_isRight = false;
+	bool m_isDush = false;
 	/*CSprite m_sprite;
 	CSprite m_sprite2;
 	float m_degree = 0.0f;*/

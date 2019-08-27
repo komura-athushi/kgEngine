@@ -6,7 +6,9 @@ enum StateEnterStick {
 	enStick_EnterStickR,					//右スティックだけ押されている
 	enStick_EnterStickL,					//左スティックだけ押されている
 	enStick_EnterStickBoth,					//どちらのスティックも入力されている
-	enStick_NoEnterStick					//どちらのスティックも入力されていない
+	enStick_NoEnterStick,					//どちらのスティックも入力されていない
+	enStick_EnterStickBothOppositeLeft,		//左右のスティックがそれぞれ逆方向に入力されている、左が前方向
+	enStick_EnterStickBothOppositeRight		//左右のスティックがそれぞれ逆方向に入力されている、右が前方向
 };
 
 class GameCamera:public IGameObject
@@ -20,6 +22,8 @@ public:
 	void Calculation();
 	//プレイヤーの大きさを考慮してカメラの半径を変える
 	void TransRadius();
+	//L3とR3を同時押しした時に視点を変更する
+	void TransView();
 	//スティックの入力状態を取得
 	StateEnterStick GetStateStick() const
 	{
@@ -34,5 +38,10 @@ private:
 	const float m_protradius = 260.0f;					//カメラの最初の半径
 	StateEnterStick m_state = enStick_NoEnterStick;		//スティックの入力について
 	float m_Multiply = 1.0f;							//カメラと塊の距離の倍率
+	float m_timer = 0.0f;
+	bool m_transView = false;
+	CVector3 m_position2 = CVector3::One();
+	CVector3 m_target2 = CVector3::One();
+	float m_timer2 = 0.0f;
 };
 
