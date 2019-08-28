@@ -18,6 +18,7 @@ ObjModelData* ObjModelDataFactory::Load(const wchar_t* path)
 		//newが不要になる、()に初期値
 		m_modelmap.emplace(key, std::make_unique<ObjModelData>());
 		m_modelmap[key].get()->s_skinmodel.Init(filepath, nullptr, 0, enFbxUpAxisZ, true);
+		m_modelmap[key].get()->s_hashKey = key;
 	}
 	m_modelmap[key].get()->s_maxInstance += 1;
 	m_modelmap[key].get()->s_skinmodel.SetInstanceNumber(m_modelmap[key].get()->s_maxInstance);
@@ -39,6 +40,28 @@ void ObjModelDataFactory::BeginUpdateInstancingData()
 	}
 }
 
+void ObjModelDataFactory::DeleteSkinModelData(const int& hashKey)
+{
+	if (m_modelmap.count(hashKey) != 0) {
+		m_modelmap.erase(hashKey);
+	}
+}
+
+bool ObjModelDataFactory::Start()
+{
+	return true;
+}
+
+void ObjModelDataFactory::Update()
+{
+
+}
+
+void ObjModelDataFactory::PreUpdate()
+{
+	BeginUpdateInstancingData();
+}
+
 Obj::Obj()
 {
 
@@ -52,6 +75,7 @@ Obj::~Obj()
 	if (m_rot != nullptr) {
 		delete m_rot;
 	}
+	GetObjModelDataFactory().DeleteSkinModelData(m_modeldata->s_hashKey);
 }
 
 void Obj::SetFilePath(const wchar_t* path)

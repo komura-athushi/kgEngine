@@ -16,6 +16,7 @@ public:
 	~Game();
 	bool Start() override;
 	void Update() override;
+	void OnDestroy() override;
 	void PostRender() override;
 	//ステージがオワオワリと設定する
 	void SetOwaOwari()
@@ -25,7 +26,7 @@ public:
 	//void OnDestroy() override;
 private:
 	Ground* m_ground = nullptr;
-	Player* m_player;
+	Player m_player;
 	GameCamera* m_gamecamera = nullptr;
 	std::vector<Obj*> m_objList;
 	float m_timer = 0.0f;

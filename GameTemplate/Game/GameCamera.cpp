@@ -158,7 +158,7 @@ void GameCamera::Calculation()
 			}
 		}
 	}
-	if (m_player->GetCount() > 0) {
+	if (m_player->GetCount() > 1) {
 		m_degreey = Angle;
 	}
 	m_target = CVector3::Zero();

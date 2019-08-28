@@ -60,7 +60,7 @@ void CGameObjectManager::Draw()
 void CGameObjectManager::Delete()
 {
 	//削除していくぅ
-	for (auto& GO : m_DeletegameobjectList) {
+	for (auto* GO : m_DeletegameobjectList) {
 		GameObjectPrio prio = GO->GetPriority();
 		GameObjectList& goExecList = m_GogameobjectList.at(prio);
 		//ゲームオブジェクトリストから該当のオブジェクトの箇所を探して

@@ -131,8 +131,8 @@ void CEngine::Update()
 	m_gameobjectmanager->Start();
 	m_gameobjectmanager->Update();
 	m_gameobjectmanager->Draw();
-	m_gameobjectmanager->Delete();
 	m_gameobjectmanager->PostRender();
+	m_gameobjectmanager->Delete();
 	//カメラの更新。
 	MainCamera().Update();
 	//描画終了。

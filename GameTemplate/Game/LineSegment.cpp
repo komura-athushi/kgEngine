@@ -108,6 +108,7 @@ void LineSegment::Init(const CVector3& position)
 	m_rigidBody.GetBody()->setUserIndex(enCollisionAttr_User);
 	m_rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 	Engine().GetPhysicsEngine().AddRigidBody(m_rigidBody);
+	m_isInitialize = true;
 }
 
 void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)

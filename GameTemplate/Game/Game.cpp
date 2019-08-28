@@ -12,6 +12,7 @@
 #include "Fade.h"
 #include "GameData.h"
 #include "Result.h"
+#include "Title.h"
 Game::Game()
 {
 
@@ -19,14 +20,22 @@ Game::Game()
 
 Game::~Game()
 {
+	
+}
+
+void Game::OnDestroy()
+{
 	DeleteGO(m_ground);
 	DeleteGO(m_gamecamera);
-	DeleteGO(m_player);
-	DeleteGO(m_ground);
-	QueryGOs<Obj>(nullptr, [&](Obj* object) {
+	//DeleteGO(m_player);
+	DeleteGO(m_time);
+	/*QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		DeleteGO(object);
 		return true;
-	});
+	});*/
+	for (Obj* obj : m_objList) {
+		DeleteGO(obj);
+	}
 }
 
 bool Game::Start()
@@ -39,7 +48,7 @@ bool Game::Start()
 		if (objdata.ForwardMatchName(L"o")) {
 			for (int i = 0; i < ObjectData::GetInstance().GetListSize(); i++ ) {
 				if (objdata.ForwardMatchName(ObjectData::GetInstance().GetObjectData(i)->s_name)) {
-					Obj* obj = NewGO<Obj>(1);
+					Obj* obj = NewGO<Obj>(0);
 					obj->SetObjData(ObjectData::GetInstance().GetObjectData(i));
 					MOVESTATUS ms = FindMove(objdata.name);
 					if (ms.s_state == enMove_Path) {
@@ -56,12 +65,12 @@ bool Game::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"sphere")) {
-			m_player = NewGO<Player>(0);
-			m_player->SetPosition(objdata.position);
+			//m_player = NewGO<Player>(0);
+			m_player.SetPosition(objdata.position);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"ground")) {
-			Ground* m_ground = NewGO<Ground>(0);
+			m_ground = NewGO<Ground>(0);
 			m_ground->SetPosition(objdata.position);
 			return true;
 		}
@@ -76,12 +85,12 @@ bool Game::Start()
 void Game::Update()
 {
 	const float Time = 30.0f;
-	if (m_owaOwari) {
+	if (m_owaOwari) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 		m_timer2 += GameTime().GetFrameDeltaTime();
-		if (m_timer2 >= Time) {
+		//if (m_timer2 >= Time) {
 			NewGO<Result>(0);
 			DeleteGO(this);
-		}
+		//}
 	}
 	GetObjModelDataFactory().BeginUpdateInstancingData();
 }

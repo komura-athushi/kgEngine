@@ -12,9 +12,10 @@ class Player;
 struct ObjModelData {
 	CSkinModelRender s_skinmodel;
 	int s_maxInstance = 0;
+	int s_hashKey = 0;
 };
 
-class ObjModelDataFactory {
+class ObjModelDataFactory:public IGameObject {
 private:
 	ObjModelDataFactory() {}
 	~ObjModelDataFactory() {}
@@ -24,9 +25,13 @@ public:
 		static ObjModelDataFactory instance;
 		return instance;
 	}
+	bool Start() override;
+	void Update() override;
+	void PreUpdate() override;
 	//各SkinModelのインスタンスデータを初期化する
 	void InitInstancingData();
 	void BeginUpdateInstancingData();
+	void DeleteSkinModelData(const int& hashKey);
 public:
 	ObjModelData* Load(const wchar_t* path);
 private:

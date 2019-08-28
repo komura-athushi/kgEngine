@@ -10,7 +10,9 @@ public:
 	LineSegment() {};
 	~LineSegment() 
 	{
-		Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
+		if (m_isInitialize) {
+			Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
+		}
 	};
 	/// <summary>
 	/// 初期化
@@ -32,5 +34,6 @@ private:
 	bool				m_isSphere = false;				//球体かどうか
 	RigidBody			m_rigidBody;					//剛体。		
 	Player* m_player = nullptr;							//プレイヤー
+	bool m_isInitialize = false;
 };
 
