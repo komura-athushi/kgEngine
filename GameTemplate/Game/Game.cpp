@@ -27,7 +27,7 @@ void Game::OnDestroy()
 {
 	DeleteGO(m_ground);
 	DeleteGO(m_gamecamera);
-	//DeleteGO(m_player);
+	DeleteGO(m_player);
 	DeleteGO(m_time);
 	/*QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		DeleteGO(object);
@@ -48,7 +48,7 @@ bool Game::Start()
 		if (objdata.ForwardMatchName(L"o")) {
 			for (int i = 0; i < ObjectData::GetInstance().GetListSize(); i++ ) {
 				if (objdata.ForwardMatchName(ObjectData::GetInstance().GetObjectData(i)->s_name)) {
-					Obj* obj = NewGO<Obj>(0);
+					Obj* obj = NewGO<Obj>(1);
 					obj->SetObjData(ObjectData::GetInstance().GetObjectData(i));
 					MOVESTATUS ms = FindMove(objdata.name);
 					if (ms.s_state == enMove_Path) {
@@ -65,8 +65,8 @@ bool Game::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"sphere")) {
-			//m_player = NewGO<Player>(0);
-			m_player.SetPosition(objdata.position);
+			m_player = NewGO<Player>(0);
+			m_player->SetPosition(objdata.position);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"ground")) {

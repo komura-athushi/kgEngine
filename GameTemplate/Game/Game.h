@@ -1,6 +1,5 @@
 #pragma once
 #include "level/Level.h"
-#include "Player.h"
 class Ground;
 class Player;
 class GameCamera;
@@ -23,10 +22,9 @@ public:
 	{
 		m_owaOwari = true;
 	}
-	//void OnDestroy() override;
 private:
 	Ground* m_ground = nullptr;
-	Player m_player;
+	Player* m_player = nullptr;
 	GameCamera* m_gamecamera = nullptr;
 	std::vector<Obj*> m_objList;
 	float m_timer = 0.0f;

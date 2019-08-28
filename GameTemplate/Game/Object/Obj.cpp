@@ -47,21 +47,6 @@ void ObjModelDataFactory::DeleteSkinModelData(const int& hashKey)
 	}
 }
 
-bool ObjModelDataFactory::Start()
-{
-	return true;
-}
-
-void ObjModelDataFactory::Update()
-{
-
-}
-
-void ObjModelDataFactory::PreUpdate()
-{
-	BeginUpdateInstancingData();
-}
-
 Obj::Obj()
 {
 

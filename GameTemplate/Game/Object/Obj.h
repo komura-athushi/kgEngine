@@ -15,7 +15,7 @@ struct ObjModelData {
 	int s_hashKey = 0;
 };
 
-class ObjModelDataFactory:public IGameObject {
+class ObjModelDataFactory{
 private:
 	ObjModelDataFactory() {}
 	~ObjModelDataFactory() {}
@@ -25,9 +25,6 @@ public:
 		static ObjModelDataFactory instance;
 		return instance;
 	}
-	bool Start() override;
-	void Update() override;
-	void PreUpdate() override;
 	//各SkinModelのインスタンスデータを初期化する
 	void InitInstancingData();
 	void BeginUpdateInstancingData();
