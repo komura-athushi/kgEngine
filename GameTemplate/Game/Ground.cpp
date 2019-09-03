@@ -13,7 +13,7 @@ Ground::~Ground()
 
 bool Ground::Start()
 {
-	
+	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
 	m_skinModelRender.Init(L"Resource/modelData/ground.cmo");
 	m_skinModelRender.SetPosition(m_position);
 	m_skinModelRender.SetShadowReceiver(true);

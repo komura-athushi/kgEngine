@@ -3,6 +3,7 @@
 #include "Player.h"
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
+#include "GameData.h"
 GameCamera::GameCamera()
 {
 
@@ -20,11 +21,15 @@ bool GameCamera::Start()
 	//ニアクリップとファークリップを設定する
 	MainCamera().SetNear(1.0f);
 	MainCamera().SetFar(50000.0f);
+	m_gamedata = &GetGameData();
 	return true;
 }
 
 void GameCamera::Update()
 {
+	if (m_gamedata->GetisPose()) {
+		return;
+	}
 	if (m_player == nullptr) {
 		m_player = FindGO<Player>();
 		return;

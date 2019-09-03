@@ -190,13 +190,15 @@
     <None Include="Assets\sprite\arrow.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\modelData\sphere\sphere1.FBX">
-      <Filter>Asset\modelData\sphere</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\result.png">
       <Filter>Asset\sprite</Filter>
     </ImageContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
+      <Filter>Asset\modelData\sphere</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

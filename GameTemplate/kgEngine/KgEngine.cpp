@@ -120,6 +120,7 @@ void CEngine::Update()
 	//描画開始。
 	m_graphicsEngine->BegineRender();
 	m_gameobjectmanager->PreUpdate();
+	m_gameobjectmanager->PrePostRender();
 	m_graphicsEngine->ShadowMapRender();
 	//ゲームパッドの更新。	
 	for (auto& pad : m_pad) {

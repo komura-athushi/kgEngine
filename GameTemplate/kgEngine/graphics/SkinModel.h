@@ -110,6 +110,16 @@ public:
 	{
 		m_worldMatrix = worldmatirx;
 	}
+	//インスタンシング描画の数を取得
+	int GetInstanceNumber()
+	{
+		return m_numInstance;
+	}
+	//インスタンシング描画をするかどうかを取得
+	bool GetisInstancing()
+	{
+		return m_isInstancing;
+	}
 	/*!
 	*@brief	SRVのレジスタ番号。
 	*/

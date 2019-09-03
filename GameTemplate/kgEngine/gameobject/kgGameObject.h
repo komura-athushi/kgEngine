@@ -17,6 +17,9 @@ public:
 	//Update直前に呼ばれる開始処理
 	virtual bool Start() { return true; }
 
+	//PrePostRender
+	virtual void PrePostRender() {}
+
 	//Update
 	virtual void  Update() {}
 
@@ -71,6 +74,14 @@ public :
 	}
 
 public:
+	//条件を満たせばPrePostRender関数を実行する
+	void PrePostRenderWrapper()
+	{
+		if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
+			PrePostRender();
+		}
+	}
+
 	//条件を満たせばPostRender関数を実行する
 	void PostRenderWrapper()
 	{

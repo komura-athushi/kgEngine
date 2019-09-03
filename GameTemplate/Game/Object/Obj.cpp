@@ -7,6 +7,16 @@
 #include "Rotation/RotSelf.h"
 #include "Rotation/RotDirection.h"
 #include "Player.h"
+#include "GameData.h"
+bool ObjModelDataFactory::Start()
+{
+	return true;
+}
+
+void ObjModelDataFactory::PreUpdate()
+{
+	BeginUpdateInstancingData();
+}
 
 ObjModelData* ObjModelDataFactory::Load(const wchar_t* path) 
 {
@@ -40,10 +50,10 @@ void ObjModelDataFactory::BeginUpdateInstancingData()
 	}
 }
 
-void ObjModelDataFactory::DeleteSkinModelData(const int& hashKey)
+void ObjModelDataFactory::DeleteAllData()
 {
-	if (m_modelmap.count(hashKey) != 0) {
-		m_modelmap.erase(hashKey);
+	for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
+		m_modelmap.erase(itr);
 	}
 }
 
@@ -60,7 +70,6 @@ Obj::~Obj()
 	if (m_rot != nullptr) {
 		delete m_rot;
 	}
-	GetObjModelDataFactory().DeleteSkinModelData(m_modeldata->s_hashKey);
 }
 
 void Obj::SetFilePath(const wchar_t* path)
@@ -91,6 +100,7 @@ bool Obj::Start()
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
 	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation,CVector3::One(),m_anim.GetPlayAnimationType());
+	m_gamedata = &GetGameData();
 	return true;
 }
 
@@ -204,27 +214,34 @@ void Obj::ClcMatrix()
 
 void Obj::Update()
 {
+	if (!m_draw) {
+		return;
+	}
 	if (m_movestate == enMove_MoveHit) {
-		ClcMatrix();
-		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());
-		if (m_islinesegment) {
-			ClcVertex();
-			if (m_isclclinesegment) {
-				m_linesegment.Execute(m_player->GetPosition(), m_linevector);
+		if (!m_gamedata->GetisPose()) {
+			ClcMatrix();
+			if (m_islinesegment) {
+				ClcVertex();
+				if (m_isclclinesegment) {
+					m_linesegment.Execute(m_player->GetPosition(), m_linevector);
+				}
 			}
 		}
+		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());
 	}
 	else {
-		if (m_movestate != enMove_No) {
-			m_position = m_move->Move();
-			m_staticobject.SetPosition(m_position);
-		}
-		if (m_rotstate != enRot_No) {
-			m_rotation = m_rot->Rot(m_move->GetMoveVector());
-			m_staticobject.SetRotation(m_rotation);
-		}
-		if (m_movestate != enMove_No || m_rotstate != enRot_No) {
-			ClcVertex();
+		if (!m_gamedata->GetisPose()) {
+			if (m_movestate != enMove_No) {
+				m_position = m_move->Move();
+				m_staticobject.SetPosition(m_position);
+			}
+			if (m_rotstate != enRot_No) {
+				m_rotation = m_rot->Rot(m_move->GetMoveVector());
+				m_staticobject.SetRotation(m_rotation);
+			}
+			if (m_movestate != enMove_No || m_rotstate != enRot_No) {
+				ClcVertex();
+			}
 		}
 		m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation, CVector3::One(), m_anim.GetPlayAnimationType());
 	}

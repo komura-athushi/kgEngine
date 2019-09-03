@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "Game.h"
 #include "GameCamera.h"
 #include "Object/Obj.h"
 #include "math/kgBox.h"
@@ -40,11 +39,18 @@ bool Player::Start()
 
 	//lŒ^‚Ìƒ‚ƒfƒ‹
 	m_skinModelRender2.Init(L"Resource/modelData/zunko.cmo");
+	m_gamedata = &GetGameData();
 	return true;
 }
 
 void Player::Update()
 {
+	if (m_gamedata->GetScene() == enScene_Result) {
+		m_skinModelRender2.SetisActive(false);
+	}
+	if (m_gamedata->GetisPose()) {
+		return;
+	}
 	if (m_gamecamera == nullptr) {
 		m_gamecamera = FindGO<GameCamera>();
 	}
@@ -236,7 +242,9 @@ void Player::Turn()
 
 void Player::PostRender()
 {
-	wchar_t output[256];
-	swprintf_s(output, L"”¼Œa  %.1f", m_radius);
-	m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
+	if (m_gamedata->GetScene() == enScene_Stage) {
+		wchar_t output[256];
+		swprintf_s(output, L"‘å‚«‚³  %.1f", m_radius * 2);
+		m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
+	}
 }

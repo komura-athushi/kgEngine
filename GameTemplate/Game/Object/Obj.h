@@ -8,14 +8,14 @@
 #include "math/kgBox.h"
 #include "graphics/2D/kgFont.h"
 class Player;
-
+class GameData;
 struct ObjModelData {
 	CSkinModelRender s_skinmodel;
 	int s_maxInstance = 0;
 	int s_hashKey = 0;
 };
 
-class ObjModelDataFactory{
+class ObjModelDataFactory : public IGameObject{
 private:
 	ObjModelDataFactory() {}
 	~ObjModelDataFactory() {}
@@ -25,10 +25,13 @@ public:
 		static ObjModelDataFactory instance;
 		return instance;
 	}
+	bool Start() override;
+	void PreUpdate() override;
 	//各SkinModelのインスタンスデータを初期化する
 	void InitInstancingData();
 	void BeginUpdateInstancingData();
-	void DeleteSkinModelData(const int& hashKey);
+	//モデルデータを全て削除する
+	void DeleteAllData();
 public:
 	ObjModelData* Load(const wchar_t* path);
 private:
@@ -115,6 +118,16 @@ public:
 	{
 		return &m_box;
 	}
+	//プレイヤーにくっついたオブジェクトか？
+	bool GetisHitPlayer()
+	{
+		return m_movestate == enMove_MoveHit;
+	}
+	//リザルト画面で描画しないようにする
+	void SetNoDraw()
+	{
+		m_draw = false;
+	}
 	//ファイルパスを設定、cmoファイルを読み込む
 	void SetFilePath(const wchar_t* path);
 	//パス移動用のファイルパスを読みこむ
@@ -131,7 +144,7 @@ private:
 	IRotate* m_rot = nullptr;												//回転処理をするクラス
 	Anim m_anim;															//アニメーション再生をするクラス
 	Player* m_player = nullptr;												//プレイヤー
-	float m_size = 0.0f;							//オブジェクトの半径
+	float m_size = 0.0f;													//オブジェクトの半径
 	StructObjectData* m_objdata;											//オブジェクトのデータ
 	PhysicsStaticObject m_staticobject;										//スタティックオブジェクト
 	bool m_issphere = false;												//球体かどうか
@@ -142,6 +155,7 @@ private:
 	bool m_isclclinesegment = false;										//線分を計算するかどうか
 	CBox m_box;																//バウンディングボックス
 	CFont m_font;															//文字
-	
+	bool m_draw = true;														//ドローするかどうか
+	GameData* m_gamedata = nullptr;											//ゲームデータ
 };
 

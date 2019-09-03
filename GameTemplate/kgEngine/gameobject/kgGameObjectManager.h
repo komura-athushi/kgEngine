@@ -46,9 +46,10 @@ public:
 
 	void Start();
 	void Update();
+	void PreUpdate();
+	void PrePostRender();
 	void PostRender();
 	void Draw();
-	void PreUpdate();
 	//íœ‚µ‚Ä‚¢‚­‚£
 	void Delete(); 
 public:

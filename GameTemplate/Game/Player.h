@@ -2,6 +2,7 @@
 #include "character/CharacterController.h"
 #include "graphics/2D/kgFont.h"
 class GameCamera;
+class GameData;
 //(⌒,_ゝ⌒)球体ですわぁ...
 class Player:public IGameObject
 {
@@ -101,10 +102,11 @@ private:
 	float m_movespeedmultiply = 5.0f;															//移動速度
 	bool m_isbound = false;																		//バウンド中かどうか
 	CFont m_font;																				//文字
-	float m_timer = 0.0f;
-	int m_count = 0;
-	bool m_isRight = false;
-	bool m_isDush = false;
+	float m_timer = 0.0f;																		//ダッシュの判定に使うタイマー
+	int m_count = 0;																			//ダッシュの判定に使うカウント	
+	bool m_isRight = false;																		//スティックの右が前方向、左が後ろ方向に倒されたか
+	bool m_isDush = false;																		//ダッシュしたか
+	GameData* m_gamedata = nullptr;																//ゲームデータ
 	/*CSprite m_sprite;
 	CSprite m_sprite2;
 	float m_degree = 0.0f;*/

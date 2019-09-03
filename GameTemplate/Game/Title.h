@@ -1,5 +1,6 @@
 #pragma once
 class Fade;
+//タイトル
 class Title:public IGameObject
 {
 public:
@@ -9,7 +10,7 @@ public:
 	void Update() override;
 	void PostRender() override;
 private:
-	CSprite m_sprite;
+	CSprite m_sprite;										//スプライト
 	Fade* m_fade;
 	bool m_isWaitFadeout = false;
 };

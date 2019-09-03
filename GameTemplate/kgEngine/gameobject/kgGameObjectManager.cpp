@@ -20,6 +20,14 @@ void CGameObjectManager::PreUpdate()
 	}
 }
 
+void CGameObjectManager::PrePostRender()
+{
+	for (GameObjectList objList : m_GogameobjectList) {
+		for (IGameObject* obj : objList) {
+			obj->PrePostRenderWrapper();
+		}
+	}
+}
 
 void CGameObjectManager::Update()
 {

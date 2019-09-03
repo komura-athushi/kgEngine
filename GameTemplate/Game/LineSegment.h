@@ -34,6 +34,6 @@ private:
 	bool				m_isSphere = false;				//球体かどうか
 	RigidBody			m_rigidBody;					//剛体。		
 	Player* m_player = nullptr;							//プレイヤー
-	bool m_isInitialize = false;
+	bool m_isInitialize = false;						//初期化したかどうか
 };
 

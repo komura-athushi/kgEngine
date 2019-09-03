@@ -26,16 +26,20 @@ Game::~Game()
 void Game::OnDestroy()
 {
 	DeleteGO(m_ground);
-	DeleteGO(m_gamecamera);
-	DeleteGO(m_player);
+	//DeleteGO(m_gamecamera);
+	//DeleteGO(m_player);
 	DeleteGO(m_time);
 	/*QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		DeleteGO(object);
 		return true;
 	});*/
 	for (Obj* obj : m_objList) {
-		DeleteGO(obj);
+		if (!obj->GetisHitPlayer()) {
+			obj->SetNoDraw();
+		}
+		//DeleteGO(obj);
 	}
+	
 }
 
 bool Game::Start()
@@ -79,20 +83,33 @@ bool Game::Start()
 	m_time = NewGO<Time>(0);
 	m_time->SetTime(m_gameData->GetStageLimitTime());
 	GetObjModelDataFactory().InitInstancingData();
+	m_gameData->SetPoseCancel();
+	m_gameData->SetScene(enScene_Stage);
 	return true;
 }
 
 void Game::Update()
 {
 	const float Time = 30.0f;
-	if (m_owaOwari) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+	if (m_owaOwari) {
+		m_gameData->SetPose();
 		m_timer2 += GameTime().GetFrameDeltaTime();
 		//if (m_timer2 >= Time) {
 			NewGO<Result>(0);
 			DeleteGO(this);
 		//}
 	}
-	GetObjModelDataFactory().BeginUpdateInstancingData();
+	else {
+		//スタートボタンが押されたら画面を切り替える
+		if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+			if (m_gameData->GetisPose()) {
+				m_gameData->SetPoseCancel();
+			}
+			else {
+				m_gameData->SetPose();
+			}
+		}
+	}
 }
 
 void Game::PostRender()

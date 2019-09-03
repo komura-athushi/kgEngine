@@ -134,12 +134,14 @@ void CSkinModelRender::Draw()
 	}*/
 	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
 		//アニメーションの再生中であればアニメーションのアップデートを行う
-		if (itr->second->s_animation.IsPlaying()) {
-			itr->second->s_animation.Update(GameTime().GetFrameDeltaTime());
-		}
-		//アクティブならモデルをドローする
-		if (m_isActive) {
-			itr->second->s_skinModel.Draw();
+		if (itr->second->s_skinModel.GetInstanceNumber() != 0 || !itr->second->s_skinModel.GetisInstancing()) {
+			if (itr->second->s_animation.IsPlaying()) {
+				itr->second->s_animation.Update(GameTime().GetFrameDeltaTime());
+			}
+			//アクティブならモデルをドローする
+			if (m_isActive) {
+				itr->second->s_skinModel.Draw();
+			}
 		}
 	}
 }

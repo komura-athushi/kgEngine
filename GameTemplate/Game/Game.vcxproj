@@ -217,9 +217,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </None>
-    <None Include="Assets\modelData\sphere\sphere1.FBX">
+    <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
       <FileType>Document</FileType>
-    </None>
+    </MeshContentTask>
     <None Include="Assets\modelData\obj\obox3.FBX">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

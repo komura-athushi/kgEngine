@@ -1,6 +1,6 @@
 #pragma once
 class Player;
-
+class GameData;
 //どっちのスティックが回転か
 enum StateEnterStick {
 	enStick_EnterStickR,					//右スティックだけ押されている
@@ -38,10 +38,8 @@ private:
 	const float m_protradius = 260.0f;					//カメラの最初の半径
 	StateEnterStick m_state = enStick_NoEnterStick;		//スティックの入力について
 	float m_Multiply = 1.0f;							//カメラと塊の距離の倍率
-	float m_timer = 0.0f;
-	bool m_transView = false;
-	CVector3 m_position2 = CVector3::One();
-	CVector3 m_target2 = CVector3::One();
-	float m_timer2 = 0.0f;
+	float m_timer = 0.0f;								//L3とR3が同時に押された時に時間を計る
+	bool m_transView = false;							//L3とR3が同時に押された時のカメラを遷移しているか
+	GameData* m_gamedata = nullptr;						//ゲームデータ
 };
 

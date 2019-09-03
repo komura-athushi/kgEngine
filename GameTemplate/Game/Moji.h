@@ -13,7 +13,7 @@ struct ROTSTATUS {
 	EnRotate s_state;				//ROTの種類
 	float s_speed;					//回転の速さ
 };
-
+//外部ファイルからオブジェクトの情報を取得する
 class MOJI {
 private:
 	MOJI();

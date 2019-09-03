@@ -23,19 +23,19 @@ public:
 		m_owaOwari = true;
 	}
 private:
-	Ground* m_ground = nullptr;
-	Player* m_player = nullptr;
-	GameCamera* m_gamecamera = nullptr;
-	std::vector<Obj*> m_objList;
-	float m_timer = 0.0f;
+	Ground* m_ground = nullptr;									//グラウンド
+	Player* m_player = nullptr;									//プレイヤー
+	GameCamera* m_gamecamera = nullptr;							//カメラ
+	std::vector<Obj*> m_objList;								//オブジェクトのリスト
+	float m_timer = 0.0f;										//タイマー
 	//level
-	Level m_level;
-	Time* m_time;
+	Level m_level;												//レベル
+	Time* m_time;												//タイム
 	Fade* m_fade;
-	GameData* m_gameData;
-	bool m_owaOwari = false;
-	CFont m_font;
+	GameData* m_gameData = nullptr;								//ゲームデータ
+	bool m_owaOwari = false;									//ステージをオワらせるか
+	CFont m_font;												//フォント
 	float m_timer2 = 0.0f;
-	
+	bool m_isPose = false;
 };
 

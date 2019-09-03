@@ -1,5 +1,6 @@
 #pragma once
 #include "..//kgEngine/physics/PhysicsStaticObject.h"
+//地面とか
 class Ground:public IGameObject
 {
 public:
@@ -13,8 +14,8 @@ public:
 		m_position = pos;
 	}
 private:
-	CSkinModelRender m_skinModelRender;
-	PhysicsStaticObject m_staticobject;
-	CVector3 m_position = CVector3::Zero();
+	CSkinModelRender m_skinModelRender;								//スキンモデルレンダー
+	PhysicsStaticObject m_staticobject;								//静的オブジェクト
+	CVector3 m_position = CVector3::Zero();							//座標
 };
 
