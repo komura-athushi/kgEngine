@@ -94,6 +94,7 @@ void Game::Update()
 	if (m_owaOwari) {
 		m_gameData->SetPose();
 		m_timer2 += GameTime().GetFrameDeltaTime();
+		m_gameData->SetReusltPlayerSsize(m_player->GetRadius());
 		//if (m_timer2 >= Time) {
 			NewGO<Result>(0);
 			DeleteGO(this);

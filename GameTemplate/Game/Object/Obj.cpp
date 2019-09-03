@@ -38,23 +38,25 @@ ObjModelData* ObjModelDataFactory::Load(const wchar_t* path)
 
 void ObjModelDataFactory::InitInstancingData()
 {
-	for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
-		itr->second.get()->s_skinmodel.InitInstancing();
+	if (m_modelmap.size() != 0) {
+		for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
+			itr->second.get()->s_skinmodel.InitInstancing();
+		}
 	}
 }
 
 void ObjModelDataFactory::BeginUpdateInstancingData()
 {
-	for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
-		itr->second.get()->s_skinmodel.BeginUpdateInstancingData();
+	if (m_modelmap.size() != 0) {
+		for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
+			itr->second.get()->s_skinmodel.BeginUpdateInstancingData();
+		}
 	}
 }
 
 void ObjModelDataFactory::DeleteAllData()
 {
-	for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
-		m_modelmap.erase(itr);
-	}
+	m_modelmap.clear();
 }
 
 Obj::Obj()
@@ -218,7 +220,7 @@ void Obj::Update()
 		return;
 	}
 	if (m_movestate == enMove_MoveHit) {
-		if (!m_gamedata->GetisPose()) {
+		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {
 			ClcMatrix();
 			if (m_islinesegment) {
 				ClcVertex();
@@ -230,7 +232,7 @@ void Obj::Update()
 		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());
 	}
 	else {
-		if (!m_gamedata->GetisPose()) {
+		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {
 			if (m_movestate != enMove_No) {
 				m_position = m_move->Move();
 				m_staticobject.SetPosition(m_position);

@@ -27,16 +27,15 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	if (m_gamedata->GetisPose()) {
-		return;
-	}
 	if (m_player == nullptr) {
 		m_player = FindGO<Player>();
 		return;
 	}
-	TransView();
-	TransRadius();
-	Calculation();
+	if (!m_gamedata->GetisPose()) {
+		TransView();
+		TransRadius();
+		Calculation();
+	}
 	MainCamera().SetPosition(m_position);
 	MainCamera().SetTarget(m_target);
 	MainCamera().Update();

@@ -29,9 +29,24 @@ public:
 	{
 		return m_state;
 	}
+	//座標を設定
+	void SetPosition(const CVector3& position)
+	{
+		m_position = position;
+	}
+	//注視点を設定
+	void SetTarget(const CVector3& target)
+	{
+		m_target = target;
+	}
+	//カメラの座標から注視点までの距離を取得
+	float GetRadius() const
+	{
+		return m_radius;
+	}
 private:
 	CVector3 m_position = CVector3::Zero();				//視点
-	CVector3 m_target = CVector3::Zero();				//注視点
+	CVector3 m_target = CVector3::One();				//注視点
 	float m_degreey = 0.0f, m_degreexz = 20.0f;			//それぞれカメラの角度
 	Player* m_player = nullptr;							//プレイヤーのポインタ
 	float m_radius = 0.0f;								//カメラの半径

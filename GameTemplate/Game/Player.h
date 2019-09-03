@@ -23,6 +23,11 @@ public:
 	{
 		return m_position + CVector3::AxisY() * m_radius;
 	}
+	//座標を取得(キャラコン)
+	CVector3 GetCharaconPosition() const
+	{
+		return m_position;
+	}
 	//座標を設定
 	void SetPosition(const CVector3& pos)
 	{

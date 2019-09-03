@@ -2,6 +2,7 @@
 #include "StageSelect.h"
 #include "Fade.h"
 #include "Game.h"
+#include "Title.h"
 StageSelect::StageSelect()
 {
 
@@ -44,6 +45,11 @@ void StageSelect::Update()
 		DeleteGO(this);
 	}
 
+	//B‰Ÿ‚µ‚½‚çƒ^ƒCƒgƒ‹‚É–ß‚é
+	if (Engine().GetPad(0).IsTrigger(enButtonB)) {
+		NewGO<Title>(0);
+		DeleteGO(this);
+	}
 }
 
 void StageSelect::PostRender()
