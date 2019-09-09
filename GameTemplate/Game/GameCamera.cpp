@@ -22,6 +22,7 @@ bool GameCamera::Start()
 	MainCamera().SetNear(1.0f);
 	MainCamera().SetFar(50000.0f);
 	m_gamedata = &GetGameData();
+	m_springCamera.Init(10000.0f, 0.9f, m_position, m_target);
 	return true;
 }
 
@@ -31,19 +32,31 @@ void GameCamera::Update()
 		m_player = FindGO<Player>();
 		return;
 	}
-	if (!m_gamedata->GetisPose()) {
-		TransView();
-		TransRadius();
-		Calculation();
+	if (m_gamedata->GetScene() == enScene_Result) {
+		MainCamera().SetPosition(m_position);
+		MainCamera().SetTarget(m_target);
+		MainCamera().Update();
 	}
-	MainCamera().SetPosition(m_position);
-	MainCamera().SetTarget(m_target);
-	MainCamera().Update();
+	else {
+		if (!m_gamedata->GetisPose()) {
+			TransView();
+			TransRadius();
+			Calculation();
+		}
+		else {
+			m_springCamera.SetStop();
+		}
+		m_springCamera.SetPosition(m_position);
+		m_springCamera.SetTarget(m_target);
+		m_springCamera.Update();
+		m_position = m_springCamera.GetPosition();
+		m_target = m_springCamera.GetTarget();
+	}
 }
 
 void GameCamera::TransRadius()
 {
-	m_radius = m_protradius + ((m_protradius * (m_player->GetRadius() / m_player->GetProtRadius())) - m_protradius) * 0.9f;
+	m_radius = m_protradius + ((m_protradius * (m_player->GetRadius() / m_player->GetStandardSize())) - m_protradius) * 0.9f;
 }
 
 void GameCamera::Calculation()
@@ -54,7 +67,7 @@ void GameCamera::Calculation()
 	const float UpperLimitDegreeXZ = 80.0f;
 	const float LowerLimitDegreeXZ = -80.0f;
 	//注視点をプレイヤーより↑にする
-	const float HeightTarget = 80.0f + ((80.0f * (m_player->GetRadius() / m_player->GetProtRadius())) - 80.0f) * 0.9f;
+	const float HeightTarget = 80.0f + ((80.0f * (m_player->GetRadius() / m_player->GetStandardSize())) - 80.0f) * 0.9f;
 	//スティックが入力されているかどうか
 	const float EnterStick = 0.1f * 0.1f;
 	//両方のスティックの入力ベクトルの角度、とりあえず90度
@@ -115,7 +128,7 @@ void GameCamera::Calculation()
 		float LimitStickX = 0.3f;
 		float Angle = acosf(R.Dot(L));
 		Angle *= 180.0f / M_PI;
-		const float LimitStickDegree = 140.0f;
+		const float LimitStickDegree = 50.0f;
 		const float Multiply = 2.0f;
 		if (fabsf(Angle) >= LimitStickDegree && Rx.LengthSq() <= LimitStickX && Lx.LengthSq() <= LimitStickX) {
 			if (stickR.y >= stickL.y) {

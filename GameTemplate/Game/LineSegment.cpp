@@ -94,7 +94,6 @@ struct SweepResultWall :public btCollisionWorld::ConvexResultCallback
 
 void LineSegment::Init(const CVector3& position)
 {
-	m_position = position;
 	m_collider.Create(m_radius);
 
 	//剛体を初期化
@@ -116,17 +115,13 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 	if (m_player == nullptr) {
 		m_player = FindGO<Player>();
 	}
-	m_position = position;
+
 	//次の移動先となる座標を計算する
-	CVector3 nextPosition = m_position;
+	CVector3 nextPosition = position;
 	//速度からこのフレームでの移動量を求める、オイラー積分
 	CVector3 addPos = linesegment;
 	nextPosition += addPos;
 	CVector3 nextPosition2 = nextPosition;
-
-	CVector3 originalXZDir = addPos;
-	originalXZDir.y = 0.0f;
-	originalXZDir.Normalize();
 
 	btRigidBody* btBody = m_rigidBody.GetBody();
 	//剛体を動かす。
@@ -137,24 +132,19 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 
 	//下方向を調べる。
 	{
-		CVector3 addPos;
-		addPos.Subtract(nextPosition, m_position);
-
-		m_position = nextPosition;	//移動の仮確定。
-									//レイを作成する。
+		
+	
 		btTransform start, end;
 		start.setIdentity();
 		end.setIdentity();
 		//始点はカプセルコライダーの中心。
-		start.setOrigin(btVector3(position.x, position.y + m_radius, position.z));
+		start.setOrigin(btVector3(position.x, position.y, position.z));
 		//終点は地面上にいない場合は1m下を見る。
 		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
 		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
 		CVector3 endPos;
-		endPos.Set(start.getOrigin());
-		//落下している場合はそのまま下を調べる。
-		endPos.y += addPos.y;
-		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
+		
+		end.setOrigin(btVector3(nextPosition.x, nextPosition.y, nextPosition.z));
 		SweepResultGround callback;
 		callback.me = m_rigidBody.GetBody();
 		callback.startPos.Set(start.getOrigin());
@@ -162,21 +152,20 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 		if (fabsf(endPos.y - callback.startPos.y) > FLT_EPSILON) {
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
-				//当たった。
-				addPos.y = 0.0f;
+				
 				m_isJump = false;
 				m_isOnGround = true;
-				nextPosition.y = callback.hitPos.y;
+				nextPosition = callback.hitPos;
 			}
 		}
 	}
 	//@todo 未対応。 trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
 	CVector3 vector = nextPosition2 - nextPosition;
 	CVector3 pos = m_player->GetPosition();
-	if (fabsf(pos.y) >= 0.1f) {
+	if (fabsf(vector.y) >= 0.1f) {
 		m_player->SetMoveSpeedYZero();
 	}
-	pos.y -= vector.y;
-	//pos += vector;
+		
+	pos -= vector;
 	m_player->SetPosition(pos - CVector3::AxisY() * m_player->GetRadius());
 }

@@ -19,7 +19,7 @@ public:
 	//1フレームごとの経過時間を取得(秒)
 	const float GetFrameDeltaTime() const
 	{
-		return m_frameDeltaTime;
+		return 1 / 30.0f;// m_frameDeltaTime;
 	}
 	//1フレームごとの経過時間(秒)を計算
 	void PushFrameDeltaTime(float deltaTime)

@@ -1,4 +1,5 @@
 #pragma once
+#include "graphics/SpringCamera.h"
 class Player;
 class GameData;
 //どっちのスティックが回転か
@@ -56,5 +57,6 @@ private:
 	float m_timer = 0.0f;								//L3とR3が同時に押された時に時間を計る
 	bool m_transView = false;							//L3とR3が同時に押された時のカメラを遷移しているか
 	GameData* m_gamedata = nullptr;						//ゲームデータ
+	SpringCamera m_springCamera;						//ばねカメラ
 };
 

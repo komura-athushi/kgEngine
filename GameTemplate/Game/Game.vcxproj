@@ -211,11 +211,32 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\ground\ground.FBX">
+    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
       <FileType>Document</FileType>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </MeshContentTask>
+    <None Include="Assets\modelData\obj\eraser\oeraser_blue.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\eraser\oeraser_red.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\pencil\opencil_blue.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\pencil\opencil_yellow.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
+      <FileType>Document</FileType>
     </None>
     <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
       <FileType>Document</FileType>

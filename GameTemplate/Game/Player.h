@@ -70,6 +70,16 @@ public:
 	{
 		return m_count;
 	}
+	//基準のプレイヤーの大きさを取得
+	float GetStandardSize() const
+	{
+		return m_standardSize;
+	}
+	//衝撃の力を加える
+	void SetAddImpulse(const CVector3 impulse)
+	{
+		m_impulse += impulse;
+	}
 private:
 	CharacterController m_characon;																//キャラコン
 	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();			//座標
@@ -101,7 +111,8 @@ private:
 	GameCamera* m_gamecamera = nullptr;															//カメラ
 	bool m_isjump = false;																		//ジャンプ中かどうか
 	float m_radius = 0.0f;																		//球体の半径
-	float m_protradius = 0.0f;															//最初の球体の半径	
+	float m_protradius = 0.0f;																	//最初の球体の半径	
+
 	float m_volume = 0.0f;																		
 	const float m_protmovespeedmultiply = 5.0f;													//最初の移動速度
 	float m_movespeedmultiply = 5.0f;															//移動速度
@@ -115,5 +126,7 @@ private:
 	/*CSprite m_sprite;
 	CSprite m_sprite2;
 	float m_degree = 0.0f;*/
+	const float m_standardSize = 40.0f;
+	CVector3 m_impulse = CVector3::Zero();
 };
 

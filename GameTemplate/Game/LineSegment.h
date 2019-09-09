@@ -26,7 +26,7 @@ public:
 	/// <param name="linesegment">線分</param>
 	void Execute(const CVector3& position, const CVector3& linesegment);
 private:
-	CVector3 			m_position = CVector3::Zero();	//座標。
+
 	bool 				m_isJump = false;				//ジャンプ中？
 	bool				m_isOnGround = true;			//地面の上にいる？
 	SphereCollider		m_collider;						//コライダー。

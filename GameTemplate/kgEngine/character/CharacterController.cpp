@@ -18,7 +18,7 @@ namespace {
 		CVector3 hitNormal = CVector3::Zero();				//衝突点の法線。
 		btCollisionObject* me = nullptr;					//自分自身。自分自身との衝突を除外するためのメンバ。
 		float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
-
+		CVector3 GroundNormalVector = CVector3::AxisY();
 															//衝突したときに呼ばれるコールバック関数。
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
@@ -48,6 +48,7 @@ namespace {
 					hitPos = hitPosTmp;
 					hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
 					dist = distTmp;
+					GroundNormalVector = hitNormalTmp;
 				}
 			}
 			return 0.0f;
@@ -235,7 +236,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 		btTransform start, end;
 		start.setIdentity();
 		end.setIdentity();
-		//始点はカプセルコライダーの中心。
+		//始点はスフィアコライダーの中心
 		start.setOrigin(btVector3(m_position.x, m_position.y + m_radius, m_position.z));
 		//終点は地面上にいない場合は1m下を見る。
 		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
@@ -254,8 +255,11 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 			}
 		}
 		else {
-			//地面上にいない場合は1m下を見る。
+			//地面上にいる場合は1m下を見る。
 			endPos.y -= 1.0f;
+			if (addPos.y < 0.0f) {
+				endPos.y += addPos.y;
+			}
 		}
 		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
 		SweepResultGround callback;
@@ -270,10 +274,12 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 				m_isJump = false;
 				m_isOnGround = true;
 				nextPosition.y = callback.hitPos.y;
+				m_GroundNormalVector = callback.GroundNormalVector;
 			}
 			else {
 				//地面上にいない。
 				m_isOnGround = false;
+				m_GroundNormalVector = CVector3::AxisY();
 
 			}
 		}

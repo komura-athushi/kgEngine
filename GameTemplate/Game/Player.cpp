@@ -74,7 +74,7 @@ void Player::Update()
 void Player::Judgment()
 {
 	const float Multiply = 1.2f;
-	const float SizeMultiply = 6.0f;
+	const float SizeMultiply = 4.0f;
 	bool a = false;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
@@ -114,16 +114,17 @@ void Player::Judgment()
 
 void Player::Move()
 {
+	const float StandardSize = 40.0f;
 	//移動速度
-	m_movespeedmultiply = 5.0f + ((5.0f * (m_radius / m_protradius)) - 5.0f) * 0.9f;
+	m_movespeedmultiply = 5.0f * (m_radius / m_standardSize) * 0.9f;
 	//移動速度減衰
 	const float MoveSpeedAtten = 0.98f;
 	//重力
-	const float GravityMoveSpeed = 2000.0f;
+	const float GravityMoveSpeed = 980.0f;
 	//ジャンプ速度
 	const float JumpMoveSpeed = 700.0f;
 	//一定以上のyの速度があったらバウンドする～
-	const float LimitBoundMoveSpeed = -50.0f;
+	const float LimitBoundMoveSpeed = -1000.0f;
 	const float BoundMultiply = 0.7f;
 	//地面と衝突する前のyベクトルを記憶する
 	float MoveSpeedY = 0.0f;
@@ -194,28 +195,42 @@ void Player::Move()
 		m_movespeed += frontxz * m_movespeedmultiply;
 		m_movespeed += rightxz * m_movespeedmultiply;
 	}
-	m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
-	if (m_movespeed.y <= LimitBoundMoveSpeed) {
+	//m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
+	if (m_characon.IsOnGround()) {
+		CVector3 Normal = m_characon.GetGroundNormalVector();
+		CVector3 Gravity = CVector3(0.0f, -GravityMoveSpeed, 0.0f);
+		float t = Normal.Dot(Gravity);
+		CVector3 vt = Normal * t * 1.2f;
+		CVector3 va = Gravity - vt;
+		m_movespeed += va * GameTime().GetFrameDeltaTime();
+		
+	}
+	//else {
+		m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
+	//}
+	/*if (m_movespeed.y <= LimitBoundMoveSpeed) {
 		m_isbound = true;
 		MoveSpeedY = m_movespeed.y;
 	}
 	else {
 		m_isbound = false;
-	}
+	}*/
+	
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
 	if (m_characon.IsOnGround()) {
-		if (m_isbound) {
+		/*if (m_isbound) {
 			m_movespeed.y = -MoveSpeedY * BoundMultiply;
 		}
-		else {
+		else {*/
 			m_movespeed.y = 0.0f;
 			if (GetPad(0).IsTrigger(enButtonB)) {
 				m_movespeed.y = JumpMoveSpeed;
 			}
-		}
+		//}
 		//m_movespeed.y = 0.0f;
 	}
-	m_movespeed *= MoveSpeedAtten;
+	m_movespeed.x *= MoveSpeedAtten;
+	m_movespeed.z *= MoveSpeedAtten;
 }
 
 void Player::Turn()
@@ -244,7 +259,7 @@ void Player::PostRender()
 {
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
-		swprintf_s(output, L"大きさ  %.1f", m_radius * 2);
+		swprintf_s(output, L"大きさ  %.1f　\n (%.1f,%.1f,%.1f)", m_radius * 2.0f, m_characon.GetGroundNormalVector().x, m_characon.GetGroundNormalVector().y, m_characon.GetGroundNormalVector().z);
 		m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
 	}
 }

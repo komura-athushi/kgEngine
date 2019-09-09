@@ -105,7 +105,7 @@ public:
 	float m_firstPlayerSize[EnStageNumber::enState_LastStage] = { 60.0f,40.0f,40.0f };								//各ステージのプレイヤーの最初の大きさ
 	float m_goalPlayerSize[EnStageNumber::enState_LastStage] = { 100.0f,200.0f,300.0f };							//各ステージのプレイヤーのクリア目標の大きさ
 	float m_resultPlayerSize = 0.0f;																				//ステージ終了時のプレイヤーの大きさ
-	float m_stageLimitTime[EnStageNumber::enState_LastStage] = { 0.1f * 60.0f , 5.0f * 60.0f, 7.0f * 60.0f };		//各ステージの制限時間
+	float m_stageLimitTime[EnStageNumber::enState_LastStage] = { 40.f * 60.0f , 5.0f * 60.0f, 7.0f * 60.0f };		//各ステージの制限時間
  	EnStageNumber m_stageNumber = enState_FirstStage;																//ステージの番号
 	bool m_isPose = false;																							//ポーズ中かどうか
 	EnScene m_scene = enScene_Title;

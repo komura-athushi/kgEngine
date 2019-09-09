@@ -82,6 +82,11 @@ public:
 		m_radius = radius;
 		m_collider.SetRadius(m_radius);
 	}
+	//地面の法線ベクトルを取得
+	CVector3 GetGroundNormalVector() const
+	{
+		return m_GroundNormalVector;
+	}
 	/*!
 	* @brief	剛体を物理エンジンから削除。。
 	*/
@@ -94,4 +99,5 @@ private:
 	float				m_radius = 0.0f;				//スフィアコライダーの半径
 	bool				m_isSphere = false;				//球体かどうか
 	RigidBody			m_rigidBody;					//剛体。
+	CVector3			m_GroundNormalVector = CVector3::AxisY();
 };

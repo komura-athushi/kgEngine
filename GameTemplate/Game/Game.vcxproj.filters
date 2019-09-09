@@ -134,43 +134,19 @@
     <Filter Include="Asset\sprite">
       <UniqueIdentifier>{5632e855-b420-423b-98aa-0b47586477d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\modelData\obj\sample">
+      <UniqueIdentifier>{65c4f499-fa80-4564-b92f-458628db471a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\modelData\obj\game">
+      <UniqueIdentifier>{e98c79f9-8af7-4b1d-a7fc-8bbe3e4ee7ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\obj\obox1.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\obox3.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
     <None Include="Assets\modelData\sphere\sphere2.FBX">
       <Filter>Asset\modelData\sphere</Filter>
     </None>
-    <None Include="Assets\modelData\obj\obox2.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\obox4.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\obox5.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\obox6.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
     <None Include="Assets\modelData\zunko\zunko.FBX">
       <Filter>Asset\modelData</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\ozunko.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\oboxpath1.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\ohito.FBX">
-      <Filter>Asset\modelData\obj</Filter>
-    </None>
-    <None Include="Assets\modelData\ground\ground.FBX">
-      <Filter>Asset\modelData\ground</Filter>
     </None>
     <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
@@ -190,6 +166,54 @@
     <None Include="Assets\sprite\arrow.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\modelData\obj\obox1.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox2.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox3.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox4.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox5.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\obox6.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\oboxpath1.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\ohito.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\ozunko.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\eraser\oeraser_blue.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\eraser\oeraser_red.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\pencil\opencil_blue.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\pencil\opencil_yellow.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\result.png">
@@ -199,6 +223,9 @@
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
       <Filter>Asset\modelData\sphere</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
+      <Filter>Asset\modelData\ground</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>
