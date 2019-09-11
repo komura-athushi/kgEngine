@@ -82,7 +82,7 @@ void Player::Judgment()
 			return true;
 		}
 		CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
-		if (diff.LengthSq() >= pow(object->GetLenght(), 2.0f)) {
+		if (diff.LengthSq() >= pow(object->GetLenght() + m_radius * Multiply, 2.0f)) {
 			return true;
 		}
 		if (m_radius >= object->GetSize() * 2) {
@@ -98,7 +98,7 @@ void Player::Judgment()
 			}
 			else {
 				for (int i = 0; i < CBox::m_SurfaceVectorNumber; i++) {
-					if (pow(m_radius, 2.0f) * Multiply >= (object->GetBox()->SurfaceVector(i)- m_position - CVector3::AxisY() * m_radius).LengthSq()) {
+					if (pow(m_radius * Multiply, 2.0f) >= (object->GetBox()->GetSurfaceVector(i)- m_position - CVector3::AxisY() * m_radius).LengthSq()) {
 						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 						m_volume += object->GetObjData().s_volume * SizeMultiply;
 						m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
@@ -106,6 +106,16 @@ void Player::Judgment()
 						return true;
 					}
 				}
+				for (int i = 0; i < CBox::m_vertexNumber; i++) {
+					if (pow(m_radius * Multiply, 2.0f) >= (object->GetBox()->GetVertexVector(i) - m_position - CVector3::AxisY() * m_radius).LengthSq()) {
+						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
+						m_volume += object->GetObjData().s_volume * SizeMultiply;
+						m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
+						m_characon.SetRadius(m_radius);
+						return true;
+					}
+				}
+
 			}
 		}
 		return true;
@@ -239,7 +249,7 @@ void Player::Turn()
 
 	CVector3 movespeedXZ = m_position - m_beforeposition;
 	movespeedXZ.y = 0.0f;
-	if (movespeedXZ.LengthSq() <= 0.001f) {
+	if (movespeedXZ.LengthSq() <= 0.01f) {
 		return;
 	}
 	float Lengh = movespeedXZ.Length();

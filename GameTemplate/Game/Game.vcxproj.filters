@@ -184,19 +184,28 @@
     <None Include="Assets\modelData\obj\obox6.FBX">
       <Filter>Asset\modelData\obj\sample</Filter>
     </None>
-    <None Include="Assets\modelData\obj\oboxpath1.FBX">
-      <Filter>Asset\modelData\obj\sample</Filter>
-    </None>
     <None Include="Assets\modelData\obj\ohito.FBX">
       <Filter>Asset\modelData\obj\sample</Filter>
     </None>
     <None Include="Assets\modelData\obj\ozunko.FBX">
       <Filter>Asset\modelData\obj\sample</Filter>
     </None>
-    <None Include="Assets\modelData\obj\eraser\oeraser_blue.FBX">
+    <None Include="Assets\modelData\obj\oboxpath1.FBX">
+      <Filter>Asset\modelData\obj\sample</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\domino\odomino_green.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\domino\odomino_blue.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\domino\odomino_red.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
     <None Include="Assets\modelData\obj\eraser\oeraser_red.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\eraser\oeraser_blue.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
     <None Include="Assets\modelData\obj\pencil\opencil_blue.FBX">
@@ -226,6 +235,18 @@
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\matchstick\omatchstick.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\saikoro\osaikoro.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\magnet\omagnet.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\mouse\omouse.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>

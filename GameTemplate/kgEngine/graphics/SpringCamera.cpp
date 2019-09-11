@@ -66,8 +66,12 @@ void SpringCamera::Update()
 		if (m_isRefresh) {
 			m_positionMoveSpeed = CVector3::Zero();
 			m_targetMoveSpeed = CVector3::Zero();
+			m_isRefresh = true;
 		}
-		m_isStop = false;
+		else {
+			m_isStop = false;
+		}
+		
 	}
 	else {
 		m_position = ClcSpringVector(MainCamera().GetPosition(), m_position, m_positionMoveSpeed);

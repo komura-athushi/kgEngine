@@ -37,7 +37,7 @@ CVector3 MovePath::Move()
 	else {
 		CVector3 Distance = m_point->s_vector - m_position;
 		if (!m_isstop) {
-			if (Distance.LengthSq() <= m_movespeed / Molecule) {
+			if (Distance.LengthSq() <= m_movespeed * m_movespeed * GameTime().GetFrameDeltaTime()) {
 				//現在の正面のベクトルと、次のパスに向けての移動ベクトルを求める
 				m_point = m_path.GetPoint(m_point->s_number);
 				CVector3 Distance = m_point->s_vector - m_position;

@@ -106,7 +106,7 @@ void CBox::Update(const CMatrix& worldMatrix)
 	m_vertexPosition2[5] = (m_vertexPosition[0] + m_vertexPosition[1] + m_vertexPosition[4] + m_vertexPosition[5]) / 4;
 }
 
-bool CBox::GetisLowPositionY(const CVector3& position, Enxyz xyz)
+bool CBox::GetisLowPositionY(const CVector3& position, Enxyz xyz) const
 {
 	switch (xyz) {
 	case enState_X:
@@ -128,7 +128,7 @@ bool CBox::GetisLowPositionY(const CVector3& position, Enxyz xyz)
 	return false;
 }
 
-CVector3 CBox::SurfaceLineSegment(Enxyz xyz)
+CVector3 CBox::SurfaceLineSegment(Enxyz xyz) const
 {
 	switch (xyz) {
 	case enState_X:

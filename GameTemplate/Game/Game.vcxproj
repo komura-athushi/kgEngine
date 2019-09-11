@@ -238,6 +238,19 @@
     <None Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
       <FileType>Document</FileType>
     </None>
+    <None Include="Assets\modelData\obj\domino\odomino_blue.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\domino\odomino_green.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\domino\odomino_red.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <MeshContentTask Include="Assets\modelData\obj\magnet\omagnet.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\matchstick\omatchstick.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\mouse\omouse.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\saikoro\osaikoro.FBX" />
     <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
