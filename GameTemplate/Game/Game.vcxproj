@@ -247,10 +247,34 @@
     <None Include="Assets\modelData\obj\domino\odomino_red.FBX">
       <FileType>Document</FileType>
     </None>
-    <MeshContentTask Include="Assets\modelData\obj\magnet\omagnet.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\matchstick\omatchstick.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\mouse\omouse.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\saikoro\osaikoro.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\cockroach\ocockroach.fbx" />
+    <None Include="Assets\modelData\obj\magnet\omagnet.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\matchstick\omatchstick.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\mouse\omouse.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\saikoro\osaikoro.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <MeshContentTask Include="Assets\modelData\obj\glass\oglass_blue.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\glass\oglass_yellow.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\petbottle\opetbottle.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oapple.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\ochair.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oclock.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\odaia.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oemerald.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\ofork.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oorange.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oruby.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\osapphire.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\ospoon.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\rittaiya\otablesquare.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\smartphone\osmartphone.FBX" />
     <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>

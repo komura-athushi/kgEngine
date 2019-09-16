@@ -132,6 +132,11 @@ public:
 	void SetFilePath(const wchar_t* path);
 	//パス移動用のファイルパスを読みこむ
 	void ReadMovePath(const int& number);
+	//巻き込み判定用の長さを取得
+	float GetRadius() const
+	{
+		return m_radius;
+	}
 private:
 	ObjModelData* m_modeldata;												//スキンモデル
 	CVector3 m_position = CVector3::Zero();									//座標								
@@ -157,5 +162,6 @@ private:
 	CFont m_font;															//文字
 	bool m_draw = true;														//ドローするかどうか
 	GameData* m_gamedata = nullptr;											//ゲームデータ
+	float m_radius = 0.0f;
 };
 

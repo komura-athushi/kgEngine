@@ -73,9 +73,8 @@ void Player::Update()
 
 void Player::Judgment()
 {
-	const float Multiply = 1.2f;
-	const float SizeMultiply = 4.0f;
-	bool a = false;
+	const float Multiply = 1.1f;
+	const float SizeMultiply = 1.0f;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		if (object->GetisStickPlayer()) {
@@ -85,7 +84,7 @@ void Player::Judgment()
 		if (diff.LengthSq() >= pow(object->GetLenght() + m_radius * Multiply, 2.0f)) {
 			return true;
 		}
-		if (m_radius >= object->GetSize() * 2) {
+		if (m_radius >= object->GetRadius() * 2.0f) {
 			if (object->GetisSphere()) {
 				CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
 				if (diff.LengthSq() <= pow(m_radius + object->GetSize(), 2.0f) * Multiply) {
@@ -269,7 +268,7 @@ void Player::PostRender()
 {
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
-		swprintf_s(output, L"ëÂÇ´Ç≥  %.1fÅ@\n (%.1f,%.1f,%.1f)", m_radius * 2.0f, m_characon.GetGroundNormalVector().x, m_characon.GetGroundNormalVector().y, m_characon.GetGroundNormalVector().z);
+		swprintf_s(output, L"ëÂÇ´Ç≥  %.1f\n", m_radius * 2.0f);
 		m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
 	}
 }

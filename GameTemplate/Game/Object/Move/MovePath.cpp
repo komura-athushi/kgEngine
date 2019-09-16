@@ -15,13 +15,13 @@ void MovePath::Init(const CVector3& pos, const float& move, const float& movelim
 {
 	m_position = pos;
 	m_movespeed = move;
+	m_point = m_path.GetNearPoint(m_position);
 	SetMoveState();
 }
 
 void MovePath::ReadPath(const wchar_t* filePath)
 {
 	m_path.Load(filePath);
-	m_point = m_path.GetFirstPoint();
 }
 
 CVector3 MovePath::Move()

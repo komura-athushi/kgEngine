@@ -21,6 +21,8 @@ public:
 	{
 		return &m_pointList[0];
 	}
+	//一番近い場所にあるポイントを取得
+	Point* GetNearPoint(const CVector3& pos);
 	/*!
 	*@brief	次の番号のポイントを取得
 	*@param[in]	number		現在のポイントの番号

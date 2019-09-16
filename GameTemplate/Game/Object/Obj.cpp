@@ -90,10 +90,12 @@ bool Obj::Start()
 		m_issphere = true;
 		m_size = m_objdata->s_x;
 		m_lenght = m_size * 2;
+		m_radius = m_objdata->s_x;
 	}
 	else {
 		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2});
 		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
+		m_radius = pow(m_objdata->s_volume, 1.0f / 3.0f) / 2.0f;
 	}
 	if (m_objdata->s_islinesegment == 1) {
 		m_islinesegment = true;

@@ -35,6 +35,20 @@ void Path::Load(const wchar_t* filePath)
 	}
 }
 
+Point* Path::GetNearPoint(const CVector3& pos)
+{
+	Point* point = &m_pointList[0];
+	CVector3 diff = m_pointList[0].s_vector - pos;
+	for (int i = 1; i < m_pointList.size(); i++) {
+		CVector3 diff2 = m_pointList[i].s_vector - pos;
+		if (diff.LengthSq() > diff2.LengthSq()) {
+			diff = diff2;
+			point = &m_pointList[i];
+		}
+	}
+	return point;
+}
+
 Point* Path::GetPoint(const int& number)
 {
 	if (number == m_pointList.size()) {
