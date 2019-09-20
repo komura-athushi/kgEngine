@@ -149,6 +149,9 @@
     <MeshContentTask>
       <ContentOutput>$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
+    <ImageContentTask>
+      <ContentOutput>$(ProjectDir)\Resource\sprite\%(Filename).dds</ContentOutput>
+    </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Fade.h" />
@@ -211,12 +214,12 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\ground\ground.FBX">
+    <None Include="Assets\modelData\ground\ground.FBX">
       <FileType>Document</FileType>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </MeshContentTask>
+    </None>
     <None Include="Assets\modelData\obj\eraser\oeraser_blue.FBX">
       <FileType>Document</FileType>
     </None>
@@ -229,15 +232,15 @@
     <None Include="Assets\modelData\obj\pencil\opencil_yellow.FBX">
       <FileType>Document</FileType>
     </None>
-    <None Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
+    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
       <FileType>Document</FileType>
-    </None>
+    </MeshContentTask>
     <None Include="Assets\modelData\obj\domino\odomino_blue.FBX">
       <FileType>Document</FileType>
     </None>
@@ -247,7 +250,15 @@
     <None Include="Assets\modelData\obj\domino\odomino_red.FBX">
       <FileType>Document</FileType>
     </None>
-    <MeshContentTask Include="Assets\modelData\obj\cockroach\ocockroach.fbx" />
+    <MeshContentTask Include="Assets\modelData\ground\ground1.FBX">
+      <FileType>Document</FileType>
+    </MeshContentTask>
+    <None Include="Assets\modelData\obj\bear\obear.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\cockroach\ocockroach.fbx">
+      <FileType>Document</FileType>
+    </None>
     <None Include="Assets\modelData\obj\magnet\omagnet.FBX">
       <FileType>Document</FileType>
     </None>
@@ -260,24 +271,60 @@
     <None Include="Assets\modelData\obj\saikoro\osaikoro.FBX">
       <FileType>Document</FileType>
     </None>
-    <MeshContentTask Include="Assets\modelData\obj\glass\oglass_blue.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\glass\oglass_yellow.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\petbottle\opetbottle.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oapple.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\ochair.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oclock.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\odaia.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oemerald.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\ofork.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oorange.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\oruby.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\osapphire.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\ospoon.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\rittaiya\otablesquare.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\smartphone\osmartphone.FBX" />
-    <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
+    <None Include="Assets\modelData\obj\cup\ocup.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
+    </None>
+    <None Include="Assets\modelData\obj\glass\oglass_blue.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\glass\oglass_yellow.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\petbottle\opetbottle.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\oapple.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ochair.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\oclock.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\odaia.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\oemerald.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ofork.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\oorange.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\oruby.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\osapphire.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ospoon.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\otablesquare.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\otablesquare_board.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\smartphone\osmartphone.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere1.FBX">
+      <FileType>Document</FileType>
+    </None>
     <None Include="Assets\modelData\obj\obox3.FBX">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -285,7 +332,7 @@
     </None>
     <None Include="Assets\modelData\sphere\sphere2.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </None>
@@ -364,7 +411,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\result.png" />
+    <None Include="Assets\sprite\result.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

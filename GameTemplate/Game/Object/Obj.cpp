@@ -91,9 +91,15 @@ bool Obj::Start()
 		m_size = m_objdata->s_x;
 		m_lenght = m_size * 2;
 		m_radius = m_objdata->s_x;
+		m_staticobject.CreateSphereObject(m_size, m_position, m_rotation);
+	}
+	else if(m_objdata->s_isMeshCollider == 0) {
+		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2});
+		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
+		m_radius = pow(m_objdata->s_volume, 1.0f / 3.0f) / 2.0f;
 	}
 	else {
-		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2});
+		m_staticobject.CreateMeshObject(&m_modeldata->s_skinmodel,m_position, m_rotation);
 		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
 		m_radius = pow(m_objdata->s_volume, 1.0f / 3.0f) / 2.0f;
 	}
@@ -101,6 +107,7 @@ bool Obj::Start()
 		m_islinesegment = true;
 		m_linevector = m_objdata->s_linevector;
 	}
+	
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
 	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation,CVector3::One(),m_anim.GetPlayAnimationType());

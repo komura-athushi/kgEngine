@@ -257,9 +257,9 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 		else {
 			//’n–Êã‚É‚¢‚éê‡‚Í1m‰º‚ğŒ©‚éB
 			endPos.y -= 1.0f;
-			if (addPos.y < 0.0f) {
+			/*if (addPos.y < 0.0f) {
 				endPos.y += addPos.y;
-			}
+			}*/
 		}
 		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
 		SweepResultGround callback;

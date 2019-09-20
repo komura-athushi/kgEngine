@@ -91,3 +91,4 @@ ROTSTATUS MOJI::FindRot(const wchar_t* moji)
 	}
 	return ROTSTATUS{ enRot_No,0.0f };
 }
+

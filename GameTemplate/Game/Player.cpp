@@ -39,6 +39,8 @@ bool Player::Start()
 
 	//人型のモデル
 	m_skinModelRender2.Init(L"Resource/modelData/zunko.cmo");
+	m_skinModelRender2.SetActive(true);
+	m_skinModelRender2.SetScale(CVector3::One() * 0.5f);
 	m_gamedata = &GetGameData();
 	return true;
 }
@@ -73,21 +75,21 @@ void Player::Update()
 
 void Player::Judgment()
 {
-	const float Multiply = 1.1f;
-	const float SizeMultiply = 1.0f;
+	const float LenghtMultiply = 1.1f;
+	const float SizeMultiply = 0.8f;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		if (object->GetisStickPlayer()) {
 			return true;
 		}
 		CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
-		if (diff.LengthSq() >= pow(object->GetLenght() + m_radius * Multiply, 2.0f)) {
+		if (diff.LengthSq() >= pow(object->GetLenght() + m_radius * LenghtMultiply, 2.0f)) {
 			return true;
 		}
-		if (m_radius >= object->GetRadius() * 2.0f) {
+		if (m_radius >= object->GetRadius() * 3.0f) {
 			if (object->GetisSphere()) {
 				CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
-				if (diff.LengthSq() <= pow(m_radius + object->GetSize(), 2.0f) * Multiply) {
+				if (diff.LengthSq() <= pow(m_radius + object->GetSize(), 2.0f) * LenghtMultiply) {
 					object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 					m_volume += object->GetObjData().s_volume * SizeMultiply;
 					m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
@@ -97,7 +99,7 @@ void Player::Judgment()
 			}
 			else {
 				for (int i = 0; i < CBox::m_SurfaceVectorNumber; i++) {
-					if (pow(m_radius * Multiply, 2.0f) >= (object->GetBox()->GetSurfaceVector(i)- m_position - CVector3::AxisY() * m_radius).LengthSq()) {
+					if (pow(m_radius * LenghtMultiply, 2.0f) >= (object->GetBox()->GetSurfaceVector(i)- m_position - CVector3::AxisY() * m_radius).LengthSq()) {
 						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 						m_volume += object->GetObjData().s_volume * SizeMultiply;
 						m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
@@ -106,7 +108,7 @@ void Player::Judgment()
 					}
 				}
 				for (int i = 0; i < CBox::m_vertexNumber; i++) {
-					if (pow(m_radius * Multiply, 2.0f) >= (object->GetBox()->GetVertexVector(i) - m_position - CVector3::AxisY() * m_radius).LengthSq()) {
+					if (pow(m_radius * LenghtMultiply, 2.0f) >= (object->GetBox()->GetVertexVector(i) - m_position - CVector3::AxisY() * m_radius).LengthSq()) {
 						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
 						m_volume += object->GetObjData().s_volume * SizeMultiply;
 						m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
@@ -129,7 +131,7 @@ void Player::Move()
 	//移動速度減衰
 	const float MoveSpeedAtten = 0.98f;
 	//重力
-	const float GravityMoveSpeed = 980.0f;
+	const float GravityMoveSpeed = 800.0f;
 	//ジャンプ速度
 	const float JumpMoveSpeed = 700.0f;
 	//一定以上のyの速度があったらバウンドする～
@@ -205,7 +207,7 @@ void Player::Move()
 		m_movespeed += rightxz * m_movespeedmultiply;
 	}
 	//m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
-	if (m_characon.IsOnGround()) {
+	/*if (m_characon.IsOnGround()) {
 		CVector3 Normal = m_characon.GetGroundNormalVector();
 		CVector3 Gravity = CVector3(0.0f, -GravityMoveSpeed, 0.0f);
 		float t = Normal.Dot(Gravity);
@@ -213,7 +215,7 @@ void Player::Move()
 		CVector3 va = Gravity - vt;
 		m_movespeed += va * GameTime().GetFrameDeltaTime();
 		
-	}
+	}*/
 	//else {
 		m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
 	//}

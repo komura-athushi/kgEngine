@@ -54,6 +54,3 @@ static ROTSTATUS FindRot(const wchar_t* moji)
 {
 	return Moji().FindRot(moji);
 }
-
-
-

@@ -68,12 +68,12 @@ bool Game::Start()
 			}
 			return true;
 		}
-		else if (objdata.EqualObjectName(L"sphere")) {
+		else if (objdata.ForwardMatchName(L"sphere")) {
 			m_player = NewGO<Player>(0);
 			m_player->SetPosition(objdata.position);
 			return true;
 		}
-		else if (objdata.EqualObjectName(L"ground")) {
+		else if (objdata.ForwardMatchName(L"ground")) {
 			m_ground = NewGO<Ground>(0);
 			m_ground->SetPosition(objdata.position);
 			return true;

@@ -129,7 +129,6 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 	btTransform& trans = btBody->getWorldTransform();
 	//剛体の位置を更新。
 	trans.setOrigin(btVector3(position.x, position.y, position.z));
-
 	//下方向を調べる。
 	{
 		
@@ -139,20 +138,14 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 		end.setIdentity();
 		//始点はカプセルコライダーの中心。
 		start.setOrigin(btVector3(position.x, position.y, position.z));
-		//終点は地面上にいない場合は1m下を見る。
-		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
-		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
-		CVector3 endPos;
-		
 		end.setOrigin(btVector3(nextPosition.x, nextPosition.y, nextPosition.z));
 		SweepResultGround callback;
 		callback.me = m_rigidBody.GetBody();
 		callback.startPos.Set(start.getOrigin());
 		//衝突検出。
-		if (fabsf(endPos.y - callback.startPos.y) > FLT_EPSILON) {
+		if (fabsf(nextPosition.y - callback.startPos.y) > FLT_EPSILON) {
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
-				
 				m_isJump = false;
 				m_isOnGround = true;
 				nextPosition = callback.hitPos;
@@ -166,6 +159,6 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 		m_player->SetMoveSpeedYZero();
 	}
 		
-	pos -= vector;
+	pos.y -= vector.y;
 	m_player->SetPosition(pos - CVector3::AxisY() * m_player->GetRadius());
 }

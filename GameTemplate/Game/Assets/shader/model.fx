@@ -42,6 +42,7 @@ static const int NUM_DIRECTION_LIG = 4;
 cbuffer LightCb : register(b1) {
 	float3 dligDirection[NUM_DIRECTION_LIG];
 	float4 dligColor[NUM_DIRECTION_LIG];
+	float4 ambientlight;
 };
 
 /// <summary>
@@ -265,7 +266,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 	for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}
-
+	lig.xyz += ambientlight.xyz;
 	/*if (isShadowReciever == 1) {	//シャドウレシーバー。
 		//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。
 		//プロジェクション行列をシャドウマップのUV座標に変換している

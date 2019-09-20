@@ -34,7 +34,7 @@ bool Result::Start()
 	m_player = FindGO<Player>();
 	m_player->SetPosition(CVector3::Zero());
 	m_gameCamera = FindGO<GameCamera>();
-	m_gameCamera->SetPosition({ 0.0f,0.0f ,1000.0f });
+	m_gameCamera->SetPosition({ 0.0f,0.0f ,800.0f });
 	m_gameCamera->SetTarget(CVector3::Zero());
 	return true;
 }
@@ -61,12 +61,13 @@ void Result::Update()
 void Result::MovePlayer()
 {
 	const float Time = 2.0f;
-	const float Multiply = 1.0f;
+	const float Multiply = 2.0f;
+	const float Disance = 120.0f;
 
 	if (m_timer <= Time) {
 		m_timer += GameTime().GetFrameDeltaTime();
 		CVector3 position = m_player->GetCharaconPosition();
-		position.x += m_gameCamera->GetRadius() * GameTime().GetFrameDeltaTime() * Multiply;
+		position.x += Disance * GameTime().GetFrameDeltaTime() * Multiply;
 		m_player->SetPosition(position);
 	}
 	else {
@@ -116,7 +117,7 @@ void Result::PostRender()
 		m_font.DrawScreenPos(output2, CVector2(400.0f, 600.0f), CVector4::White(), { 2.3f,2.0f });
 	case EnResultScene_MoveGoal:
 		wchar_t output[256];
-		swprintf_s(output, L"Œ‹‰Ê    %.1f", m_gameData->GetResultPlayerSize() * 2.0f);
+		swprintf_s(output, L"Œ‹‰Ê    %.1f", m_gameData->GetResultPlayerSize());
 		m_font.DrawScreenPos(output, CVector2(700.0f, 300.0f), CVector4::White(), { 1.5f,1.5f });
 	}
 }

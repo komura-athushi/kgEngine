@@ -11,7 +11,8 @@ struct StructObjectData {
 	float s_volume;							//体積
 	int s_issphere;							//球体かどうか
 	int s_islinesegment;					//線分を生成するかどうか
-	int s_isanimation;							//アニメーションがあるかどうか
+	int s_isanimation;						//アニメーションがあるかどうか
+	int s_isMeshCollider;					//メッシュコライダーにするかどうか
 	CVector3 s_linevector = CVector3::Zero();	//線分のベクトル
 	Enxyz s_state = enState_No;					//線分がどの方向か
 };
