@@ -17,7 +17,12 @@ void __cdecl ModelEffect::Apply(ID3D11DeviceContext* deviceContext)
 		break;
 	case enRenderMode_CreateShadowMap:
 		//シャドウマップ生成。
-		deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShadowMap.GetBody(), NULL, 0);
+		if (m_numInstance == 0) {
+			deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShadowMap.GetBody(), NULL, 0);
+		}
+		else {
+			deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShadowMapInstancing.GetBody(), NULL, 0);
+		}
 		deviceContext->PSSetShader((ID3D11PixelShader*)m_psShadowMap.GetBody(), NULL, 0);
 		break;
 	}

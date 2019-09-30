@@ -14,6 +14,7 @@ protected:
 	Shader m_psShader;
 	Shader m_vsShaderInstancing;
 	Shader m_vsShadowMap;			//シャドウマップ生成用の頂点シェーダー。
+	Shader m_vsShadowMapInstancing;			//シャドウマップ生成用の頂点シェーダー、インスタンシング用
 	Shader m_psShadowMap;		//シャドウマップ生成用のピクセルシェーダー。
 	bool isSkining;
 	ID3D11ShaderResourceView* m_albedoTex = nullptr;
@@ -77,6 +78,7 @@ public:
 		m_pVSShader = &m_vsShader;
 		//スキン無しシャドウマップ
 		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMain_ShadowMap", Shader::EnType::VS);
+		m_vsShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainInstancing_ShadowMap", Shader::EnType::VS);
 		isSkining = false;
 	}
 };
@@ -94,6 +96,7 @@ public:
 		m_vsShaderInstancing.Load("Assets/shader/model.fx", "VSMainSkinInstancing", Shader::EnType::VS);
 		//スキンありシャドウマップ
 		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMainSkin_ShadowMap", Shader::EnType::VS);
+		m_vsShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainSkinInstancing_ShadowMap", Shader::EnType::VS);
 		m_pVSShader = &m_vsShader;
 		isSkining = true;
 	}

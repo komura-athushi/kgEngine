@@ -121,7 +121,6 @@ void CEngine::Update()
 	m_graphicsEngine->BegineRender();
 	m_gameobjectmanager->PreUpdate();
 	m_gameobjectmanager->PrePostRender();
-	m_graphicsEngine->ShadowMapRender();
 	//ゲームパッドの更新。	
 	for (auto& pad : m_pad) {
 		pad.Update();
@@ -131,6 +130,7 @@ void CEngine::Update()
 	//ゲームオブジェクトの処理
 	m_gameobjectmanager->Start();
 	m_gameobjectmanager->Update();
+	m_graphicsEngine->ShadowMapRender();
 	m_gameobjectmanager->Draw();
 	m_gameobjectmanager->PostRender();
 	m_gameobjectmanager->Delete();

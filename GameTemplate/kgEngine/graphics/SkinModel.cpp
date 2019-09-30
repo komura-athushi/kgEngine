@@ -277,14 +277,14 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	m_modelDx->UpdateEffects([&](DirectX::IEffect* material) {
 		auto modelMaterial = reinterpret_cast<ModelEffect*>(material);
 		modelMaterial->SetRenderMode(renderMode);
-		if (renderMode == enRenderMode_Normal) {
+		//if (renderMode == enRenderMode_Normal) {
 			if (m_isInstancing) {
 				modelMaterial->SetNumInstance(m_numInstance);
 			}
 			else {
 				modelMaterial->SetNumInstance(0);
 			}
-		}
+		//}
 	});
 
 	//•`‰æB

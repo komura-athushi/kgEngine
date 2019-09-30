@@ -193,8 +193,8 @@ private:
 	ID3D11Buffer* m_isuvscroll = nullptr;
 	ID3D11Buffer* m_uvscroll = nullptr;
 	SDirectionLight	m_dirLight;				//!<ディレクションライト。
-	bool m_isShadowCaster = false;
-	bool m_isShadowReceiver = false;
+	bool m_isShadowCaster = true;
+	bool m_isShadowReceiver = true;
 	std::unique_ptr<CMatrix[]>	m_instancingData;		//!<インスタンシング描画用のデータ。
 	ID3D11Buffer* m_instancingDataSB;					//!<インスタンシング描画用の定数バッファ
 	ID3D11ShaderResourceView* m_srv;

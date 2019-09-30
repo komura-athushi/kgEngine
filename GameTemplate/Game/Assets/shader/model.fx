@@ -147,13 +147,13 @@ PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID
 	psInput.Position = mul(mView, worldPos);
 	//カメラ座標系からスクリーン座標系に変換する
 	psInput.Position = mul(mProj, psInput.Position);
-	/*if (isShadowReciever == 1) {
+	if (isShadowReciever == 1) {
 		//続いて、ライトビュープロジェクション空間に変換。
 		//ワールド座標系からライトビュー座標系に変換
 		psInput.posInLVP = mul(mLightView, worldPos);
 		//ライトビュー座標系からライトプロジェクション行列に変換
 		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
-	}*/
+	}
 	psInput.TexCoord = In.TexCoord;
 	psInput.Normal = normalize(mul(mWorld, In.Normal));
 	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
@@ -312,11 +312,11 @@ PSInput_ShadowMap VSMain_ShadowMap(VSInputNmTxVcTangent In)
 // <summary>
 /// スキン無しシャドウマップ生成用の頂点シェーダー、インスタンシング用
 /// </summary>
-PSInput_ShadowMap VSMainInstancing_ShadowMap(VSInputNmTxVcTangent In)
+PSInput_ShadowMap VSMainInstancing_ShadowMap(VSInputNmTxVcTangent In, uint instanceID : SV_InstanceID)
 {
 	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
 	//ライトプロジェクション行列に変換している
-	float4 pos = mul(mWorld, In.Position);
+	float4 pos = mul(instanceMatrix[instanceID], In.Position);
 	pos = mul(mView, pos);
 	pos = mul(mProj, pos);
 	psInput.Position = pos;
@@ -336,12 +336,13 @@ PSInput_ShadowMap VSMainSkin_ShadowMap(VSInputNmTxWeights In)
 	return psInput;
 }
 // <summary>
-/// スキンありシャドウマップ生成用の頂点シェーダー。
+/// スキンありシャドウマップ生成用の頂点シェーダー、インスタンシング用
 /// </summary>
-PSInput_ShadowMap VSMainSkinInstancing_ShadowMap(VSInputNmTxWeights In)
+PSInput_ShadowMap VSMainSkinInstancing_ShadowMap(VSInputNmTxWeights In, uint instanceID : SV_InstanceID)
 {
 	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
 	float4x4 skinning = CalcSkinMatrix(In);
+	skinning = mul(instanceMatrix[instanceID], skinning);
 	float4 pos = mul(skinning, In.Position);
 	pos = mul(mView, pos);
 	pos = mul(mProj, pos);
