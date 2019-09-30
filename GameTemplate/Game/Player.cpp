@@ -75,8 +75,8 @@ void Player::Update()
 
 void Player::Judgment()
 {
-	const float LenghtMultiply = 1.1f;
-	const float SizeMultiply = 0.8f;
+	const float LenghtMultiply = 1.15f;
+	const float SizeMultiply = 0.9f;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
 		if (object->GetisStickPlayer()) {
@@ -228,6 +228,24 @@ void Player::Move()
 	}*/
 	
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
+	if (m_characon.GetisCollision()) {
+		if (m_count2 >= 1) {
+			CVector3 Normal = m_characon.GetWallNormalVector();
+			Normal.y = 0.0f;
+			Normal.Normalize();
+			float t = Normal.Dot(m_movespeed);
+			CVector3 vt = Normal * t;
+			CVector3 InversionSpeed = CVector3(-m_movespeed.x, 0.0f, -m_movespeed.z);
+			CVector3 va = InversionSpeed + vt * 2;
+			m_movespeed.x = -va.x * 0.8f;
+			m_movespeed.z = -va.z * 0.8f;
+		}
+		
+		m_count2++;
+	}
+	else {
+		m_count2 = 0;
+	}
 	if (m_characon.IsOnGround()) {
 		/*if (m_isbound) {
 			m_movespeed.y = -MoveSpeedY * BoundMultiply;
@@ -271,6 +289,7 @@ void Player::PostRender()
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
 		swprintf_s(output, L"‘å‚«‚³  %.1f\n", m_radius * 2.0f);
+		//swprintf_s(output, L"x %f y %f z %f\n", m_position.x , m_position.y ,m_position.z);
 		m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
 	}
 }

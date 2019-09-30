@@ -267,7 +267,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}
 	lig.xyz += ambientlight.xyz;
-	/*if (isShadowReciever == 1) {	//シャドウレシーバー。
+	if (isShadowReciever == 1) {	//シャドウレシーバー。
 		//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。
 		//プロジェクション行列をシャドウマップのUV座標に変換している
 		float2 shadowMapUV = In.posInLVP.xy / In.posInLVP.w;
@@ -290,7 +290,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 				lig *= 0.5f;
 			}
 		}
-	}*/
+	}
 	float4 finalColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	finalColor.xyz = albedoColor.xyz * lig;
 	return finalColor;
@@ -309,7 +309,19 @@ PSInput_ShadowMap VSMain_ShadowMap(VSInputNmTxVcTangent In)
 	psInput.Position = pos;
 	return psInput;
 }
-
+// <summary>
+/// スキン無しシャドウマップ生成用の頂点シェーダー、インスタンシング用
+/// </summary>
+PSInput_ShadowMap VSMainInstancing_ShadowMap(VSInputNmTxVcTangent In)
+{
+	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
+	//ライトプロジェクション行列に変換している
+	float4 pos = mul(mWorld, In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	return psInput;
+}
 // <summary>
 /// スキンありシャドウマップ生成用の頂点シェーダー。
 /// </summary>
@@ -323,7 +335,19 @@ PSInput_ShadowMap VSMainSkin_ShadowMap(VSInputNmTxWeights In)
 	psInput.Position = pos;
 	return psInput;
 }
-
+// <summary>
+/// スキンありシャドウマップ生成用の頂点シェーダー。
+/// </summary>
+PSInput_ShadowMap VSMainSkinInstancing_ShadowMap(VSInputNmTxWeights In)
+{
+	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
+	float4x4 skinning = CalcSkinMatrix(In);
+	float4 pos = mul(skinning, In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	return psInput;
+}
 /// <summary>
 /// ピクセルシェーダーのエントリ関数。
 /// </summary>

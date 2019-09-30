@@ -13,9 +13,15 @@ public:
 	{
 		m_position = pos;
 	}
+	//回転を設定
+	void SetRotation(const CQuaternion& rot)
+	{
+		m_rotation = rot;
+	}
 private:
 	CSkinModelRender m_skinModelRender;								//スキンモデルレンダー
 	PhysicsStaticObject m_staticobject;								//静的オブジェクト
 	CVector3 m_position = CVector3::Zero();							//座標
+	CQuaternion m_rotation = CQuaternion::Identity();				//回転
 };
 

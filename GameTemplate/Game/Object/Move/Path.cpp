@@ -25,7 +25,7 @@ void Path::Load(const wchar_t* filePath)
 		CVector3 pos;
 		pos.x = ma.m[3][0];
 		pos.y = ma.m[3][2];
-		pos.z = ma.m[3][1];
+		pos.z = -ma.m[3][1];
 		//•¶Žš—ñ‚ðintŒ^‚É•ÏŠ·
 		int pointNm = _wtoi(bone->GetName());
 		Point point;

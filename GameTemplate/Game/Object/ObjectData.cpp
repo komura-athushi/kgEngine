@@ -19,9 +19,10 @@ ObjectData::ObjectData()
 			if (i == EOF) {
 				break;
 			}
-			x *= 0.9f;
-			y *= 0.9f;
-			z *= 0.9f;
+			/*x *= 0.8f;
+			y *= 0.8f;
+			z *= 0.8f;*/
+			//volume = (x + x) * (y + y) * (z + z);
 			if (islinesegment == 1) {
 				CVector3 linevector;
 				Enxyz state;

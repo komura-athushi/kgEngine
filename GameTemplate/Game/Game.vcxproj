@@ -232,15 +232,15 @@
     <None Include="Assets\modelData\obj\pencil\opencil_yellow.FBX">
       <FileType>Document</FileType>
     </None>
-    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
+    </None>
     <None Include="Assets\modelData\obj\domino\odomino_blue.FBX">
       <FileType>Document</FileType>
     </None>
@@ -250,9 +250,9 @@
     <None Include="Assets\modelData\obj\domino\odomino_red.FBX">
       <FileType>Document</FileType>
     </None>
-    <MeshContentTask Include="Assets\modelData\ground\ground1.FBX">
+    <None Include="Assets\modelData\ground\ground1.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
+    </None>
     <None Include="Assets\modelData\obj\bear\obear.FBX">
       <FileType>Document</FileType>
     </None>
@@ -296,6 +296,12 @@
       <FileType>Document</FileType>
     </None>
     <None Include="Assets\modelData\obj\rittaiya\oemerald.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\obook.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ocoin.FBX">
       <FileType>Document</FileType>
     </None>
     <None Include="Assets\modelData\obj\rittaiya\ofork.FBX">
@@ -412,6 +418,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\sprite\result.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\modelData\ground\ground2.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\dougubako\odougubako.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\okabin.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\osoap.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ostandlight.FBX">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

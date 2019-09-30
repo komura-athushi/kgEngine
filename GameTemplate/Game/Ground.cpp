@@ -20,7 +20,8 @@ bool Ground::Start()
 	m_skinModelRender.Init(path);
 	m_skinModelRender.SetPosition(m_position);
 	m_skinModelRender.SetShadowReceiver(true);
-	m_staticobject.CreateMeshObject(&m_skinModelRender, m_position,CQuaternion::Identity());
+	m_skinModelRender.SetRotation(m_rotation);
+	m_staticobject.CreateMeshObject(&m_skinModelRender, m_position, m_rotation);
 
 	return true;
 }

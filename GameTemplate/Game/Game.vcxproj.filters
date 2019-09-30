@@ -163,9 +163,6 @@
     <None Include="Assets\modelData\obj\rittaiya\oemerald.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
-    <None Include="Assets\modelData\obj\rittaiya\ofork.FBX">
-      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
-    </None>
     <None Include="Assets\modelData\obj\rittaiya\oorange.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
@@ -223,12 +220,6 @@
     <None Include="Assets\modelData\obj\mouse\omouse.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
-    <None Include="Assets\modelData\obj\pencil\opencil_blue.FBX">
-      <Filter>Asset\modelData\obj\game</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\pencil\opencil_yellow.FBX">
-      <Filter>Asset\modelData\obj\game</Filter>
-    </None>
     <None Include="Assets\modelData\obj\petbottle\opetbottle.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
@@ -268,9 +259,6 @@
     <None Include="Assets\modelData\sphere\sphere1.FBX">
       <Filter>Asset\modelData\sphere</Filter>
     </None>
-    <None Include="Assets\modelData\sphere\sphere2.FBX">
-      <Filter>Asset\modelData\sphere</Filter>
-    </None>
     <None Include="Assets\modelData\zunko\zunko.FBX">
       <Filter>Asset\modelData</Filter>
     </None>
@@ -295,18 +283,51 @@
     <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ofork.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\obook.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
+    <None Include="Assets\modelData\ground\ground1.FBX">
+      <Filter>Asset\modelData\ground</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ocoin.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere2.FBX">
+      <Filter>Asset\modelData\sphere</Filter>
+    </None>
+    <None Include="Assets\modelData\ground\ground2.FBX">
+      <Filter>Asset\modelData\ground</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\dougubako\odougubako.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\ostandlight.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\osoap.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\okabin.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\ground\ground1.FBX">
-      <Filter>Asset\modelData\ground</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack_red.FBX">
+    <MeshContentTask Include="Assets\modelData\obj\pencil\opencil_yellow.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
-      <Filter>Asset\modelData\obj\game</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
+    <MeshContentTask Include="Assets\modelData\obj\pencil\opencil_blue.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </MeshContentTask>
   </ItemGroup>

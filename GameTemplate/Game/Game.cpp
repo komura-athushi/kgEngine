@@ -76,6 +76,7 @@ bool Game::Start()
 		else if (objdata.ForwardMatchName(L"ground")) {
 			m_ground = NewGO<Ground>(0);
 			m_ground->SetPosition(objdata.position);
+			m_ground->SetRotation(objdata.rotation);
 			return true;
 		}
 		return true;

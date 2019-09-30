@@ -119,7 +119,7 @@ void Obj::ReadMovePath(const int& number)
 {
 	MovePath* mp = new MovePath();
 	wchar_t aiueo[256];
-	swprintf_s(aiueo, L"Assets/path/%ls%d.tks", m_objdata->s_name, number);
+	swprintf_s(aiueo, L"Assets/path/stage%d/%ls%d.tks", GetGameData().GetStageNumber(),m_objdata->s_name, number);
 	mp->ReadPath(aiueo);
 	m_move = mp;
 }

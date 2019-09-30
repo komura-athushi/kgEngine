@@ -87,6 +87,16 @@ public:
 	{
 		return m_GroundNormalVector;
 	}
+	//壁と衝突したかどうか
+	bool GetisCollision() const
+	{
+		return m_isCollision;
+	}
+	//壁の法線ベクトルを取得
+	CVector3 GetWallNormalVector() const
+	{
+		return m_WallNormalVector;
+	}
 	/*!
 	* @brief	剛体を物理エンジンから削除。。
 	*/
@@ -100,4 +110,6 @@ private:
 	bool				m_isSphere = false;				//球体かどうか
 	RigidBody			m_rigidBody;					//剛体。
 	CVector3			m_GroundNormalVector = CVector3::AxisY();
+	bool				m_isCollision = false;			//衝突したかどうか
+	CVector3			m_WallNormalVector = CVector3::Zero();
 };

@@ -10,6 +10,7 @@ struct SDirectionLight {
 	CVector4 direction[NUM_DIRECTION_LIG];		//ライトの方向。
 	CVector4 color[NUM_DIRECTION_LIG];			//ライトのカラー。
 	CVector4 ambientlight = CVector4(0.2f, 0.2f, 0.2f, 1.0f);
+	//CVector4 ambientlight = CVector4(0.0f, 0.0f, 0.0f, 1.0f);
 };
 
 /*!

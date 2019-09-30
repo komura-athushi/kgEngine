@@ -138,6 +138,10 @@ void CSkinModelRender::Draw()
 			if (itr->second->s_animation.IsPlaying()) {
 				itr->second->s_animation.Update(GameTime().GetFrameDeltaTime());
 			}
+			//インスタンシング描画しないならスキンモデルに計算したワールド行列を設定する
+			/*if (!itr->second->s_skinModel.GetisInstancing()) {
+				itr->second->s_skinModel.SetWorldMatrix(m_worldMatrix);
+			}*/
 			//アクティブならモデルをドローする
 			if (m_isActive) {
 				itr->second->s_skinModel.Draw();

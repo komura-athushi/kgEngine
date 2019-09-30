@@ -128,5 +128,6 @@ private:
 	float m_degree = 0.0f;*/
 	const float m_standardSize = 40.0f;
 	CVector3 m_impulse = CVector3::Zero();
+	int m_count2 = 0;
 };
 
