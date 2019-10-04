@@ -143,6 +143,9 @@
     <Filter Include="Asset\modelData\obj\game\rittaiya">
       <UniqueIdentifier>{4d7a0853-a33d-4971-99f5-fbdb11caf0b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\shader">
+      <UniqueIdentifier>{e1fa6c16-0af1-4498-9518-1aea5afea108}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\ground\ground.FBX">
@@ -262,9 +265,6 @@
     <None Include="Assets\modelData\zunko\zunko.FBX">
       <Filter>Asset\modelData</Filter>
     </None>
-    <None Include="Assets\sprite\arrow.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
     <None Include="Assets\sprite\clockkari.png">
       <Filter>Asset\sprite</Filter>
     </None>
@@ -278,9 +278,6 @@
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\stageselect.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\modelData\obj\thumbtack\othumbtack.FBX">
@@ -322,13 +319,23 @@
     <None Include="Assets\modelData\obj\rittaiya\okabin.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
+    <None Include="Assets\modelData\obj\pencil\opencil_blue.FBX" />
+    <None Include="Assets\modelData\obj\pencil\opencil_yellow.FBX" />
+    <None Include="Assets\sprite\title.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\arrow.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\pencil\opencil_yellow.FBX">
+    <MeshContentTask Include="Assets\modelData\obj\sofa\osofa.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\pencil\opencil_blue.FBX">
-      <Filter>Asset\modelData\obj\game</Filter>
-    </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\shader\toonmap.png">
+      <Filter>Asset\shader</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

@@ -155,6 +155,9 @@
     <ClCompile Include="graphics\SpringCamera.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\ToonMap.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -281,6 +284,9 @@
       <Filter>graphics\2D</Filter>
     </ClInclude>
     <ClInclude Include="graphics\SpringCamera.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\ToonMap.h">
       <Filter>graphics</Filter>
     </ClInclude>
   </ItemGroup>

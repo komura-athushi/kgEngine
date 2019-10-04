@@ -51,7 +51,7 @@ private:
 	float m_degreey = 0.0f, m_degreexz = 20.0f;			//それぞれカメラの角度
 	Player* m_player = nullptr;							//プレイヤーのポインタ
 	float m_radius = 0.0f;								//カメラの半径
-	const float m_protradius = 200.0f;					//カメラの最初の半径
+	const float m_protradius = 170.0f;					//カメラの最初の半径
 	StateEnterStick m_state = enStick_NoEnterStick;		//スティックの入力について
 	float m_Multiply = 1.0f;							//カメラと塊の距離の倍率
 	float m_timer = 0.0f;								//L3とR3が同時に押された時に時間を計る

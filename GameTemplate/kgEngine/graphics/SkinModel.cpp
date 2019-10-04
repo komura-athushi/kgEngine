@@ -57,6 +57,8 @@ void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 	m_modelDx = g_skinModelDataManager.Load(filePath, m_skeleton);
 
 	m_enFbxUpAxis = enFbxUpAxis;
+
+	m_toonMap.Init();
 }
 void SkinModel::InitInstancingData()
 {
@@ -266,11 +268,22 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	d3dDeviceContext->UpdateSubresource(m_cb, 0, nullptr, &vsCb, 0, 0);
 	//ライト用の定数バッファを更新
 	d3dDeviceContext->PSSetConstantBuffers(1, 1, &m_lightCb);
+	m_dirLight.eyePos = MainCamera().GetTarget();
 	d3dDeviceContext->UpdateSubresource(m_lightCb, 0, nullptr, &m_dirLight, 0, 0);
 	//サンプラステートを設定。
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 	//ボーン行列をGPUに転送。
 	m_skeleton.SendBoneMatrixArrayToGPU();
+	if (renderMode != enRenderMode_CreateShadowMap) {
+		ID3D11ShaderResourceView* srvArray[]{
+			m_toonMap.GetSRV()
+		};
+		d3dDeviceContext->PSSetShaderResources(4, 1, srvArray);
+		ID3D11SamplerState* sampArray[]{
+			m_toonMap.GetSamplerState()
+		};
+		d3dDeviceContext->PSSetSamplers(1, 1, sampArray);
+	}
 	//UV関係
 	//d3dDeviceContext->PSSetConstantBuffers
 	//エフェクトにクエリを行う。

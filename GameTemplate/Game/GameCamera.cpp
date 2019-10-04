@@ -67,7 +67,7 @@ void GameCamera::Calculation()
 	const float UpperLimitDegreeXZ = 80.0f;
 	const float LowerLimitDegreeXZ = -80.0f;
 	//注視点をプレイヤーより↑にする
-	const float HeightTarget = 80.0f + ((80.0f * (m_player->GetRadius() / m_player->GetStandardSize())) - 80.0f) * 0.9f;
+	const float HeightTarget = 60.0f + ((60.0f * (m_player->GetRadius() / m_player->GetStandardSize())) - 60.0f) * 0.9f;
 	//スティックが入力されているかどうか
 	const float EnterStick = 0.1f * 0.1f;
 	//両方のスティックの入力ベクトルの角度、とりあえず90度

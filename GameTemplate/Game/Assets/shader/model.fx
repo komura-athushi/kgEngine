@@ -9,6 +9,7 @@
 //アルベドテクスチャ。
 Texture2D<float4> albedoTexture : register(t0);	
 Texture2D<float4> shadowMap : register(t2);		//todo シャドウマップ。
+Texture2D<float4> toonMap : register(t4);		//toonシェーダー用のテクスチャー
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t1);
 StructuredBuffer<float4x4> instanceMatrix : register(t3);
@@ -19,7 +20,7 @@ StructuredBuffer<float4x4> instanceMatrix : register(t3);
 // SamplerState
 /////////////////////////////////////////////////////////////
 sampler Sampler : register(s0);
-
+sampler ToonSampler : register(s1);
 /////////////////////////////////////////////////////////////
 // 定数バッファ。
 /////////////////////////////////////////////////////////////
@@ -43,6 +44,8 @@ cbuffer LightCb : register(b1) {
 	float3 dligDirection[NUM_DIRECTION_LIG];
 	float4 dligColor[NUM_DIRECTION_LIG];
 	float4 ambientlight;
+	float3 eyePos;				//カメラの視点。
+	float specPow;			//スペキュラライトの絞り。
 };
 
 /// <summary>
@@ -94,6 +97,7 @@ struct PSInput{
 	float3 Tangent		: TANGENT;
 	float2 TexCoord 	: TEXCOORD0;
 	float4 posInLVP		: TEXCOORD1;	//ライトビュープロジェクション空間での座標。
+	float3 worldPos		: TEXCOORD2;	//ワールド座標
 };
 /*!
  *@brief	スキン行列を計算。
@@ -120,6 +124,8 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	PSInput psInput = (PSInput)0;
 	//ローカル座標系からワールド座標系に変換する
 	float4 worldPos = mul(mWorld, In.Position);
+	//解説７　鏡面反射の計算のために、ワールド座標をピクセルシェーダーに渡す。
+	psInput.worldPos = worldPos;
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
 	//カメラ座標系からスクリーン座標系に変換する
@@ -142,6 +148,8 @@ PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID
 	PSInput psInput = (PSInput)0;
 	//ローカル座標系からワールド座標系に変換する
 	float4 worldPos = mul(instanceMatrix[instanceID], In.Position);
+	//解説７　鏡面反射の計算のために、ワールド座標をピクセルシェーダーに渡す。
+	psInput.worldPos = worldPos;
 	//float4 worldPos = mul(mWorld, In.Position);
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
@@ -189,6 +197,8 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	  	//頂点座標にスキン行列を乗算して、頂点をワールド空間に変換。
 		//mulは乗算命令。
 	    worldPos = mul(skinning, In.Position);
+		//解説７　鏡面反射の計算のために、ワールド座標をピクセルシェーダーに渡す。
+		psInput.worldPos = worldPos;
 	}
 	psInput.Normal = normalize( mul(skinning, In.Normal) );
 	psInput.Tangent = normalize( mul(skinning, In.Tangent) );
@@ -235,6 +245,8 @@ PSInput VSMainSkinInstancing(VSInputNmTxWeights In, uint instanceID : SV_Instanc
 		//頂点座標にスキン行列を乗算して、頂点をワールド空間に変換。
 		//mulは乗算命令。
 		worldPos = mul(skinning, In.Position);
+		//解説７　鏡面反射の計算のために、ワールド座標をピクセルシェーダーに渡す。
+		psInput.worldPos = worldPos;
 	}
 	psInput.Normal = normalize(mul(skinning, In.Normal));
 	psInput.Tangent = normalize(mul(skinning, In.Tangent));
@@ -261,11 +273,50 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float4 albedoColor = albedoTexture.Sample(Sampler, In.TexCoord);
 
 	float3 lig = 0.0f;
-	//ディレクションライトの拡散反射光を計算する。
 
+	float p = 0.0f;
+	for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
+		p += dot(In.Normal * -1.0f, dligDirection[i].xyz);
+	}
+	//p = dot(In.Normal * -1.0f, dligDirection.xzy);
+	p = p * 0.5f + 0.5f;
+	p = p * p;
+	float2 pos = float2(p, 0.0f);
+	float4 Col = toonMap.Sample(ToonSampler,pos);
+	lig.xzy += Col.xyz;
+	//float2(lig, 0.0f)
+	/*
+	//ディレクションライトの拡散反射光を計算する。
 	for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}
+	//ディレクションライトの鏡面反射光を計算する。
+	{
+		//実習　鏡面反射を計算しなさい。
+		//① ライトを当てる面から視点に伸びるベクトルtoEyeDirを求める。
+		//	 視点の座標は定数バッファで渡されている。LightCbを参照するように。
+		float3 toEyeDir = normalize(eyePos - In.worldPos);
+
+		//② １で求めたtoEyeDirの反射ベクトルを求める。
+		float3 reflectEyeDir = -toEyeDir + 2 * dot(In.Normal, toEyeDir) * In.Normal;
+
+		//③ ２で求めた反射ベクトルとディレクションライトの方向との内積を取って、スペキュラの強さを計算する。
+		float t = 0.0f;
+		for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
+			t += max(0.0f, dot(-dligDirection[i], reflectEyeDir));
+		}
+		t /= 4;
+		//④ pow関数を使って、スペキュラを絞る。絞りの強さは定数バッファで渡されている。
+		//	 LightCbを参照するように。
+		float3 specLig = 0.0f;
+		for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
+			specLig += pow(t, specPow) * dligColor[i].xyz;
+		}
+		specLig /= 4;
+		//⑤ スペキュラ反射が求まったら、ligに加算する。
+		//鏡面反射を反射光に加算する。
+		lig += specLig;
+	}*/
 	lig.xyz += ambientlight.xyz;
 	if (isShadowReciever == 1) {	//シャドウレシーバー。
 		//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。

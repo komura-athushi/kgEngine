@@ -1,15 +1,18 @@
 #pragma once
 
 #include "Skeleton.h"
-
+#include "ToonMap.h"
 const int NUM_DIRECTION_LIG = 4;
 /*!
 *@brief	ディレクションライト。
 */
 struct SDirectionLight {
 	CVector4 direction[NUM_DIRECTION_LIG];		//ライトの方向。
+	//CVector4 direction;
 	CVector4 color[NUM_DIRECTION_LIG];			//ライトのカラー。
 	CVector4 ambientlight = CVector4(0.2f, 0.2f, 0.2f, 1.0f);
+	CVector3 eyePos;				//カメラの視点。
+	float specPow = 0.3f;			//スペキュラライトの絞り。
 	//CVector4 ambientlight = CVector4(0.0f, 0.0f, 0.0f, 1.0f);
 };
 
@@ -203,5 +206,6 @@ private:
 	bool m_isInstancing = false;
 	int m_isUVscroll = true;
 	float m_UVscroll = 0.0f;
+	ToonMap m_toonMap;
 };
 
