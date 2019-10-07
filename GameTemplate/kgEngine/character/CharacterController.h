@@ -97,6 +97,7 @@ public:
 	{
 		return m_WallNormalVector;
 	}
+	
 	/*!
 	* @brief	剛体を物理エンジンから削除。。
 	*/
@@ -113,3 +114,14 @@ private:
 	bool				m_isCollision = false;			//衝突したかどうか
 	CVector3			m_WallNormalVector = CVector3::Zero();
 };
+
+//サイズを比べる
+bool static inline GetCompareSize(const float radius, const float size)
+{
+	if (radius >= size * 2.5f) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}

@@ -5,13 +5,13 @@
 #include "KGstdafx.h"
 #include "character/CharacterController.h"
 #include "Physics/CollisionAttr.h"
-
-
+//#include "../../Game/Object/Obj.h"
 
 namespace {
 	//衝突したときに呼ばれる関数オブジェクト(地面用)
 	struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 	{
+		float radius = 0.0f;
 		bool isHit = false;									//衝突フラグ。
 		CVector3 hitPos = CVector3(0.0f, -FLT_MAX, 0.0f);	//衝突点。
 		CVector3 startPos = CVector3::Zero();					//レイの始点。
@@ -28,6 +28,10 @@ namespace {
 				//自分に衝突した。or キャラクタ属性のコリジョンと衝突した。
 				return 0.0f;
 			}
+			if (GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize()) && convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object) {
+				convexResult.m_hitCollisionObject->SetisHit();
+			}
+		
 			//衝突点の法線を引っ張ってくる。
 			CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
 			//上方向と法線のなす角度を求める。
@@ -57,6 +61,7 @@ namespace {
 	//衝突したときに呼ばれる関数オブジェクト(壁用)
 	struct SweepResultWall : public btCollisionWorld::ConvexResultCallback
 	{
+		float radius = 0.0f;
 		bool isHit = false;						//衝突フラグ。
 		CVector3 hitPos = CVector3::Zero();		//衝突点。
 		CVector3 startPos = CVector3::Zero();		//レイの始点。
@@ -69,6 +74,9 @@ namespace {
 			if (convexResult.m_hitCollisionObject == me || convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_User) {
 				//自分に衝突した。or 地面に衝突した。
 				return 0.0f;
+			}
+			if (GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize()) && convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object) {
+				convexResult.m_hitCollisionObject->SetisHit();
 			}
 			//衝突点の法線を引っ張ってくる。
 			CVector3 hitNormalTmp;
@@ -167,6 +175,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 			SweepResultWall callback;
 			callback.me = m_rigidBody.GetBody();
 			callback.startPos = posTmp;
+			callback.radius = m_radius;
 			//衝突検出。
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 
@@ -268,6 +277,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 		SweepResultGround callback;
 		callback.me = m_rigidBody.GetBody();
 		callback.startPos.Set(start.getOrigin());
+		callback.radius = m_radius;
 		//衝突検出。
 		if(fabsf(endPos.y - callback.startPos.y) > FLT_EPSILON){
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);

@@ -282,12 +282,11 @@ float4 PSMain( PSInput In ) : SV_Target0
 	p = p * 0.5f + 0.5f;
 	p = p * p;
 	float2 pos = float2(p, 0.0f);
-	float4 Col = toonMap.Sample(ToonSampler,pos);
-	lig.xzy += Col.xyz;
-	//float2(lig, 0.0f)
-	/*
+	float4 Col = toonMap.Sample(Sampler,pos);
+	lig += Col;
+	
 	//ディレクションライトの拡散反射光を計算する。
-	for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
+	/*for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}
 	//ディレクションライトの鏡面反射光を計算する。

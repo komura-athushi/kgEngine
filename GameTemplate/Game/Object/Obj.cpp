@@ -112,6 +112,8 @@ bool Obj::Start()
 	ClcVertex();
 	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation,CVector3::One(),m_anim.GetPlayAnimationType());
 	m_gamedata = &GetGameData();
+	m_staticobject.SetSize(m_radius);
+	m_staticobject.GetRigidBody()->GetBody()->setUserIndex(3);
 	return true;
 }
 
@@ -185,6 +187,8 @@ void Obj::ClcVertex()
 	}
 }
 
+
+
 void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 {
 	//プレイヤーの逆行列を求める
@@ -209,7 +213,6 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	objworldMatrix.Mul(scaleMatrix, rotMatrix);
 	objworldMatrix.Mul(objworldMatrix, transMatrix);
 	m_localMatrix.Mul(objworldMatrix, ReverseMatrix);
-	m_player = FindGO<Player>();
 	m_movestate = enMove_MoveHit;
 	m_staticobject.Release();
 	if (m_islinesegment) {
@@ -227,6 +230,15 @@ void Obj::Update()
 {
 	if (!m_draw) {
 		return;
+	}
+	if (m_player == nullptr) {
+		m_player = FindGO<Player>();
+		return;
+	}
+	if (!m_isHit && m_staticobject.GetRigidBody()->GetBody()->GetisHit()) {
+		m_isHit = true;
+		m_player->GetCSkinModelRender().UpdateWorldMatrix();
+		ClcLocalMatrix(m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
 	}
 	if (m_movestate == enMove_MoveHit) {
 		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {

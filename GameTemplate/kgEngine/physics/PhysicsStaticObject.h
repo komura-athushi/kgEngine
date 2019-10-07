@@ -52,6 +52,16 @@ public:
 		Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
 		m_isdeleterigidbody = true;
 	}
+	//„‘Ì‚ÌƒTƒCƒY‚ğİ’è
+	void SetSize(const float size)
+	{
+		m_rigidBody.GetBody()->SetSize(size);
+	}
+	//„‘Ì‚ğæ“¾
+	RigidBody* GetRigidBody()
+	{
+		return &m_rigidBody;
+	}
 	void SetPosition(CVector3& pos);
 	void SetRotation(CQuaternion& rot);
 private:

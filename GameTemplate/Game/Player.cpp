@@ -56,7 +56,7 @@ void Player::Update()
 	if (m_gamecamera == nullptr) {
 		m_gamecamera = FindGO<GameCamera>();
 	}
-	Judgment();
+	//Judgment();
 	Move();
 	Turn();
 	m_characon.SetPosition(m_position);
@@ -75,7 +75,7 @@ void Player::Update()
 
 void Player::Judgment()
 {
-	const float LenghtMultiply = 1.15f;
+	const float LenghtMultiply = 1.0f;
 	const float SizeMultiply = 0.9f;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {

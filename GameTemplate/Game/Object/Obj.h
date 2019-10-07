@@ -73,6 +73,8 @@ public:
 	void ClcMatrix();
 	//当たり判定用の頂点データを生成
 	void ClcVertex();
+	//巻き込まれた時の処理
+	void Hit();
 	//大きさを取得
 	float GetSize() const
 	{
@@ -163,5 +165,6 @@ private:
 	bool m_draw = true;														//ドローするかどうか
 	GameData* m_gamedata = nullptr;											//ゲームデータ
 	float m_radius = 0.0f;
+	bool m_isHit = false;
 };
 

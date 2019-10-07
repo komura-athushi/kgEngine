@@ -21,7 +21,7 @@ ObjectData::ObjectData()
 			}
 			/*x *= 0.8f;
 			y *= 0.8f;
-			z *= 0.8f;*/
+			z *= 0.9f;*/
 			//volume = (x + x) * (y + y) * (z + z);
 			if (islinesegment == 1) {
 				CVector3 linevector;

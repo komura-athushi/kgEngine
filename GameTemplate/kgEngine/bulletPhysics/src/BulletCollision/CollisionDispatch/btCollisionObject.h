@@ -48,9 +48,26 @@ typedef btAlignedObjectArray<class btCollisionObject*> btCollisionObjectArray;
 /// They can be added to the btCollisionWorld.
 ATTRIBUTE_ALIGNED16(class)	btCollisionObject
 {
-
+public:
+	float GetSize() const
+	{
+		return m_size;
+	}
+	void SetSize(const float size) const
+	{
+		m_size = size;
+	}
+	bool GetisHit() const
+	{
+		return m_isHit;
+	}
+	void SetisHit() const
+	{
+		m_isHit = true;
+	}
 protected:
-
+	mutable float			m_size = 0.0f;
+	mutable bool			m_isHit = false;
 	btTransform	m_worldTransform;
 
 	///m_interpolationWorldTransform is used for CCD and interpolation

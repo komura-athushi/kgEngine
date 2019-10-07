@@ -327,8 +327,9 @@ public:
 		m_hitPointLocal(hitPointLocal),
 		m_hitFraction(hitFraction)
 		{
+			
 		}
-
+	
 		const btCollisionObject*		m_hitCollisionObject;
 		LocalShapeInfo*			m_localShapeInfo;
 		btVector3				m_hitNormalLocal;
