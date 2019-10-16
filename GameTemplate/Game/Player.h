@@ -18,6 +18,8 @@ public:
 	void Turn();
 	//”»’è
 	void Judgment();
+	//‘ÌÏ‚ğ‰ÁZ‚·‚é
+	void AddVolume(const float volume);
 	//À•W‚ğæ“¾
 	CVector3 GetPosition() const
 	{

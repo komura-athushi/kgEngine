@@ -73,6 +73,15 @@ void Player::Update()
 	
 }
 
+void Player::AddVolume(const float volume)
+{
+	const float volumeMultiply = 0.9f;
+
+	m_volume += volume * volumeMultiply;
+	m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
+	m_characon.SetRadius(m_radius);
+}
+
 void Player::Judgment()
 {
 	const float LenghtMultiply = 1.0f;

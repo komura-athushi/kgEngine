@@ -206,6 +206,6 @@ private:
 	bool m_isInstancing = false;
 	int m_isUVscroll = true;
 	float m_UVscroll = 0.0f;
-	ToonMap m_toonMap;
+	ToonMap* m_toonMap = nullptr;
 };
 

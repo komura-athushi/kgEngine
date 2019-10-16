@@ -163,8 +163,8 @@ PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID
 		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
 	}
 	psInput.TexCoord = In.TexCoord;
-	psInput.Normal = normalize(mul(mWorld, In.Normal));
-	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
+	psInput.Normal = normalize(mul(instanceMatrix[instanceID], In.Normal));
+	psInput.Tangent = normalize(mul(instanceMatrix[instanceID], In.Tangent));
 	return psInput;
 }
 /*!--------------------------------------------------------------------------------------
@@ -276,15 +276,15 @@ float4 PSMain( PSInput In ) : SV_Target0
 
 	float p = 0.0f;
 	for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
-		p += dot(In.Normal * -1.0f, dligDirection[i].xyz);
+		p += max(0.0f,dot(In.Normal * -1.0f, dligDirection[i].xyz));
 	}
 	//p = dot(In.Normal * -1.0f, dligDirection.xzy);
 	p = p * 0.5f + 0.5f;
 	p = p * p;
 	float2 pos = float2(p, 0.0f);
-	float4 Col = toonMap.Sample(Sampler,pos);
-	lig += Col;
-	
+	float4 Col = toonMap.Sample(ToonSampler,pos);
+	lig += Col.xyz;
+
 	//ディレクションライトの拡散反射光を計算する。
 	/*for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];

@@ -118,7 +118,7 @@ private:
 //ƒTƒCƒY‚ð”ä‚×‚é
 bool static inline GetCompareSize(const float radius, const float size)
 {
-	if (radius >= size * 2.5f) {
+	if (radius >= size * 3.2f) {
 		return true;
 	}
 	else {

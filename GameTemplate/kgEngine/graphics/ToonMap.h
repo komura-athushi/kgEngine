@@ -2,10 +2,17 @@
 //トゥーンシェーダー用のテクスチャを読み込むぜ
 class ToonMap
 {
-public: 
-	ToonMap() {}
+private: 
+	ToonMap() {
+		Init();
+	}
 	~ToonMap() {}
-
+public:
+	static ToonMap& GetIntance()
+	{
+		static ToonMap instance;
+		return instance;
+	}
 	//初期化
 	void Init();
 	/*!
@@ -24,6 +31,7 @@ public:
 	{
 		return m_samplerState;
 	}
+private:
 	ID3D11ShaderResourceView* m_srv = nullptr;				//SRV
 	ID3D11SamplerState* m_samplerState = nullptr;		//トゥーンシェーダー用のサンプラステート
 };

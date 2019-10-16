@@ -239,6 +239,7 @@ void Obj::Update()
 		m_isHit = true;
 		m_player->GetCSkinModelRender().UpdateWorldMatrix();
 		ClcLocalMatrix(m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
+		m_player->AddVolume(m_objdata->s_volume);
 	}
 	if (m_movestate == enMove_MoveHit) {
 		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {

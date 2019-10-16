@@ -58,7 +58,7 @@ void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 
 	m_enFbxUpAxis = enFbxUpAxis;
 
-	m_toonMap.Init();
+	m_toonMap = &ToonMap::GetIntance();
 }
 void SkinModel::InitInstancingData()
 {
@@ -274,15 +274,15 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 	//ƒ{[ƒ“s—ñ‚ðGPU‚É“]‘—B
 	m_skeleton.SendBoneMatrixArrayToGPU();
-	if (renderMode != enRenderMode_CreateShadowMap) {
+	if (renderMode == enRenderMode_Normal) {
 		ID3D11ShaderResourceView* srvArray[]{
-			m_toonMap.GetSRV()
+			m_toonMap->GetSRV()
 		};
 		d3dDeviceContext->PSSetShaderResources(4, 1, srvArray);
-		ID3D11SamplerState* sampArray[]{
-			m_toonMap.GetSamplerState()
+		/*ID3D11SamplerState* sampArray[]{
+			m_toonMap->GetSamplerState()
 		};
-		d3dDeviceContext->PSSetSamplers(1, 1, sampArray);
+		d3dDeviceContext->PSSetSamplers(1, 1, sampArray);*/
 	}
 	//UVŠÖŒW
 	//d3dDeviceContext->PSSetConstantBuffers
