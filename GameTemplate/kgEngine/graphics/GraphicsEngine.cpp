@@ -20,6 +20,17 @@ void GraphicsEngine::BegineRender()
 	//バックバッファを灰色で塗りつぶす。
 	m_pd3dDeviceContext->ClearRenderTargetView(m_backBuffer, ClearColor);
 	m_pd3dDeviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	auto d3dDeviceContext = m_pd3dDeviceContext;
+	//現在のレンダリングターゲットをバックアップしておく。
+	d3dDeviceContext->OMGetRenderTargets(
+		1,
+		&m_frameBufferRenderTargetView,
+		&m_frameBufferDepthStencilView
+	);
+	//ビューポートもバックアップを取っておく。
+	unsigned int numViewport = 1;
+	d3dDeviceContext->RSGetViewports(&numViewport, &m_frameBufferViewports);
 }
 void GraphicsEngine::EndRender()
 {
@@ -158,8 +169,15 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_pd3dDeviceContext);
 	m_spriteBatchPMA = std::make_unique<DirectX::SpriteBatch>(m_pd3dDeviceContext);
 	
+	//メインとなるレンダリングターゲットを作成する。
+	m_mainRenderTarget.Create(
+		FRAME_BUFFER_W,
+		FRAME_BUFFER_H,
+		DXGI_FORMAT_R16G16B16A16_FLOAT
+	);
+	m_copyMainRtToFrameBufferSprite.Init(m_mainRenderTarget.GetRenderTargetSRV());
 
-	
+	m_postEffect = new PostEffect();
 }
 
 void GraphicsEngine::ShadowMapRender()
@@ -171,29 +189,79 @@ void GraphicsEngine::ShadowMapRender()
 	);
 	auto d3dDeviceContext = m_pd3dDeviceContext;
 	//現在のレンダリングターゲットをバックアップしておく。
-	ID3D11RenderTargetView* oldRenderTargetView;
+	/*ID3D11RenderTargetView* oldRenderTargetView;
 	ID3D11DepthStencilView* oldDepthStencilView;
 	d3dDeviceContext->OMGetRenderTargets(
 		1,
-		&oldRenderTargetView,
-		&oldDepthStencilView
+		&m_frameBufferRenderTargetView,
+		&m_frameBufferDepthStencilView
 	);
 	//ビューポートもバックアップを取っておく。
 	unsigned int numViewport = 1;
 	D3D11_VIEWPORT oldViewports;
-	d3dDeviceContext->RSGetViewports(&numViewport, &oldViewports);
+	d3dDeviceContext->RSGetViewports(&numViewport, &m_frameBufferViewports);*/
 
 	//シャドウマップにレンダリング
 	m_shadowMap->RenderToShadowMap();
 
 	//元に戻す。
-	d3dDeviceContext->OMSetRenderTargets(
+	/*d3dDeviceContext->OMSetRenderTargets(
 		1,
-		&oldRenderTargetView,
-		oldDepthStencilView
-	);
-	d3dDeviceContext->RSSetViewports(numViewport, &oldViewports);
+		&m_frameBufferRenderTargetView,
+		m_frameBufferDepthStencilView
+	);*/
+	//d3dDeviceContext->RSSetViewports(numViewport, &m_frameBufferViewports);
 	//レンダリングターゲットとデプスステンシルの参照カウンタを下す。
-	oldRenderTargetView->Release();
-	oldDepthStencilView->Release();
+	//oldRenderTargetView->Release();
+	//oldDepthStencilView->Release();
+
+
+}
+
+void GraphicsEngine::ChangeRenderTarget(RenderTarget* renderTarget, D3D11_VIEWPORT* viewport)
+{
+	ChangeRenderTarget(
+		renderTarget->GetRenderTargetView(),
+		renderTarget->GetDepthStensilView(),
+		viewport
+	);
+}
+void GraphicsEngine::ChangeRenderTarget(ID3D11RenderTargetView* renderTarget, ID3D11DepthStencilView* depthStensil, D3D11_VIEWPORT* viewport)
+{
+	ID3D11RenderTargetView* rtTbl[] = {
+		renderTarget
+	};
+	//レンダリングターゲットの切り替え。
+	m_pd3dDeviceContext->OMSetRenderTargets(1, rtTbl, depthStensil);
+	if (viewport != nullptr) {
+		//ビューポートが指定されていたら、ビューポートも変更する。
+		m_pd3dDeviceContext->RSSetViewports(1, viewport);
+	}
+}
+
+void GraphicsEngine::ChangeMainRenderTarget()
+{
+	ChangeRenderTarget(&m_mainRenderTarget, &m_frameBufferViewports);
+	//メインレンダリングターゲットをクリアする。
+	float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	m_mainRenderTarget.ClearRenderTarget(clearColor);
+}
+
+void GraphicsEngine::PostRender()
+{
+	//ポストエフェクトの描画。
+	m_postEffect->Draw();
+
+	//レンダリングターゲットをフレームバッファに戻す。
+	ChangeRenderTarget(
+		m_frameBufferRenderTargetView,
+		m_frameBufferDepthStencilView,
+		&m_frameBufferViewports
+	);
+
+	//ドロドロ
+	m_copyMainRtToFrameBufferSprite.Draw();
+
+	m_frameBufferRenderTargetView->Release();
+	m_frameBufferDepthStencilView->Release();
 }

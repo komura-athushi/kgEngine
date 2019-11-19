@@ -9,6 +9,9 @@ public:
 	~CSprite();
 	//初期化
 	void Init(const wchar_t* fileName, bool isCircleGauge  = false);
+	//初期化
+	void Init(ID3D11ShaderResourceView* srv);
+
 	/// <summary>
 	/// スクリーン座標指定で描画
 	/// </summary>
@@ -28,6 +31,7 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layerDepth = 0.5f,
 		float degree = 0.0f);
+	void Draw();
 private:
 	struct ConstantBuffer {
 		CVector4 mulColor;
@@ -43,4 +47,5 @@ private:
 	float m_degree = 0.0f;
 	bool m_isCircleGauge = false;							//円形ゲージにするかどうか
 	RECT m_sourceRectangle;									//画像サイズ
+	bool m_isNormal = false;
 };

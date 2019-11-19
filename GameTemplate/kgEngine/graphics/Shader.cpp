@@ -117,4 +117,5 @@ bool Shader::Load(const char* filePath, const char* entryFuncName, EnType shader
 		shaderType
 	);
     return result;
+	
 }

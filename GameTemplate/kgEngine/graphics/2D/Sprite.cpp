@@ -23,6 +23,16 @@ CSprite::~CSprite()
 	}
 }
 
+void CSprite::Init(ID3D11ShaderResourceView* srv)
+{
+	m_isNormal = true;
+	m_srv = srv;
+	if (m_srv != nullptr) {
+		m_srv->AddRef();	//参照カウンタを増やす。
+	}
+	m_spriteBatch = Engine().GetGraphicsEngine().GetSpriteBatch();
+}
+
 void CSprite::Init(const wchar_t* fileName, bool isCircleGauge)
 {
 	m_isCircleGauge = isCircleGauge;
@@ -123,12 +133,20 @@ void CSprite::DrawScreenPos(
 			device->PSSetConstantBuffers(1, 1, &m_dg);
 			device->PSSetShader((ID3D11PixelShader*)m_ps.GetBody(), nullptr, 0);
 		}
-        
+
 	);
 	//Engine().GetGraphicsEngine().GetSpriteBatch()->Begin();
 	m_spriteBatch->Draw(m_srv, pos.vec, &m_sourceRectangle, color, rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(scale.x, scale.y), effects, layerDepth);
 	//m_spriteBatch->Draw(m_srv, pos.vec);
 	//m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(0.0f,0.0f));
 	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
+
+}
+
+void CSprite::Draw()
+{
+	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin();
+	m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(0.0f, 0.0f));
+	m_spriteBatch->End();
 }
 

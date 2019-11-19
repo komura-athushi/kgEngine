@@ -40,3 +40,4 @@ float4 PSMain(
 	//Color *= mulColor;
 	return Color;
 }
+

@@ -216,7 +216,7 @@ void SkinModel::UpdateInstancingData(const CMatrix& worldMatrix)
 	}
 }
 
-void SkinModel::Draw(EnRenderMode renderMode)
+void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderMode)
 {
 	if (m_isInstancing && m_numInstance == 0) {
 		return;
@@ -238,8 +238,8 @@ void SkinModel::Draw(EnRenderMode renderMode)
 	SVSConstantBuffer vsCb;
 	vsCb.mWorld = m_worldMatrix;
 	if (renderMode == enRenderMode_Normal) {
-		vsCb.mProj = MainCamera().GetProjectionMatrix();
-		vsCb.mView = MainCamera().GetViewMatrix();
+		vsCb.mProj = projMatrix;
+		vsCb.mView = viewMatrix;
 	}
 	//シャドウマップを作るときはらいとカメラの行列を使う
 	else if (renderMode == enRenderMode_CreateShadowMap) {
@@ -306,8 +306,8 @@ void SkinModel::Draw(EnRenderMode renderMode)
 			d3dDeviceContext,
 			state,
 			m_worldMatrix,
-			MainCamera().GetViewMatrix(),
-			MainCamera().GetProjectionMatrix()
+			viewMatrix,
+			projMatrix
 		);
 	}
 	else {
@@ -315,8 +315,8 @@ void SkinModel::Draw(EnRenderMode renderMode)
 			d3dDeviceContext,
 			state,
 			m_worldMatrix,
-			MainCamera().GetViewMatrix(),
-			MainCamera().GetProjectionMatrix(),
+			viewMatrix,
+			projMatrix,
 			false,
 			m_numInstance
 		);

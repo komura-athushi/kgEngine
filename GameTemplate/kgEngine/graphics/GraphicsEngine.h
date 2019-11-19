@@ -1,5 +1,7 @@
 #pragma once
 #include "shadow/kgShadowMap.h"
+#include "PostEffect.h"
+#include "2D/Sprite.h"
 class ShadowMap;
 /*!
  *@brief	グラフィックスエンジン。
@@ -51,6 +53,8 @@ public:
 	void EndRender();
 	//シャドウマップを描画
 	void ShadowMapRender();
+	//ポストレンダリング
+	void PostRender();
 	//シャドウマップを取得
 	ShadowMap* GetShadowMap()
 	{
@@ -78,6 +82,23 @@ public:
 	void ResetLayerDepthCnt() {
 		m_layerDepthCnt = 0.0f;
 	}
+	/// <summary>
+	/// メインレンダリングターゲットを取得。
+	/// </summary>
+	/// <returns></returns>
+	RenderTarget* GetMainRenderTarget()
+	{
+		return &m_mainRenderTarget;
+	}
+	//レンダリングターゲットをメインに変更する
+	void ChangeMainRenderTarget();
+	/// <summary>
+	/// レンダリングターゲットの切り替え。
+	/// </summary>
+	/// <param name="renderTarget">レンダリングターゲット</param>
+	/// <param name="viewport">ビューポート</param>
+	void ChangeRenderTarget(RenderTarget* renderTarget, D3D11_VIEWPORT* viewport);
+	void ChangeRenderTarget(ID3D11RenderTargetView* renderTarget, ID3D11DepthStencilView* depthStensil, D3D11_VIEWPORT* viewport);
 private:
 	D3D_FEATURE_LEVEL		m_featureLevel;				//Direct3D デバイスのターゲットとなる機能セット。
 	ID3D11Device*			m_pd3dDevice = NULL;		//D3D11デバイス。
@@ -88,13 +109,18 @@ private:
 	ID3D11Texture2D*		m_depthStencil = NULL;		//デプスステンシル。
 	ID3D11DepthStencilView* m_depthStencilView = NULL;	//デプスステンシルビュー。
 	ShadowMap*				m_shadowMap;
-	//RenderTarget			m_mainRenderTarget;			//!<メインレンダリングターゲット。
-
+	RenderTarget			m_mainRenderTarget;			//!<メインレンダリングターゲット。
+	CSprite m_copyMainRtToFrameBufferSprite;
 	//Sprite
 	std::unique_ptr<DirectX::SpriteFont> m_spriteFont;
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatchPMA;
 	float m_layerDepthCnt = 0.0f;
+
+	PostEffect* m_postEffect = nullptr;
+	D3D11_VIEWPORT m_frameBufferViewports;			//フレームバッファのビューポート。
+	ID3D11RenderTargetView* m_frameBufferRenderTargetView = nullptr;	//フレームバッファのレンダリングターゲットビュー。
+	ID3D11DepthStencilView* m_frameBufferDepthStencilView = nullptr;	//フレームバッファのデプスステンシルビュー。
 };
 
 //extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン

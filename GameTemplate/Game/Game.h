@@ -7,6 +7,7 @@ class Obj;
 class Time;
 class Fade;
 class GameData;
+class OffScreen;
 //ゲームクラス
 class Game:public IGameObject
 {
@@ -37,5 +38,6 @@ private:
 	CFont m_font;												//フォント
 	float m_timer2 = 0.0f;
 	bool m_isPose = false;
+	OffScreen* m_offScreen = nullptr;
 };
 

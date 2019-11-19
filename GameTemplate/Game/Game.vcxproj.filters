@@ -50,6 +50,12 @@
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Result.h" />
+    <ClInclude Include="OffScreen.h">
+      <Filter>offscreen</Filter>
+    </ClInclude>
+    <ClInclude Include="OffScreenCamera.h">
+      <Filter>offscreen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -102,6 +108,12 @@
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="OffScreen.cpp">
+      <Filter>offscreen</Filter>
+    </ClCompile>
+    <ClCompile Include="OffScreenCamera.cpp">
+      <Filter>offscreen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -145,6 +157,9 @@
     </Filter>
     <Filter Include="Asset\shader">
       <UniqueIdentifier>{e1fa6c16-0af1-4498-9518-1aea5afea108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="offscreen">
+      <UniqueIdentifier>{bb913c5b-c162-41f9-a746-a8ad02887be2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

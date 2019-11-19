@@ -13,6 +13,7 @@
 #include "GameData.h"
 #include "Result.h"
 #include "Title.h"
+#include "OffScreen.h"
 Game::Game()
 {
 
@@ -86,6 +87,7 @@ bool Game::Start()
 	GetObjModelDataFactory().InitInstancingData();
 	m_gameData->SetPoseCancel();
 	m_gameData->SetScene(enScene_Stage);
+	//m_offScreen = NewGO<OffScreen>(3);
 	return true;
 }
 

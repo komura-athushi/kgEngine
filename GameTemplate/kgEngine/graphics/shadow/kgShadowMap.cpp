@@ -84,6 +84,8 @@ void ShadowMap::RenderToShadowMap()
 		//シャドウキャスターをシャドウマップにレンダリング。
 		for (auto& caster : m_shadowCasters) {
 			caster->Draw(
+				MainCamera().GetViewMatrix(),
+				MainCamera().GetProjectionMatrix(),
 				enRenderMode_CreateShadowMap
 			);
 		}
