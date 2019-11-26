@@ -56,6 +56,9 @@
     <ClInclude Include="OffScreenCamera.h">
       <Filter>offscreen</Filter>
     </ClInclude>
+    <ClInclude Include="Collection.h">
+      <Filter>collection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -114,6 +117,9 @@
     <ClCompile Include="OffScreenCamera.cpp">
       <Filter>offscreen</Filter>
     </ClCompile>
+    <ClCompile Include="Collection.cpp">
+      <Filter>collection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -160,6 +166,9 @@
     </Filter>
     <Filter Include="offscreen">
       <UniqueIdentifier>{bb913c5b-c162-41f9-a746-a8ad02887be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collection">
+      <UniqueIdentifier>{6b4ebd1d-9ab5-4b44-842a-a5166114c266}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

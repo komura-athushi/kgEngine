@@ -17,7 +17,7 @@ struct ObjModelData {
 
 class ObjModelDataFactory : public IGameObject{
 private:
-	ObjModelDataFactory() {}
+	ObjModelDataFactory();
 	~ObjModelDataFactory() {}
 public:
 	static ObjModelDataFactory& GetInstance()
@@ -32,12 +32,18 @@ public:
 	void BeginUpdateInstancingData();
 	//モデルデータを全て削除する
 	void DeleteAllData();
+	//スキンモデル取得
+	SkinModel* GetSkinModel(int key)
+	{
+		return m_skinModelmap[key];
+	}
 public:
 	ObjModelData* Load(const wchar_t* path);
 private:
 	//unique_ptr  スマートポインタ、newしたメモリを指すポインタが存在しなければ自動的に
 	//deleteされる
 	std::unordered_map<int, std::unique_ptr<ObjModelData>> m_modelmap;
+	std::unordered_map<int, SkinModel*> m_skinModelmap;
 };
 
 static inline ObjModelDataFactory& GetObjModelDataFactory()

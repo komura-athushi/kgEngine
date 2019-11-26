@@ -2,6 +2,8 @@
 #include "Title.h"
 #include "StageSelect.h"
 #include "Fade.h"
+#include "Collection.h"
+
 Title::Title()
 {
 
@@ -25,6 +27,11 @@ void Title::Update()
 	if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
 		m_isWaitFadeout = true;
 		NewGO<StageSelect>(0);
+		DeleteGO(this);
+	}
+	if (Engine().GetPad(0).IsTrigger(enButtonSelect)) {
+		m_isWaitFadeout = true;
+		NewGO<Collection>(0);
 		DeleteGO(this);
 	}
 }

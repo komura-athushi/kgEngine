@@ -8,6 +8,13 @@
 #include "Rotation/RotDirection.h"
 #include "Player.h"
 #include "GameData.h"
+#include "OffScreen.h"
+
+ObjModelDataFactory::ObjModelDataFactory()
+{
+
+}
+
 bool ObjModelDataFactory::Start()
 {
 	return true;
@@ -29,6 +36,9 @@ ObjModelData* ObjModelDataFactory::Load(const wchar_t* path)
 		m_modelmap.emplace(key, std::make_unique<ObjModelData>());
 		m_modelmap[key].get()->s_skinmodel.Init(filepath, nullptr, 0, enFbxUpAxisZ, true);
 		m_modelmap[key].get()->s_hashKey = key;
+		SkinModel* skinModel = new SkinModel();
+		skinModel->Init(filepath);
+		m_skinModelmap.emplace(key, skinModel);
 	}
 	m_modelmap[key].get()->s_maxInstance += 1;
 	m_modelmap[key].get()->s_skinmodel.SetInstanceNumber(m_modelmap[key].get()->s_maxInstance);
@@ -71,6 +81,9 @@ Obj::~Obj()
 	}
 	if (m_rot != nullptr) {
 		delete m_rot;
+	}
+	if (m_gamedata->GetScene() == enScene_Result && m_movestate == enMove_MoveHit) {
+		ObjectData::GetInstance().SetisHit(m_objdata->s_volume);
 	}
 }
 
@@ -219,6 +232,10 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 		m_linesegment.Init(m_position);
 	}
 	m_box.Init(CVector3(m_objdata->s_x, m_objdata->s_y, m_objdata->s_z));
+	OffScreen* offScreen = FindGO<OffScreen>();
+	ObjModelDataFactory* factory = &GetObjModelDataFactory();
+	offScreen->SetSkinModel(factory->GetSkinModel(m_modeldata->s_hashKey));
+	//GetObjModelDataFactory().SetisHit(m_objdata->s_name);
 }
 
 void Obj::ClcMatrix()

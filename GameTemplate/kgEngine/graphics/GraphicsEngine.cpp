@@ -178,14 +178,15 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_copyMainRtToFrameBufferSprite.Init(m_mainRenderTarget.GetRenderTargetSRV());
 
 	m_postEffect = new PostEffect();
+	m_postEffect->InitFullScreenQuadPrimitive();
 }
 
 void GraphicsEngine::ShadowMapRender()
 {
 	//シャドウマップを更新。
 	m_shadowMap->UpdateFromLightTarget(
-		{ 000.0f, 1000.0f, 1000.0f },
-		{ 0.0f, 0.0f, 0.0f }
+		m_position,
+		m_target
 	);
 	auto d3dDeviceContext = m_pd3dDeviceContext;
 	//現在のレンダリングターゲットをバックアップしておく。

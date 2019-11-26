@@ -10,7 +10,7 @@ struct SDirectionLight {
 	CVector4 direction[NUM_DIRECTION_LIG];		//ライトの方向。
 	//CVector4 direction;
 	CVector4 color[NUM_DIRECTION_LIG];			//ライトのカラー。
-	CVector4 ambientlight = CVector4(0.5f, 0.5f, 0.5f, 1.0f);
+	CVector4 ambientlight = CVector4(0.3f, 0.3f, 0.3f, 1.0f);
 	CVector3 eyePos;				//カメラの視点。
 	float specPow = 0.3f;			//スペキュラライトの絞り。
 	//CVector4 ambientlight = CVector4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -71,6 +71,8 @@ public:
 	*@brief	モデルを描画。
 	*/
 	void Draw(CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal);
+	//座標、回転、拡大を指定してモデルをドロー
+	//void Draw(const CVector3& m_position, const CQuaternion& rot, const CVector3& scale, CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal);
 	/*!
 	*@brief	スケルトンの取得。
 	*/

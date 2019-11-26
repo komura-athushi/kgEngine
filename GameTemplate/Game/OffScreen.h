@@ -1,8 +1,7 @@
 #pragma once
 #include "graphics/RenderTarget.h"
 #include "OffScreenCamera.h"
-const float FRAME_H = 200.0f;
-const float FRAME_W = 200.0f;
+
 class OffScreen : public IGameObject
 {
 public:
@@ -10,12 +9,15 @@ public:
 	~OffScreen();
 	bool Start() override;
 	void Draw() override;
-	void Model();
+	void SetSkinModel(SkinModel* skinModel)
+	{
+		m_skinModel = skinModel;
+	}
 	void InitSamplerState();
 private:
 	RenderTarget m_offRenderTarget;
 	OffScreenCamera m_offScreenCamera;
-	SkinModel m_skinModel;
+	SkinModel* m_skinModel = nullptr;
 	CVector3 m_position = CVector3::Zero();
 	CVector3 m_scale = CVector3::One();
 	CQuaternion m_rot = CQuaternion::Identity();

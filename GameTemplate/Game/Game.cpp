@@ -40,6 +40,7 @@ void Game::OnDestroy()
 		}
 		//DeleteGO(obj);
 	}
+	DeleteGO(m_offScreen);
 	
 }
 
@@ -87,7 +88,7 @@ bool Game::Start()
 	GetObjModelDataFactory().InitInstancingData();
 	m_gameData->SetPoseCancel();
 	m_gameData->SetScene(enScene_Stage);
-	//m_offScreen = NewGO<OffScreen>(3);
+	m_offScreen = NewGO<OffScreen>(3);
 	return true;
 }
 

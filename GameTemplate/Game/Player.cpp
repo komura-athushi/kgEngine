@@ -70,7 +70,8 @@ void Player::Update()
 	pos = pos * m_radius * 1.2f;
 	pos = m_position - pos;
 	m_skinModelRender2.SetPosition(pos);
-	
+	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x,m_position.y + 500.0f,m_position.z + 500.0f));
+	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position);
 }
 
 void Player::AddVolume(const float volume)
@@ -297,7 +298,8 @@ void Player::PostRender()
 {
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
-		swprintf_s(output, L"‘å‚«‚³  %.1f\n", m_radius * 2.0f);
+		//swprintf_s(output, L"‘å‚«‚³  %.1f\n", m_radius * 2.0f);
+		swprintf_s(output, L"%f\n", m_position.y);
 		//swprintf_s(output, L"x %f y %f z %f\n", m_position.x , m_position.y ,m_position.z);
 		m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
 	}

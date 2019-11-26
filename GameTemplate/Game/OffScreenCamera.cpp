@@ -15,6 +15,6 @@ OffScreenCamera::~OffScreenCamera()
 void OffScreenCamera::Update()
 {
 	m_camera.SetPosition(m_position);
-	m_camera.SetTarget(m_position);
+	m_camera.SetTarget(m_target);
 	m_camera.Update();
 }

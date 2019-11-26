@@ -99,6 +99,16 @@ public:
 	/// <param name="viewport">ビューポート</param>
 	void ChangeRenderTarget(RenderTarget* renderTarget, D3D11_VIEWPORT* viewport);
 	void ChangeRenderTarget(ID3D11RenderTargetView* renderTarget, ID3D11DepthStencilView* depthStensil, D3D11_VIEWPORT* viewport);
+	//シャドウマップ用のライトカメラの注視点を設定
+	void SetLightCameraTarget(const CVector3& target)
+	{
+		m_target = target;
+	}
+	//シャドウマップ用のライトカメラの座標を設定
+	void SetLightCameraPosition(const CVector3& position)
+	{
+		m_position = position;
+	}
 private:
 	D3D_FEATURE_LEVEL		m_featureLevel;				//Direct3D デバイスのターゲットとなる機能セット。
 	ID3D11Device*			m_pd3dDevice = NULL;		//D3D11デバイス。
@@ -121,6 +131,9 @@ private:
 	D3D11_VIEWPORT m_frameBufferViewports;			//フレームバッファのビューポート。
 	ID3D11RenderTargetView* m_frameBufferRenderTargetView = nullptr;	//フレームバッファのレンダリングターゲットビュー。
 	ID3D11DepthStencilView* m_frameBufferDepthStencilView = nullptr;	//フレームバッファのデプスステンシルビュー。
+
+	CVector3 m_target = CVector3::Zero();
+	CVector3 m_position = { 0.0f,1000.0f,1000.0f };
 };
 
 //extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン

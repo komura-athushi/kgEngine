@@ -17,6 +17,12 @@ struct StructObjectData {
 	Enxyz s_state = enState_No;					//線分がどの方向か
 };
 
+struct SkinModel_ObjData {
+	SkinModel s_skinModel;
+	bool s_isHit = false;
+	int s_hashKey = 0;
+};
+
 //オブジェクトのデータをバイナリファイルから読み込む
 class ObjectData
 {
@@ -41,8 +47,19 @@ public:
 	{
 		return &m_objectdataList[number];
 	}
+	//巻き込まれた！
+	void SetisHit(float volume)
+	{
+		m_modelObjDataList[int(volume)]->s_isHit = true;
+	}
+	//配列取得
+	std::map<int, SkinModel_ObjData*> GetList()
+	{
+		return m_modelObjDataList;
+	}
 private:
 	std::vector<StructObjectData> m_objectdataList;
+	std::map<int, SkinModel_ObjData*> m_modelObjDataList;
 };
 
 
