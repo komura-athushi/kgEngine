@@ -29,5 +29,8 @@ private:
 	PostEffect m_postEffect[16];
 	ID3D11RasterizerState* m_rasterizerState = NULL;	//ラスタライザステート。
 	std::map<int, SkinModel_ObjData*> m_modelList;
+	float m_degree = 0.0f;
+	int m_page = 1;
+	int m_listSize = 0;
 };
 

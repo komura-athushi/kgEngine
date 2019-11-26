@@ -37,6 +37,7 @@ bool Collection::Start()
 	m_skinModel->Init(L"Resource/modelData/zunko.cmo");
 
 	m_modelList = ObjectData::GetInstance().GetList();
+	m_listSize = m_modelList.size();
 	return true;
 }
 
@@ -54,16 +55,31 @@ void Collection::InitSamplerState()
 
 void Collection::Draw()
 {
+	if (Engine().GetPad(0).IsTrigger(enButtonLeft)) {
+		if (m_page != 1) {
+			m_page--;
+		}
+	}
+	else if (Engine().GetPad(0).IsTrigger(enButtonRight)) {
+		if (m_page <= ( m_listSize / 16 ) - 1) {
+			m_page++;
+		}
+	}
 
 	m_offScreenCamera.Update();
 
-	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
+	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
+	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);
 
+	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	int i = 0;
 	for (auto itr : m_modelList) {
-		if (i == 16) {
+		i++;
+		if (i == 16 * m_page + 1) {
 			return;
 		}
+		if (i < 16 * (m_page - 1) + 1)
+			continue;
 		//レンダリングターゲットを切り替える。
 		ID3D11RenderTargetView* rts[] = {
 			m_offRenderTarget.GetRenderTargetView()
@@ -87,10 +103,10 @@ void Collection::Draw()
 		//シーンをテクスチャとする。
 		auto srv = m_offRenderTarget.GetRenderTargetSRV();
 		d3dDeviceContext->PSSetShaderResources(0, 1, &srv);
-		m_postEffect[i].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
+		m_postEffect[(i - 1) % 16].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
 		ID3D11ShaderResourceView* s[] = { NULL };
 		d3dDeviceContext->PSSetShaderResources(0, 1, s);
-		i++;
+		
 	}
 }
 

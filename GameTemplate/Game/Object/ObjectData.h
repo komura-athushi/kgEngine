@@ -19,7 +19,7 @@ struct StructObjectData {
 
 struct SkinModel_ObjData {
 	SkinModel s_skinModel;
-	bool s_isHit = false;
+	bool s_isHit = true;
 	int s_hashKey = 0;
 };
 
