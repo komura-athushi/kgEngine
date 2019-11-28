@@ -17,6 +17,8 @@ public:
 
 	void InitSamplerState();
 private:
+	const static int W_NUMBER = 4;
+	const static int H_NUMBER = 4;
 	RenderTarget m_offRenderTarget;
 	OffScreenCamera m_offScreenCamera;
 	SkinModel* m_skinModel = nullptr;
@@ -26,7 +28,7 @@ private:
 	Shader m_vs;
 	Shader m_ps;
 	ID3D11SamplerState* m_samplerState = nullptr;		//サンプラステート。
-	PostEffect m_postEffect[16];
+	PostEffect m_postEffect[W_NUMBER * H_NUMBER];
 	ID3D11RasterizerState* m_rasterizerState = NULL;	//ラスタライザステート。
 	std::map<int, SkinModel_ObjData*> m_modelList;
 	float m_degree = 0.0f;

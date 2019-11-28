@@ -27,9 +27,9 @@ bool Collection::Start()
 	//ラスタライザとビューポートを初期化。
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateRasterizerState(&desc, &m_rasterizerState);
 	InitSamplerState();
-	for (int i = 0; i <= 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			m_postEffect[i * 4 + j].InitScreenQuadPrimitive(CVector2(-1.0f + 0.5f * j, 0.5f - 0.5f * i), CVector2(-0.5f + 0.5f * j, 0.5f - 0.5f * i), CVector2(-1.0f + 0.5f * j, 1.0f - 0.5f * i), CVector2(-0.5f + 0.5f * j, 1.0f - 0.5f * i));
+	for (int i = 0; i <= H_NUMBER; i++) {
+		for (int j = 0; j < W_NUMBER; j++) {
+			m_postEffect[i * W_NUMBER + j].InitScreenQuadPrimitive(CVector2(-1.0f + (1.0f / W_NUMBER * 2) * j, -(1.0f / H_NUMBER * 2) * (i - 1) ), CVector2((1.0f / W_NUMBER * 2) * (j - 1), -(1.0f / H_NUMBER * 2) * (i - 1)), CVector2(-1.0f + 0.5f * j, 1.0f - 0.5f * i), CVector2(-0.5f + 0.5f * j, 1.0f - 0.5f * i));
 		}
 	}
 	
@@ -61,7 +61,7 @@ void Collection::Draw()
 		}
 	}
 	else if (Engine().GetPad(0).IsTrigger(enButtonRight)) {
-		if (m_page <= ( m_listSize / 16 ) - 1) {
+		if (m_page <= ( m_listSize / ( W_NUMBER * H_NUMBER ) ) - 1) {
 			m_page++;
 		}
 	}
@@ -75,10 +75,10 @@ void Collection::Draw()
 	int i = 0;
 	for (auto itr : m_modelList) {
 		i++;
-		if (i == 16 * m_page + 1) {
+		if (i == W_NUMBER * H_NUMBER * m_page + 1) {
 			return;
 		}
-		if (i < 16 * (m_page - 1) + 1)
+		if (i < W_NUMBER * H_NUMBER * (m_page - 1) + 1)
 			continue;
 		//レンダリングターゲットを切り替える。
 		ID3D11RenderTargetView* rts[] = {
@@ -103,7 +103,7 @@ void Collection::Draw()
 		//シーンをテクスチャとする。
 		auto srv = m_offRenderTarget.GetRenderTargetSRV();
 		d3dDeviceContext->PSSetShaderResources(0, 1, &srv);
-		m_postEffect[(i - 1) % 16].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
+		m_postEffect[(i - 1) % ( H_NUMBER * W_NUMBER )].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
 		ID3D11ShaderResourceView* s[] = { NULL };
 		d3dDeviceContext->PSSetShaderResources(0, 1, s);
 		

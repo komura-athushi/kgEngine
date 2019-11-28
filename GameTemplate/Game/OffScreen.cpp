@@ -44,7 +44,9 @@ void OffScreen::InitSamplerState()
 
 void OffScreen::Draw()
 {
-	
+	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
+	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);
+
 	m_offScreenCamera.Update();
 	
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();

@@ -26,5 +26,6 @@ private:
 	ID3D11SamplerState* m_samplerState = nullptr;		//サンプラステート。
 	PostEffect m_postEffect;
 	ID3D11RasterizerState* m_rasterizerState = NULL;	//ラスタライザステート。
+	float m_degree = 0.0f;
 };
 
