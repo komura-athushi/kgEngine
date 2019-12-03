@@ -361,5 +361,16 @@
     <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\sprite\collection.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\tekitou.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\sprite\collectioncursor.png">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

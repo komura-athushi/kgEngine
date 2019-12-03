@@ -140,7 +140,6 @@ void CSprite::DrawScreenPos(
 	//m_spriteBatch->Draw(m_srv, pos.vec);
 	//m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(0.0f,0.0f));
 	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
-
 }
 
 void CSprite::Draw()

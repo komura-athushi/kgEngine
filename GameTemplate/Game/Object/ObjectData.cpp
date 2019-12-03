@@ -14,8 +14,9 @@ ObjectData::ObjectData()
 		int i = 1;
 		while (i != EOF) {
 			wchar_t* name = new wchar_t[200];
+			wchar_t* jName = new wchar_t[200];
 			//fscanfでファイルを読み込む、戻り値がEOFだった場合処理を終了する
-			i = fscanf(fp, "%ls %f %f %f %f %d %d %d %d", name, &x, &y, &z, &volume, &issphere, &islinesegment, &isanimation, &isMeshCollider);
+			i = fscanf(fp, "%ls %ls %f %f %f %f %d %d %d %d", name, jName, &x, &y, &z, &volume, &issphere, &islinesegment, &isanimation, &isMeshCollider);
 			if (i == EOF) {
 				break;
 			}
@@ -38,10 +39,10 @@ ObjectData::ObjectData()
 					linevector = CVector3::AxisZ() * z;
 					state = enState_Z;
 				}
-				m_objectdataList.push_back({ name, x, y, z, volume, issphere,islinesegment,isMeshCollider,isanimation,linevector,state });
+				m_objectdataList.push_back({ name, jName, x, y, z, volume, issphere,islinesegment,isMeshCollider,isanimation,linevector,state });
 			}
 			else {
-				m_objectdataList.push_back({ name, x, y, z, volume, issphere,islinesegment,isanimation,isMeshCollider });
+				m_objectdataList.push_back({ name, jName, x, y, z, volume, issphere,islinesegment,isanimation,isMeshCollider });
 			}
 
 			if (m_modelObjDataList.count(int(volume)) == 0) {
@@ -51,6 +52,9 @@ ObjectData::ObjectData()
 				data->s_skinModel.Init(filepath);
 				int key = Util::MakeHash(name);
 				data->s_hashKey = key;
+				data->s_x = x;
+				data->s_y = y;
+				data->s_z = z;
 				m_modelObjDataList.emplace(int(volume), data);
 			}
 		}

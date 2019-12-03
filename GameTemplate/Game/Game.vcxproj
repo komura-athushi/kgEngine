@@ -452,6 +452,15 @@
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Resource\sprite\%(Filename).dds</ContentOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\tekitou.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\collection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\sprite\collectioncursor.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

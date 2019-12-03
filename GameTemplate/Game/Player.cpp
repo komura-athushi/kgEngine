@@ -15,7 +15,6 @@ Player::~Player()
 	
 }
 
-
 bool Player::Start()
 {
 	//cmoファイルの読み込み。

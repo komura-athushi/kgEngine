@@ -34,5 +34,13 @@ private:
 	float m_degree = 0.0f;
 	int m_page = 1;
 	int m_listSize = 0;
+	CSprite m_sprite;
+	CSprite m_haikei;
+	CSprite m_collectionCursor;
+	int m_cursorNumber = 1;
+	PostEffect m_mainPostEffect;
+	int m_maximumPage = 1;
+	int m_mimmumPage = 1;
+	int m_finalPageNumber = 0;
 };
 

@@ -5,6 +5,7 @@
 //オブジェクトのデータ
 struct StructObjectData {
 	wchar_t* s_name;						//オブジェクトの名前
+	wchar_t* s_jName;							//日本語の名前
 	float s_x;								//幅
 	float s_y;								//高さ
 	float s_z;								//奥行
@@ -21,6 +22,7 @@ struct SkinModel_ObjData {
 	SkinModel s_skinModel;
 	bool s_isHit = true;
 	int s_hashKey = 0;
+	float s_x, s_y, s_z = 0.0f;
 };
 
 //オブジェクトのデータをバイナリファイルから読み込む
