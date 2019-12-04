@@ -42,5 +42,6 @@ private:
 	int m_maximumPage = 1;
 	int m_mimmumPage = 1;
 	int m_finalPageNumber = 0;
+	CFont m_font;
 };
 

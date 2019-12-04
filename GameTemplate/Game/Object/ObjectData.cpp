@@ -13,10 +13,10 @@ ObjectData::ObjectData()
 		//読みこんだデータを構造体として保存する
 		int i = 1;
 		while (i != EOF) {
-			wchar_t* name = new wchar_t[200];
-			wchar_t* jName = new wchar_t[200];
+			wchar_t* name = new wchar_t[100];
+			char* jName = new char[100];
 			//fscanfでファイルを読み込む、戻り値がEOFだった場合処理を終了する
-			i = fscanf(fp, "%ls %ls %f %f %f %f %d %d %d %d", name, jName, &x, &y, &z, &volume, &issphere, &islinesegment, &isanimation, &isMeshCollider);
+			i = fscanf(fp, "%ls %s %f %f %f %f %d %d %d %d", name, jName, &x, &y, &z, &volume, &issphere, &islinesegment, &isanimation, &isMeshCollider);
 			if (i == EOF) {
 				break;
 			}
@@ -55,6 +55,7 @@ ObjectData::ObjectData()
 				data->s_x = x;
 				data->s_y = y;
 				data->s_z = z;
+				data->s_jName = jName;
 				m_modelObjDataList.emplace(int(volume), data);
 			}
 		}

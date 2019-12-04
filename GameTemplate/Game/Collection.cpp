@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Collection.h"
+#include < locale.h >
 
 Collection::Collection()
 {
@@ -205,6 +206,16 @@ void Collection::Draw()
 			d3dDeviceContext->PSSetShaderResources(0, 1, s);*/
 			m_mainPostEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
 			//m_postEffect[0].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
+			if (itr.second->s_isHit) {
+				wchar_t output[256];
+				size_t wLen = 0;
+				errno_t err = 0;
+				setlocale(LC_ALL, "japanese");
+				err = mbstowcs_s(&wLen, output, 20, itr.second->s_jName, _TRUNCATE);
+				
+				//swprintf_s(output, L"%s\n", itr.second->s_jName);
+				m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
+			}
 		}
 	}
 }
