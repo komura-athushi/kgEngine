@@ -43,5 +43,6 @@ private:
 	int m_mimmumPage = 1;
 	int m_finalPageNumber = 0;
 	CFont m_font;
+	int m_hitNumber = 0;
 };
 

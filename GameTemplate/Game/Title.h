@@ -11,7 +11,7 @@ public:
 	void PostRender() override;
 private:
 	CSprite m_sprite;										//スプライト
-	Fade* m_fade;
-	bool m_isWaitFadeout = false;
+	Fade* m_fade;											//フェード(仮)
+	bool m_isWaitFadeout = false;							
 };
 

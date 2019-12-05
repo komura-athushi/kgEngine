@@ -19,7 +19,8 @@ public:
 	//1フレームごとの経過時間を取得(秒)
 	const float GetFrameDeltaTime() const
 	{
-		return 1 / 30.0f;// m_frameDeltaTime;
+		//return 1 / 30.0f;// m_frameDeltaTime;
+		return m_frameDeltaTime;
 	}
 	//1フレームごとの経過時間(秒)を計算
 	void PushFrameDeltaTime(float deltaTime)
@@ -42,11 +43,10 @@ public:
 	}
 	void Draw()
 	{
-		//リリース以外だったらFPS表示する
-#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+#ifdef _DEBUG
 		wchar_t output[256];
 		swprintf_s(output, L"FPS %f", 1.0f / m_frameDeltaTime);
-		m_font.DrawScreenPos(output, CVector2::Zero(),CVector4::LightBlue());
+		m_font.DrawScreenPos(output, CVector2::Zero(), CVector4::LightBlue());
 #endif
 	}
 private:

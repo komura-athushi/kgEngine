@@ -27,6 +27,7 @@ bool OffScreen::Start()
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateRasterizerState(&desc, &m_rasterizerState);
 	InitSamplerState();
 	m_postEffect.InitScreenQuadPrimitive(CVector2(0.5f, -1.0f), CVector2(1.0f, -1.0f), CVector2(0.5f, -0.5f), CVector2(1.0f, -0.5f));
+	
 	return true;
 }
 
@@ -45,10 +46,7 @@ void OffScreen::InitSamplerState()
 void OffScreen::Draw()
 {
 	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
-	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);
-
-	m_offScreenCamera.Update();
-	
+	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);	
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	//レンダリングターゲットを切り替える。
 	ID3D11RenderTargetView* rts[] = {
@@ -59,10 +57,37 @@ void OffScreen::Draw()
 	d3dDeviceContext->RSSetViewports(1, m_offRenderTarget.GetViewport());
 	d3dDeviceContext->RSSetState(m_rasterizerState);
 	//一番奥のZは1.0なので、1.0で塗りつぶす。
-	float clearColor[4] = { 0.7f, 0.7f, 0.7f, 1.0f }; //red,green,blue,alpha
+	float clearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //red,green,blue,alpha
 	m_offRenderTarget.ClearRenderTarget(clearColor);
 
 	if (m_skinModel != nullptr) {
+		float x = m_objData->s_x * 5.0f;
+		float z = m_objData->s_z * 5.0f;
+		float y = m_objData->s_y * 5.0f;
+		if (x >= z && x >= y) {
+			m_offScreenCamera.SetPosition(CVector3(0.0f, x / 1.65f, x));
+		}
+		else if (z >= y && z >= x) {
+			m_offScreenCamera.SetPosition(CVector3(0.0f, z / 1.65f, z));
+		}
+		else {
+			m_offScreenCamera.SetPosition(CVector3(0.0f, y / 1.65f, y));
+		}
+		float angle = atan2f(m_objData->s_y * 3.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
+		float angle2;
+		if (m_objData->s_x >= m_objData->s_z) {
+			angle2 = atan2f(m_objData->s_x * 2.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+		}
+		else {
+			angle2 = atan2f(m_objData->s_z * 2.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+		}
+		if (angle >= angle2) {
+			m_offScreenCamera.SetViewAngle(angle);
+		}
+		else {
+			m_offScreenCamera.SetViewAngle(angle2);
+		}
+		m_offScreenCamera.Update();
 		m_skinModel->UpdateWorldMatrix(m_position, m_rot, m_scale);
 		m_skinModel->Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
 	}

@@ -235,6 +235,7 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	OffScreen* offScreen = FindGO<OffScreen>();
 	ObjModelDataFactory* factory = &GetObjModelDataFactory();
 	offScreen->SetSkinModel(factory->GetSkinModel(m_modeldata->s_hashKey));
+	offScreen->SetObjData(m_objdata);
 	//GetObjModelDataFactory().SetisHit(m_objdata->s_name);
 }
 

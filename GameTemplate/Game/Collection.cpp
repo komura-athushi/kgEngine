@@ -65,6 +65,11 @@ bool Collection::Start()
 
 	m_maximumPage = (m_listSize - 1) / (W_NUMBER * H_NUMBER) + 1;
 	m_finalPageNumber = m_listSize % m_maximumPage;
+	for (auto itr : m_modelList) {
+		if (itr.second->s_isHit) {
+			m_hitNumber++;
+		}
+	}
 	return true;
 }
 
@@ -127,7 +132,7 @@ void Collection::Draw()
 	for (auto itr : m_modelList) {
 		i++;
 		if (i == W_NUMBER * H_NUMBER * m_page + 1) {
-			return;
+			break;
 		}
 		if (i < W_NUMBER * H_NUMBER * (m_page - 1) + 1)
 			continue;
@@ -168,10 +173,10 @@ void Collection::Draw()
 			float angle = atan2f(itr.second->s_y * 3.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
 			float angle2;
 			if (itr.second->s_x >= itr.second->s_z) {
-				angle2 = atan2f(itr.second->s_x * 2.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
+				angle2 = atan2f(itr.second->s_x * 2.5f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
 			}
 			else {
-				angle2 = atan2f(itr.second->s_z * 2.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
+				angle2 = atan2f(itr.second->s_z * 2.5f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
 			}
 			if (angle >= angle2) {
 				m_offScreenCamera.SetViewAngle(angle);
@@ -179,7 +184,6 @@ void Collection::Draw()
 			else {
 				m_offScreenCamera.SetViewAngle(angle2);
 			}
-			//m_offScreenCamera.SetViewAngle(angle);
 			m_offScreenCamera.Update();
 			itr.second->s_skinModel.UpdateWorldMatrix(m_position, m_rot, m_scale);
 			itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
@@ -189,34 +193,31 @@ void Collection::Draw()
 
 		Engine().GetGraphicsEngine().ChangeRenderTarget(Engine().GetGraphicsEngine().GetMainRenderTarget(), Engine().GetGraphicsEngine().GetMainRenderTarget()->GetViewport());
 		d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
-		//シーンをテクスチャとする。
+		//シーンをテクスチャとする。///;5
 		auto srv = m_offRenderTarget.GetRenderTargetSRV();
 		d3dDeviceContext->PSSetShaderResources(0, 1, &srv);
 		m_postEffect[(i - 1) % ( H_NUMBER * W_NUMBER )].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
-		//ID3D11ShaderResourceView* s[] = { NULL };
-		//d3dDeviceContext->PSSetShaderResources(0, 1, s);
 		
 		if (m_cursorNumber == i) {
-			/*d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
-			//シーンをテクスチャとする。
-			auto srv = m_offRenderTarget.GetRenderTargetSRV();
-			d3dDeviceContext->PSSetShaderResources(0, 1, &srv);
 			m_mainPostEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
 			ID3D11ShaderResourceView* s[] = { NULL };
-			d3dDeviceContext->PSSetShaderResources(0, 1, s);*/
-			m_mainPostEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
-			//m_postEffect[0].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
+			d3dDeviceContext->PSSetShaderResources(0, 1, s);
 			if (itr.second->s_isHit) {
 				wchar_t output[256];
 				size_t wLen = 0;
 				errno_t err = 0;
 				setlocale(LC_ALL, "japanese");
 				err = mbstowcs_s(&wLen, output, 20, itr.second->s_jName, _TRUNCATE);
-				
-				//swprintf_s(output, L"%s\n", itr.second->s_jName);
-				m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
+				m_font.DrawScreenPos(output, CVector2(30.0f, 450.0f), CVector4::White(), { 1.0f,1.0 });
+			
 			}
 		}
 	}
+	ID3D11ShaderResourceView* s[] = { NULL };
+	d3dDeviceContext->PSSetShaderResources(0, 1, s);
+	wchar_t output2[256];
+	swprintf_s(output2, L"モノの種類  %dコ\n", m_hitNumber);
+	m_font.DrawScreenPos(output2, CVector2(500.0f, 50.0f), CVector4::White(), { 0.7f,0.7f });
+
 }
 

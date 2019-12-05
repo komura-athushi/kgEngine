@@ -367,10 +367,8 @@
     <None Include="Assets\sprite\tekitou.png">
       <Filter>Asset\sprite</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\collectioncursor.png">
+    <None Include="Assets\sprite\collectioncursor.png">
       <Filter>Asset\sprite</Filter>
-    </ImageContentTask>
+    </None>
   </ItemGroup>
 </Project>

@@ -459,7 +459,7 @@
     <None Include="Assets\sprite\collection.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\collectioncursor.png" />
+    <None Include="Assets\sprite\collectioncursor.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

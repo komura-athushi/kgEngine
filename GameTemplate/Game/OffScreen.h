@@ -1,6 +1,7 @@
 #pragma once
 #include "graphics/RenderTarget.h"
 #include "OffScreenCamera.h"
+#include "Object/ObjectData.h"
 
 class OffScreen : public IGameObject
 {
@@ -12,6 +13,10 @@ public:
 	void SetSkinModel(SkinModel* skinModel)
 	{
 		m_skinModel = skinModel;
+	}
+	void SetObjData(StructObjectData* objData)
+	{
+		m_objData = objData;
 	}
 	void InitSamplerState();
 private:
@@ -27,5 +32,8 @@ private:
 	PostEffect m_postEffect;
 	ID3D11RasterizerState* m_rasterizerState = NULL;	//ラスタライザステート。
 	float m_degree = 0.0f;
+	StructObjectData* m_objData = nullptr;
+
+
 };
 

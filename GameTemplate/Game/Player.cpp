@@ -297,8 +297,8 @@ void Player::PostRender()
 {
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
-		//swprintf_s(output, L"‘å‚«‚³  %.1f\n", m_radius * 2.0f);
-		swprintf_s(output, L"%f\n", m_position.y);
+		swprintf_s(output, L"‘å‚«‚³  %.1f\n", m_radius * 2.0f);
+		//swprintf_s(output, L"%f\n", m_position.y);
 		//swprintf_s(output, L"x %f y %f z %f\n", m_position.x , m_position.y ,m_position.z);
 		m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
 	}

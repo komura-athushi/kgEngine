@@ -40,14 +40,20 @@ void Time::PostRender()
 			m_timer -= GameTime().GetFrameDeltaTime();
 		}
 	}
-	m_degree = (m_timer / 60.0f) * 360.0f / 60.0f;
-	m_sprite1.DrawScreenPos(CVector2(200.0f, 200.0f), CVector2(0.8f, 0.8f), CVector2(0.5f, 0.5f), 0.0f, CVector4(1.0f, 1.0f, 1.0f, 0.5f),
+	m_degree = (m_timer / m_time) * 180.0f;
+	m_sprite1.DrawScreenPos(CVector2(1180.0f, 130.0f), CVector2(0.6f, 0.6f), CVector2(0.5f, 0.5f), 0.0f, CVector4(1.0f, 1.0f, 1.0f, 0.5f),
 		DirectX::SpriteEffects_None, 0.5f);
-	m_sprite2.DrawScreenPos(CVector2(200.0f, 200.0f), CVector2(0.8f, 0.8f), CVector2(0.5f, 0.5f), 0.0f, CVector4(1.0f, 1.0f, 1.0f, 0.8f),
+	m_sprite2.DrawScreenPos(CVector2(1180.0f, 130.0f), CVector2(0.6f, 0.6f), CVector2(0.5f, 0.5f), 0.0f, CVector4(1.0f, 1.0f, 1.0f, 0.8f),
 		DirectX::SpriteEffects_None, 0.5f, m_degree);
 	int minutes = m_timer / 60;
 	int seconds = m_timer - minutes * 60;
 	wchar_t output[256];
-	swprintf_s(output, L"Ç†Ç∆%dï™%dïbÇæÇµÇÒÅI\n", minutes, seconds);
-	m_font.DrawScreenPos(output, CVector2(55.0f, 335.0f), CVector4::White(), CVector2(0.8f, 0.8f));
+	if (minutes < 1) {
+		swprintf_s(output, L"Ç†Ç∆%dïb\n", seconds);
+	}
+	else {
+		swprintf_s(output, L"Ç†Ç∆%dï™\n", minutes);
+	}
+	
+	m_font.DrawScreenPos(output, CVector2(1000.0f, 30.0f), CVector4::Blue(), CVector2(0.8f, 0.8f));
 }
