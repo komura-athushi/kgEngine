@@ -6,6 +6,8 @@
 #include "Game.h"
 #include "Title.h"
 #include "Fade.h"
+#include "StageSelect.h"
+#include "Object/ObjectData.h"
 ///////////////////////////////////////////////////////////////////
 // ウィンドウプログラムのメイン関数。
 ///////////////////////////////////////////////////////////////////
@@ -19,12 +21,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	MainCamera().SetTarget({ 0.0f, 100.0f, 0.0f });
 	MainCamera().SetFar(10000.0f);
 	
+	ObjectData::GetInstance();
 	////プレイヤー
 	//Player player;
 	//Player* player = NewGO<Player>(0);
 	//Game* game = NewGO<Game>(0);
 	//Fade::GetInstance();
 	NewGO<Title>(0);
+	
+	//NewGO<StageSelect>(0);
 	//ゲームループ。
 	Engine().RunGameLoop();
 	

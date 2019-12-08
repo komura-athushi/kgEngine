@@ -97,6 +97,7 @@ void CSkinModelRender::UpdateWorldMatrix()
 
 	//スキンモデルにワールド行列を設定
 	m_skinModelList[0]->s_skinModel.SetWorldMatrix(m_worldMatrix);
+	m_update = false;
 }
 
 //ワールド行列を設定

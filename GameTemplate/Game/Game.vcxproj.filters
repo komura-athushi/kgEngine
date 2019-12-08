@@ -46,7 +46,6 @@
     </ClInclude>
     <ClInclude Include="Time.h" />
     <ClInclude Include="Title.h" />
-    <ClInclude Include="StageSelect.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Result.h" />
@@ -58,6 +57,15 @@
     </ClInclude>
     <ClInclude Include="Collection.h">
       <Filter>collection</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelect.h">
+      <Filter>stageselect</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelectGround.h">
+      <Filter>stageselect</Filter>
+    </ClInclude>
+    <ClInclude Include="StagePoint.h">
+      <Filter>stageselect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +114,6 @@
     </ClCompile>
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="Result.cpp" />
@@ -119,6 +126,15 @@
     </ClCompile>
     <ClCompile Include="Collection.cpp">
       <Filter>collection</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelect.cpp">
+      <Filter>stageselect</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelectGround.cpp">
+      <Filter>stageselect</Filter>
+    </ClCompile>
+    <ClCompile Include="StagePoint.cpp">
+      <Filter>stageselect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +185,12 @@
     </Filter>
     <Filter Include="collection">
       <UniqueIdentifier>{6b4ebd1d-9ab5-4b44-842a-a5166114c266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stageselect">
+      <UniqueIdentifier>{77e6f435-1f44-43b2-b907-694d69df9d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\modelData\stageselect">
+      <UniqueIdentifier>{870b8b9a-624a-4732-a727-4f19141c5637}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -358,9 +380,6 @@
     <None Include="Assets\sprite\stageselect.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\title.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
     <None Include="Assets\sprite\collection.png">
       <Filter>Asset\sprite</Filter>
     </None>
@@ -369,6 +388,18 @@
     </None>
     <None Include="Assets\sprite\collectioncursor.png">
       <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\title.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\modelData\earth\pointnoclear.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
+    </None>
+    <None Include="Assets\modelData\earth\pointclear.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
+    </None>
+    <None Include="Assets\modelData\earth\earth.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
     </None>
   </ItemGroup>
 </Project>

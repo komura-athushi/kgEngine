@@ -178,7 +178,9 @@
     <ClInclude Include="OffScreenCamera.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Result.h" />
+    <ClInclude Include="StagePoint.h" />
     <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="StageSelectGround.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Title.h" />
@@ -211,7 +213,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="StagePoint.cpp" />
     <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="StageSelectGround.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -460,6 +464,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\sprite\collectioncursor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\modelData\earth\earth.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\earth\pointclear.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\earth\pointnoclear.FBX">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,7 +21,12 @@ bool Player::Start()
 	wchar_t filePath[256];
 	GameData* gameData = &GetGameData();
 	m_protradius = gameData->GetPlayerSize();
-	m_radius = gameData->GetPlayerSize();
+	if (m_isTitle) {
+		m_radius = gameData->GetFirstPlayerSize();
+	}
+	else {
+		m_radius = gameData->GetPlayerSize();
+	}
 	swprintf_s(filePath, L"Resource/modelData/sphere%d.cmo", (int)gameData->GetStageNumber());
 	m_skinModelRender.Init(filePath);
 	m_skinModelRender.SetShadowCaster(true);
@@ -71,6 +76,8 @@ void Player::Update()
 	m_skinModelRender2.SetPosition(pos);
 	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x,m_position.y + 500.0f,m_position.z + 500.0f));
 	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position);
+	m_skinModelRender.UpdateWorldMatrix();
+	m_skinModelRender2.UpdateWorldMatrix();
 }
 
 void Player::AddVolume(const float volume)
@@ -297,9 +304,10 @@ void Player::PostRender()
 {
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
-		swprintf_s(output, L"‘å‚«‚³  %.1f\n", m_radius * 2.0f);
+		swprintf_s(output, L"%.f\n", m_radius * 2.0f);
 		//swprintf_s(output, L"%f\n", m_position.y);
 		//swprintf_s(output, L"x %f y %f z %f\n", m_position.x , m_position.y ,m_position.z);
-		m_font.DrawScreenPos(output, CVector2(0.0f, 500.0f));
+		m_font.DrawScreenPos(output, CVector2(0.0f, 50.0f), CVector4::White(), { 1.5f,1.5f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(70.0f, 80.0f), CVector4::White(), { 0.8f,0.8f });
 	}
 }

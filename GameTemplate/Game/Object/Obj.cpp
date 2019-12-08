@@ -35,6 +35,7 @@ ObjModelData* ObjModelDataFactory::Load(const wchar_t* path)
 		//newが不要になる、()に初期値
 		m_modelmap.emplace(key, std::make_unique<ObjModelData>());
 		m_modelmap[key].get()->s_skinmodel.Init(filepath, nullptr, 0, enFbxUpAxisZ, true);
+		SetPriorityGO(&m_modelmap[key].get()->s_skinmodel, 2);
 		m_modelmap[key].get()->s_hashKey = key;
 		SkinModel* skinModel = new SkinModel();
 		skinModel->Init(filepath);

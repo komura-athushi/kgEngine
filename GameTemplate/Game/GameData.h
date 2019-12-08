@@ -50,6 +50,11 @@ public:
 	{
 		return m_firstPlayerSize[m_stageNumber - 1];
 	}
+	//プレイヤーの1ステージ目の大きさを取得
+	float GetFirstPlayerSize() const
+	{
+		return m_firstPlayerSize[0];
+	}
 	//ステージの制限時間を取得
 	float GetStageLimitTime() const
 	{

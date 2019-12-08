@@ -82,6 +82,16 @@ public:
 	{
 		m_impulse += impulse;
 	}
+	//大きさ表示しない
+	void SetisNotDisplay()
+	{
+		m_isDisplayFont = false;
+	}
+	//タイトルだよ
+	void SetisTitle()
+	{
+		m_isTitle = true;
+	}
 private:
 	CharacterController m_characon;																//キャラコン
 	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();			//座標
@@ -131,5 +141,7 @@ private:
 	const float m_standardSize = 40.0f;
 	CVector3 m_impulse = CVector3::Zero();
 	int m_count2 = 0;
+	bool m_isDisplayFont = true;
+	bool m_isTitle = false;
 };
 
