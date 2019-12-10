@@ -5,6 +5,8 @@
 #include "Title.h"
 #include "StageSelectGround.h"
 #include "StagePoint.h"
+#include "CollectionBook.h"
+#include "Collection.h"
 
 StageSelect::StageSelect()
 {
@@ -21,6 +23,7 @@ void StageSelect::OnDestroy()
 	for (auto itr : m_stagePointList) {
 		DeleteGO(itr.second);
 	}
+	DeleteGO(m_collectionBook);
 }
 
 bool StageSelect::Start()
@@ -38,17 +41,23 @@ bool StageSelect::Start()
 			if (number != 1 && !m_gameData->GetisStageClear(EnStageNumber(number - 1))) {
 				return true;
 			}
-			StagePoint* stagePoint = NewGO<StagePoint>(0);
+			StagePoint* stagePoint = NewGO<StagePoint>(1);
 			stagePoint->SetPosition(objdata.position);
 			stagePoint->SetRotation(objdata.rotation);
-		
+			stagePoint->SetScale(objdata.scale);
 			stagePoint->SetNumber(number);
-			SetPriorityGO(stagePoint, 2);
 			m_stagePointList.emplace(number, stagePoint);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"earth")) {
 			m_stageSelectGround.SetPosition(objdata.position);
+			return true;
+		}
+		else if (objdata.EqualObjectName(L"book")) {
+			m_collectionBook = NewGO<CollectionBook>(1);
+			m_collectionBook->SetPosition(objdata.position);
+			m_collectionBook->SetRotation(objdata.rotation);
+			m_collectionBook->SetScale(objdata.scale);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"zunko")) {
@@ -63,16 +72,31 @@ bool StageSelect::Start()
 	MainCamera().SetPosition({ cameraTarget.x,cameraTarget.y + 80.0f,cameraTarget.x });
 	MainCamera().SetTarget(cameraTarget);
 	MainCamera().Update();
+	m_backSprite.Init(L"Resource/sprite/space.dds");
 	return true;
+}
+
+void StageSelect::PrePostRender()
+{
+	m_backSprite.Draw();
 }
 
 void StageSelect::Update()
 {
+
 	//Aボタンが押されたら決定したステージの番号を設定する
-	if (Engine().GetPad(0).IsTrigger(enButtonA) && m_stagePoint != nullptr) {
-		m_gameData->SetStageNumber(EnStageNumber(m_stagePoint->GetNumber()));
-		NewGO<Game>(0);
-		DeleteGO(this);
+	if (Engine().GetPad(0).IsTrigger(enButtonA)) {
+		if (m_stagePoint != nullptr) {
+			m_gameData->SetStageNumber(EnStageNumber(m_stagePoint->GetNumber()));
+			NewGO<Game>(0);
+			DeleteGO(this);
+		}
+		else if (m_isCollection) {
+			NewGO<Collection>(0);
+			DeleteGO(this);
+		}
+	
+	
 	}
 
 	//B押したらタイトルに戻る
@@ -101,23 +125,33 @@ void StageSelect::DistanceStagePoint()
 {
 	const float distance = 10.0f * 10.0f;
 
-	for (auto itr : m_stagePointList) {
-		CVector3 diff = m_player.GetPosition() - itr.second->GetPosition();
-		if (diff.LengthSq() <= distance) {
-			m_stagePoint = itr.second;
-			break;
-		}
-		else {
-			m_stagePoint = nullptr;
+	CVector3 diff = m_player.GetPosition() - m_collectionBook->GetPosition();
+	if (diff.LengthSq() <= distance) {
+		m_isCollection = true;
+	}
+	else {
+		m_isCollection = false;
+		for (auto itr : m_stagePointList) {
+			CVector3 diff = m_player.GetPosition() - itr.second->GetPosition();
+			if (diff.LengthSq() <= distance) {
+				m_stagePoint = itr.second;
+				break;
+			}
+			else {
+				m_stagePoint = nullptr;
+			}
 		}
 	}
 }
 
 void StageSelect::PostRender()
 {
-	m_sprite.DrawScreenPos();
-	m_arrow.DrawScreenPos(m_arrowPosition);
-	if (m_stagePoint != nullptr) {
+	if (m_isCollection) {
+		wchar_t hoge[256];
+		swprintf_s(hoge, L"コレクション");
+		m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
+	}
+	else if (m_stagePoint != nullptr) {
 		wchar_t hoge[256];
 		swprintf_s(hoge, L"ステージ%d",m_stagePoint->GetNumber());
 		m_font.DrawScreenPos(hoge, { 550.0f,100.0f });

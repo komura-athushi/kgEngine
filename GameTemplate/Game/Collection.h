@@ -10,18 +10,14 @@ public:
 	~Collection();
 	bool Start() override;
 	void Draw() override;
-	void SetSkinModel(SkinModel* skinModel)
-	{
-		m_skinModel = skinModel;
-	}
-
+	
 	void InitSamplerState();
+	void OffScreenRender();
 private:
 	const static int W_NUMBER = 4;
 	const static int H_NUMBER = 4;
 	RenderTarget m_offRenderTarget;
 	OffScreenCamera m_offScreenCamera;
-	SkinModel* m_skinModel = nullptr;
 	CVector3 m_position = CVector3::Zero();
 	CVector3 m_scale = CVector3::One();
 	CQuaternion m_rot = CQuaternion::Identity();

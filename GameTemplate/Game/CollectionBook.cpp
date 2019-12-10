@@ -1,26 +1,22 @@
 #include "stdafx.h"
-#include "StagePoint.h"
+#include "CollectionBook.h"
 #include "StageSelectGround.h"
 #include "GameData.h"
-StagePoint::StagePoint()
+CollectionBook::CollectionBook()
 {
 
 }
 
-StagePoint::~StagePoint()
+CollectionBook::~CollectionBook()
 {
 
 }
 
-bool StagePoint::Start()
+bool CollectionBook::Start()
 {
-	auto& gameData = GameData::GetInstance();
-	if (gameData.GetisStageClear(EnStageNumber(m_number))) {
-		m_model.Init(L"Resource/modelData/pointclear.cmo");
-	}
-	else {
-		m_model.Init(L"Resource/modelData/pointnoclear.cmo");
-	}
+
+	m_model.Init(L"Resource/modelData/book.cmo");
+
 	m_model.SetPosition(m_position);
 	m_model.SetRotation(m_rotation);
 	m_model.SetScale(m_scale);
@@ -31,7 +27,7 @@ bool StagePoint::Start()
 	return true;
 }
 
-void StagePoint::ClcLocalMatrix()
+void  CollectionBook::ClcLocalMatrix()
 {
 	m_stageSelectGround = FindGO<StageSelectGround>();
 	CMatrix worldMatrix = m_stageSelectGround->GetMatrix();
@@ -59,7 +55,7 @@ void StagePoint::ClcLocalMatrix()
 	m_localMatrix.Mul(objworldMatrix, ReverseMatrix);
 }
 
-void StagePoint::Update()
+void  CollectionBook::Update()
 {
 	m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetMatrix());
 	m_model.SetWorldMatrix(m_worldMatrix);

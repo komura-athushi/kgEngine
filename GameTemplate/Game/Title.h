@@ -15,11 +15,14 @@ public:
 	void OnDestroy() override;
 private:
 	CSprite m_sprite;										//スプライト
+	CVector3 m_position;
 	Fade* m_fade;											//フェード(仮)
 	bool m_isWaitFadeout = false;
 	Player* m_player = nullptr;
 	GameCamera* m_gameCamera = nullptr;
 	CSkinModelRender* m_model = nullptr;
 	PhysicsStaticObject m_staticobject;								//静的オブジェクト
+	CVector2 m_titlePosition = { 1280.0f / 2, 720.0f / 2 - 370.0f };
+	bool m_isStart = false;
 };
 

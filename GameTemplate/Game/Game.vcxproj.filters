@@ -67,6 +67,9 @@
     <ClInclude Include="StagePoint.h">
       <Filter>stageselect</Filter>
     </ClInclude>
+    <ClInclude Include="CollectionBook.h">
+      <Filter>stageselect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -134,6 +137,9 @@
       <Filter>stageselect</Filter>
     </ClCompile>
     <ClCompile Include="StagePoint.cpp">
+      <Filter>stageselect</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionBook.cpp">
       <Filter>stageselect</Filter>
     </ClCompile>
   </ItemGroup>
@@ -401,5 +407,13 @@
     <None Include="Assets\modelData\earth\earth.FBX">
       <Filter>Asset\modelData\stageselect</Filter>
     </None>
+    <None Include="Assets\modelData\earth\book.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\sprite\space.jpg">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

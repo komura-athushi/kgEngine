@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Collection.h"
 #include < locale.h >
+#include "StageSelect.h"
 
 Collection::Collection()
 {
@@ -52,9 +53,6 @@ bool Collection::Start()
 		CVector2(-1.0f,1.0f),
 		CVector2(-0.4f,1.0f)
 	);
-
-	m_skinModel = new SkinModel();
-	m_skinModel->Init(L"Resource/modelData/zunko.cmo");
 
 	m_modelList = ObjectData::GetInstance().GetList();
 	m_listSize = m_modelList.size();
@@ -127,6 +125,15 @@ void Collection::Draw()
 	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
 	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);
 
+	OffScreenRender();
+	if (Engine().GetPad(0).IsTrigger(enButtonB)) {
+		NewGO<StageSelect>(0);
+		DeleteGO(this);
+	}
+}
+
+void Collection::OffScreenRender()
+{
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	int i = 0;
 	for (auto itr : m_modelList) {
@@ -154,7 +161,7 @@ void Collection::Draw()
 		else {
 			m_sprite.Draw();
 		}
-		
+
 		if (itr.second->s_isHit) {
 			float x = itr.second->s_x * 5.0f;
 			float z = itr.second->s_z * 5.0f;
@@ -162,7 +169,7 @@ void Collection::Draw()
 			if (x >= z && x >= y) {
 				m_offScreenCamera.SetPosition(CVector3(0.0f, x / 1.65f, x));
 			}
-			else if(z >= y && z >= x){
+			else if (z >= y && z >= x) {
 				m_offScreenCamera.SetPosition(CVector3(0.0f, z / 1.65f, z));
 			}
 			else {
@@ -189,15 +196,15 @@ void Collection::Draw()
 			itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
 		}
 
-	
+
 
 		Engine().GetGraphicsEngine().ChangeRenderTarget(Engine().GetGraphicsEngine().GetMainRenderTarget(), Engine().GetGraphicsEngine().GetMainRenderTarget()->GetViewport());
 		d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 		//シーンをテクスチャとする。///;5
 		auto srv = m_offRenderTarget.GetRenderTargetSRV();
 		d3dDeviceContext->PSSetShaderResources(0, 1, &srv);
-		m_postEffect[(i - 1) % ( H_NUMBER * W_NUMBER )].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
-		
+		m_postEffect[(i - 1) % (H_NUMBER * W_NUMBER)].DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
+
 		if (m_cursorNumber == i) {
 			m_mainPostEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
 			ID3D11ShaderResourceView* s[] = { NULL };
@@ -209,7 +216,7 @@ void Collection::Draw()
 				setlocale(LC_ALL, "japanese");
 				err = mbstowcs_s(&wLen, output, 20, itr.second->s_jName, _TRUNCATE);
 				m_font.DrawScreenPos(output, CVector2(30.0f, 450.0f), CVector4::White(), { 1.0f,1.0 });
-			
+
 			}
 		}
 	}
@@ -220,4 +227,3 @@ void Collection::Draw()
 	m_font.DrawScreenPos(output2, CVector2(500.0f, 50.0f), CVector4::White(), { 0.7f,0.7f });
 
 }
-

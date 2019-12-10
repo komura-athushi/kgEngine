@@ -9,6 +9,7 @@ class MapChip;
 struct LevelObjectData {
 	CVector3 position;		//<座標。
 	CQuaternion rotation;	//!<回転。
+	CVector3 scale = CVector3::One();
 	const wchar_t* name;	//!<名前。
 	/*!
 	* @brief	引数で渡したオブジェクト名のオブジェクトか調べる。

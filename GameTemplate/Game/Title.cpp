@@ -41,16 +41,18 @@ bool Title::Start()
 
 void Title::Update()
 {
+	const float Speed = 100.0f;
+
+	m_titlePosition.y += GameTime().GetFrameDeltaTime() * Speed;
+	if (m_titlePosition.y >= FRAME_BUFFER_H / 2) {
+		m_titlePosition.y = FRAME_BUFFER_H / 2;
+		m_isStart = true;
+	}
 	//m_player->SetPosition({ 0.0f,0.0f,0.0f });
 	//スタートボタンが押されたら画面を切り替える
-	if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+	if (Engine().GetPad(0).IsTrigger(enButtonStart) && m_isStart) {
 		m_isWaitFadeout = true;
 		NewGO<StageSelect>(0);
-		DeleteGO(this);
-	}
-	if (Engine().GetPad(0).IsTrigger(enButtonSelect)) {
-		m_isWaitFadeout = true;
-		NewGO<Collection>(0);
 		DeleteGO(this);
 	}
 	//m_player->SetPosition({ 0.0f,500.0f,0.0f });
@@ -58,5 +60,5 @@ void Title::Update()
 
 void Title::PostRender()
 {
-	m_sprite.DrawScreenPos();
+	m_sprite.DrawScreenPos(m_titlePosition);
 }

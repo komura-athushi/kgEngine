@@ -5,6 +5,7 @@
 class Fade;
 class GameData;
 class StagePoint;
+class CollectionBook;
 //ステージセレクト
 class StageSelect:public IGameObject
 {
@@ -13,6 +14,7 @@ public:
 	~StageSelect();
 	void OnDestroy() override;
 	bool Start() override;
+	void PrePostRender() override;
 	void Update() override;
 	void PostRender() override;
 	void TurnPlayer();
@@ -31,5 +33,8 @@ private:
 	std::unordered_map<int, StagePoint*> m_stagePointList;
 	StagePoint* m_stagePoint = nullptr;
 	CFont m_font;
+	CollectionBook* m_collectionBook;
+	bool m_isCollection = false;
+	CSprite m_backSprite;
 };
 
