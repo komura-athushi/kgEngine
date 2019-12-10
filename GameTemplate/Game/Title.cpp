@@ -36,6 +36,7 @@ bool Title::Start()
 	m_model->SetPosition({0.0f,0.0f,0.0f});
 	m_model->SetShadowCaster(false);
 	m_staticobject.CreateMeshObject(m_model,CVector3::Zero(),CQuaternion::Identity());
+	m_pressStart.Init(L"Resource/sprite/pressstart.dds");
 	return true;
 }
 
@@ -61,4 +62,7 @@ void Title::Update()
 void Title::PostRender()
 {
 	m_sprite.DrawScreenPos(m_titlePosition);
+	if (m_isStart) {
+		m_pressStart.DrawScreenPos();
+	}
 }

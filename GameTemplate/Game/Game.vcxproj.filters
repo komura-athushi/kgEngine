@@ -410,6 +410,9 @@
     <None Include="Assets\modelData\earth\book.FBX">
       <Filter>Asset\modelData\stageselect</Filter>
     </None>
+    <None Include="Assets\sprite\pressstart.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\space.jpg">

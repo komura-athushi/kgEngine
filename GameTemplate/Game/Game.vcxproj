@@ -486,6 +486,9 @@
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\space.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\pressstart.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

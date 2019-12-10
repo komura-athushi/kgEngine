@@ -24,5 +24,6 @@ private:
 	PhysicsStaticObject m_staticobject;								//静的オブジェクト
 	CVector2 m_titlePosition = { 1280.0f / 2, 720.0f / 2 - 370.0f };
 	bool m_isStart = false;
+	CSprite m_pressStart;
 };
 
