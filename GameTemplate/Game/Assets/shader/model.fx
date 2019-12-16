@@ -46,6 +46,8 @@ cbuffer LightCb : register(b1) {
 	float4 ambientlight;
 	float3 eyePos;				//カメラの視点。
 	float specPow;			//スペキュラライトの絞り。
+	float3 eyeDir;
+	int isToomShader;
 };
 
 /// <summary>
@@ -274,16 +276,37 @@ float4 PSMain( PSInput In ) : SV_Target0
 
 	float3 lig = 0.0f;
 
+	float rim_power = 2.0f;
 	float p = 0.0f;
-	for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
-		p += max(0.0f,dot(In.Normal * -1.0f, dligDirection[i].xyz));
+	
+	
+	
+	//リムライト...?
+	/*if (isToomShader == 1) {
+		float3 eyeVector = eyeDir;
+		eyeVector = normalize(eyeVector);
+		p = 1.0 - dot(In.Normal, eyeVector);
+		if (p >= 0.7f) {
+			lig += float3(0.5f, 0.5f, 0.5f);
+		}
 	}
-	//p = dot(In.Normal * -1.0f, dligDirection.xzy);
-	p = p * 0.5f + 0.5f;
-	p = p * p;
-	float2 pos = float2(p, 0.0f);
-	float4 Col = toonMap.Sample(ToonSampler,pos);
-	lig += Col.xyz;
+	else {
+		lig += float3(0.5f, 0.5f, 0.5f);
+	}*/
+
+	//トゥーンシェーダー
+	if (isToomShader == 1) {
+		p += dot(In.Normal * -1.0f, dligDirection[0].xzy);
+		p = p * 0.5f + 0.5f;
+		p = p * p;
+		float2 pos = float2(p, 0.0f);
+		float4 Col = toonMap.Sample(ToonSampler, pos);
+		lig += Col.xyz;
+	}
+	else {
+		lig += float3(0.5f, 0.5f, 0.5f);
+	}
+
 
 	//ディレクションライトの拡散反射光を計算する。
 	/*for (int i = 0; i < NUM_DIRECTION_LIG; i++) {

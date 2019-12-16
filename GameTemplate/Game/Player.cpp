@@ -223,15 +223,15 @@ void Player::Move()
 		m_movespeed += rightxz * m_movespeedmultiply;
 	}
 	//m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
-	/*if (m_characon.IsOnGround()) {
-		CVector3 Normal = m_characon.GetGroundNormalVector();
+	//if (m_characon.IsOnGround()) {
+		/*CVector3 Normal = m_characon.GetGroundNormalVector();
 		CVector3 Gravity = CVector3(0.0f, -GravityMoveSpeed, 0.0f);
 		float t = Normal.Dot(Gravity);
 		CVector3 vt = Normal * t * 1.2f;
 		CVector3 va = Gravity - vt;
-		m_movespeed += va * GameTime().GetFrameDeltaTime();
+		m_movespeed += va * GameTime().GetFrameDeltaTime();*/
 		
-	}*/
+	//}
 	//else {
 		m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
 	//}

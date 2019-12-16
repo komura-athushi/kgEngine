@@ -122,9 +122,6 @@
     <ClCompile Include="graphics\RenderTarget.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
-    <ClCompile Include="sound\SundEngine.cpp">
-      <Filter>sound</Filter>
-    </ClCompile>
     <ClCompile Include="physics\SphereCollider.cpp">
       <Filter>physics</Filter>
     </ClCompile>
@@ -166,6 +163,18 @@
     </ClCompile>
     <ClCompile Include="graphics\GaussianBlur.cpp">
       <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\SoundEngine.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\SoundSource.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WaveFile.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WaveFileBank.cpp">
+      <Filter>sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,9 +265,6 @@
     <ClInclude Include="graphics\RenderTarget.h">
       <Filter>graphics</Filter>
     </ClInclude>
-    <ClInclude Include="sound\SundEngine.h">
-      <Filter>sound</Filter>
-    </ClInclude>
     <ClInclude Include="physics\SphereCollider.h">
       <Filter>physics</Filter>
     </ClInclude>
@@ -306,6 +312,18 @@
     </ClInclude>
     <ClInclude Include="graphics\GaussianBlur.h">
       <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\SoundEngine.h">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\SoundSource.h">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WaveFile.h">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WaveFileBank.h">
+      <Filter>sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

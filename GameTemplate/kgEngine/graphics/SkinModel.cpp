@@ -6,7 +6,7 @@
 
 SkinModel::SkinModel()
 {
-	m_dirLight.direction[0] = { 1.0f, 0.0f, 0.0f, 0.0f };
+	m_dirLight.direction[0] = { 0.0f, -0.707f, -0.707f, 0.0f };
 	m_dirLight.color[0] = { 0.5f, 0.5f, 0.5f, 1.0f };
 
 	m_dirLight.direction[1] = { -0.707f, -0.707f, 0.0f, 0.0f };
@@ -137,7 +137,7 @@ void SkinModel::InitConstantBuffer()
 
 	//続いて、ライト用の定数バッファを作成。
 	//作成するバッファのサイズを変更するだけ。
-	bufferDesc.ByteWidth = sizeof(SDirectionLight);				//SDirectionLightは16byteの倍数になっているので、切り上げはやらない。
+	bufferDesc.ByteWidth = ((sizeof(SDirectionLight) - 1) / 16 + 1) * 16;				//SDirectionLightは16byteの倍数になっているので、切り上げはやらない。
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_lightCb);
 	bufferDesc.ByteWidth = ((sizeof(int) - 1) / 16 + 1) * 16;
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_isuvscroll);
@@ -268,7 +268,16 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 	d3dDeviceContext->UpdateSubresource(m_cb, 0, nullptr, &vsCb, 0, 0);
 	//ライト用の定数バッファを更新
 	d3dDeviceContext->PSSetConstantBuffers(1, 1, &m_lightCb);
+
 	m_dirLight.eyePos = MainCamera().GetTarget();
+	m_dirLight.m_eyeDir = MainCamera().GetPosition() - MainCamera().GetTarget();
+	if (m_isToonShader) {
+		m_dirLight.isToomShader = 1;
+	}
+	else {
+		m_dirLight.isToomShader = 0;
+	}
+
 	d3dDeviceContext->UpdateSubresource(m_lightCb, 0, nullptr, &m_dirLight, 0, 0);
 	//サンプラステートを設定。
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);

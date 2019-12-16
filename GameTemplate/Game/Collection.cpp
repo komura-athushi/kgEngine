@@ -163,27 +163,27 @@ void Collection::OffScreenRender()
 		}
 
 		if (itr.second->s_isHit) {
-			float x = itr.second->s_x * 5.0f;
-			float z = itr.second->s_z * 5.0f;
-			float y = itr.second->s_y * 5.0f;
+			float x = itr.second->s_x * 6.0f;
+			float z = itr.second->s_z * 6.0f;
+			float y = itr.second->s_y * 6.0f;
 			if (x >= z && x >= y) {
-				m_offScreenCamera.SetPosition(CVector3(0.0f, x / 1.65f, x));
+				m_offScreenCamera.SetPosition(CVector3(0.0f, x / 1.3f, x));
 			}
 			else if (z >= y && z >= x) {
-				m_offScreenCamera.SetPosition(CVector3(0.0f, z / 1.65f, z));
+				m_offScreenCamera.SetPosition(CVector3(0.0f, z / 1.3f, z));
 			}
 			else {
-				m_offScreenCamera.SetPosition(CVector3(0.0f, y / 1.65f, y));
+				m_offScreenCamera.SetPosition(CVector3(0.0f, y / 1.3f, y));
 			}
 
 			//float angle = atanf((itr.second->s_y * 1.1f) / (m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) * 1.0f);
-			float angle = atan2f(itr.second->s_y * 3.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
+			float angle = atan2f(itr.second->s_y * 3.2f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
 			float angle2;
 			if (itr.second->s_x >= itr.second->s_z) {
-				angle2 = atan2f(itr.second->s_x * 2.5f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
+				angle2 = atan2f(itr.second->s_x * 2.8f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
 			}
 			else {
-				angle2 = atan2f(itr.second->s_z * 2.5f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
+				angle2 = atan2f(itr.second->s_z * 2.8f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
 			}
 			if (angle >= angle2) {
 				m_offScreenCamera.SetViewAngle(angle);

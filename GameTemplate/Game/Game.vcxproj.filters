@@ -198,6 +198,9 @@
     <Filter Include="Asset\modelData\stageselect">
       <UniqueIdentifier>{870b8b9a-624a-4732-a727-4f19141c5637}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\modelData\obj\game\unity">
+      <UniqueIdentifier>{99ea4ffa-1b0e-4ef4-b2bd-8adcd2f820c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\obj\obox1.FBX">
@@ -413,10 +416,34 @@
     <None Include="Assets\sprite\pressstart.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\modelData\obj\chess\orook.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oqueen.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\opawn.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oknight.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oking.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\obishop.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\sprite\space.jpg">
+      <Filter>Asset\sprite</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\space.jpg">
-      <Filter>Asset\sprite</Filter>
-    </ImageContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\dungeon\okey.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\dungeon\oportion.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

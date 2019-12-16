@@ -45,7 +45,7 @@ ObjectData::ObjectData()
 				m_objectdataList.push_back({ name, jName, x, y, z, volume, issphere,islinesegment,isanimation,isMeshCollider });
 			}
 
-			if (m_modelObjDataList.count(int(volume)) == 0) {
+			if (m_modelObjDataList.count(volume) == 0) {
 				wchar_t filepath[256];
 				swprintf_s(filepath, L"Resource/modelData/%ls.cmo", name);
 				SkinModel_ObjData* data = new SkinModel_ObjData();
@@ -56,7 +56,7 @@ ObjectData::ObjectData()
 				data->s_y = y;
 				data->s_z = z;
 				data->s_jName = jName;
-				m_modelObjDataList.emplace(int(volume), data);
+				m_modelObjDataList.emplace(volume, data);
 			}
 		}
 		fclose(fp);

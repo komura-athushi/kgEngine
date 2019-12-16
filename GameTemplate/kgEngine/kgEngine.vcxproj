@@ -158,7 +158,10 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">KGstdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="physics\SphereCollider.cpp" />
-    <ClCompile Include="sound\SundEngine.cpp" />
+    <ClCompile Include="sound\SoundEngine.cpp" />
+    <ClCompile Include="sound\SoundSource.cpp" />
+    <ClCompile Include="sound\WaveFile.cpp" />
+    <ClCompile Include="sound\WaveFileBank.cpp" />
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,7 +208,10 @@
     <ClInclude Include="physics\PhysicsStaticObject.h" />
     <ClInclude Include="KGstdafx.h" />
     <ClInclude Include="physics\SphereCollider.h" />
-    <ClInclude Include="sound\SundEngine.h" />
+    <ClInclude Include="sound\SoundEngine.h" />
+    <ClInclude Include="sound\SoundSource.h" />
+    <ClInclude Include="sound\WaveFile.h" />
+    <ClInclude Include="sound\WaveFileBank.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="timer\GameTime.h" />
     <ClInclude Include="timer\StopWatch.h" />

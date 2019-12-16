@@ -25,6 +25,10 @@
 #include <functional>
 #include <algorithm>
 
+#include <xaudio2.h>
+#include <x3daudio.h>
+#include <xaudio2fx.h>
+
 #include "bulletPhysics/src/btBulletDynamicsCommon.h"
 #include "bulletPhysics/src/BulletCollision\CollisionDispatch\btGhostObject.h"
 

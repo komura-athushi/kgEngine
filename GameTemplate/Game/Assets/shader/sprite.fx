@@ -8,7 +8,7 @@ cbuffer cb : register(b0){
 //float4 mulColor : register(b0);
 Texture2D<float4> Texture : register(t0);	//カラーテクスチャ。
 sampler TextureSampler : register(s0);
-//角度
+//角度    
 float Angle : register(t1);
 //サークルゲージ用かどうか
 //bool isCircleGauge : register(t5);

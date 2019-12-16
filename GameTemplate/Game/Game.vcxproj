@@ -484,10 +484,34 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\space.jpg" />
+    <None Include="Assets\sprite\space.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\sprite\pressstart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\modelData\obj\chess\obishop.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oking.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oknight.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\chess\opawn.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oqueen.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\chess\orook.FBX">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\obj\dungeon\okey.FBX" />
+    <MeshContentTask Include="Assets\modelData\obj\dungeon\oportion.FBX" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

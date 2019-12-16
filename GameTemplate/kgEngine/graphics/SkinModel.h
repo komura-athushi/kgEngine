@@ -13,7 +13,8 @@ struct SDirectionLight {
 	CVector4 ambientlight = CVector4(0.3f, 0.3f, 0.3f, 1.0f);
 	CVector3 eyePos;				//カメラの視点。
 	float specPow = 0.3f;			//スペキュラライトの絞り。
-	//CVector4 ambientlight = CVector4(0.0f, 0.0f, 0.0f, 1.0f);
+	CVector3 m_eyeDir;
+	int isToomShader = 1;
 };
 
 /*!
@@ -178,6 +179,11 @@ public:
 	*@param[in]	filePath		ロードするcmoファイルのファイルパス。
 	*/
 	void InitSkeleton(const wchar_t* filePath);
+	//トゥーンシェーダーをオフ
+	void SetOffToonShader()
+	{
+		m_isToonShader = false;
+	}
 private:
 	//定数バッファ。
 	struct SVSConstantBuffer {
@@ -209,5 +215,6 @@ private:
 	int m_isUVscroll = true;
 	float m_UVscroll = 0.0f;
 	ToonMap* m_toonMap = nullptr;
+	bool m_isToonShader = true;
 };
 

@@ -16,7 +16,9 @@ bool StageSelectGround::Start()
 	m_model.Init(L"Resource/modelData/earth.cmo");
 	m_model.SetPosition(m_position);
 	m_model.SetRotation(m_rotation);
+	m_model.SetScale(CVector3::One());
 	m_model.UpdateWorldMatrix();
+	m_model.SetOffToonShader();
 	return true;
 
 }

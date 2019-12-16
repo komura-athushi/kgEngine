@@ -28,7 +28,7 @@ void Result::OnDestroy()
 
 bool Result::Start()
 {
-	m_sprite.Init(L"Resource/sprite/result.dds", false);
+	m_sprite.Init(L"Resource/sprite/space.dds", false);
 	m_gameData = &GetGameData();
 	m_gameData->SetScene(enScene_Result);
 	m_player = FindGO<Player>();

@@ -16,6 +16,7 @@ Title::~Title()
 
 }
 
+
 void Title::OnDestroy()
 {
 	DeleteGO(m_player);
@@ -35,6 +36,7 @@ bool Title::Start()
 	m_model->Init(L"Resource/modelData/ground1.cmo");
 	m_model->SetPosition({0.0f,0.0f,0.0f});
 	m_model->SetShadowCaster(false);
+	m_model->SetOffToonShader();
 	m_staticobject.CreateMeshObject(m_model,CVector3::Zero(),CQuaternion::Identity());
 	m_pressStart.Init(L"Resource/sprite/pressstart.dds");
 	return true;

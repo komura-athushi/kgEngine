@@ -53,16 +53,16 @@ public:
 	//Šª‚«ž‚Ü‚ê‚½I
 	void SetisHit(float volume)
 	{
-		m_modelObjDataList[int(volume)]->s_isHit = true;
+		m_modelObjDataList[volume]->s_isHit = true;
 	}
 	//”z—ñŽæ“¾
-	std::map<int, SkinModel_ObjData*> GetList()
+	std::map<float, SkinModel_ObjData*> GetList()
 	{
 		return m_modelObjDataList;
 	}
 private:
 	std::vector<StructObjectData> m_objectdataList;
-	std::map<int, SkinModel_ObjData*> m_modelObjDataList;
+	std::map<float, SkinModel_ObjData*> m_modelObjDataList;
 };
 
 

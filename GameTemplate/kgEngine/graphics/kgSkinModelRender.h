@@ -154,6 +154,12 @@ public:
 		}
 	}
 	void SetWorldMatrix(const CMatrix& worldmatrix);
+	void SetOffToonShader()
+	{
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second->s_skinModel.SetOffToonShader();
+		}
+	}
 private:
 	//SkinModel m_skinModel;										//スキンモデル
 	AnimationClip* m_animationClip;								//アニメーションクリップの数

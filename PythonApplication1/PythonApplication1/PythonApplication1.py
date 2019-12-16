@@ -24,6 +24,10 @@ with open('../../GameTemplate/Game/Assets/binarydata/test.cag','w+b') as file:
                  dat =  (str(col_values[i]) + " ").encode()
                  print(type(dat),dat)
                  file.write(dat)
+            elif i >= 2 and i <= 5:
+                 dat =  (str(float(col_values[i])) + " ").encode()
+                 print(type(dat),dat)
+                 file.write(dat)
             else:
                 #列の最後の要素を書き込むとき、改行する
                 if i + 1 == len(sheet.row_values(row_index + 1)):
