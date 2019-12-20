@@ -7,7 +7,7 @@
 #include "sound/WaveFile.h"
 #include "sound/SoundSource.h"
 
-CSoundEngine* g_soundEngine = nullptr;
+
 
 #define NUM_PRESETS 30
 
@@ -71,7 +71,7 @@ namespace {
 	*/
 CSoundEngine::CSoundEngine()
 {
-	g_soundEngine = this;
+	Init();
 }
 /*!
 	* @brief	デストラクタ。

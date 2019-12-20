@@ -207,8 +207,8 @@ private:
 	bool m_isShadowCaster = true;
 	bool m_isShadowReceiver = true;
 	std::unique_ptr<CMatrix[]>	m_instancingData;		//!<インスタンシング描画用のデータ。
-	ID3D11Buffer* m_instancingDataSB;					//!<インスタンシング描画用の定数バッファ
-	ID3D11ShaderResourceView* m_srv;
+	ID3D11Buffer* m_instancingDataSB = nullptr;					//!<インスタンシング描画用の定数バッファ
+	ID3D11ShaderResourceView* m_srv = nullptr;
 	int m_maxInstance = 0;
 	int m_numInstance = 0;
 	bool m_isInstancing = false;

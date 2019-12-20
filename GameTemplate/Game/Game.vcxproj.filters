@@ -437,13 +437,16 @@
     <None Include="Assets\sprite\space.jpg">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\modelData\obj\dungeon\oportion.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\dungeon\okey.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\dungeon\okey.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\dungeon\oportion.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
+    <MeshContentTask Include="Assets\modelData\a\a.FBX">
+      <Filter>Asset\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>

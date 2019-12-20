@@ -8,6 +8,8 @@
 #include "Fade.h"
 #include "StageSelect.h"
 #include "Object/ObjectData.h"
+#include "GameData.h"
+
 ///////////////////////////////////////////////////////////////////
 // ウィンドウプログラムのメイン関数。
 ///////////////////////////////////////////////////////////////////
@@ -22,6 +24,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	MainCamera().SetFar(10000.0f);
 	
 	ObjectData::GetInstance();
+	GetGameData().LoadDataStageClear();
 	////プレイヤー
 	//Player player;
 	//Player* player = NewGO<Player>(0);
@@ -29,6 +32,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//Fade::GetInstance();
 	NewGO<Title>(0);
 	
+
 	//NewGO<StageSelect>(0);
 	//ゲームループ。
 	Engine().RunGameLoop();

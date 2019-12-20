@@ -510,8 +510,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\dungeon\okey.FBX" />
-    <MeshContentTask Include="Assets\modelData\obj\dungeon\oportion.FBX" />
+    <None Include="Assets\modelData\obj\dungeon\okey.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\obj\dungeon\oportion.FBX">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\a\a.FBX" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

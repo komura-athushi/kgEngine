@@ -60,6 +60,7 @@ bool Collection::Start()
 	m_sprite.Init(L"Resource/sprite/tekitou.dds");
 	m_haikei.Init(L"Resource/sprite/collection.dds");
 	m_collectionCursor.Init(L"Resource/sprite/collectioncursor.dds");
+	m_model.Init(L"Resource/modelData/a.cmo");
 
 	m_maximumPage = (m_listSize - 1) / (W_NUMBER * H_NUMBER) + 1;
 	m_finalPageNumber = m_listSize % m_maximumPage;
@@ -167,13 +168,13 @@ void Collection::OffScreenRender()
 			float z = itr.second->s_z * 6.0f;
 			float y = itr.second->s_y * 6.0f;
 			if (x >= z && x >= y) {
-				m_offScreenCamera.SetPosition(CVector3(0.0f, x / 1.3f, x));
+				m_offScreenCamera.SetPosition(CVector3(0.0f, x / 2.0f, x));
 			}
 			else if (z >= y && z >= x) {
-				m_offScreenCamera.SetPosition(CVector3(0.0f, z / 1.3f, z));
+				m_offScreenCamera.SetPosition(CVector3(0.0f, z / 2.0f, z));
 			}
 			else {
-				m_offScreenCamera.SetPosition(CVector3(0.0f, y / 1.3f, y));
+				m_offScreenCamera.SetPosition(CVector3(0.0f, y / 2.0f, y));
 			}
 
 			//float angle = atanf((itr.second->s_y * 1.1f) / (m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) * 1.0f);
@@ -194,6 +195,9 @@ void Collection::OffScreenRender()
 			m_offScreenCamera.Update();
 			itr.second->s_skinModel.UpdateWorldMatrix(m_position, m_rot, m_scale);
 			itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
+		}
+		else {
+			m_model.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
 		}
 
 

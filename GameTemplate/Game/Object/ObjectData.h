@@ -20,10 +20,11 @@ struct StructObjectData {
 
 struct SkinModel_ObjData {
 	SkinModel s_skinModel;
-	bool s_isHit = true;
+	bool s_isHit = false;
 	int s_hashKey = 0;
 	float s_x, s_y, s_z = 0.0f;
 	char* s_jName;
+	int s_number = 0;
 };
 
 //オブジェクトのデータをバイナリファイルから読み込む
@@ -39,6 +40,7 @@ public:
 		return instance;
 	}
 public:
+	void LoadSaveData();
 	//配列のサイズを取得
 	int GetListSize() const
 	{
@@ -60,10 +62,13 @@ public:
 	{
 		return m_modelObjDataList;
 	}
+	//セーブする
+	void SaveData();
 private:
 	std::vector<StructObjectData> m_objectdataList;
 	std::map<float, SkinModel_ObjData*> m_modelObjDataList;
 };
+
 
 
 

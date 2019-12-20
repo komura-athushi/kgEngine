@@ -40,5 +40,6 @@ private:
 	int m_finalPageNumber = 0;
 	CFont m_font;
 	int m_hitNumber = 0;
+	SkinModel m_model;
 };
 

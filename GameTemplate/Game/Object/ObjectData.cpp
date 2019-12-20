@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "ObjectData.h"
+#include <iostream>
+#include <string>
+#include <fstream>
 
 ObjectData::ObjectData()
 {
@@ -61,7 +64,51 @@ ObjectData::ObjectData()
 		}
 		fclose(fp);
 	}
+	LoadSaveData();
 	return;
 }
 
- 
+void ObjectData::LoadSaveData()
+{
+	std::map<int, int> hitNumberList;
+
+	FILE* fp = NULL;
+	const char* fname = "Assets/binarydata/savedata_obj.txt";
+	int number = 0;
+	if (fopen_s(&fp, fname, "rb") == 0) {
+		int i = 1;
+		while (i != EOF) {
+			//fscanfでファイルを読み込む、戻り値がEOFだった場合処理を終了する
+			i = fscanf(fp, "%d", &number);
+			if (i == EOF) {
+				break;
+			}
+			hitNumberList.emplace(number, 0);
+		}
+		fclose(fp);
+	}
+	int j = 0;
+	for (auto itr : m_modelObjDataList) {
+		itr.second->s_number = j;
+		if (hitNumberList.count(j) != 0) {
+			itr.second->s_isHit = true;
+		}
+		j++;
+	}
+	int i = 0;
+}
+
+void ObjectData::SaveData()
+{
+	std::string fileName = "Assets/binarydata/savedata_obj.txt";
+
+	std::ofstream file;
+	file.open(fileName, std::ios::trunc);
+
+	for (auto itr : m_modelObjDataList) {
+		if (itr.second->s_isHit) {
+			file << itr.second->s_number << std::endl;
+		}
+	}
+	file.close();
+}

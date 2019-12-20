@@ -11,7 +11,7 @@ CSoundSource::CSoundSource()
 {
 	memset(m_emitterAzimuths, 0, sizeof(m_emitterAzimuths));
 	memset(m_matrixCoefficients, 0, sizeof(m_matrixCoefficients));
-	g_soundEngine->AddSoundSource(this);
+	SoundEngine().AddSoundSource(this);
 }
 CSoundSource::~CSoundSource()
 {
@@ -23,18 +23,18 @@ void CSoundSource::InitCommon()
 void CSoundSource::Init(wchar_t* filePath)
 {
 	m_isAvailable = false;
-	m_waveFile = g_soundEngine->GetWaveFileBank().FindWaveFile(0, filePath);
+	m_waveFile = SoundEngine().GetWaveFileBank().FindWaveFile(0, filePath);
 	if (!m_waveFile) {
 		m_waveFile.reset(new CWaveFile);
 		bool result = m_waveFile->Open(filePath);
 		if (result == false) {
 			//waveファイルの読み込みに失敗。
-			g_soundEngine->GetWaveFileBank().UnregistWaveFile(0, m_waveFile);
+			SoundEngine().GetWaveFileBank().UnregistWaveFile(0, m_waveFile);
 			m_waveFile.reset();
 			return;
 		}
 		m_waveFile->AllocReadBuffer(m_waveFile->GetSize());	//waveファイルのサイズ分の読み込みバッファを確保する。
-		g_soundEngine->GetWaveFileBank().RegistWaveFile(0, m_waveFile);
+		SoundEngine().GetWaveFileBank().RegistWaveFile(0, m_waveFile);
 		unsigned int dummy;
 		m_waveFile->Read(m_waveFile->GetReadBuffer(), m_waveFile->GetSize(), &dummy);
 		m_waveFile->ResetFile();
@@ -42,7 +42,7 @@ void CSoundSource::Init(wchar_t* filePath)
 	}
 
 	//サウンドボイスソースを作成。
-	m_sourceVoice = g_soundEngine->CreateXAudio2SourceVoice(m_waveFile.get(), false);
+	m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), false);
 	
 	InitCommon();
 	m_isAvailable = true;
@@ -63,7 +63,7 @@ void CSoundSource::InitStreaming(wchar_t* filePath, unsigned int ringBufferSize,
 	m_readStartPos = 0;
 	m_currentBufferingSize = 0;
 	//サウンドボイスソースを作成。
-	m_sourceVoice = g_soundEngine->CreateXAudio2SourceVoice(m_waveFile.get(), false);
+	m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), false);
 	
 	InitCommon();
 
@@ -78,7 +78,7 @@ void CSoundSource::Release()
 		m_sourceVoice->DestroyVoice();
 		m_sourceVoice = nullptr;
 	}
-	g_soundEngine->RemoveSoundSource(this);
+	SoundEngine().RemoveSoundSource(this);
 }
 void CSoundSource::Play(char* buff, unsigned int bufferSize)
 {
@@ -131,7 +131,7 @@ void CSoundSource::Play(bool isLoop)
 		}
 		m_isPlaying = true;
 	}
-	g_soundEngine->AddSoundSource(this);
+	SoundEngine().AddSoundSource(this);
 	m_isLoop = isLoop;
 }
 void CSoundSource::UpdateStreaming()

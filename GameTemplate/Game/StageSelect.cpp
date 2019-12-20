@@ -7,6 +7,8 @@
 #include "StagePoint.h"
 #include "CollectionBook.h"
 #include "Collection.h"
+#include "Object/ObjectData.h"
+#include "GameData.h"
 
 StageSelect::StageSelect()
 {
@@ -73,6 +75,9 @@ bool StageSelect::Start()
 	MainCamera().SetTarget(cameraTarget);
 	MainCamera().Update();
 	m_backSprite.Init(L"Resource/sprite/space.dds");
+
+	ObjectData::GetInstance().SaveData();
+	GetGameData().SaveDataStageClear();
 	return true;
 }
 

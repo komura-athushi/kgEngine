@@ -20,10 +20,11 @@ void Result::OnDestroy()
 	DeleteGO(m_player);
 	DeleteGO(m_gameCamera);
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
-	DeleteGO(object);
+		DeleteGO(object);
 		return true;
     });
 	GetObjModelDataFactory().DeleteAllData();
+	
 }
 
 bool Result::Start()

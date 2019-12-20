@@ -12,7 +12,7 @@ class CSoundSource;
 /// サウンドエンジン。
 /// </summary>
 class CSoundEngine{
-public:
+private:
 	/// <summary>
 	/// コンストラクタ。
 	/// </summary>
@@ -21,6 +21,12 @@ public:
 	/// デストラクタ。
 	/// </summary>
 	~CSoundEngine();
+public:
+	static CSoundEngine& GetInstance()
+	{
+		static CSoundEngine instance;
+		return instance;
+	}
 
 	/// <summary>
 	/// 初期化。
@@ -109,5 +115,8 @@ private:
 	CWaveFileBank m_waveFileBank;					//!<波形データのバンク。
 };
 
-//サウンドエンジンのインスタンス。
-extern CSoundEngine* g_soundEngine ;
+static inline CSoundEngine& SoundEngine()
+{
+	return CSoundEngine::GetInstance();
+}
+

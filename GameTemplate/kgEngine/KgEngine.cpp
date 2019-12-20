@@ -1,6 +1,7 @@
 
 #include "KGstdafx.h"
 #include "KgEngine.h"
+#include "sound/SoundEngine.h"
 
 CEngine::CEngine()
 {
@@ -126,20 +127,30 @@ void CEngine::Update()
 	for (auto& pad : m_pad) {
 		pad.Update();
 	}
+
+	SoundEngine().Update();
+
 	//物理エンジンの更新。
 	m_physicsEngine->Update();
+
 	//ゲームオブジェクトの処理
 	m_gameobjectmanager->Start();
 	m_gameobjectmanager->Update();
+
 	m_graphicsEngine->ShadowMapRender();
 	m_graphicsEngine->ChangeMainRenderTarget();
+
 	m_gameobjectmanager->PrePostRender();
 	m_gameobjectmanager->Draw();
+
 	m_graphicsEngine->PostRender();
+
 	m_gameobjectmanager->PostRender();
 	m_gameobjectmanager->Delete();
+
 	//カメラの更新。
 	MainCamera().Update();
+
 	//描画終了。
 	m_graphicsEngine->EndRender();
 

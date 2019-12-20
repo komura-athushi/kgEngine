@@ -89,11 +89,14 @@ bool Game::Start()
 	m_gameData->SetPoseCancel();
 	m_gameData->SetScene(enScene_Stage);
 	m_offScreen = NewGO<OffScreen>(3);
+
+	
 	return true;
 }
 
 void Game::Update()
 {
+	
 	const float Time = 30.0f;
 	if (m_owaOwari) {
 		m_gameData->SetPose();
