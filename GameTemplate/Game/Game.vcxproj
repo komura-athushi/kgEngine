@@ -490,24 +490,24 @@
     <None Include="Assets\sprite\pressstart.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\obj\chess\obishop.FBX">
+    <MeshContentTask Include="Assets\modelData\obj\chess\obishop.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\obj\chess\oking.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\oking.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\obj\chess\oknight.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\oknight.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\obj\chess\opawn.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\opawn.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\obj\chess\oqueen.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\oqueen.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\obj\chess\orook.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\orook.FBX">
       <FileType>Document</FileType>
-    </None>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\obj\dungeon\okey.FBX">
@@ -518,7 +518,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\a\a.FBX" />
+    <None Include="Assets\modelData\a\a.FBX">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

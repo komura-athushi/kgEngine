@@ -48,6 +48,7 @@ cbuffer LightCb : register(b1) {
 	float specPow;			//スペキュラライトの絞り。
 	float3 eyeDir;
 	int isToomShader;
+	float4 color;
 };
 
 /// <summary>
@@ -366,6 +367,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 	}
 	float4 finalColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	finalColor.xyz = albedoColor.xyz * lig;
+	finalColor *= color;
 	return finalColor;
 }
 

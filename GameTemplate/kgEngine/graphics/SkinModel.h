@@ -9,12 +9,13 @@ const int NUM_DIRECTION_LIG = 4;
 struct SDirectionLight {
 	CVector4 direction[NUM_DIRECTION_LIG];		//ライトの方向。
 	//CVector4 direction;
-	CVector4 color[NUM_DIRECTION_LIG];			//ライトのカラー。
+	CVector4 lightcolor[NUM_DIRECTION_LIG];			//ライトのカラー。
 	CVector4 ambientlight = CVector4(0.3f, 0.3f, 0.3f, 1.0f);
 	CVector3 eyePos;				//カメラの視点。
 	float specPow = 0.3f;			//スペキュラライトの絞り。
 	CVector3 m_eyeDir;
 	int isToomShader = 1;
+	CVector4 color = CVector4::White();
 };
 
 /*!
@@ -183,6 +184,11 @@ public:
 	void SetOffToonShader()
 	{
 		m_isToonShader = false;
+	}
+	//色を設定
+	void SetColor(const CVector4& color)
+	{
+		m_dirLight.color = color;
 	}
 private:
 	//定数バッファ。

@@ -7,16 +7,16 @@
 SkinModel::SkinModel()
 {
 	m_dirLight.direction[0] = { 0.0f, -0.707f, -0.707f, 0.0f };
-	m_dirLight.color[0] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	m_dirLight.lightcolor[0] = { 0.5f, 0.5f, 0.5f, 1.0f };
 
 	m_dirLight.direction[1] = { -0.707f, -0.707f, 0.0f, 0.0f };
-	m_dirLight.color[1] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	m_dirLight.lightcolor[1] = { 0.3f, 0.3f, 0.3f, 1.0f };
 
 	m_dirLight.direction[2] = { 0.0f, -0.707f, 0.707f, 0.0f };
-	m_dirLight.color[2] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	m_dirLight.lightcolor[2] = { 0.3f, 0.3f, 0.3f, 1.0f };
 
 	m_dirLight.direction[3] = { 1.0f, 0.0f, -1.0f, 0.0f };
-	m_dirLight.color[3] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	m_dirLight.lightcolor[3] = { 0.3f, 0.3f, 0.3f, 1.0f };
 }
 
 SkinModel::~SkinModel()

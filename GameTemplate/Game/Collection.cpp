@@ -163,7 +163,7 @@ void Collection::OffScreenRender()
 			m_sprite.Draw();
 		}
 
-		if (itr.second->s_isHit) {
+		//if (itr.second->s_isHit) {
 			float x = itr.second->s_x * 6.0f;
 			float z = itr.second->s_z * 6.0f;
 			float y = itr.second->s_y * 6.0f;
@@ -178,7 +178,7 @@ void Collection::OffScreenRender()
 			}
 
 			//float angle = atanf((itr.second->s_y * 1.1f) / (m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) * 1.0f);
-			float angle = atan2f(itr.second->s_y * 3.2f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
+			float angle = atan2f(itr.second->s_y * 3.4f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
 			float angle2;
 			if (itr.second->s_x >= itr.second->s_z) {
 				angle2 = atan2f(itr.second->s_x * 2.8f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
@@ -193,12 +193,18 @@ void Collection::OffScreenRender()
 				m_offScreenCamera.SetViewAngle(angle2);
 			}
 			m_offScreenCamera.Update();
+			if (!itr.second->s_isHit) {
+				itr.second->s_skinModel.SetColor(CVector4(0.0f, 0.0f, 0.0f, 1.0f));
+			}
+			else {
+				itr.second->s_skinModel.SetColor(CVector4::White());
+			}
 			itr.second->s_skinModel.UpdateWorldMatrix(m_position, m_rot, m_scale);
 			itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
-		}
-		else {
+		//}
+		/*else {
 			m_model.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
-		}
+		}*/
 
 
 
@@ -213,15 +219,18 @@ void Collection::OffScreenRender()
 			m_mainPostEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
 			ID3D11ShaderResourceView* s[] = { NULL };
 			d3dDeviceContext->PSSetShaderResources(0, 1, s);
+
+			wchar_t output[256];
 			if (itr.second->s_isHit) {
-				wchar_t output[256];
 				size_t wLen = 0;
 				errno_t err = 0;
 				setlocale(LC_ALL, "japanese");
 				err = mbstowcs_s(&wLen, output, 20, itr.second->s_jName, _TRUNCATE);
-				m_font.DrawScreenPos(output, CVector2(30.0f, 450.0f), CVector4::White(), { 1.0f,1.0 });
-
 			}
+			else {
+				swprintf_s(output, L"ÅHÅHÅH");
+			}
+			m_font.DrawScreenPos(output, CVector2(30.0f, 450.0f), CVector4::White(), { 1.0f,1.0 });
 		}
 	}
 	ID3D11ShaderResourceView* s[] = { NULL };

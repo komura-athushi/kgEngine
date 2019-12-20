@@ -416,37 +416,37 @@
     <None Include="Assets\sprite\pressstart.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\modelData\obj\chess\orook.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\chess\oqueen.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\chess\opawn.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\chess\oknight.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\chess\oking.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\chess\obishop.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
     <None Include="Assets\sprite\space.jpg">
       <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\dungeon\oportion.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
     </None>
     <None Include="Assets\modelData\obj\dungeon\okey.FBX">
       <Filter>Asset\modelData\obj\game\unity</Filter>
     </None>
+    <None Include="Assets\modelData\a\a.FBX">
+      <Filter>Asset\modelData</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\dungeon\oportion.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\a\a.FBX">
-      <Filter>Asset\modelData</Filter>
+    <MeshContentTask Include="Assets\modelData\obj\chess\obishop.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\oking.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\oknight.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\opawn.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\oqueen.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\obj\chess\orook.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>
