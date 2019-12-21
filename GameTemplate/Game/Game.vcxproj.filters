@@ -230,8 +230,59 @@
     <None Include="Assets\modelData\obj\ohito.FBX">
       <Filter>Asset\modelData\obj\sample</Filter>
     </None>
+    <None Include="Assets\sprite\title.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\tekitou.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\stageselect.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\space.jpg">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\result.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\pressstart.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\collectioncursor.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\loading.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\collection.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\clockkari2.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\clockkari.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\arrow.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\shader\toonmap.png">
+      <Filter>Asset\shader</Filter>
+    </None>
     <None Include="Assets\modelData\zunko\zunko.FBX">
       <Filter>Asset\modelData</Filter>
+    </None>
+    <None Include="Assets\modelData\a\a.FBX">
+      <Filter>Asset\modelData</Filter>
+    </None>
+    <None Include="Assets\modelData\earth\earth.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
+    </None>
+    <None Include="Assets\modelData\earth\pointclear.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
+    </None>
+    <None Include="Assets\modelData\earth\pointnoclear.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
     </None>
     <None Include="Assets\modelData\sphere\sphere2.FBX">
       <Filter>Asset\modelData\sphere</Filter>
@@ -275,16 +326,16 @@
     <None Include="Assets\modelData\obj\magnet\omagnet.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
-    <None Include="Assets\modelData\obj\glass\oglass_blue.FBX">
-      <Filter>Asset\modelData\obj\game</Filter>
-    </None>
     <None Include="Assets\modelData\obj\glass\oglass_yellow.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
-    <None Include="Assets\modelData\obj\eraser\oeraser_blue.FBX">
+    <None Include="Assets\modelData\obj\glass\oglass_blue.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
     <None Include="Assets\modelData\obj\eraser\oeraser_red.FBX">
+      <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\eraser\oeraser_blue.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
     <None Include="Assets\modelData\obj\dougubako\odougubako.FBX">
@@ -305,8 +356,32 @@
     <None Include="Assets\modelData\obj\cockroach\ocockroach.fbx">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
+    <None Include="Assets\modelData\obj\chess\oqueen.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
     <None Include="Assets\modelData\obj\bear\obear.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\orook.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\dungeon\oportion.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\opawn.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oknight.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\oking.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\dungeon\okey.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\chess\obishop.FBX">
+      <Filter>Asset\modelData\obj\game\unity</Filter>
     </None>
     <None Include="Assets\modelData\obj\rittaiya\otablesquare_board.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
@@ -329,19 +404,19 @@
     <None Include="Assets\modelData\obj\rittaiya\oruby.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
-    <None Include="Assets\modelData\obj\rittaiya\ofork.FBX">
+    <None Include="Assets\modelData\obj\rittaiya\oorange.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
     <None Include="Assets\modelData\obj\rittaiya\okabin.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
-    <None Include="Assets\modelData\obj\rittaiya\oorange.FBX">
-      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\rittaiya\odaia.FBX">
+    <None Include="Assets\modelData\obj\rittaiya\ofork.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
     <None Include="Assets\modelData\obj\rittaiya\oemerald.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\odaia.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
     <None Include="Assets\modelData\obj\rittaiya\ocoin.FBX">
@@ -368,85 +443,8 @@
     <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
-    <None Include="Assets\shader\toonmap.png">
-      <Filter>Asset\shader</Filter>
-    </None>
-    <None Include="Assets\sprite\arrow.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\clockkari.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\clockkari2.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\loading.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\result.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\stageselect.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\collection.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\tekitou.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\collectioncursor.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\title.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\modelData\earth\pointnoclear.FBX">
-      <Filter>Asset\modelData\stageselect</Filter>
-    </None>
-    <None Include="Assets\modelData\earth\pointclear.FBX">
-      <Filter>Asset\modelData\stageselect</Filter>
-    </None>
-    <None Include="Assets\modelData\earth\earth.FBX">
-      <Filter>Asset\modelData\stageselect</Filter>
-    </None>
     <None Include="Assets\modelData\earth\book.FBX">
       <Filter>Asset\modelData\stageselect</Filter>
     </None>
-    <None Include="Assets\sprite\pressstart.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\space.jpg">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\dungeon\okey.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
-    <None Include="Assets\modelData\a\a.FBX">
-      <Filter>Asset\modelData</Filter>
-    </None>
-    <None Include="Assets\modelData\obj\dungeon\oportion.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\chess\obishop.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\oking.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\oknight.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\opawn.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\oqueen.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\orook.FBX">
-      <Filter>Asset\modelData\obj\game\unity</Filter>
-    </MeshContentTask>
   </ItemGroup>
 </Project>

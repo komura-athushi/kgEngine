@@ -72,10 +72,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)/../kgEngine/EffekseerRunTime143d/Compiled/include/;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/../kgEngine/EffekseerRunTime130/Compiled/include/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)/;$(ProjectDir)/../kgEngine/EffekseerRunTime143d/Compiled/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/;$(ProjectDir)/../kgEngine/EffekseerRunTime130/Compiled/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -490,24 +490,24 @@
     <None Include="Assets\sprite\pressstart.png" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\obj\chess\obishop.FBX">
+    <None Include="Assets\modelData\obj\chess\obishop.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\oking.FBX">
+    </None>
+    <None Include="Assets\modelData\obj\chess\oking.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\oknight.FBX">
+    </None>
+    <None Include="Assets\modelData\obj\chess\oknight.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\opawn.FBX">
+    </None>
+    <None Include="Assets\modelData\obj\chess\opawn.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\oqueen.FBX">
+    </None>
+    <None Include="Assets\modelData\obj\chess\oqueen.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\obj\chess\orook.FBX">
+    </None>
+    <None Include="Assets\modelData\obj\chess\orook.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\obj\dungeon\okey.FBX">

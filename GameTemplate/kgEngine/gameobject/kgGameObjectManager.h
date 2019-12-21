@@ -6,7 +6,7 @@
 #include "kgGameObject.h"
 #include "util/Util.h"
 #include "Noncopyable.h"
-#include "Effekseer.h"
+//#include "Effekseer.h"
 //GameObject‚ğŠÇ—‚·‚é‚â‚Â
 class CGameObjectManager :Noncopyable
 {
