@@ -2,7 +2,7 @@
  * @brief	音源クラス。
  */
 #include "KGstdafx.h"
-#include "sound/SoundEngine.h"
+
 #include "sound/SoundSource.h"
 
 
@@ -20,7 +20,7 @@ CSoundSource::~CSoundSource()
 void CSoundSource::InitCommon()
 {
 }
-void CSoundSource::Init(wchar_t* filePath)
+void CSoundSource::Init(const wchar_t* filePath)
 {
 	m_isAvailable = false;
 	m_waveFile = SoundEngine().GetWaveFileBank().FindWaveFile(0, filePath);
@@ -49,7 +49,7 @@ void CSoundSource::Init(wchar_t* filePath)
 }
 
 
-void CSoundSource::InitStreaming(wchar_t* filePath, unsigned int ringBufferSize, unsigned int bufferSize)
+void CSoundSource::InitStreaming(const wchar_t* filePath, unsigned int ringBufferSize, unsigned int bufferSize)
 {
 	m_isAvailable = false;
 	//ストリーミングはCWaveFileの使いまわしはできない。

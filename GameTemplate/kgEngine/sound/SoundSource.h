@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sound/WaveFile.h"
-
+#include "sound/SoundEngine.h"
 	
 
 /// <summary>
@@ -39,7 +39,7 @@ public:
 	/// <param name="filePath">
 	/// ファイルパス。対応しているファイルフォーマット(*.wave)
 	/// </param>
-	void Init(wchar_t* filePath);
+	void Init(const wchar_t* filePath);
 	/// <summary>
 	/// 初期化(ストリーミング再生)
 	/// </summary>
@@ -51,7 +51,7 @@ public:
 	/// <param name="filePath">ファイルパス。対応しているファイルフォーマット(*.wave)</param>
 	/// <param name="ringBufferSize">リングバッファのサイズ。(bufferSizeの倍数になっていると無駄なく活用できます。)</param>
 	/// <param name="bufferingSize">ストリーミングの最大バッファリングサイズ。</param>
-	void InitStreaming(wchar_t* filePath,  unsigned int ringBufferSize = 3 * 1024 * 1024, unsigned int bufferingSize = 1024 * 512);
+	void InitStreaming(const wchar_t* filePath,  unsigned int ringBufferSize = 3 * 1024 * 1024, unsigned int bufferingSize = 1024 * 512);
 	/// <summary>
 	/// 解放
 	/// </summary>

@@ -78,6 +78,9 @@ bool StageSelect::Start()
 
 	ObjectData::GetInstance().SaveData();
 	GetGameData().SaveDataStageClear();
+
+	m_bgm.InitStreaming(L"Assets/sound/stageselect.wav");
+	m_bgm.Play(true);
 	return true;
 }
 

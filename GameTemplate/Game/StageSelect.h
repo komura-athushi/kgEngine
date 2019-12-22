@@ -2,6 +2,7 @@
 #include "level/Level.h"
 #include "GameData.h"
 #include "StageSelectGround.h"
+#include "sound/SoundSource.h"
 class Fade;
 class GameData;
 class StagePoint;
@@ -36,5 +37,6 @@ private:
 	CollectionBook* m_collectionBook;
 	bool m_isCollection = false;
 	CSprite m_backSprite;
+	CSoundSource m_bgm;
 };
 

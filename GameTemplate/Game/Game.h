@@ -1,5 +1,7 @@
 #pragma once
 #include "level/Level.h"
+#include "sound/SoundSource.h"
+
 class Ground;
 class Player;
 class GameCamera;
@@ -39,5 +41,6 @@ private:
 	float m_timer2 = 0.0f;
 	bool m_isPose = false;
 	OffScreen* m_offScreen = nullptr;
+	CSoundSource m_bgm;
 };
 

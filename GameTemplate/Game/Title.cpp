@@ -39,6 +39,8 @@ bool Title::Start()
 	m_model->SetOffToonShader();
 	m_staticobject.CreateMeshObject(m_model,CVector3::Zero(),CQuaternion::Identity());
 	m_pressStart.Init(L"Resource/sprite/pressstart.dds");
+	m_bgm.InitStreaming(L"Assets/sound/op.wav");
+	m_bgm.Play(true);
 	return true;
 }
 

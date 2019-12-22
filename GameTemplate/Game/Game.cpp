@@ -90,7 +90,10 @@ bool Game::Start()
 	m_gameData->SetScene(enScene_Stage);
 	m_offScreen = NewGO<OffScreen>(3);
 
-	
+	wchar_t filePath2[256];
+	swprintf_s(filePath2, L"Assets/sound/stage%d.wav", int(m_gameData->GetStageNumber()));
+	m_bgm.InitStreaming(filePath2);
+	m_bgm.Play(true);
 	return true;
 }
 
