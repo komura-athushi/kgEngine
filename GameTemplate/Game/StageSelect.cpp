@@ -9,6 +9,9 @@
 #include "Collection.h"
 #include "Object/ObjectData.h"
 #include "GameData.h"
+#include "SoundDirector.h"
+#include "sound/SoundSource.h"
+#include "StageSelectGround.h"
 
 StageSelect::StageSelect()
 {
@@ -26,6 +29,7 @@ void StageSelect::OnDestroy()
 		DeleteGO(itr.second);
 	}
 	DeleteGO(m_collectionBook);
+	DeleteGO(m_stageSelectGround);
 }
 
 bool StageSelect::Start()
@@ -52,7 +56,8 @@ bool StageSelect::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"earth")) {
-			m_stageSelectGround.SetPosition(objdata.position);
+			m_stageSelectGround = NewGO<StageSelectGround>(0);
+			m_stageSelectGround->SetPosition(objdata.position);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"book")) {
@@ -78,9 +83,8 @@ bool StageSelect::Start()
 
 	ObjectData::GetInstance().SaveData();
 	GetGameData().SaveDataStageClear();
+	SoundData().SetBGM(enBGM_StageSelect);
 
-	m_bgm.InitStreaming(L"Assets/sound/stageselect.wav");
-	m_bgm.Play(true);
 	return true;
 }
 
@@ -98,10 +102,16 @@ void StageSelect::Update()
 			m_gameData->SetStageNumber(EnStageNumber(m_stagePoint->GetNumber()));
 			NewGO<Game>(0);
 			DeleteGO(this);
+			CSoundSource* se = new CSoundSource();
+			se->Init(L"Assets/sound/kettei.wav");
+			se->Play(false);
 		}
 		else if (m_isCollection) {
 			NewGO<Collection>(0);
 			DeleteGO(this);
+			CSoundSource* se = new CSoundSource();
+			se->Init(L"Assets/sound/kettei.wav");
+			se->Play(false);
 		}
 	
 	
@@ -111,6 +121,9 @@ void StageSelect::Update()
 	if (Engine().GetPad(0).IsTrigger(enButtonB)) {
 		NewGO<Title>(0);
 		DeleteGO(this);
+		CSoundSource* se = new CSoundSource();
+		se->Init(L"Assets/sound/kettei.wav");
+		se->Play(false);
 	}
 	TurnPlayer();
 	DistanceStagePoint();
@@ -118,7 +131,7 @@ void StageSelect::Update()
 
 void StageSelect::TurnPlayer()
 {
-	CVector3 moveSpeed = m_stageSelectGround.GetMoveSpeed();
+	CVector3 moveSpeed = m_stageSelectGround->GetMoveSpeed();
 	moveSpeed.x = -moveSpeed.x;
 	moveSpeed.z = -moveSpeed.z;
 	if (moveSpeed.LengthSq() <= 0.01f) {

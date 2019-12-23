@@ -1,6 +1,6 @@
 #pragma once
 #include "..//kgEngine/physics/PhysicsStaticObject.h"
-#include "sound/SoundSource.h"
+
 
 
 class Player;
@@ -28,7 +28,6 @@ private:
 	CVector2 m_titlePosition = { 1280.0f / 2, 720.0f / 2 - 370.0f };
 	bool m_isStart = false;
 	CSprite m_pressStart;
-
-	CSoundSource m_bgm;
+	
 };
 

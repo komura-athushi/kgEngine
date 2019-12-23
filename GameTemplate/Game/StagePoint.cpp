@@ -25,16 +25,16 @@ bool StagePoint::Start()
 	m_model.SetRotation(m_rotation);
 	m_model.SetScale(m_scale);
 	m_model.UpdateWorldMatrix();
-	ClcLocalMatrix();
-	m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetMatrix());
-	m_model.SetWorldMatrix(m_worldMatrix);
+	//ClcLocalMatrix();
+	//m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetModel().GetSkinModel().GetWorldMatrix());
+	//m_model.SetWorldMatrix(m_worldMatrix);
 	return true;
 }
 
 void StagePoint::ClcLocalMatrix()
 {
-	m_stageSelectGround = FindGO<StageSelectGround>();
-	CMatrix worldMatrix = m_stageSelectGround->GetMatrix();
+	
+	CMatrix worldMatrix = m_stageSelectGround->GetModel().GetSkinModel().GetWorldMatrix();
 	//プレイヤーの逆行列を求める
 	CMatrix ReverseMatrix;
 	ReverseMatrix.Inverse(worldMatrix);
@@ -61,7 +61,23 @@ void StagePoint::ClcLocalMatrix()
 
 void StagePoint::Update()
 {
-	m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetMatrix());
+	
+	if (m_stageSelectGround == nullptr) {
+		m_stageSelectGround = FindGO<StageSelectGround>();
+		if (m_stageSelectGround != nullptr) {
+			m_isFind = true;
+			return;
+		}
+		
+	}
+	else if(m_isFind){
+		ClcLocalMatrix();
+		m_isFind = false;
+	}
+
+
+
+	m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetModel().GetSkinModel().GetWorldMatrix());
 	m_model.SetWorldMatrix(m_worldMatrix);
 	//m_model.UpdateWorldMatrix();
 

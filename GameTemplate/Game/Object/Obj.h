@@ -7,6 +7,8 @@
 #include "LineSegment.h"
 #include "math/kgBox.h"
 #include "graphics/2D/kgFont.h"
+
+
 class Player;
 class GameData;
 struct ObjModelData {
@@ -172,5 +174,6 @@ private:
 	GameData* m_gamedata = nullptr;											//ゲームデータ
 	float m_radius = 0.0f;
 	bool m_isHit = false;
+	
 };
 

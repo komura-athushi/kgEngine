@@ -128,7 +128,7 @@ void CEngine::Update()
 		pad.Update();
 	}
 
-	SoundEngine().Update();
+
 
 	//物理エンジンの更新。
 	m_physicsEngine->Update();
@@ -147,6 +147,8 @@ void CEngine::Update()
 
 	m_gameobjectmanager->PostRender();
 	m_gameobjectmanager->Delete();
+
+	SoundEngine().Update();
 
 	//カメラの更新。
 	MainCamera().Update();

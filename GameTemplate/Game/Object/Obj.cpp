@@ -9,6 +9,8 @@
 #include "Player.h"
 #include "GameData.h"
 #include "OffScreen.h"
+#include "sound/SoundSource.h"
+
 
 ObjModelDataFactory::ObjModelDataFactory()
 {
@@ -128,6 +130,8 @@ bool Obj::Start()
 	m_gamedata = &GetGameData();
 	m_staticobject.SetSize(m_radius);
 	m_staticobject.GetRigidBody()->GetBody()->setUserIndex(3);
+
+	
 	return true;
 }
 
@@ -205,6 +209,8 @@ void Obj::ClcVertex()
 
 void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 {
+	const float seVolume = 3.0f;
+
 	//プレイヤーの逆行列を求める
 	CMatrix ReverseMatrix;
 	ReverseMatrix.Inverse(worldMatrix);
@@ -237,6 +243,12 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	ObjModelDataFactory* factory = &GetObjModelDataFactory();
 	offScreen->SetSkinModel(factory->GetSkinModel(m_modeldata->s_hashKey));
 	offScreen->SetObjData(m_objdata);
+
+	CSoundSource* se = new CSoundSource();
+	se->Init(L"Assets/sound/water.wav");
+	se->Play(false);
+	se->SetVolume(seVolume);
+	
 	//GetObjModelDataFactory().SetisHit(m_objdata->s_name);
 }
 

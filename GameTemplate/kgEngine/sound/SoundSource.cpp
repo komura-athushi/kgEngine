@@ -190,6 +190,9 @@ void CSoundSource::UpdateOnMemory()
 			//ループ。
 			Play(m_isLoop);
 		}
+		else {
+			m_isEnd = true;
+		}
 	}
 }
 void CSoundSource::Update()
@@ -206,5 +209,4 @@ void CSoundSource::Update()
 		//オンメモリ再生中の更新処理。
 		UpdateOnMemory();
 	}
-
 }

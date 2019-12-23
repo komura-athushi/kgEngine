@@ -17,15 +17,22 @@ public:
 	{
 		return m_currentPosition - m_beforePosition;
 	}
+	//ƒ‚ƒfƒ‹‚ðŽæ“¾
+	CSkinModelRender& GetModel()
+	{
+		return  m_skinModelRender;
+	}
 	//ƒ‚ƒfƒ‹‚Ì‰ñ“]‚ðŽæ“¾
-	const CMatrix& GetMatrix()
+	/*const CMatrix& GetMatrix()
 	{
 		return m_model.GetSkinModel().GetWorldMatrix();
-	}
+	}*/
+	
 private:
-	CSkinModelRender m_model;
+	CSkinModelRender m_skinModelRender;
 	CVector3 m_position;
 	CQuaternion m_rotation = CQuaternion::Identity();
 	CVector3 m_currentPosition, m_beforePosition = CVector3::Zero();
+
 };
 

@@ -36,5 +36,6 @@ private:
 	CMatrix m_localMatrix;
 	CMatrix m_worldMatrix;
 	StageSelectGround* m_stageSelectGround = nullptr;
+	bool m_isFind = false;
 };
 

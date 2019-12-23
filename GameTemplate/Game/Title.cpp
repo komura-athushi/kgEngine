@@ -5,6 +5,9 @@
 #include "Collection.h"
 #include "Player.h"
 #include "GameCamera.h"
+#include "SoundDirector.h"
+#include "sound/SoundSource.h"
+#include "GameData.h"
 
 Title::Title()
 {
@@ -39,8 +42,11 @@ bool Title::Start()
 	m_model->SetOffToonShader();
 	m_staticobject.CreateMeshObject(m_model,CVector3::Zero(),CQuaternion::Identity());
 	m_pressStart.Init(L"Resource/sprite/pressstart.dds");
-	m_bgm.InitStreaming(L"Assets/sound/op.wav");
-	m_bgm.Play(true);
+
+	SoundData().SetBGM(enBGM_Title);
+
+	GameData::GetInstance().SetScene(enScene_Title);
+	GameData::GetInstance().SetPoseCancel();
 	return true;
 }
 
@@ -59,6 +65,10 @@ void Title::Update()
 		m_isWaitFadeout = true;
 		NewGO<StageSelect>(0);
 		DeleteGO(this);
+
+	 	CSoundSource* se = new CSoundSource();
+		se->Init(L"Assets/sound/kettei.wav");
+		se->Play(false);
 	}
 	//m_player->SetPosition({ 0.0f,500.0f,0.0f });
 }

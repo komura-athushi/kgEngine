@@ -41,6 +41,5 @@ private:
 	float m_timer2 = 0.0f;
 	bool m_isPose = false;
 	OffScreen* m_offScreen = nullptr;
-	CSoundSource m_bgm;
 };
 

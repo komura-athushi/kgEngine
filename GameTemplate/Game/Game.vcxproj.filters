@@ -70,6 +70,7 @@
     <ClInclude Include="CollectionBook.h">
       <Filter>stageselect</Filter>
     </ClInclude>
+    <ClInclude Include="SoundDirector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="CollectionBook.cpp">
       <Filter>stageselect</Filter>
     </ClCompile>
+    <ClCompile Include="SoundDirector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">

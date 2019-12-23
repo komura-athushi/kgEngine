@@ -5,6 +5,8 @@
 #include "GameCamera.h"
 #include "Object/Obj.h"
 #include "StageSelect.h"
+#include "sound/SoundSource.h"
+
 Result::Result()
 {
 
@@ -37,6 +39,8 @@ bool Result::Start()
 	m_gameCamera = FindGO<GameCamera>();
 	m_gameCamera->SetPosition({ 0.0f,0.0f ,800.0f });
 	m_gameCamera->SetTarget(CVector3::Zero());
+
+
 	return true;
 }
 
@@ -91,6 +95,9 @@ void Result::TransScene()
 	if (Engine().GetPad(0).IsTrigger(enButtonA)) {
 		NewGO<StageSelect>(0);
 		DeleteGO(this);
+		CSoundSource* se = new CSoundSource();
+		se->Init(L"Assets/sound/kettei.wav");
+		se->Play(false);
 		if (m_gameData->GetisGameClear()) {
 			m_gameData->SetStageClear();
 		}

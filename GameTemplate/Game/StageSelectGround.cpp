@@ -13,12 +13,13 @@ StageSelectGround::~StageSelectGround()
 
 bool StageSelectGround::Start()
 {
-	m_model.Init(L"Resource/modelData/earth.cmo");
-	m_model.SetPosition(m_position);
-	m_model.SetRotation(m_rotation);
-	m_model.SetScale(CVector3::One());
-	m_model.UpdateWorldMatrix();
-	m_model.SetOffToonShader();
+	m_skinModelRender.Init(L"Resource/modelData/earth.cmo");
+	m_skinModelRender.SetPosition(m_position);
+	m_skinModelRender.SetRotation(m_rotation);
+	m_skinModelRender.SetScale(CVector3::One());
+	m_skinModelRender.UpdateWorldMatrix();
+	m_skinModelRender.SetOffToonShader();
+	m_currentPosition = m_position;
 	return true;
 
 }
@@ -27,7 +28,7 @@ void StageSelectGround::Update()
 {
 	Move();
 	Turn();
-	m_model.UpdateWorldMatrix();
+	m_skinModelRender.UpdateWorldMatrix();
 }
 
 void StageSelectGround::Move()
@@ -43,6 +44,8 @@ void StageSelectGround::Move()
 	moveSpeed.z = moveSpeed.y;
 	moveSpeed.y = 0.0f;
 	m_currentPosition += moveSpeed * moveSpeedMultiply;
+	int a = 0;
+	a++;
 }
 
 void StageSelectGround::Turn()
@@ -65,5 +68,5 @@ void StageSelectGround::Turn()
 	rot.SetRotationDeg(pos, Lengh * RotationSpeed);
 	//求めたクォータニオンを乗算する
 	m_rotation.Multiply(rot, m_rotation);
-	m_model.SetRotation(m_rotation);
+	m_skinModelRender.SetRotation(m_rotation);
 }

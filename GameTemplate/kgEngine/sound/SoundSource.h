@@ -165,6 +165,11 @@ public:
 	/// サウンドエンジンから呼ばれるので、ユーザーは使用しないでください。
 	/// </remarks>
 	void Update();
+	//削除する?
+	bool GetisDelete()
+	{
+		return m_isEnd;
+	}
 private:
 	void InitCommon();
 	//ストリーミング再生中の更新処理。
@@ -192,5 +197,6 @@ private:
 	FLOAT32 m_emitterAzimuths[INPUTCHANNELS];
 	FLOAT32 m_matrixCoefficients[INPUTCHANNELS * OUTPUTCHANNELS];
 	bool m_isAvailable = false;			//!<インスタンスが利用可能？
+	bool m_isEnd = false;									//ワンショット再生が終わったか？
 };
 

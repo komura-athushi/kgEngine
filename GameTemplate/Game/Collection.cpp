@@ -2,7 +2,7 @@
 #include "Collection.h"
 #include < locale.h >
 #include "StageSelect.h"
-
+#include "sound/SoundSource.h"
 Collection::Collection()
 {
 
@@ -130,6 +130,9 @@ void Collection::Draw()
 	if (Engine().GetPad(0).IsTrigger(enButtonB)) {
 		NewGO<StageSelect>(0);
 		DeleteGO(this);
+		CSoundSource* se = new CSoundSource();
+		se->Init(L"Assets/sound/kettei.wav");
+		se->Play(false);
 	}
 }
 

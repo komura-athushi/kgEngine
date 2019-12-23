@@ -1,4 +1,6 @@
 #pragma once
+
+
 class GameData;
 class Player;
 class GameCamera;
@@ -30,5 +32,6 @@ private:
 		EnResultScene_TransScene
 	};
 	EnResultScene m_resultScene = EnResultScene_MovePlayer;
+	
 };
 

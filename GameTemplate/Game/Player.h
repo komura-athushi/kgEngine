@@ -143,5 +143,6 @@ private:
 	int m_count2 = 0;
 	bool m_isDisplayFont = true;
 	bool m_isTitle = false;
+
 };
 

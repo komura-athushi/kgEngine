@@ -14,6 +14,8 @@
 #include "Result.h"
 #include "Title.h"
 #include "OffScreen.h"
+#include "SoundDirector.h"
+
 Game::Game()
 {
 
@@ -46,6 +48,8 @@ void Game::OnDestroy()
 
 bool Game::Start()
 {
+	const float bgmVolume = 0.4f;
+
 	m_gameData = &GetGameData();
 	wchar_t filePath[256];
 	swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber() ));
@@ -89,11 +93,21 @@ bool Game::Start()
 	m_gameData->SetPoseCancel();
 	m_gameData->SetScene(enScene_Stage);
 	m_offScreen = NewGO<OffScreen>(3);
-
-	wchar_t filePath2[256];
-	swprintf_s(filePath2, L"Assets/sound/stage%d.wav", int(m_gameData->GetStageNumber()));
-	m_bgm.InitStreaming(filePath2);
-	m_bgm.Play(true);
+	switch (m_gameData->GetStageNumber())
+	{
+	case enState_Stage1:
+		SoundData().SetBGM(enBGM_Stage1);
+		break;
+	case enState_Stage2:
+		SoundData().SetBGM(enBGM_Stage2);
+		break;
+	case enState_Stage3:
+		SoundData().SetBGM(enBGM_Stage3);
+		break;
+	default:
+		break;
+	}
+	
 	return true;
 }
 

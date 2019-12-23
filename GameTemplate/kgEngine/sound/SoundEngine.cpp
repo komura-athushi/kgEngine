@@ -192,6 +192,9 @@ void CSoundEngine::Update( )
 		if (soundSource->IsPlaying() == false) {
 			//Ä¶I—¹B
 			it = RemoveSoundSource(*it);
+			if (soundSource->GetisDelete()) {
+				delete soundSource;
+			}
 		}
 		else {
 			it++;

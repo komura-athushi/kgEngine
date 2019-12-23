@@ -47,5 +47,6 @@ private:
 	CMatrix m_worldMatrix;
 	int m_number = 0;
 	StageSelectGround* m_stageSelectGround = nullptr;
+	bool m_isFind = false;
 };
 
