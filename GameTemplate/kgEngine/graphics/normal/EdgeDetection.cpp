@@ -13,6 +13,9 @@ EdgeDetection::EdgeDetection()
 	m_psShader.Load("Assets/shader/edgedelection.fx", "PSEdge", Shader::EnType::PS);
 	m_vsShader.Load("Assets/shader/edgedelection.fx", "VSXEdge", Shader::EnType::VS);
 
+	m_vs.Load("Assets/shader/bloom.fx", "VSMain", Shader::EnType::VS);
+	m_psFinal.Load("Assets/shader/bloom.fx", "PSFinal", Shader::EnType::PS);
+
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
 	desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
@@ -20,6 +23,21 @@ EdgeDetection::EdgeDetection()
 	desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateSamplerState(&desc, &m_samplerState);
+
+
+	CD3D11_DEFAULT defaultSettings;
+	//デフォルトセッティングで初期化する。
+	CD3D11_BLEND_DESC blendDesc(defaultSettings);
+	auto device = Engine().GetGraphicsEngine().GetD3DDevice();
+
+	device->CreateBlendState(&blendDesc, &m_disableBlendState);
+
+	//最終合成用のブレンドステートを作成する。
+	//最終合成は加算合成。
+	blendDesc.RenderTarget[0].BlendEnable = true;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_COLOR;
+	device->CreateBlendState(&blendDesc, &m_finalBlendState);
 }
 
 EdgeDetection::~EdgeDetection()
@@ -53,4 +71,25 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 	
 	//フルスクリーン描画。
 	postEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vsShader, m_psShader);
+}
+
+void EdgeDetection::Draw(PostEffect& postEffect)
+{
+	auto mainRT = Engine().GetGraphicsEngine().GetMainRenderTarget();
+	Engine().GetGraphicsEngine().ChangeRenderTarget(mainRT, mainRT->GetViewport());
+
+	auto deviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
+
+	//合成したボケテクスチャのアドレスをt0レジスタに設定する。
+	auto srv = m_edgeMapRT.GetRenderTargetSRV();
+	deviceContext->PSSetShaderResources(0, 1, &srv);
+
+	//加算合成用のブレンディングステートを設定する。
+	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	deviceContext->OMSetBlendState(m_finalBlendState, blendFactor, 0xffffffff);
+	//フルスクリーン描画。
+	postEffect.DrawFullScreenQuadPrimitive(deviceContext, m_vs, m_psFinal);
+
+	//ブレンディングステートを戻す。
+	deviceContext->OMSetBlendState(m_disableBlendState, blendFactor, 0xffffffff);
 }

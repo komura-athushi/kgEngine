@@ -271,6 +271,8 @@ void GraphicsEngine::PostRender()
 	//ポストエフェクトの描画。
 	m_postEffect->Draw();
 
+	m_edgeDelection->Draw(*m_postEffect);
+
 	//レンダリングターゲットをフレームバッファに戻す。
 	ChangeRenderTarget(
 		m_frameBufferRenderTargetView,
@@ -284,3 +286,4 @@ void GraphicsEngine::PostRender()
 	m_frameBufferRenderTargetView->Release();
 	m_frameBufferDepthStencilView->Release();
 }
+
