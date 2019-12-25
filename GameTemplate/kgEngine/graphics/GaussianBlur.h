@@ -50,6 +50,21 @@ public:
 	{
 		return m_renderTarget[enRenderTarget_YBlur].GetTextureFormat();
 	}
+	//解像度変更するお
+	void SetResolution(unsigned int h, unsigned int w, DXGI_FORMAT texFormat)
+	{
+		m_renderTarget[enRenderTarget_XBlur].Create(
+			h,		//横の解像度を半分にする。
+			w,
+			texFormat);
+
+		//Yブラー用のレンダリングターゲットを作成。
+		m_renderTarget[enRenderTarget_YBlur].Create(
+			h,		//横の解像度を半分にする。
+			w,		//縦の解像度を半分にする。
+			texFormat
+		);
+	}
 private:
 	/// <summary>
 	/// ブラーの重みの更新。

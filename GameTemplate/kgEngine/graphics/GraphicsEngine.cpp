@@ -170,6 +170,7 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_shadowMap = new ShadowMap;
 	m_normalMap = new NormalMap;
 	m_edgeDelection = new EdgeDetection;
+	m_edgeDelection->InitGaussian(m_normalMap);
 	//Sprite‰Šú‰»
 	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_pd3dDevice, L"Assets/Font/myfile.spritefont");
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_pd3dDeviceContext);

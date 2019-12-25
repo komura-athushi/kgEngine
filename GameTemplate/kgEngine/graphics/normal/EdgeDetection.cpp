@@ -38,6 +38,20 @@ EdgeDetection::EdgeDetection()
 	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
 	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_COLOR;
 	device->CreateBlendState(&blendDesc, &m_finalBlendState);
+
+	
+}
+
+void EdgeDetection::InitGaussian(NormalMap* normalMap)
+{
+	//輝度テクスチャをぼかすためのガウシアンブラーを初期化する。
+	ID3D11ShaderResourceView* srcBlurTexture = normalMap->GetNormalMapSRV();
+	
+	m_gaussianBlur.Init(srcBlurTexture, 0.5f);
+
+	m_gaussianBlur.SetResolution(FRAME_BUFFER_W,
+		FRAME_BUFFER_H,
+		DXGI_FORMAT_R16G16B16A16_FLOAT);
 }
 
 EdgeDetection::~EdgeDetection()
@@ -47,6 +61,8 @@ EdgeDetection::~EdgeDetection()
 
 void EdgeDetection::EdgeRender(PostEffect& postEffect)
 {
+	m_gaussianBlur.Execute(postEffect);
+
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	//レンダリングターゲットを切り替える。
 	ID3D11RenderTargetView* rts[] = {
@@ -64,13 +80,15 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 	m_edgeMapRT.ClearRenderTarget(clearColor);
 
 	ID3D11ShaderResourceView* srvArray[]{
-		Engine().GetGraphicsEngine().GetNormalMap()->GetNormalMapSRV()
+		m_gaussianBlur.GetResultTextureSRV()
 	};
 	//引数がポインタのポインタ、t2なので引数を2、1にしてる
 	d3dDeviceContext->PSSetShaderResources(0, 1, srvArray);
 	
 	//フルスクリーン描画。
 	postEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vsShader, m_psShader);
+
+	
 }
 
 void EdgeDetection::Draw(PostEffect& postEffect)

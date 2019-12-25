@@ -80,7 +80,7 @@ float4 PSEdge(PS_EdgeInput In) : SV_Target0
 	Normal += normalTexture.Sample(Sampler, In.tex8).xyz;
 
 	float4 Color;
-	if (length(Normal) >= 3.0f) {
+	if (length(Normal) >= 0.3f) {
 		Color = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 	else {

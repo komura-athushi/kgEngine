@@ -5,6 +5,7 @@
 #include "graphics/PostEffect.h"
 
 class PostEffect;
+class NormalMap;
 //エッジ検出をばっこりしていくぅ～
 class EdgeDetection
 {
@@ -14,6 +15,7 @@ public:
 	void EdgeRender(PostEffect& postEffect);
 	//合成していく
 	void Draw(PostEffect& postEffect);
+	void InitGaussian(NormalMap* normalMap);
 private:
 	RenderTarget m_edgeMapRT;								//法線を描画するレンダリングターゲット
 	ID3D11SamplerState* m_samplerState = nullptr;		//サンプラステート。
@@ -23,6 +25,6 @@ private:
 	Shader m_psFinal;					//最終合成用のピクセルシェーダー。
 	ID3D11BlendState* m_finalBlendState = nullptr;		//最終合成用のブレンディングステート。
 	ID3D11BlendState* m_disableBlendState = nullptr;	//アルファブレンディングを無効にするブレンディングステート。
-
+	GaussianBlur m_gaussianBlur;
 };
 

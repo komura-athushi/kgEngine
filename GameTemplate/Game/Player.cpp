@@ -76,7 +76,7 @@ void Player::Update()
 	pos = pos * m_radius * 1.2f;
 	pos = m_position - pos;
 	m_skinModelRender2.SetPosition(pos);
-	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x,m_position.y + 300.0f,m_position.z + 300.0f));
+	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x + 200.0f,m_position.y + 300.0f,m_position.z + 300.0f));
 	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position);
 	m_skinModelRender.UpdateWorldMatrix();
 	m_skinModelRender2.UpdateWorldMatrix();
