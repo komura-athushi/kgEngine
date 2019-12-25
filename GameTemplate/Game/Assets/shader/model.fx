@@ -91,6 +91,12 @@ struct PSInput_ShadowMap {
 	float4 Position 			: SV_POSITION;	//座標。
 };
 
+//法線マップ用のピクセルシェーダーへの入力構造体
+struct PSInput_NormalMap {
+	float4 Position				: SV_POSITION;
+	float3 Normal				: NORMAL;
+};
+
 /*!
  * @brief	ピクセルシェーダーの入力。
  */
@@ -359,7 +365,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 			//シャドウマップに書き込まれている深度値を取得。
 			float zInShadowMap = shadowMap.Sample(Sampler, shadowMapUV);
 
-			if (zInLVP > zInShadowMap + 0.01f) {
+			if (zInLVP > zInShadowMap + 0.001f) {
 				//影が落ちているので、光を弱くする
 				lig *= 0.5f;
 			}
@@ -432,3 +438,74 @@ float4 PSMain_ShadowMap(PSInput_ShadowMap In) : SV_Target0
 	//射影空間でのZ値を返す。
 	return In.Position.z / In.Position.w;
 }
+
+
+
+
+// <summary>
+/// スキン無しシャドウマップ生成用の頂点シェーダー。
+/// </summary>
+PSInput_NormalMap VSMain_NormalMap(VSInputNmTxVcTangent In)
+{
+	PSInput_NormalMap psInput = (PSInput_NormalMap)0;
+	//ライトプロジェクション行列に変換している
+	float4 pos = mul(mWorld, In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	psInput.Normal = In.Normal / 2.0f + 1.0f / 2.0f;
+	return psInput;
+}
+// <summary>
+/// スキン無しシャドウマップ生成用の頂点シェーダー、インスタンシング用
+/// </summary>
+PSInput_NormalMap VSMainInstancing_NormalMap(VSInputNmTxVcTangent In, uint instanceID : SV_InstanceID)
+{
+	PSInput_NormalMap psInput = (PSInput_NormalMap)0;
+	//ライトプロジェクション行列に変換している
+	float4 pos = mul(instanceMatrix[instanceID], In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	psInput.Normal = In.Normal / 2.0f + 1.0f / 2.0f;
+	return psInput;
+}
+// <summary>
+/// スキンありシャドウマップ生成用の頂点シェーダー。
+/// </summary>
+PSInput_NormalMap VSMainSkin_NormalMap(VSInputNmTxWeights In)
+{
+	PSInput_NormalMap psInput = (PSInput_NormalMap)0;
+	float4x4 skinning = CalcSkinMatrix(In);
+	float4 pos = mul(skinning, In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	psInput.Normal = In.Normal / 2.0f + 1.0f / 2.0f;
+	return psInput;
+}
+// <summary>
+/// スキンありシャドウマップ生成用の頂点シェーダー、インスタンシング用
+/// </summary>
+PSInput_NormalMap VSMainSkinInstancing_NormalMap(VSInputNmTxWeights In, uint instanceID : SV_InstanceID)
+{
+	PSInput_NormalMap psInput = (PSInput_NormalMap)0;
+	float4x4 skinning = CalcSkinMatrix(In);
+	skinning = mul(instanceMatrix[instanceID], skinning);
+	float4 pos = mul(skinning, In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	psInput.Normal = In.Normal / 2.0f + 1.0f / 2.0f;
+	return psInput;
+}
+
+/// <summary>
+/// ピクセルシェーダーのエントリ関数。
+/// </summary>
+float4 PSMain_NormalMap(PSInput_NormalMap In) : SV_Target0
+{
+	//射影空間でのZ値を返す。
+	return float4(In.Normal.x,In.Normal.y,In.Normal.z,1.0f);
+}
+

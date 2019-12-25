@@ -292,9 +292,6 @@
     <None Include="Assets\modelData\sphere\sphere2.FBX">
       <Filter>Asset\modelData\sphere</Filter>
     </None>
-    <None Include="Assets\modelData\sphere\sphere1.FBX">
-      <Filter>Asset\modelData\sphere</Filter>
-    </None>
     <None Include="Assets\modelData\obj\thumbtack\othumbtack_blue.FBX">
       <Filter>Asset\modelData\obj\game</Filter>
     </None>
@@ -448,5 +445,10 @@
     <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
+      <Filter>Asset\modelData\sphere</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

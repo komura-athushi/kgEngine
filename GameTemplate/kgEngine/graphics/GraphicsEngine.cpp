@@ -1,6 +1,7 @@
 #include "KGstdafx.h"
 #include "GraphicsEngine.h"
 #include "shadow/kgShadowMap.h"
+#include "normal\NormalMap.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -93,14 +94,17 @@ void GraphicsEngine::Init(HWND hWnd)
 		D3D_FEATURE_LEVEL_10_1,
 		D3D_FEATURE_LEVEL_10_0,
 	};
-
+	UINT createDeviceFlags = 0;
+#ifdef _DEBUG
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
 	//D3Dデバイスとスワップチェインを作成する。
 	D3D11CreateDeviceAndSwapChain(
 		NULL,											//NULLでいい。
 		D3D_DRIVER_TYPE_HARDWARE,						//D3Dデバイスがアクセスするドライバーの種類。
 														//基本的にD3D_DRIVER_TYPE_HARDWAREを指定すればよい。
 		NULL,											//NULLでいい。
-		0,												//０でいい。
+		createDeviceFlags,												//０でいい。
 		featureLevels,									//D3Dデバイスのターゲットとなる機能セットを指定する。
 														//今回のサンプルはDirectX10以上をサポートするので、
 														//それらを含むD3D_FEATURE_LEVELの配列を渡す。
@@ -163,6 +167,7 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_pd3dDeviceContext->RSSetViewports(1, &viewport);
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
 	m_shadowMap = new ShadowMap;
+	m_normalMap = new NormalMap;
 
 	//Sprite初期化
 	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_pd3dDevice, L"Assets/Font/myfile.spritefont");
@@ -217,6 +222,12 @@ void GraphicsEngine::ShadowMapRender()
 	//oldDepthStencilView->Release();
 
 
+}
+
+void GraphicsEngine::NormalMapRender()
+{
+	m_normalMap->RenderNormalMap();
+	ChangeRenderTarget(&m_mainRenderTarget, m_mainRenderTarget.GetViewport());
 }
 
 void GraphicsEngine::ChangeRenderTarget(RenderTarget* renderTarget, D3D11_VIEWPORT* viewport)

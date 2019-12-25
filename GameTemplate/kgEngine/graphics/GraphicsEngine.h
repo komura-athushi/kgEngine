@@ -3,6 +3,8 @@
 #include "PostEffect.h"
 #include "2D/Sprite.h"
 class ShadowMap;
+class NormalMap;
+
 /*!
  *@brief	グラフィックスエンジン。
  */
@@ -13,6 +15,7 @@ enum EnRenderMode {
 	enRenderMode_Invalid,			//不正なレンダリングモード。
 	enRenderMode_CreateShadowMap,	//シャドウマップ生成。
 	enRenderMode_Normal,			//通常レンダリング。
+	enRenderMode_NormalMap,			//法線マップ生成
 	enRenderMode_Num,				//レンダリングモードの数。
 };
 class GraphicsEngine:Noncopyable
@@ -53,12 +56,19 @@ public:
 	void EndRender();
 	//シャドウマップを描画
 	void ShadowMapRender();
+	//法線マップを描画
+	void NormalMapRender();
 	//ポストレンダリング
 	void PostRender();
 	//シャドウマップを取得
 	ShadowMap* GetShadowMap()
 	{
 		return m_shadowMap;
+	}
+	//法線マップを取得
+	NormalMap* GetNormalMap()
+	{
+		return m_normalMap;
 	}
 	//Sprite取得
 	DirectX::SpriteBatch* GetSpriteBatch() const
@@ -118,7 +128,8 @@ private:
 	ID3D11RasterizerState*	m_rasterizerState = NULL;	//ラスタライザステート。
 	ID3D11Texture2D*		m_depthStencil = NULL;		//デプスステンシル。
 	ID3D11DepthStencilView* m_depthStencilView = NULL;	//デプスステンシルビュー。
-	ShadowMap*				m_shadowMap;
+	ShadowMap*				m_shadowMap = nullptr;		//シャドウマップ
+	NormalMap*				m_normalMap = nullptr;		//法線マップ
 	RenderTarget			m_mainRenderTarget;			//!<メインレンダリングターゲット。
 	CSprite m_copyMainRtToFrameBufferSprite;
 	//Sprite

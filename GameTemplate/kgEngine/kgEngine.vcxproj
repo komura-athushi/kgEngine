@@ -126,6 +126,8 @@
     <ClCompile Include="graphics\Camera.cpp" />
     <ClCompile Include="graphics\GaussianBlur.cpp" />
     <ClCompile Include="graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="graphics\normal\EdgeDetection.cpp" />
+    <ClCompile Include="graphics\normal\NormalMap.cpp" />
     <ClCompile Include="graphics\PostEffect.cpp" />
     <ClCompile Include="graphics\RenderTarget.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
@@ -177,6 +179,8 @@
     <ClInclude Include="graphics\Camera.h" />
     <ClInclude Include="graphics\GaussianBlur.h" />
     <ClInclude Include="graphics\GraphicsEngine.h" />
+    <ClInclude Include="graphics\normal\EdgeDetection.h" />
+    <ClInclude Include="graphics\normal\NormalMap.h" />
     <ClInclude Include="graphics\PostEffect.h" />
     <ClInclude Include="graphics\RenderTarget.h" />
     <ClInclude Include="graphics\Shader.h" />

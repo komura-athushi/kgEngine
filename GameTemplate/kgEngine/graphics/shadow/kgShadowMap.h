@@ -1,6 +1,6 @@
 #pragma once
 #include "Noncopyable.h"
-#include "..//RenderTarget.h"
+#include "graphics/RenderTarget.h"
 class SkinModel;
 class ShadowMap
 {

@@ -45,6 +45,8 @@ bool Player::Start()
 	m_skinModelRender2.Init(L"Resource/modelData/zunko.cmo");
 	m_skinModelRender2.SetActive(true);
 	m_skinModelRender2.SetScale(CVector3::One() * 0.5f);
+	m_skinModelRender2.SetShadowCaster(true);
+	m_skinModelRender2.SetShadowReceiver(true);
 	m_gamedata = &GetGameData();
 	return true;
 }
@@ -74,7 +76,7 @@ void Player::Update()
 	pos = pos * m_radius * 1.2f;
 	pos = m_position - pos;
 	m_skinModelRender2.SetPosition(pos);
-	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x,m_position.y + 500.0f,m_position.z + 500.0f));
+	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x,m_position.y + 300.0f,m_position.z + 300.0f));
 	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position);
 	m_skinModelRender.UpdateWorldMatrix();
 	m_skinModelRender2.UpdateWorldMatrix();

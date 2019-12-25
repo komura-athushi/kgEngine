@@ -19,6 +19,7 @@ bool StageSelectGround::Start()
 	m_skinModelRender.SetScale(CVector3::One());
 	m_skinModelRender.UpdateWorldMatrix();
 	m_skinModelRender.SetOffToonShader();
+	m_skinModelRender.SetShadowCaster(false);
 	m_currentPosition = m_position;
 	return true;
 

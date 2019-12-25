@@ -16,6 +16,9 @@ protected:
 	Shader m_vsShadowMap;			//シャドウマップ生成用の頂点シェーダー。
 	Shader m_vsShadowMapInstancing;			//シャドウマップ生成用の頂点シェーダー、インスタンシング用
 	Shader m_psShadowMap;		//シャドウマップ生成用のピクセルシェーダー。
+	Shader m_vsNormalMap;			//シャドウマップ生成用の頂点シェーダー。
+	Shader m_vsNormalMapInstancing;			//シャドウマップ生成用の頂点シェーダー、インスタンシング用
+	Shader m_psNormalMap;		//シャドウマップ生成用のピクセルシェーダー。
 	bool isSkining;
 	ID3D11ShaderResourceView* m_albedoTex = nullptr;
 	EnRenderMode m_renderMode = enRenderMode_Invalid;	//レンダリングモード。
@@ -28,6 +31,7 @@ public:
 		m_pPSShader = &m_psShader;
 		//todo シャドウマップ用のシェーダーをロード。
 		m_psShadowMap.Load("Assets/shader/model.fx", "PSMain_ShadowMap", Shader::EnType::PS);
+		m_psNormalMap.Load("Assets/shader/model.fx", "PSMain_NormalMap", Shader::EnType::PS);
 	}
 	virtual ~ModelEffect()
 	{
@@ -79,6 +83,9 @@ public:
 		//スキン無しシャドウマップ
 		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMain_ShadowMap", Shader::EnType::VS);
 		m_vsShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainInstancing_ShadowMap", Shader::EnType::VS);
+
+		m_vsNormalMap.Load("Assets/shader/model.fx", "VSMain_NormalMap", Shader::EnType::VS);
+		m_vsNormalMapInstancing.Load("Assets/shader/model.fx", "VSMainInstancing_NormalMap", Shader::EnType::VS);
 		isSkining = false;
 	}
 };
@@ -97,6 +104,10 @@ public:
 		//スキンありシャドウマップ
 		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMainSkin_ShadowMap", Shader::EnType::VS);
 		m_vsShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainSkinInstancing_ShadowMap", Shader::EnType::VS);
+
+		m_vsNormalMap.Load("Assets/shader/model.fx", "VSMainSkin_NormalMap", Shader::EnType::VS);
+		m_vsNormalMapInstancing.Load("Assets/shader/model.fx", "VSMainSkinInstancing_NormalMap", Shader::EnType::VS);
+
 		m_pVSShader = &m_vsShader;
 		isSkining = true;
 	}

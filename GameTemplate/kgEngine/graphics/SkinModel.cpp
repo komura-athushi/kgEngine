@@ -3,6 +3,7 @@
 #include "SkinModelDataManager.h"
 #include "SkinModelEffect.h"
 #include "shadow/kgShadowMap.h"
+#include "normal/NormalMap.h"
 
 SkinModel::SkinModel()
 {
@@ -221,6 +222,11 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 	if (m_isInstancing && m_numInstance == 0) {
 		return;
 	}
+
+	if (renderMode == enRenderMode_Normal) {
+		Engine().GetGraphicsEngine().GetNormalMap()->RegistSkinModel(this);
+	}
+
 	DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
 
 	ID3D11DeviceContext* d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
@@ -237,7 +243,7 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 	//定数バッファの内容を更新。
 	SVSConstantBuffer vsCb;
 	vsCb.mWorld = m_worldMatrix;
-	if (renderMode == enRenderMode_Normal) {
+	if (renderMode == enRenderMode_Normal || renderMode == enRenderMode_NormalMap) {
 		vsCb.mProj = projMatrix;
 		vsCb.mView = viewMatrix;
 	}
