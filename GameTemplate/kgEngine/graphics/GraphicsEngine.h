@@ -4,6 +4,7 @@
 #include "2D/Sprite.h"
 class ShadowMap;
 class NormalMap;
+class EdgeDetection;
 
 /*!
  *@brief	グラフィックスエンジン。
@@ -58,6 +59,8 @@ public:
 	void ShadowMapRender();
 	//法線マップを描画
 	void NormalMapRender();
+	//エッジ検出
+	void EdgeDelectionRender();
 	//ポストレンダリング
 	void PostRender();
 	//シャドウマップを取得
@@ -130,6 +133,7 @@ private:
 	ID3D11DepthStencilView* m_depthStencilView = NULL;	//デプスステンシルビュー。
 	ShadowMap*				m_shadowMap = nullptr;		//シャドウマップ
 	NormalMap*				m_normalMap = nullptr;		//法線マップ
+	EdgeDetection*			m_edgeDelection = nullptr;  //エッジ検出
 	RenderTarget			m_mainRenderTarget;			//!<メインレンダリングターゲット。
 	CSprite m_copyMainRtToFrameBufferSprite;
 	//Sprite

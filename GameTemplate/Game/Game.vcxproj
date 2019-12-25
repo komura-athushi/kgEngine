@@ -342,9 +342,9 @@
     <None Include="Assets\modelData\obj\smartphone\osmartphone.FBX">
       <FileType>Document</FileType>
     </None>
-    <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
+    <None Include="Assets\modelData\sphere\sphere1.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
+    </None>
     <None Include="Assets\modelData\obj\obox3.FBX">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

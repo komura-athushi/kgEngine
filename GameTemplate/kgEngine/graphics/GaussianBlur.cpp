@@ -63,7 +63,7 @@ void GaussianBlur::UpdateWeights()
 	float total = 0;
 	for (int i = 0; i < NUM_WEIGHTS; i++) {
 		m_blurParam.weights[i] = expf(-0.5f * (float)(i * i) / m_blurIntensity);
-		total += 2.0f * m_blurParam.weights[i];
+		total += 2.0f * m_blurParam .weights[i];
 
 	}
 	// 規格化。重みのトータルが1.0になるように、全体の重みで除算している。

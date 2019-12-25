@@ -2,6 +2,7 @@
 #include "GraphicsEngine.h"
 #include "shadow/kgShadowMap.h"
 #include "normal\NormalMap.h"
+#include "normal\EdgeDetection.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -168,7 +169,7 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
 	m_shadowMap = new ShadowMap;
 	m_normalMap = new NormalMap;
-
+	m_edgeDelection = new EdgeDetection;
 	//Sprite‰Šú‰»
 	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_pd3dDevice, L"Assets/Font/myfile.spritefont");
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_pd3dDeviceContext);
@@ -227,6 +228,12 @@ void GraphicsEngine::ShadowMapRender()
 void GraphicsEngine::NormalMapRender()
 {
 	m_normalMap->RenderNormalMap();
+	ChangeRenderTarget(&m_mainRenderTarget, m_mainRenderTarget.GetViewport());
+}
+
+void GraphicsEngine::EdgeDelectionRender()
+{
+	m_edgeDelection->EdgeRender(*m_postEffect);
 	ChangeRenderTarget(&m_mainRenderTarget, m_mainRenderTarget.GetViewport());
 }
 

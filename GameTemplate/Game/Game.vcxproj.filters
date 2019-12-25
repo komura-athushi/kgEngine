@@ -445,10 +445,8 @@
     <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\sphere\sphere1.FBX">
+    <None Include="Assets\modelData\sphere\sphere1.FBX">
       <Filter>Asset\modelData\sphere</Filter>
-    </MeshContentTask>
+    </None>
   </ItemGroup>
 </Project>
