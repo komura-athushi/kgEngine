@@ -4,10 +4,11 @@
 #include "SkinModelEffect.h"
 #include "shadow/kgShadowMap.h"
 #include "normal/NormalMap.h"
+#include "depthvalue\DepthValueMap.h"
 
 SkinModel::SkinModel()
 {
-	m_dirLight.direction[0] = { 0.0f, -0.707f, -0.707f, 0.0f };
+	m_dirLight.direction[0] = { 0.577f, -0.577f, -0.577f, 0.0f };
 	m_dirLight.lightcolor[0] = { 0.5f, 0.5f, 0.5f, 1.0f };
 
 	m_dirLight.direction[1] = { -0.707f, -0.707f, 0.0f, 0.0f };
@@ -225,6 +226,7 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 
 	if (renderMode == enRenderMode_Normal) {
 		Engine().GetGraphicsEngine().GetNormalMap()->RegistSkinModel(this);
+		Engine().GetGraphicsEngine().GetDepthValueMap()->RegistSkinModel(this);
 	}
 
 	DirectX::CommonStates state(Engine().GetGraphicsEngine().GetD3DDevice());
@@ -243,7 +245,7 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 	//定数バッファの内容を更新。
 	SVSConstantBuffer vsCb;
 	vsCb.mWorld = m_worldMatrix;
-	if (renderMode == enRenderMode_Normal || renderMode == enRenderMode_NormalMap) {
+	if (renderMode == enRenderMode_Normal || renderMode == enRenderMode_NormalMap || renderMode == enRenderMode_DepthValueMap) {
 		vsCb.mProj = projMatrix;
 		vsCb.mView = viewMatrix;
 	}

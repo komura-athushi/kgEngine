@@ -37,7 +37,7 @@ bool Result::Start()
 	m_player = FindGO<Player>();
 	m_player->SetPosition(CVector3::Zero());
 	m_gameCamera = FindGO<GameCamera>();
-	m_gameCamera->SetPosition({ 0.0f,0.0f ,800.0f });
+	m_gameCamera->SetPosition({ 0.0f,0.0f ,300.0f });
 	m_gameCamera->SetTarget(CVector3::Zero());
 
 
@@ -67,7 +67,7 @@ void Result::MovePlayer()
 {
 	const float Time = 2.0f;
 	const float Multiply = 2.0f;
-	const float Disance = 120.0f;
+	const float Disance = 60.0f;
 
 	if (m_timer <= Time) {
 		m_timer += GameTime().GetFrameDeltaTime();

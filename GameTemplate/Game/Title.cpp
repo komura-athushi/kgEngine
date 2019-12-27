@@ -71,6 +71,7 @@ void Title::Update()
 		se->Play(false);
 	}
 	//m_player->SetPosition({ 0.0f,500.0f,0.0f });
+
 }
 
 void Title::PostRender()

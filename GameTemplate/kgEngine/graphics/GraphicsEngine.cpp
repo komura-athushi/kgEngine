@@ -3,6 +3,7 @@
 #include "shadow/kgShadowMap.h"
 #include "normal\NormalMap.h"
 #include "normal\EdgeDetection.h"
+#include "depthvalue\DepthValueMap.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -169,6 +170,7 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
 	m_shadowMap = new ShadowMap;
 	m_normalMap = new NormalMap;
+	m_depthValueMao = new DepthValueMap;
 	m_edgeDelection = new EdgeDetection;
 	m_edgeDelection->InitGaussian(m_normalMap);
 	//Sprite初期化
@@ -232,6 +234,12 @@ void GraphicsEngine::NormalMapRender()
 	ChangeRenderTarget(&m_mainRenderTarget, m_mainRenderTarget.GetViewport());
 }
 
+void GraphicsEngine::DepthValueMapRender()
+{
+	m_depthValueMao->RenderDepthValueMap();
+	ChangeRenderTarget(&m_mainRenderTarget, m_mainRenderTarget.GetViewport());
+}
+
 void GraphicsEngine::EdgeDelectionRender()
 {
 	m_edgeDelection->EdgeRender(*m_postEffect);
@@ -272,7 +280,9 @@ void GraphicsEngine::PostRender()
 	//ポストエフェクトの描画。
 	m_postEffect->Draw();
 
-	m_edgeDelection->Draw(*m_postEffect);
+	if (m_isEdge) {
+		m_edgeDelection->Draw(*m_postEffect);
+	}
 
 	//レンダリングターゲットをフレームバッファに戻す。
 	ChangeRenderTarget(

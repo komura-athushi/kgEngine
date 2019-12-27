@@ -9,7 +9,7 @@ public:
 	OffScreen();
 	~OffScreen();
 	bool Start() override;
-	void Draw() override;
+	void PostRender() override;
 	void SetSkinModel(SkinModel* skinModel)
 	{
 		m_skinModel = skinModel;

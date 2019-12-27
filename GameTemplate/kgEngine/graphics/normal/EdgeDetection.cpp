@@ -1,6 +1,7 @@
 #include "KGstdafx.h"
 #include "EdgeDetection.h"
 #include "NormalMap.h"
+#include "../depthvalue/DepthValueMap.h"
 
 EdgeDetection::EdgeDetection()
 {
@@ -47,7 +48,7 @@ void EdgeDetection::InitGaussian(NormalMap* normalMap)
 	//輝度テクスチャをぼかすためのガウシアンブラーを初期化する。
 	ID3D11ShaderResourceView* srcBlurTexture = normalMap->GetNormalMapSRV();
 	
-	m_gaussianBlur.Init(srcBlurTexture, 0.5f);
+	m_gaussianBlur.Init(srcBlurTexture, 0.0001f);
 
 	m_gaussianBlur.SetResolution(FRAME_BUFFER_W,
 		FRAME_BUFFER_H,
@@ -85,6 +86,10 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 	//引数がポインタのポインタ、t2なので引数を2、1にしてる
 	d3dDeviceContext->PSSetShaderResources(0, 1, srvArray);
 	
+	//深度値のテクスチャをt1に設定する
+	auto srv2 = Engine().GetGraphicsEngine().GetDepthValueMap()->GetDepthValueMapSRV();
+	d3dDeviceContext->PSSetShaderResources(1, 1, &srv2);
+
 	//フルスクリーン描画。
 	postEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vsShader, m_psShader);
 
@@ -101,6 +106,9 @@ void EdgeDetection::Draw(PostEffect& postEffect)
 	//合成したボケテクスチャのアドレスをt0レジスタに設定する。
 	auto srv = m_edgeMapRT.GetRenderTargetSRV();
 	deviceContext->PSSetShaderResources(0, 1, &srv);
+
+	
+
 
 	//加算合成用のブレンディングステートを設定する。
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };

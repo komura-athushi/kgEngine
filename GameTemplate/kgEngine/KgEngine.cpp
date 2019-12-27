@@ -145,6 +145,8 @@ void CEngine::Update()
 
 	m_graphicsEngine->NormalMapRender();
 
+	m_graphicsEngine->DepthValueMapRender();
+
 	m_graphicsEngine->EdgeDelectionRender();
 
 	m_graphicsEngine->PostRender();

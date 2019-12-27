@@ -4,6 +4,8 @@
 #include "Object/Obj.h"
 #include "math/kgBox.h"
 #include "GameData.h"
+#include "sound\SoundSource.h"
+
 Player::Player()
 {
 	
@@ -76,7 +78,7 @@ void Player::Update()
 	pos = pos * m_radius * 1.2f;
 	pos = m_position - pos;
 	m_skinModelRender2.SetPosition(pos);
-	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x + 200.0f,m_position.y + 300.0f,m_position.z + 300.0f));
+	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x + 300.0f,m_position.y + 300.0f,m_position.z + 300.0f));
 	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position);
 	m_skinModelRender.UpdateWorldMatrix();
 	m_skinModelRender2.UpdateWorldMatrix();
@@ -148,6 +150,7 @@ void Player::Move()
 	m_movespeedmultiply = 5.0f * (m_radius / m_standardSize) * 0.9f;
 	//移動速度減衰
 	const float MoveSpeedAtten = 0.98f;
+	const float MoveSpeedAtten2 = 0.3f;
 	//重力
 	const float GravityMoveSpeed = 800.0f;
 	//ジャンプ速度
@@ -159,7 +162,7 @@ void Player::Move()
 	float MoveSpeedY = 0.0f;
 	const float TimeLimit = 0.4f;
 	const int CountLimit = 5;
-
+	
 	CVector3 Stick = CVector3::Zero();
 	//両方のスティックが入力されていたら
 	if (m_gamecamera->GetStateStick() == enStick_EnterStickBoth) {
@@ -221,8 +224,35 @@ void Player::Move()
 	else {
 		frontxz *= Stick.y;
 		rightxz *= Stick.x;
-		m_movespeed += frontxz * m_movespeedmultiply;
-		m_movespeed += rightxz * m_movespeedmultiply;
+		CVector3 addMoveSpeed = (frontxz + rightxz);
+		CVector3 moveSpeed = m_movespeed;
+		moveSpeed.y = 0.0f;
+		addMoveSpeed.y = 0.0f;
+ 		if (!m_isBrake && 
+			moveSpeed.LengthSq() >= ( m_movespeedmultiply * 50.0f ) * (m_movespeedmultiply * 50.0f) &&
+			addMoveSpeed.LengthSq() >= 0.6f) {
+
+			CVector3 addMove = addMoveSpeed;
+			CVector3 move = moveSpeed;
+			addMove.Normalize();
+			move.Normalize();
+			float angle = addMove.Dot(move);
+
+			//float angle = fabs(atan2f(addMove.x, addMove.z));
+			//float angle2 = fabs(atan2f(move.x, move.y));
+			if (fabs(acosf(angle)) >= CMath::PI * 0.7f) {
+				m_movespeed *= MoveSpeedAtten2;
+				CSoundSource* se = new CSoundSource();
+				se->Init(L"Assets/sound/brake.wav");
+				se->Play(false);
+				se->SetVolume(0.7f);
+				m_isBrake = true;
+			}
+		}
+		else {
+			m_isBrake = false;
+		}
+		m_movespeed += addMoveSpeed * m_movespeedmultiply;
 	}
 	//m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
 	//if (m_characon.IsOnGround()) {
@@ -255,8 +285,8 @@ void Player::Move()
 			CVector3 vt = Normal * t;
 			CVector3 InversionSpeed = CVector3(-m_movespeed.x, 0.0f, -m_movespeed.z);
 			CVector3 va = InversionSpeed + vt * 2;
-			m_movespeed.x = -va.x * 0.8f;
-			m_movespeed.z = -va.z * 0.8f;
+			m_movespeed.x = -va.x * 0.5f;
+			m_movespeed.z = -va.z * 0.5f;
 		}
 		
 		m_count2++;

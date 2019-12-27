@@ -4,6 +4,7 @@
 #include "2D/Sprite.h"
 class ShadowMap;
 class NormalMap;
+class DepthValueMap;
 class EdgeDetection;
 
 /*!
@@ -17,6 +18,7 @@ enum EnRenderMode {
 	enRenderMode_CreateShadowMap,	//シャドウマップ生成。
 	enRenderMode_Normal,			//通常レンダリング。
 	enRenderMode_NormalMap,			//法線マップ生成
+	enRenderMode_DepthValueMap,		//深度値マップ生成
 	enRenderMode_Num,				//レンダリングモードの数。
 };
 class GraphicsEngine:Noncopyable
@@ -59,6 +61,8 @@ public:
 	void ShadowMapRender();
 	//法線マップを描画
 	void NormalMapRender();
+	//深度値マップを描画
+	void DepthValueMapRender();
 	//エッジ検出
 	void EdgeDelectionRender();
 	//ポストレンダリング
@@ -72,6 +76,11 @@ public:
 	NormalMap* GetNormalMap()
 	{
 		return m_normalMap;
+	}
+	//深度値マップを主特区
+	DepthValueMap* GetDepthValueMap()
+	{
+		return m_depthValueMao;
 	}
 	//Sprite取得
 	DirectX::SpriteBatch* GetSpriteBatch() const
@@ -122,6 +131,16 @@ public:
 	{
 		m_position = position;
 	}
+	//エッジ検出のオンオフ
+	void SetisEdge(bool flag)
+	{
+		m_isEdge = flag;
+	}
+	//レンダーターゲットをフレームバッファに変更
+	void ChangeRenderTargetFrameBuffer()
+	{
+		ChangeRenderTarget(m_frameBufferRenderTargetView, m_frameBufferDepthStencilView, &m_frameBufferViewports);
+	}
 private:
 	D3D_FEATURE_LEVEL		m_featureLevel;				//Direct3D デバイスのターゲットとなる機能セット。
 	ID3D11Device*			m_pd3dDevice = NULL;		//D3D11デバイス。
@@ -133,6 +152,7 @@ private:
 	ID3D11DepthStencilView* m_depthStencilView = NULL;	//デプスステンシルビュー。
 	ShadowMap*				m_shadowMap = nullptr;		//シャドウマップ
 	NormalMap*				m_normalMap = nullptr;		//法線マップ
+	DepthValueMap*			m_depthValueMao = nullptr;  //深度値マップ
 	EdgeDetection*			m_edgeDelection = nullptr;  //エッジ検出
 	RenderTarget			m_mainRenderTarget;			//!<メインレンダリングターゲット。
 	CSprite m_copyMainRtToFrameBufferSprite;
@@ -149,6 +169,8 @@ private:
 
 	CVector3 m_target = CVector3::Zero();
 	CVector3 m_position = { 0.0f,1000.0f,1000.0f };
+
+	bool m_isEdge = true;
 };
 
 //extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン

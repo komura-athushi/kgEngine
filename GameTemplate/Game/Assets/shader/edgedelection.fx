@@ -24,6 +24,8 @@ struct PS_EdgeInput {
 };
 
 Texture2D<float4> normalTexture : register(t0);	//シーンテクスチャ。
+Texture2D<float4> depthValueTexture : register(t1); //深度値テクスチャ
+
 sampler Sampler : register(s0);
 
 PS_EdgeInput VSXEdge(VSInput In)
@@ -60,7 +62,7 @@ PS_EdgeInput VSXEdge(VSInput In)
 	//下	
 	Out.tex7 = tex + float2(0.0f, 1.0f / texSize.y);
 
-	//左下
+	//左下51
 	Out.tex8 = tex + float2(-1.0f / texSize.x, 1.0f / texSize.y);
 
 	return Out;
@@ -68,6 +70,12 @@ PS_EdgeInput VSXEdge(VSInput In)
 
 float4 PSEdge(PS_EdgeInput In) : SV_Target0
 {
+	float depth = depthValueTexture.Sample(Sampler,In.tex0);
+	//float depth = In.pos.z / In.pos.w;
+	if (depth < 0.0025f) {
+		clip(-1);
+	}
+
 	float3 Normal;
 	Normal = normalTexture.Sample(Sampler, In.tex0).xyz * -8.0f;
 	Normal += normalTexture.Sample(Sampler, In.tex1).xyz;
@@ -79,8 +87,18 @@ float4 PSEdge(PS_EdgeInput In) : SV_Target0
 	Normal += normalTexture.Sample(Sampler, In.tex7).xyz;
 	Normal += normalTexture.Sample(Sampler, In.tex8).xyz;
 
+	//Normal = normalTexture.Sample(Sampler, In.tex0).xyz * -4.0f;
+	////Normal += normalTexture.Sample(Sampler, In.tex1).xyz;
+	//Normal += normalTexture.Sample(Sampler, In.tex2).xyz;
+	////Normal += normalTexture.Sample(Sampler, In.tex3).xyz;
+	//Normal += normalTexture.Sample(Sampler, In.tex4).xyz;
+	//Normal += normalTexture.Sample(Sampler, In.tex5).xyz;
+	////Normal += normalTexture.Sample(Sampler, In.tex6).xyz;
+	//Normal += normalTexture.Sample(Sampler, In.tex7).xyz;
+	////Normal += normalTexture.Sample(Sampler, In.tex8).xyz;
+
 	float4 Color;
-	if (length(Normal) >= 0.3f) {
+	if (length(Normal) >= 0.03f) {
 		Color = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 	else {

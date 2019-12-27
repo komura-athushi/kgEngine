@@ -127,6 +127,9 @@ void StageSelect::Update()
 	}
 	TurnPlayer();
 	DistanceStagePoint();
+
+	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_player.GetPosition().x + 300.0f, m_player.GetPosition().y + 300.0f, m_player.GetPosition().z + 300.0f));
+	Engine().GetGraphicsEngine().SetLightCameraTarget(m_player.GetPosition());
 }
 
 void StageSelect::TurnPlayer()

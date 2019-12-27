@@ -10,7 +10,7 @@ Collection::Collection()
 
 Collection::~Collection()
 {
-
+	Engine().GetGraphicsEngine().SetisEdge(true);
 }
 
 bool Collection::Start()
@@ -69,6 +69,8 @@ bool Collection::Start()
 			m_hitNumber++;
 		}
 	}
+
+	Engine().GetGraphicsEngine().SetisEdge(false);
 	return true;
 }
 

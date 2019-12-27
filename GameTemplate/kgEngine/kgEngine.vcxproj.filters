@@ -178,6 +178,7 @@
     </ClCompile>
     <ClCompile Include="graphics\normal\NormalMap.cpp" />
     <ClCompile Include="graphics\normal\EdgeDetection.cpp" />
+    <ClCompile Include="graphics\depthvalue\DepthValueMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -329,5 +330,6 @@
     </ClInclude>
     <ClInclude Include="graphics\normal\NormalMap.h" />
     <ClInclude Include="graphics\normal\EdgeDetection.h" />
+    <ClInclude Include="graphics\depthvalue\DepthValueMap.h" />
   </ItemGroup>
 </Project>

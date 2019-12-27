@@ -115,6 +115,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="character\CharacterController.cpp" />
+    <ClCompile Include="graphics\depthvalue\DepthValueMap.cpp" />
     <ClCompile Include="gameobject\kgGameObject.cpp" />
     <ClCompile Include="gameobject\kgGameObjectManager.cpp" />
     <ClCompile Include="graphics\2D\kgFont.cpp" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character\CharacterController.h" />
+    <ClInclude Include="graphics\depthvalue\DepthValueMap.h" />
     <ClInclude Include="gameobject\kgGameObject.h" />
     <ClInclude Include="gameobject\kgGameObjectManager.h" />
     <ClInclude Include="graphics\2D\kgFont.h" />

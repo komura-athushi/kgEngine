@@ -8,7 +8,7 @@ OffScreen::OffScreen()
 
 OffScreen::~OffScreen()
 {
-
+	
 }
 
 bool OffScreen::Start()
@@ -28,6 +28,7 @@ bool OffScreen::Start()
 	InitSamplerState();
 	m_postEffect.InitScreenQuadPrimitive(CVector2(0.5f, -1.0f), CVector2(1.0f, -1.0f), CVector2(0.5f, -0.5f), CVector2(1.0f, -0.5f));
 	
+	
 	return true;
 }
 
@@ -43,7 +44,7 @@ void OffScreen::InitSamplerState()
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateSamplerState(&desc, &m_samplerState);
 }
 
-void OffScreen::Draw()
+void OffScreen::PostRender()
 {
 	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
 	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);	
@@ -93,7 +94,8 @@ void OffScreen::Draw()
 	}
 
 
-	Engine().GetGraphicsEngine().ChangeRenderTarget(Engine().GetGraphicsEngine().GetMainRenderTarget(),Engine().GetGraphicsEngine().GetMainRenderTarget()->GetViewport());
+	//Engine().GetGraphicsEngine().ChangeRenderTarget(Engine().GetGraphicsEngine().GetMainRenderTarget(),Engine().GetGraphicsEngine().GetMainRenderTarget()->GetViewport());
+	Engine().GetGraphicsEngine().ChangeRenderTargetFrameBuffer();
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 	//シーンをテクスチャとする。
 	auto srv = m_offRenderTarget.GetRenderTargetSRV();
