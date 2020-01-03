@@ -1,5 +1,6 @@
 #pragma once
 class StageSelectGround;
+//本
 class CollectionBook : public IGameObject
 {
 public:
@@ -7,7 +8,6 @@ public:
 	~CollectionBook();
 	bool Start() override;
 	void Update() override;
-	void ClcLocalMatrix();
 	//座標を設定
 	void SetPosition(const CVector3& pos)
 	{
@@ -29,13 +29,16 @@ public:
 		m_scale = scale;
 	}
 private:
-	CSkinModelRender m_model;
-	CVector3 m_position;
-	CQuaternion m_rotation;
-	CVector3 m_scale = CVector3::One();
-	CMatrix m_localMatrix;
-	CMatrix m_worldMatrix;
-	StageSelectGround* m_stageSelectGround = nullptr;
-	bool m_isFind = false;
+	//ローカル行列を計算
+	void ClcLocalMatrix();
+private:
+	CSkinModelRender m_model;								//スキンモデルレンダー
+	CVector3 m_position;									//座標
+	CQuaternion m_rotation;									//回転
+	CVector3 m_scale = CVector3::One();						//大きさ
+	CMatrix m_localMatrix;									//ローカル行列
+	CMatrix m_worldMatrix;									//ワールド行列
+	StageSelectGround* m_stageSelectGround = nullptr;		//ちきう
+	bool m_isFind = false;									//ちきう見つけた？
 };
 

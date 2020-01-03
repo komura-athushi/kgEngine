@@ -12,12 +12,6 @@ public:
 	bool Start() override;
 	void Update() override;
 	void PostRender() override;
-	//移動
-	void Move();
-	//回転
-	void Turn();
-	//判定
-	void Judgment();
 	//体積を加算する
 	void AddVolume(const float volume);
 	//座標を取得
@@ -93,6 +87,13 @@ public:
 		m_isTitle = true;
 	}
 private:
+	//移動
+	void Move();
+	//回転
+	void Turn();
+	//判定
+	void Judgment();
+private:
 	CharacterController m_characon;																//キャラコン
 	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();			//座標
 	CVector3 m_movespeed = CVector3::Zero();													//移動ベクトル
@@ -125,7 +126,7 @@ private:
 	float m_radius = 0.0f;																		//球体の半径
 	float m_protradius = 0.0f;																	//最初の球体の半径	
 
-	float m_volume = 0.0f;																		
+	float m_volume = 0.0f;																		//塊の体積																	
 	const float m_protmovespeedmultiply = 5.0f;													//最初の移動速度
 	float m_movespeedmultiply = 5.0f;															//移動速度
 	bool m_isbound = false;																		//バウンド中かどうか
@@ -138,12 +139,12 @@ private:
 	/*CSprite m_sprite;
 	CSprite m_sprite2;
 	float m_degree = 0.0f;*/
-	const float m_standardSize = 40.0f;
-	CVector3 m_impulse = CVector3::Zero();
-	int m_count2 = 0;
-	bool m_isDisplayFont = true;
-	bool m_isTitle = false;
-	bool m_isBrake = false;
+	const float m_standardSize = 40.0f;															//基準の塊の直径
+	CVector3 m_impulse = CVector3::Zero();														//今は使っていない
+	int m_count2 = 0;																			//壁にぶつかった
+	bool m_isDisplayFont = true;																//塊の大きさを表示する？
+	bool m_isTitle = false;																		//タイトル？
+	bool m_isBrake = false;																		//ブレーキ？
 
 };
 

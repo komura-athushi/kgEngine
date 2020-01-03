@@ -6,8 +6,7 @@ public:
 	~StageSelectGround();
 	bool Start() override;
 	void Update() override;
-	void Turn();
-	void Move();
+	//座標を設定
 	void SetPosition(const CVector3 position)
 	{
 		m_position = position;
@@ -22,17 +21,16 @@ public:
 	{
 		return  m_skinModelRender;
 	}
-	//モデルの回転を取得
-	/*const CMatrix& GetMatrix()
-	{
-		return m_model.GetSkinModel().GetWorldMatrix();
-	}*/
-	
 private:
-	CSkinModelRender m_skinModelRender;
-	CVector3 m_position;
-	CQuaternion m_rotation = CQuaternion::Identity();
-	CVector3 m_currentPosition, m_beforePosition = CVector3::Zero();
+	//回転
+	void Turn();
+	//移動
+	void Move();
+private:
+	CSkinModelRender m_skinModelRender;									//ちきうのモデル
+	CVector3 m_position;												//座標
+	CQuaternion m_rotation = CQuaternion::Identity();					//回転
+	CVector3 m_currentPosition, m_beforePosition = CVector3::Zero();	//移動する前と後の座標
 
 };
 

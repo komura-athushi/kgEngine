@@ -1,6 +1,5 @@
 #pragma once
 #include "level/Level.h"
-#include "sound/SoundSource.h"
 
 class Ground;
 class Player;
@@ -34,12 +33,12 @@ private:
 	//level
 	Level m_level;												//レベル
 	Time* m_time;												//タイム
-	Fade* m_fade;
+	Fade* m_fade;												//フェード
 	GameData* m_gameData = nullptr;								//ゲームデータ
 	bool m_owaOwari = false;									//ステージをオワらせるか
 	CFont m_font;												//フォント
-	float m_timer2 = 0.0f;
-	bool m_isPose = false;
-	OffScreen* m_offScreen = nullptr;
+	float m_timer2 = 0.0f;										//タイマー
+	bool m_isPose = false;										//ポーズ中？
+	OffScreen* m_offScreen = nullptr;							//小窓用のクラス
 };
 

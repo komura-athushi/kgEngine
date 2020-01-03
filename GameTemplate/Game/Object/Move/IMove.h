@@ -39,6 +39,6 @@ public:
 		m_state = state;
 	}
 private:
-	EnMove m_state;
+	EnMove m_state;							//ステート
 };
 

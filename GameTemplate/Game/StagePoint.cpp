@@ -15,6 +15,7 @@ StagePoint::~StagePoint()
 bool StagePoint::Start()
 {
 	auto& gameData = GameData::GetInstance();
+	//クリアしてるかどうかで読み込むモデル変える
 	if (gameData.GetisStageClear(EnStageNumber(m_number))) {
 		m_model.Init(L"Resource/modelData/pointclear.cmo");
 	}
@@ -25,9 +26,6 @@ bool StagePoint::Start()
 	m_model.SetRotation(m_rotation);
 	m_model.SetScale(m_scale);
 	m_model.UpdateWorldMatrix();
-	//ClcLocalMatrix();
-	//m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetModel().GetSkinModel().GetWorldMatrix());
-	//m_model.SetWorldMatrix(m_worldMatrix);
 	return true;
 }
 
@@ -61,7 +59,6 @@ void StagePoint::ClcLocalMatrix()
 
 void StagePoint::Update()
 {
-	
 	if (m_stageSelectGround == nullptr) {
 		m_stageSelectGround = FindGO<StageSelectGround>();
 		if (m_stageSelectGround != nullptr) {
@@ -76,11 +73,11 @@ void StagePoint::Update()
 	}
 
 
-
+	//ローカル行列とちきうのワールド行列を乗算する
 	m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetModel().GetSkinModel().GetWorldMatrix());
 	m_model.SetWorldMatrix(m_worldMatrix);
-	//m_model.UpdateWorldMatrix();
 
+	//ワールド行列から座標を取得
 	m_position.x = m_model.GetSkinModel().GetWorldMatrix().m[3][0];
 	m_position.y = m_model.GetSkinModel().GetWorldMatrix().m[3][1];
 	m_position.z = m_model.GetSkinModel().GetWorldMatrix().m[3][2];

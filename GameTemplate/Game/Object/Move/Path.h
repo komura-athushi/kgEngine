@@ -29,6 +29,6 @@ public:
 	*/
 	Point* GetPoint(const int& number);
 private:
-	std::vector<Point> m_pointList;
+	std::vector<Point> m_pointList;						//ポイントのリスト
 };
 

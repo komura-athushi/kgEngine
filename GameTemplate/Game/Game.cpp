@@ -15,6 +15,8 @@
 #include "Title.h"
 #include "OffScreen.h"
 #include "SoundDirector.h"
+#include "sound/SoundSource.h"
+
 
 Game::Game()
 {
@@ -29,18 +31,11 @@ Game::~Game()
 void Game::OnDestroy()
 {
 	DeleteGO(m_ground);
-	//DeleteGO(m_gamecamera);
-	//DeleteGO(m_player);
 	DeleteGO(m_time);
-	/*QueryGOs<Obj>(nullptr, [&](Obj* object) {
-		DeleteGO(object);
-		return true;
-	});*/
 	for (Obj* obj : m_objList) {
 		if (!obj->GetisHitPlayer()) {
 			obj->SetNoDraw();
 		}
-		//DeleteGO(obj);
 	}
 	DeleteGO(m_offScreen);
 	
@@ -52,8 +47,10 @@ bool Game::Start()
 
 	m_gameData = &GetGameData();
 	wchar_t filePath[256];
+	//ステージの番号によって読み込むレベルファイルを設定する
 	swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber() ));
 	m_gamecamera = NewGO<GameCamera>(0);
+	//レベルを読み込む
 	m_level.Init(filePath, [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"o")) {
 			for (int i = 0; i < ObjectData::GetInstance().GetListSize(); i++ ) {
@@ -93,6 +90,7 @@ bool Game::Start()
 	m_gameData->SetPoseCancel();
 	m_gameData->SetScene(enScene_Stage);
 	m_offScreen = NewGO<OffScreen>(3);
+	//ステージによって再生するBGMを再生する
 	switch (m_gameData->GetStageNumber())
 	{
 	case enState_Stage1:
@@ -115,6 +113,7 @@ void Game::Update()
 {
 	
 	const float Time = 30.0f;
+	//ステージが終了したら
 	if (m_owaOwari) {
 		m_gameData->SetPose();
 		m_timer2 += GameTime().GetFrameDeltaTime();
@@ -125,7 +124,7 @@ void Game::Update()
 		//}
 	}
 	else {
-		//スタートボタンが押されたら画面を切り替える
+		//スタートボタンが押されたらポーズする、もっかい押したら解除
 		if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
 			if (m_gameData->GetisPose()) {
 				m_gameData->SetPoseCancel();

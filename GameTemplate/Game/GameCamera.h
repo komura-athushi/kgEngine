@@ -19,12 +19,6 @@ public:
 	~GameCamera();
 	bool Start() override;
 	void Update() override;
-	//パッドの入力を考慮してカメラの視点と注視点を計算
-	void Calculation();
-	//プレイヤーの大きさを考慮してカメラの半径を変える
-	void TransRadius();
-	//L3とR3を同時押しした時に視点を変更する
-	void TransView();
 	//スティックの入力状態を取得
 	StateEnterStick GetStateStick() const
 	{
@@ -45,6 +39,13 @@ public:
 	{
 		return m_radius;
 	}
+private:
+	//パッドの入力を考慮してカメラの視点と注視点を計算
+	void Calculation();
+	//プレイヤーの大きさを考慮してカメラの半径を変える
+	void TransRadius();
+	//L3とR3を同時押しした時に視点を変更する
+	void TransView();
 private:
 	CVector3 m_position = CVector3::Zero();				//視点
 	CVector3 m_target = CVector3::One();				//注視点

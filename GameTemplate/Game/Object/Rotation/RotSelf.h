@@ -21,8 +21,8 @@ public:
 	void Init(const CQuaternion& rot, const float& speed = 0.0f) override;
 private:
 	CQuaternion m_rotation = CQuaternion::Identity();					//‰ñ“]
-	float m_speed = 0.0f;
-	float m_degree = 0.0f;
+	float m_speed = 0.0f;												//‰ñ“]ƒXƒs[ƒh	
+	float m_degree = 0.0f;												//Šp“x
 
 };
 

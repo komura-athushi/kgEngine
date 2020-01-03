@@ -34,13 +34,11 @@ void StageSelect::OnDestroy()
 
 bool StageSelect::Start()
 {
-	//黒
-	//m_sprite.Init(L"Resource/sprite/stageselect.dds", false);
-	//m_arrow.Init(L"Resource/sprite/arrow.dds", false);
 	//ゲームデータからステージの番号を取得
 	m_gameData = &GetGameData();
 	m_stageNumber = m_gameData->GetStageNumber();
 	m_player.Init(L"Resource/modelData/zunko.cmo");
+	//レベルを読み込んで配置する
 	m_level.Init(L"Assets/level/stageselect.tkl", [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"point")) {
 			int number = _wtoi(&objdata.name[5]);
@@ -73,14 +71,14 @@ bool StageSelect::Start()
 		}
 		return true;
 
-		});
+	});
 	CVector3 cameraTarget = m_player.GetPosition();
-	//cameraTarget.z -= 15.0f;
 	MainCamera().SetPosition({ cameraTarget.x,cameraTarget.y + 80.0f,cameraTarget.x });
 	MainCamera().SetTarget(cameraTarget);
 	MainCamera().Update();
 	m_backSprite.Init(L"Resource/sprite/space.dds");
 
+	//セーブする
 	ObjectData::GetInstance().SaveData();
 	GetGameData().SaveDataStageClear();
 	SoundData().SetBGM(enBGM_StageSelect);
@@ -96,7 +94,7 @@ void StageSelect::PrePostRender()
 void StageSelect::Update()
 {
 
-	//Aボタンが押されたら決定したステージの番号を設定する
+	//Aボタンが押されたら決定したステージの番号を設定する、または図鑑画面に遷移する
 	if (Engine().GetPad(0).IsTrigger(enButtonA)) {
 		if (m_stagePoint != nullptr) {
 			m_gameData->SetStageNumber(EnStageNumber(m_stagePoint->GetNumber()));
@@ -128,12 +126,14 @@ void StageSelect::Update()
 	TurnPlayer();
 	DistanceStagePoint();
 
+	//プレイヤーの座標を参照してシャドウマップのカメラを設定する
 	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_player.GetPosition().x + 300.0f, m_player.GetPosition().y + 300.0f, m_player.GetPosition().z + 300.0f));
 	Engine().GetGraphicsEngine().SetLightCameraTarget(m_player.GetPosition());
 }
 
 void StageSelect::TurnPlayer()
 {
+	//ちきうの回転方向と反対の方向にモデルを回転させる
 	CVector3 moveSpeed = m_stageSelectGround->GetMoveSpeed();
 	moveSpeed.x = -moveSpeed.x;
 	moveSpeed.z = -moveSpeed.z;
@@ -149,6 +149,7 @@ void StageSelect::DistanceStagePoint()
 {
 	const float distance = 10.0f * 10.0f;
 
+	//プレイヤーのモデルとステージポイントや本との距離を調べる
 	CVector3 diff = m_player.GetPosition() - m_collectionBook->GetPosition();
 	if (diff.LengthSq() <= distance) {
 		m_isCollection = true;

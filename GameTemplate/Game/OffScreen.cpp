@@ -13,8 +13,8 @@ OffScreen::~OffScreen()
 
 bool OffScreen::Start()
 {
+	//小窓用のレンダーターゲットを初期化
 	m_offRenderTarget.Create(FRAME_BUFFER_W, FRAME_BUFFER_H, DXGI_FORMAT_R16G16B16A16_FLOAT);
-	//m_skinModel.Init(L"Resource/modelData/zunko.cmo");
 	m_vs.Load("Assets/shader/bloom.fx", "VSMain", Shader::EnType::VS);
 	m_ps.Load("Assets/shader/bloom.fx", "PSMain", Shader::EnType::PS);
 	D3D11_RASTERIZER_DESC desc = {};
@@ -62,6 +62,7 @@ void OffScreen::PostRender()
 	m_offRenderTarget.ClearRenderTarget(clearColor);
 
 	if (m_skinModel != nullptr) {
+		//モデルにあわせてカメラの座標を設定
 		float x = m_objData->s_x * 5.0f;
 		float z = m_objData->s_z * 5.0f;
 		float y = m_objData->s_y * 5.0f;
@@ -74,6 +75,8 @@ void OffScreen::PostRender()
 		else {
 			m_offScreenCamera.SetPosition(CVector3(0.0f, y / 1.65f, y));
 		}
+		//https://qiita.com/akurobit/items/a6dd03baef6c05d7eae8
+		//を参照
 		float angle = atan2f(m_objData->s_y * 3.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
 		float angle2;
 		if (m_objData->s_x >= m_objData->s_z) {

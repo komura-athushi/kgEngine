@@ -34,12 +34,12 @@ private:
 	CVector3 m_movevector = CVector3::Zero();				//移動ベクトル
 	bool m_isaccessup = true;								//上側の座標に近づくかどうか
 	bool m_isculcmovevector = false;						//移動ベクトルを計算したかどうか
-	Path m_path;
-	Point* m_point = nullptr;
-	bool m_isstart = true;
-	bool m_isstop = false;
-	bool m_isadddegree = true;
-	float m_time = 0.0f;
-	float m_timer = 0.0f;
+	Path m_path;											//パス
+	Point* m_point = nullptr;								//今向かってるポイント
+	bool m_isstart = true;									//スタート
+	bool m_isstop = false;									//ストップ？
+	bool m_isadddegree = true;								//方向転換
+	float m_time = 0.0f;									//方向転換の時間
+	float m_timer = 0.0f;									//タイマー
 };
 

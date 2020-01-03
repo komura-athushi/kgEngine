@@ -40,7 +40,6 @@ public:
 		return instance;
 	}
 public:
-	void LoadSaveData();
 	//配列のサイズを取得
 	int GetListSize() const
 	{
@@ -65,8 +64,11 @@ public:
 	//セーブする
 	void SaveData();
 private:
-	std::vector<StructObjectData> m_objectdataList;
-	std::map<float, SkinModel_ObjData*> m_modelObjDataList;
+	//セーブデータロードするっぺ
+	void LoadSaveData();
+private:
+	std::vector<StructObjectData> m_objectdataList;						//オブジェクトのデータ
+	std::map<float, SkinModel_ObjData*> m_modelObjDataList;				//図鑑で表示するためのオブジェクトのデータ
 };
 
 

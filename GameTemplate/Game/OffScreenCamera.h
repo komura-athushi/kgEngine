@@ -5,6 +5,7 @@ class OffScreenCamera
 public:
 	OffScreenCamera();
 	~OffScreenCamera();
+	//アップデート
 	void Update();
 	//プロジェクション行列を取得
 	CMatrix GetProjectionMatrix()
@@ -16,18 +17,22 @@ public:
 	{
 		return m_camera.GetViewMatrix();
 	}
+	//注視点を設定
 	void SetTarget(const CVector3& target)
 	{
 		m_target = target;
 	}
+	//注視点を取得
 	CVector3 GetTarget()
 	{
 		return m_target;
 	}
+	//座標を設定
 	void SetPosition(const CVector3& position)
 	{
 		m_position = position;
 	}
+	//座標を取得
 	CVector3 GetPosition()
 	{
 		return m_position;
@@ -38,8 +43,8 @@ public:
 		m_camera.SetViewAngle(angle);
 	}
 private:
-	Camera m_camera;
-	CVector3 m_position = {0.0f,200.0f,500.0f};
-	CVector3 m_target = { 0.0f,0.0f,0.0f };
+	Camera m_camera;									//カメラ
+	CVector3 m_position = {0.0f,200.0f,500.0f};			//座標
+	CVector3 m_target = { 0.0f,0.0f,0.0f };				//注視点
 };
 

@@ -44,8 +44,8 @@ public:
 private:
 	//unique_ptr  スマートポインタ、newしたメモリを指すポインタが存在しなければ自動的に
 	//deleteされる
-	std::unordered_map<int, std::unique_ptr<ObjModelData>> m_modelmap;
-	std::unordered_map<int, SkinModel*> m_skinModelmap;
+	std::unordered_map<int, std::unique_ptr<ObjModelData>> m_modelmap;			//ゲームで使用するモデルデータのマップ
+	std::unordered_map<int, SkinModel*> m_skinModelmap;							//塊魂小窓用のモデル
 };
 
 static inline ObjModelDataFactory& GetObjModelDataFactory()
@@ -77,12 +77,6 @@ public:
 	void InitRot(EnRotate state, const float& speed);
 	//プレイヤーを基準としたローカル行列を計算
 	void ClcLocalMatrix(const CMatrix& worldMatrix);
-	//プレイヤーに巻き込まれたときの移動や回転の処理
-	void ClcMatrix();
-	//当たり判定用の頂点データを生成
-	void ClcVertex();
-	//巻き込まれた時の処理
-	void Hit();
 	//大きさを取得
 	float GetSize() const
 	{
@@ -148,6 +142,11 @@ public:
 		return m_radius;
 	}
 private:
+	//プレイヤーに巻き込まれたときの移動や回転の処理
+	void ClcMatrix();
+	//当たり判定用の頂点データを生成
+	void ClcVertex();
+private:
 	ObjModelData* m_modeldata;												//スキンモデル
 	CVector3 m_position = CVector3::Zero();									//座標								
 	CQuaternion m_rotation = CQuaternion::Identity();						//回転
@@ -172,8 +171,8 @@ private:
 	CFont m_font;															//文字
 	bool m_draw = true;														//ドローするかどうか
 	GameData* m_gamedata = nullptr;											//ゲームデータ
-	float m_radius = 0.0f;
-	bool m_isHit = false;
+	float m_radius = 0.0f;													//半径(大きさ)
+	bool m_isHit = false;													//巻き込まれた？
 	
 };
 

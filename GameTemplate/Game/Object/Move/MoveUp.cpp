@@ -35,13 +35,13 @@ CVector3 MoveUp::Move()
 {
 	//もし移動ベクトルを計算していなかったら計算する
 	if (!m_isculcmovevector) {
-		//左側
+		//上側
 		if (m_isaccessup) {
 			m_movevector = m_movelimitUp - m_position;
 			m_movevector.Normalize();
 			m_isculcmovevector = true;
 		}
-		//右側
+		//下側
 		else {
 			m_movevector = m_movelimitDown - m_position;
 			m_movevector.Normalize();

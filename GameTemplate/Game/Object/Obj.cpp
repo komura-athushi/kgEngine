@@ -51,6 +51,7 @@ ObjModelData* ObjModelDataFactory::Load(const wchar_t* path)
 
 void ObjModelDataFactory::InitInstancingData()
 {
+	//各モデルのインスタンシングデータを初期化
 	if (m_modelmap.size() != 0) {
 		for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
 			itr->second.get()->s_skinmodel.InitInstancing();
@@ -60,6 +61,7 @@ void ObjModelDataFactory::InitInstancingData()
 
 void ObjModelDataFactory::BeginUpdateInstancingData()
 {
+	//インスタンシングを開始するぞい
 	if (m_modelmap.size() != 0) {
 		for (auto itr = m_modelmap.begin(); itr != m_modelmap.end(); ++itr) {
 			itr->second.get()->s_skinmodel.BeginUpdateInstancingData();
@@ -69,6 +71,7 @@ void ObjModelDataFactory::BeginUpdateInstancingData()
 
 void ObjModelDataFactory::DeleteAllData()
 {
+	//マップクリアー
 	m_modelmap.clear();
 }
 
@@ -109,11 +112,13 @@ bool Obj::Start()
 		m_radius = m_objdata->s_x;
 		m_staticobject.CreateSphereObject(m_size, m_position, m_rotation);
 	}
+	//メッシュコライダーじゃない？
 	else if(m_objdata->s_isMeshCollider == 0) {
 		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2});
 		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
 		m_radius = pow(m_objdata->s_volume, 1.0f / 3.0f) / 2.0f;
 	}
+	//メッシュコライダー
 	else {
 		m_staticobject.CreateMeshObject(&m_modeldata->s_skinmodel,m_position, m_rotation);
 		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
@@ -146,6 +151,7 @@ void Obj::ReadMovePath(const int& number)
 
 void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot)
 {
+	//移動用のクラスのインスタンスを生成
 	switch (state)
 	{
 	case enMove_Lr:
@@ -171,6 +177,7 @@ void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const f
 
 void Obj::InitRot(EnRotate state, const float& speed)
 {
+	//回転用のクラスのインスタンスを生成
 	switch (state)
 	{
 	case enRot_Rot:
@@ -244,16 +251,16 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	offScreen->SetSkinModel(factory->GetSkinModel(m_modeldata->s_hashKey));
 	offScreen->SetObjData(m_objdata);
 
+	//巻き込まれたら音出す
 	CSoundSource* se = new CSoundSource();
 	se->Init(L"Assets/sound/water.wav");
 	se->Play(false);
 	se->SetVolume(seVolume);
-	
-	//GetObjModelDataFactory().SetisHit(m_objdata->s_name);
 }
 
 void Obj::ClcMatrix()
 {
+	//ローカル行列とプレイヤーのワールド行列を乗算
 	m_worldMatrix.Mul(m_localMatrix, m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
 }
 
@@ -266,12 +273,14 @@ void Obj::Update()
 		m_player = FindGO<Player>();
 		return;
 	}
+	//巻き込まれたら一回だけ実行する
 	if (!m_isHit && m_staticobject.GetRigidBody()->GetBody()->GetisHit()) {
 		m_isHit = true;
 		m_player->GetCSkinModelRender().UpdateWorldMatrix();
 		ClcLocalMatrix(m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
 		m_player->AddVolume(m_objdata->s_volume);
 	}
+	//巻き込まれた時の処理
 	if (m_movestate == enMove_MoveHit) {
 		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {
 			ClcMatrix();
@@ -284,6 +293,7 @@ void Obj::Update()
 		}
 		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());
 	}
+	//巻き込まれてない時の処理
 	else {
 		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {
 			if (m_movestate != enMove_No) {

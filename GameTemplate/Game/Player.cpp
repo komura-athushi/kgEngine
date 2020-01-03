@@ -19,8 +19,6 @@ Player::~Player()
 
 bool Player::Start()
 {
-	//cmoファイルの読み込み。
-	wchar_t filePath[256];
 	GameData* gameData = &GetGameData();
 	m_protradius = gameData->GetPlayerSize();
 	if (m_isTitle) {
@@ -29,6 +27,8 @@ bool Player::Start()
 	else {
 		m_radius = gameData->GetPlayerSize();
 	}
+	//cmoファイルの読み込み、ステージの番号によって読み込むファイルを設定する
+	wchar_t filePath[256];
 	swprintf_s(filePath, L"Resource/modelData/sphere%d.cmo", (int)gameData->GetStageNumber());
 	m_skinModelRender.Init(filePath);
 	m_skinModelRender.SetShadowCaster(true);
@@ -55,6 +55,7 @@ bool Player::Start()
 
 void Player::Update()
 {
+	//リザルト画面ではキャラクターは非表示
 	if (m_gamedata->GetScene() == enScene_Result) {
 		m_skinModelRender2.SetisActive(false);
 	}
@@ -78,6 +79,7 @@ void Player::Update()
 	pos = pos * m_radius * 1.2f;
 	pos = m_position - pos;
 	m_skinModelRender2.SetPosition(pos);
+	//シャドウマップのカメラをプレイヤーの座標を元に設定する
 	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x + 300.0f,m_position.y + 300.0f,m_position.z + 300.0f));
 	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position);
 	m_skinModelRender.UpdateWorldMatrix();
@@ -177,6 +179,7 @@ void Player::Move()
 		Stick = stickL + stickR;
 
 	}
+	//両方のスティックが逆の方向に入力されていたら、左が前方向
 	else if (m_gamecamera->GetStateStick() == enStick_EnterStickBothOppositeLeft) {
 		if (m_count == 0) {
 			m_timer = 0.0f;
@@ -190,6 +193,7 @@ void Player::Move()
 		}
 		
 	}
+	//両方のスティックが逆の方向に入力されていたら、右が前方向
 	else if (m_gamecamera->GetStateStick() == enStick_EnterStickBothOppositeRight) {
 		if (m_count == 0) {
 			m_timer = 0.0f;
@@ -201,7 +205,7 @@ void Player::Move()
 			m_timer = 0.0f;
 		}
 	}
-
+	//カウントが一定数だったらダッシュする
 	if (m_timer >= TimeLimit) {
 		m_count = 0;
 		m_isDush = false;
@@ -213,6 +217,7 @@ void Player::Move()
 		if (m_isDush) {
 			m_movespeed += frontxz * m_movespeedmultiply * 3;
 		}
+		//ダッシュ時の最初はある程度の移動速度を設定する
 		else {
 			for (int i = 0; i < 30; i++) {
 				m_movespeed += frontxz * m_movespeedmultiply * 3;
@@ -228,8 +233,9 @@ void Player::Move()
 		CVector3 moveSpeed = m_movespeed;
 		moveSpeed.y = 0.0f;
 		addMoveSpeed.y = 0.0f;
+		//ブレーキしてないかつ、移動速度がある程度あったら
  		if (!m_isBrake && 
-			moveSpeed.LengthSq() >= ( m_movespeedmultiply * 50.0f ) * (m_movespeedmultiply * 50.0f) &&
+			moveSpeed.LengthSq() >= ( m_movespeedmultiply * 40.0f ) * (m_movespeedmultiply * 40.0f) &&
 			addMoveSpeed.LengthSq() >= 0.6f) {
 
 			CVector3 addMove = addMoveSpeed;
@@ -237,10 +243,8 @@ void Player::Move()
 			addMove.Normalize();
 			move.Normalize();
 			float angle = addMove.Dot(move);
-
-			//float angle = fabs(atan2f(addMove.x, addMove.z));
-			//float angle2 = fabs(atan2f(move.x, move.y));
-			if (fabs(acosf(angle)) >= CMath::PI * 0.7f) {
+			//移動方向とスティックの入力の角度がある程度大きかったらブレーキ
+			if (fabs(acosf(angle)) >= CMath::PI * 0.5f) {
 				m_movespeed *= MoveSpeedAtten2;
 				CSoundSource* se = new CSoundSource();
 				se->Init(L"Assets/sound/brake.wav");
@@ -276,6 +280,7 @@ void Player::Move()
 	}*/
 	
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
+	//衝突したら
 	if (m_characon.GetisCollision()) {
 		if (m_count2 >= 1) {
 			CVector3 Normal = m_characon.GetWallNormalVector();
@@ -287,6 +292,9 @@ void Player::Move()
 			CVector3 va = InversionSpeed + vt * 2;
 			m_movespeed.x = -va.x * 0.5f;
 			m_movespeed.z = -va.z * 0.5f;
+			CSoundSource* se = new CSoundSource();
+			se->Init(L"Assets/sound/syoutotu.wav");
+			se->Play(false);
 		}
 		
 		m_count2++;
@@ -334,6 +342,7 @@ void Player::Turn()
 
 void Player::PostRender()
 {
+	//ステージなら塊の大きさを表示する
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
 		swprintf_s(output, L"%.f\n", m_radius * 2.0f);

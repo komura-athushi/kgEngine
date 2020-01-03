@@ -54,6 +54,7 @@ void Title::Update()
 {
 	const float Speed = 100.0f;
 
+	//ƒ^ƒCƒgƒ‹‚Ì‰æ‘œ‚ðˆÚ“®‚³‚¹‚é
 	m_titlePosition.y += GameTime().GetFrameDeltaTime() * Speed;
 	if (m_titlePosition.y >= FRAME_BUFFER_H / 2) {
 		m_titlePosition.y = FRAME_BUFFER_H / 2;

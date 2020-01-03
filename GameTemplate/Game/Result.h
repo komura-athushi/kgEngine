@@ -14,17 +14,22 @@ public:
 	void PrePostRender() override;
 	void PostRender() override;
 	void OnDestroy() override;
+private:
+	//塊を動かす
 	void MovePlayer();
+	//あ
 	void MoveGoal();
+	//結果を表示
 	void MoveResult();
+	//画面遷移
 	void TransScene();
 private:
-	CSprite m_sprite;
-	GameData* m_gameData = nullptr;
-	Player* m_player = nullptr;
-	GameCamera* m_gameCamera = nullptr;
-	float m_timer = 0.0f;
-	CFont m_font;
+	CSprite m_sprite;											//画像
+	GameData* m_gameData = nullptr;								//ゲームのデータ
+	Player* m_player = nullptr;									//プレイヤー
+	GameCamera* m_gameCamera = nullptr;							//カメラ
+	float m_timer = 0.0f;										//プレイヤーを動かすタイマー
+	CFont m_font;												//文字
 	enum EnResultScene {
 		EnResultScene_MovePlayer,
 		EnResultScene_MoveGoal,

@@ -14,6 +14,7 @@ Anim::~Anim()
 void Anim::Init(const wchar_t* filepath, CSkinModelRender* skin)
 {
 	m_skinModelRender = skin;
+	//アニメーション読み込む
 	wchar_t path[256];
 	swprintf_s(path, L"Assets/animData/%ls/walk.tka",filepath);
 	m_animClip[enAnimationClip_walk].Load(path);
@@ -31,10 +32,12 @@ void Anim::Init(const wchar_t* filepath, CSkinModelRender* skin)
 void Anim::PlayAnimation(EnMove state)
 {
 	if (m_isInit) {
+		//ヒットしたらヒット用のアニメーションを再生
 		if(state == enMove_MoveHit) {
 			//m_skinModelRender->PlayAnimation(enAnimationClip_idle, 1.0f);
 			m_animationState = enAnimationClip_idle;
 		}
+		//していなかったらそれ以外のアニメーション再生
 		else {
 			//m_skinModelRender->PlayAnimation(enAnimationClip_walk, 1.0f);
 			m_animationState = enAnimationClip_walk;

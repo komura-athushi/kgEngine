@@ -34,6 +34,7 @@ void StageSelectGround::Update()
 
 void StageSelectGround::Move()
 {
+	//ˆÚ“®‘¬“x
 	const float moveSpeedMultiply = 2.0f;
 
 	m_beforePosition = m_currentPosition;
@@ -51,6 +52,7 @@ void StageSelectGround::Move()
 
 void StageSelectGround::Turn()
 {
+	//‰ñ“]‘¬“x
 	const float RotationSpeed = 0.8f;
 
 	CVector3 movespeedXZ = m_currentPosition - m_beforePosition;

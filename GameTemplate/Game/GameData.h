@@ -13,6 +13,7 @@ enum EnScene {
 	enScene_Stage,
 	enScene_Result
 };
+//なんか色々なデータを管理
 class GameData
 {
 private:
@@ -25,7 +26,9 @@ public:
 		static GameData instance;
 		return instance;
 	}
+	//データをロードする
 	void LoadDataStageClear();
+	//データをセーブする
 	void SaveDataStageClear();
 	//ステージをクリアした！
 	void SetStageClear()
@@ -108,7 +111,7 @@ public:
 		return m_scene;
 	}
 public:
-	bool m_stageClearList[EnStageNumber::enState_LastStage] = { true,false,false };								//各ステージをクリアしたかどうか
+	bool m_stageClearList[EnStageNumber::enState_LastStage] = { false,false,false };								//各ステージをクリアしたかどうか
 	float m_firstPlayerSize[EnStageNumber::enState_LastStage] = { 5.0f,10.0f,40.0f };								//各ステージのプレイヤーの最初の大きさ
 	float m_goalPlayerSize[EnStageNumber::enState_LastStage] = { 30.0f,80.0f,200.0f };							//各ステージのプレイヤーのクリア目標の大きさ
 	float m_resultPlayerSize = 0.0f;																				//ステージ終了時のプレイヤーの大きさ

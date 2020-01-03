@@ -67,8 +67,9 @@ void Result::MovePlayer()
 {
 	const float Time = 2.0f;
 	const float Multiply = 2.0f;
-	const float Disance = 60.0f;
+	const float Disance = 40.0f;
 
+	//プレイヤー動かす
 	if (m_timer <= Time) {
 		m_timer += GameTime().GetFrameDeltaTime();
 		CVector3 position = m_player->GetCharaconPosition();
@@ -92,6 +93,7 @@ void Result::MoveResult()
 
 void Result::TransScene()
 {
+	//Aボタン押したらステージセレクトに遷移
 	if (Engine().GetPad(0).IsTrigger(enButtonA)) {
 		NewGO<StageSelect>(0);
 		DeleteGO(this);
