@@ -2,6 +2,7 @@
 #include "OffScreen.h"
 #include "graphics\normal\NormalMap.h"
 #include "graphics\normal\EdgeDetection.h"
+#include "graphics\depthvalue\DepthValueMap.h"
 
 OffScreen::OffScreen()
 {
@@ -54,14 +55,19 @@ void OffScreen::PostRender()
 	//レンダリングターゲットを切り替える。
 	ID3D11RenderTargetView* rts[] = {
 		m_offRenderTarget.GetRenderTargetView(),
+		Engine().GetGraphicsEngine().GetNormalMap()->GetRenderTarget()->GetRenderTargetView(),
+		Engine().GetGraphicsEngine().GetDepthValueMap()->GetRenderTarget()->GetRenderTargetView()
 	};
-	d3dDeviceContext->OMSetRenderTargets(1, rts, m_offRenderTarget.GetDepthStensilView());
+	d3dDeviceContext->OMSetRenderTargets(3, rts, m_offRenderTarget.GetDepthStensilView());
 	//ビューポートを設定。
 	d3dDeviceContext->RSSetViewports(1, m_offRenderTarget.GetViewport());
 	d3dDeviceContext->RSSetState(m_rasterizerState);
 	//一番奥のZは1.0なので、1.0で塗りつぶす。
 	float clearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //red,green,blue,alpha
+	float clearColor2[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	m_offRenderTarget.ClearRenderTarget(clearColor);
+	Engine().GetGraphicsEngine().GetNormalMap()->GetRenderTarget()->ClearRenderTarget(clearColor2);
+	Engine().GetGraphicsEngine().GetDepthValueMap()->GetRenderTarget()->ClearRenderTarget(clearColor2);
 
 	if (m_skinModel != nullptr) {
 		//モデルにあわせてカメラの座標を設定

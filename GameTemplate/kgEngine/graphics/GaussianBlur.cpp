@@ -71,55 +71,65 @@ void GaussianBlur::UpdateWeights()
 		m_blurParam.weights[i] /= total;
 	}
 }
-void GaussianBlur::Execute(PostEffect& postEffect)
+void GaussianBlur::Execute(PostEffect& postEffect,bool isExecute)
 {
 	if (m_isInited == false) {
 		//初期化できてないぞ。
 		return;
 	}
 	auto deviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
-	//ガウシアンフィルターの重みテーブルを更新する。
-	UpdateWeights();
-
-	//重みテーブルを更新したので、VRAM上の定数バッファも更新する。
-	//メインメモリの内容をVRAMにコピー。
-	deviceContext->UpdateSubresource(
-		m_blurCbGpu, 0, nullptr, &m_blurParam, 0, 0);
-	//レジスタb0にm_blurCbGpuのアドレスを設定する。
-	deviceContext->PSSetConstantBuffers(
-		0, 1, &m_blurCbGpu);
-
-	//Xブラー。
-	{
-		//Xブラー用のレンダリングターゲットに変更する。
-		Engine().GetGraphicsEngine().ChangeRenderTarget(
-			&m_renderTarget[enRenderTarget_XBlur],
-			m_renderTarget[enRenderTarget_XBlur].GetViewport());
-		//ソーステクスチャのアドレスをt0レジスタに設定する。
-		deviceContext->VSSetShaderResources(0, 1, &m_srcTextureSRV);
-		deviceContext->PSSetShaderResources(0, 1, &m_srcTextureSRV);
-
-		//フルスクリーン描画を行ってブラーを実行。
-		postEffect.DrawFullScreenQuadPrimitive(
-			deviceContext, m_vsXBlur, m_psBlur);
-	}
-	//続いてYブラー
-	{
-		//Yブラー用のレンダリングターゲットに変更する。
-		Engine().GetGraphicsEngine().ChangeRenderTarget(
-			&m_renderTarget[enRenderTarget_YBlur],
-			m_renderTarget[enRenderTarget_YBlur].GetViewport()
-		);
+	if (!isExecute) {
 		//Yブラーをかけるソーステクスチャのアドレスをt0に設定する。
 		//YブラーをかけるのはXブラーをかけたテクスチャになる。
 		auto srcTextureSrv = m_renderTarget[enRenderTarget_XBlur].GetRenderTargetSRV();
 		deviceContext->VSSetShaderResources(0, 1, &srcTextureSrv);
-		deviceContext->PSSetShaderResources(0, 1, &srcTextureSrv);
+		//deviceContext->PSSetShaderResources(0, 1, &srcTextureSrv);
+	}
+	else {
+		//ガウシアンフィルターの重みテーブルを更新する。
+		UpdateWeights();
 
-		//フルスクリーン描画を行ってブラーを実行。
-		postEffect.DrawFullScreenQuadPrimitive(
-			deviceContext, m_vsYBlur, m_psBlur
-		);
+		//重みテーブルを更新したので、VRAM上の定数バッファも更新する。
+		//メインメモリの内容をVRAMにコピー。
+		deviceContext->UpdateSubresource(
+			m_blurCbGpu, 0, nullptr, &m_blurParam, 0, 0);
+		//レジスタb0にm_blurCbGpuのアドレスを設定する。
+		deviceContext->PSSetConstantBuffers(
+			0, 1, &m_blurCbGpu);
 
+		//Xブラー。
+		{
+			//Xブラー用のレンダリングターゲットに変更する。
+			Engine().GetGraphicsEngine().ChangeRenderTarget(
+				&m_renderTarget[enRenderTarget_XBlur],
+				m_renderTarget[enRenderTarget_XBlur].GetViewport());
+			//ソーステクスチャのアドレスをt0レジスタに設定する。
+			deviceContext->VSSetShaderResources(0, 1, &m_srcTextureSRV);
+			deviceContext->PSSetShaderResources(0, 1, &m_srcTextureSRV);
+
+			//フルスクリーン描画を行ってブラーを実行。
+			postEffect.DrawFullScreenQuadPrimitive(
+				deviceContext, m_vsXBlur, m_psBlur
+			);
+		}
+		//続いてYブラー
+		{
+			//Yブラー用のレンダリングターゲットに変更する。
+			Engine().GetGraphicsEngine().ChangeRenderTarget(
+				&m_renderTarget[enRenderTarget_YBlur],
+				m_renderTarget[enRenderTarget_YBlur].GetViewport()
+			);
+			//Yブラーをかけるソーステクスチャのアドレスをt0に設定する。
+			//YブラーをかけるのはXブラーをかけたテクスチャになる。
+			auto srcTextureSrv = m_renderTarget[enRenderTarget_XBlur].GetRenderTargetSRV();
+			deviceContext->VSSetShaderResources(0, 1, &srcTextureSrv);
+			deviceContext->PSSetShaderResources(0, 1, &srcTextureSrv);
+
+			//フルスクリーン描画を行ってブラーを実行。
+			postEffect.DrawFullScreenQuadPrimitive(
+				deviceContext, m_vsYBlur, m_psBlur
+			);
+
+		}
 	}
 }

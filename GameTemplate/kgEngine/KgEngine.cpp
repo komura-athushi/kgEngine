@@ -143,9 +143,9 @@ void CEngine::Update()
 	m_gameobjectmanager->PrePostRender();
 	m_gameobjectmanager->Draw();
 
-	m_graphicsEngine->NormalMapRender();
+	//m_graphicsEngine->NormalMapRender();
 
-	m_graphicsEngine->DepthValueMapRender();
+	//m_graphicsEngine->DepthValueMapRender();
 
 	m_graphicsEngine->EdgeDelectionRender();
 

@@ -18,7 +18,7 @@ public:
 	/// <remarks>
 	/// Init関数を呼び出した後で実行するようにしてください。
 	/// </remarks>
-	void Execute(PostEffect& postEffect);
+	void Execute(PostEffect& postEffect, bool isExecute = true);
 	/// <summary>
 	/// ブラーをかけた結果のテクスチャSRVを取得。
 	/// </summary>

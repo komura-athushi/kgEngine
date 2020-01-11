@@ -62,7 +62,7 @@ EdgeDetection::~EdgeDetection()
 
 void EdgeDetection::EdgeRender(PostEffect& postEffect)
 {
-	m_gaussianBlur.Execute(postEffect);
+	//m_gaussianBlur.Execute(postEffect,false);
 
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	//レンダリングターゲットを切り替える。
@@ -87,6 +87,7 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 		Engine().GetGraphicsEngine().GetNormalMap()->GetNormalMapSRV()
 	};
 	//引数がポインタのポインタ、t2なので引数を2、1にしてる
+	d3dDeviceContext->VSSetShaderResources(0, 1, srvArray);
 	d3dDeviceContext->PSSetShaderResources(0, 1, srvArray);
 	
 	//深度値のテクスチャをt1に設定する

@@ -269,12 +269,21 @@ void GraphicsEngine::ChangeRenderTarget(ID3D11RenderTargetView* renderTarget, ID
 
 void GraphicsEngine::ChangeMainRenderTarget()
 {
-	ChangeRenderTarget(&m_mainRenderTarget, &m_frameBufferViewports);
+	//ChangeRenderTarget(&m_mainRenderTarget, &m_frameBufferViewports);
 
+	ID3D11RenderTargetView* rt[] = {
+		m_mainRenderTarget.GetRenderTargetView(),
+		m_normalMap->GetRenderTarget()->GetRenderTargetView(),
+		m_depthValueMao->GetRenderTarget()->GetRenderTargetView()
+	};
+	m_pd3dDeviceContext->OMSetRenderTargets(3, rt, m_mainRenderTarget.GetDepthStensilView());
+	m_pd3dDeviceContext->RSSetViewports(1, m_mainRenderTarget.GetViewport());
 	//メインレンダリングターゲットをクリアする。
 	float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float clearColor2[] = { 1.0f,1.0f,1.0f,1.0f };
 	m_mainRenderTarget.ClearRenderTarget(clearColor);
-	//m_normalMap.
+	m_normalMap->GetRenderTarget()->ClearRenderTarget(clearColor2);
+	m_depthValueMao->GetRenderTarget()->ClearRenderTarget(clearColor2);
 }
 
 void GraphicsEngine::PostRender()

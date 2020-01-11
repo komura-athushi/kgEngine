@@ -108,6 +108,14 @@ struct PSInput{
 	float4 posInLVP		: TEXCOORD1;	//ライトビュープロジェクション空間での座標。
 	float3 worldPos		: TEXCOORD2;	//ワールド座標
 };
+
+//ピクセルシェーダーの出力構造体
+struct PSOutPut {
+	float4 color : SV_Target0;
+	float4 normal : SV_Target1;
+	float depthView : SV_Target2;
+};
+
 /*!
  *@brief	スキン行列を計算。
  */
@@ -277,7 +285,7 @@ PSInput VSMainSkinInstancing(VSInputNmTxWeights In, uint instanceID : SV_Instanc
 //--------------------------------------------------------------------------------------
 // ピクセルシェーダーのエントリ関数。
 //--------------------------------------------------------------------------------------
-float4 PSMain( PSInput In ) : SV_Target0
+PSOutPut PSMain( PSInput In ) : SV_Target0
 {
 	float4 albedoColor = albedoTexture.Sample(Sampler, In.TexCoord);
 
@@ -374,7 +382,13 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float4 finalColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	finalColor.xyz = albedoColor.xyz * lig;
 	finalColor *= color;
-	return finalColor;
+	PSOutPut output;
+	output.color = finalColor;
+	In.Normal = In.Normal / 2.0f + 1.0f / 2.0f;
+	output.normal = float4(In.Normal.x, In.Normal.y, In.Normal.z, 1.0f);
+	output.depthView = In.Position.z / In.Position.w;
+	return output;
+	//return finalColor;
 }
 
 // <summary>

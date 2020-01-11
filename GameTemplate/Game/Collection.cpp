@@ -5,6 +5,7 @@
 #include "sound/SoundSource.h"
 #include "graphics\normal\NormalMap.h"
 #include "graphics\normal\EdgeDetection.h"
+#include "graphics\depthvalue\DepthValueMap.h"
 
 Collection::Collection()
 {
@@ -18,8 +19,8 @@ Collection::~Collection()
 
 bool Collection::Start()
 {
-	const float OFF_BUFFER_W = 300.0f;
-	const float OFF_BUFFER_H = 300.0f;
+	const float OFF_BUFFER_W = 1280.0f;
+	const float OFF_BUFFER_H = 720.0f;
 
 	//レンダーターゲットの初期化
 	m_offRenderTarget.Create(OFF_BUFFER_W, OFF_BUFFER_H, DXGI_FORMAT_R16G16B16A16_FLOAT);
@@ -167,24 +168,30 @@ void Collection::OffScreenRender()
 		if (i < W_NUMBER * H_NUMBER * (m_page - 1) + 1)
 			continue;
 
+		auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 		//レンダリングターゲットを切り替える。
 		ID3D11RenderTargetView* rts[] = {
-			m_offRenderTarget.GetRenderTargetView()
+			m_offRenderTarget.GetRenderTargetView(),
+			Engine().GetGraphicsEngine().GetNormalMap()->GetRenderTarget()->GetRenderTargetView(),
+			Engine().GetGraphicsEngine().GetDepthValueMap()->GetRenderTarget()->GetRenderTargetView()
 		};
-		d3dDeviceContext->OMSetRenderTargets(1, rts, m_offRenderTarget.GetDepthStensilView());
+		d3dDeviceContext->OMSetRenderTargets(3, rts, m_offRenderTarget.GetDepthStensilView());
 		//ビューポートを設定。
 		d3dDeviceContext->RSSetViewports(1, m_offRenderTarget.GetViewport());
 		d3dDeviceContext->RSSetState(m_rasterizerState);
 		//一番奥のZは1.0なので、1.0で塗りつぶす。
-		float clearColor[4] = { 0.7f, 0.7f, 0.7f, 1.0f }; //red,green,blue,alpha
+		float clearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //red,green,blue,alpha
+		float clearColor2[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		m_offRenderTarget.ClearRenderTarget(clearColor);
+		Engine().GetGraphicsEngine().GetNormalMap()->GetRenderTarget()->ClearRenderTarget(clearColor2);
+		Engine().GetGraphicsEngine().GetDepthValueMap()->GetRenderTarget()->ClearRenderTarget(clearColor2);
 
 		//カーソルの場所だったら表示させる画像を変える
 		if (m_cursorNumber == i) {
-			m_collectionCursor.Draw();
+			m_collectionCursor.DrawScreenPos(CVector2(640.0f,360.0f),CVector2(4.266666f,2.4f));
 		}
 		else {
-			m_sprite.Draw();
+			m_sprite.DrawScreenPos(CVector2(640.0f, 360.0f), CVector2(4.266666f, 2.4f));
 		}
 
 		//ものの大きさによってカメラの位置を変える
@@ -228,7 +235,7 @@ void Collection::OffScreenRender()
 		itr.second->s_skinModel.UpdateWorldMatrix(m_position, m_rot, m_scale);
 		itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix(),enRenderMode_Normal, false);
 
-		Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), &itr.second->s_skinModel);
+		//Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), &itr.second->s_skinModel);
 
 		Engine().GetGraphicsEngine().GetEdgeDelection()->EdgeRender(*Engine().GetGraphicsEngine().GetPostEffect());
 		Engine().GetGraphicsEngine().GetEdgeDelection()->Draw(*Engine().GetGraphicsEngine().GetPostEffect(), &m_offRenderTarget);
@@ -263,7 +270,7 @@ void Collection::OffScreenRender()
 	ID3D11ShaderResourceView* s[] = { NULL };
 	d3dDeviceContext->PSSetShaderResources(0, 1, s);
 	wchar_t output2[256];
-	swprintf_s(output2, L"モノの種類  %dコ\n", m_hitNumber);
+	swprintf_s(output2, L"アツメタモノ  %dコ\n", m_hitNumber);
 	m_font.DrawScreenPos(output2, CVector2(500.0f, 50.0f), CVector4::White(), { 0.7f,0.7f });
 
 }

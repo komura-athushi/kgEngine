@@ -127,7 +127,7 @@ void Result::PostRender()
 		m_font.DrawScreenPos(output2, CVector2(400.0f, 600.0f), CVector4::White(), { 2.3f,2.0f });
 	case EnResultScene_MoveGoal:
 		wchar_t output[256];
-		swprintf_s(output, L"Œ‹‰Ê    %.f", m_gameData->GetResultPlayerSize());
+		swprintf_s(output, L"ƒPƒbƒJ    %.f", m_gameData->GetResultPlayerSize());
 		m_font.DrawScreenPos(output, CVector2(700.0f, 300.0f), CVector4::White(), { 1.5f,1.5f });
 	}
 }

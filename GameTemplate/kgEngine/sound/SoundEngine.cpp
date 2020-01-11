@@ -188,7 +188,7 @@ void CSoundEngine::Update( )
 	while( it != m_soundSources.end()){
 	
 		auto soundSource = *it;
-		//soundSource->Update();
+		soundSource->Update();
 		if (soundSource->IsPlaying() == false) {
 			//Ä¶I—¹B
 			it = RemoveSoundSource(*it);
