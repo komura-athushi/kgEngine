@@ -238,16 +238,7 @@
     <None Include="Assets\sprite\arrow.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\clockkari2.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\clockkari.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
     <None Include="Assets\sprite\collection.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\collectioncursor.png">
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\pressstart.png">
@@ -263,9 +254,6 @@
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\stageselect.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\tekitou.png">
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\title.png">
@@ -447,6 +435,18 @@
     </None>
     <None Include="Assets\modelData\sphere\sphere1.FBX">
       <Filter>Asset\modelData\sphere</Filter>
+    </None>
+    <None Include="Assets\sprite\clockkari.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\clockkari2.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\collectioncursor.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\tekitou.png">
+      <Filter>Asset\sprite</Filter>
     </None>
   </ItemGroup>
 </Project>

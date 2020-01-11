@@ -72,7 +72,7 @@ public:
 	/*!
 	*@brief	モデルを描画。
 	*/
-	void Draw(CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal);
+	void Draw(CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal , bool isShadowReceiver = true);
 	//座標、回転、拡大を指定してモデルをドロー
 	//void Draw(const CVector3& m_position, const CQuaternion& rot, const CVector3& scale, CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal);
 	/*!

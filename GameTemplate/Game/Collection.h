@@ -10,12 +10,11 @@ public:
 	~Collection();
 	bool Start() override;
 	void Draw() override;
-	
-	//モデル描画していく
-	void OffScreenRender();
 private:
 	//サンプルステート初期化
 	void InitSamplerState();
+	//モデル描画していく
+	void OffScreenRender();
 private:
 	const static int W_NUMBER = 4;						//横幅
 	const static int H_NUMBER = 4;						//縦幅

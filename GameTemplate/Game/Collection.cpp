@@ -3,6 +3,9 @@
 #include < locale.h >
 #include "StageSelect.h"
 #include "sound/SoundSource.h"
+#include "graphics\normal\NormalMap.h"
+#include "graphics\normal\EdgeDetection.h"
+
 Collection::Collection()
 {
 
@@ -15,8 +18,8 @@ Collection::~Collection()
 
 bool Collection::Start()
 {
-	const float OFF_BUFFER_W = 500.0f;
-	const float OFF_BUFFER_H = 500.0f;
+	const float OFF_BUFFER_W = 300.0f;
+	const float OFF_BUFFER_H = 300.0f;
 
 	//レンダーターゲットの初期化
 	m_offRenderTarget.Create(OFF_BUFFER_W, OFF_BUFFER_H, DXGI_FORMAT_R16G16B16A16_FLOAT);
@@ -113,7 +116,7 @@ void Collection::Draw()
 				m_page++;
 				m_cursorNumber += W_NUMBER * H_NUMBER - W_NUMBER + 1;
 				if (m_cursorNumber > m_listSize) {
-					m_cursorNumber = m_listSize;
+					m_cursorNumber = m_listSize - W_NUMBER + 1;
 				}
 			}
 		}
@@ -223,9 +226,12 @@ void Collection::OffScreenRender()
 			itr.second->s_skinModel.SetColor(CVector4::White());
 		}
 		itr.second->s_skinModel.UpdateWorldMatrix(m_position, m_rot, m_scale);
-		itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
+		itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix(),enRenderMode_Normal, false);
 
+		Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), &itr.second->s_skinModel);
 
+		Engine().GetGraphicsEngine().GetEdgeDelection()->EdgeRender(*Engine().GetGraphicsEngine().GetPostEffect());
+		Engine().GetGraphicsEngine().GetEdgeDelection()->Draw(*Engine().GetGraphicsEngine().GetPostEffect(), &m_offRenderTarget);
 
 
 		Engine().GetGraphicsEngine().ChangeRenderTarget(Engine().GetGraphicsEngine().GetMainRenderTarget(), Engine().GetGraphicsEngine().GetMainRenderTarget()->GetViewport());

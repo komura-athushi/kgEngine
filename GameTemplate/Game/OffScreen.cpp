@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "OffScreen.h"
+#include "graphics\normal\NormalMap.h"
+#include "graphics\normal\EdgeDetection.h"
 
 OffScreen::OffScreen()
 {
@@ -51,7 +53,7 @@ void OffScreen::PostRender()
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	//レンダリングターゲットを切り替える。
 	ID3D11RenderTargetView* rts[] = {
-		m_offRenderTarget.GetRenderTargetView()
+		m_offRenderTarget.GetRenderTargetView(),
 	};
 	d3dDeviceContext->OMSetRenderTargets(1, rts, m_offRenderTarget.GetDepthStensilView());
 	//ビューポートを設定。
@@ -93,7 +95,12 @@ void OffScreen::PostRender()
 		}
 		m_offScreenCamera.Update();
 		m_skinModel->UpdateWorldMatrix(m_position, m_rot, m_scale);
-		m_skinModel->Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix());
+		m_skinModel->Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix(), enRenderMode_Normal, false);
+
+		Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), m_skinModel);
+
+		Engine().GetGraphicsEngine().GetEdgeDelection()->EdgeRender(*Engine().GetGraphicsEngine().GetPostEffect());
+		Engine().GetGraphicsEngine().GetEdgeDelection()->Draw(*Engine().GetGraphicsEngine().GetPostEffect(), &m_offRenderTarget);
 	}
 
 

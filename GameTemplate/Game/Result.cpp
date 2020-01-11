@@ -37,7 +37,7 @@ bool Result::Start()
 	m_player = FindGO<Player>();
 	m_player->SetPosition(CVector3::Zero());
 	m_gameCamera = FindGO<GameCamera>();
-	m_gameCamera->SetPosition({ 0.0f,0.0f ,300.0f });
+	m_gameCamera->SetPosition({ 0.0f,0.0f ,150.0f });
 	m_gameCamera->SetTarget(CVector3::Zero());
 
 
@@ -67,7 +67,7 @@ void Result::MovePlayer()
 {
 	const float Time = 2.0f;
 	const float Multiply = 2.0f;
-	const float Disance = 40.0f;
+	const float Disance = 15.0f;
 
 	//ÉvÉåÉCÉÑÅ[ìÆÇ©Ç∑
 	if (m_timer <= Time) {
@@ -127,7 +127,7 @@ void Result::PostRender()
 		m_font.DrawScreenPos(output2, CVector2(400.0f, 600.0f), CVector4::White(), { 2.3f,2.0f });
 	case EnResultScene_MoveGoal:
 		wchar_t output[256];
-		swprintf_s(output, L"åãâ     %.1f", m_gameData->GetResultPlayerSize());
+		swprintf_s(output, L"åãâ     %.f", m_gameData->GetResultPlayerSize());
 		m_font.DrawScreenPos(output, CVector2(700.0f, 300.0f), CVector4::White(), { 1.5f,1.5f });
 	}
 }

@@ -162,8 +162,9 @@ void Player::Move()
 	const float BoundMultiply = 0.7f;
 	//地面と衝突する前のyベクトルを記憶する
 	float MoveSpeedY = 0.0f;
-	const float TimeLimit = 0.4f;
+	const float TimeLimit = 0.3f;
 	const int CountLimit = 5;
+	const float DushSpeed = 5.0f;
 	
 	CVector3 Stick = CVector3::Zero();
 	//両方のスティックが入力されていたら
@@ -215,12 +216,12 @@ void Player::Move()
 	CVector3 rightxz = MainCamera().GetRight();
 	if (m_count >= CountLimit) {
 		if (m_isDush) {
-			m_movespeed += frontxz * m_movespeedmultiply * 3;
+			m_movespeed += frontxz * m_movespeedmultiply * DushSpeed;
 		}
 		//ダッシュ時の最初はある程度の移動速度を設定する
 		else {
 			for (int i = 0; i < 30; i++) {
-				m_movespeed += frontxz * m_movespeedmultiply * 3;
+				m_movespeed += frontxz * m_movespeedmultiply * DushSpeed;
 				m_movespeed *= MoveSpeedAtten;
 			}
 			m_isDush = true;
@@ -234,9 +235,9 @@ void Player::Move()
 		moveSpeed.y = 0.0f;
 		addMoveSpeed.y = 0.0f;
 		//ブレーキしてないかつ、移動速度がある程度あったら
- 		if (!m_isBrake && 
-			moveSpeed.LengthSq() >= ( m_movespeedmultiply * 40.0f ) * (m_movespeedmultiply * 40.0f) &&
-			addMoveSpeed.LengthSq() >= 0.6f) {
+		if (!m_isBrake &&
+			moveSpeed.LengthSq() >= (m_movespeedmultiply * 40.0f) * (m_movespeedmultiply * 40.0f) &&
+			addMoveSpeed.LengthSq() >= 0.8f) {
 
 			CVector3 addMove = addMoveSpeed;
 			CVector3 move = moveSpeed;

@@ -49,10 +49,10 @@ void Time::PostRender()
 	int seconds = m_timer - minutes * 60;
 	wchar_t output[256];
 	if (minutes < 1) {
-		swprintf_s(output, L"‚ ‚Æ%d•b\n", seconds);
+		swprintf_s(output, L"‚ ‚Æ%d‚Ñ‚å‚¤\n", seconds);
 	}
 	else {
-		swprintf_s(output, L"‚ ‚Æ%d•ª\n", minutes);
+		swprintf_s(output, L"‚ ‚Æ%d‚Õ‚ñ\n", minutes);
 	}
 	
 	m_font.DrawScreenPos(output, CVector2(1000.0f, 30.0f), CVector4::Blue(), CVector2(0.8f, 0.8f));

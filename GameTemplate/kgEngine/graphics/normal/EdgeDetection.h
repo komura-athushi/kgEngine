@@ -12,9 +12,10 @@ class EdgeDetection
 public:
 	EdgeDetection();
 	~EdgeDetection();
+	//エッジ検出
 	void EdgeRender(PostEffect& postEffect);
 	//合成していく
-	void Draw(PostEffect& postEffect);
+	void Draw(PostEffect& postEffect ,RenderTarget* renderTarget = nullptr);
 	void InitGaussian(NormalMap* normalMap);
 private:
 	RenderTarget m_edgeMapRT;								//法線を描画するレンダリングターゲット

@@ -32,7 +32,7 @@ bool Title::Start()
 	//‰æ‘œ‚ğ“Ç‚İ‚Ş
 	m_sprite.Init(L"Resource/sprite/title.dds", false);
 	m_player = NewGO<Player>(0);
-	m_player->SetPosition({0.0f,20.0f,0.0f});
+	m_player->SetPosition({0.0f,70.0f,0.0f});
 	m_player->SetisTitle();
 	m_gameCamera = NewGO<GameCamera>(0);
 	m_model = NewGO<CSkinModelRender>(0);

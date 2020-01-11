@@ -270,9 +270,11 @@ void GraphicsEngine::ChangeRenderTarget(ID3D11RenderTargetView* renderTarget, ID
 void GraphicsEngine::ChangeMainRenderTarget()
 {
 	ChangeRenderTarget(&m_mainRenderTarget, &m_frameBufferViewports);
+
 	//メインレンダリングターゲットをクリアする。
 	float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	m_mainRenderTarget.ClearRenderTarget(clearColor);
+	//m_normalMap.
 }
 
 void GraphicsEngine::PostRender()

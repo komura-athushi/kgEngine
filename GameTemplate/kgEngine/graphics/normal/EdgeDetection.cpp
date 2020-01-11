@@ -80,8 +80,11 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 	float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 	m_edgeMapRT.ClearRenderTarget(clearColor);
 
-	ID3D11ShaderResourceView* srvArray[]{
+	/*ID3D11ShaderResourceView* srvArray[]{
 		m_gaussianBlur.GetResultTextureSRV()
+	};*/
+	ID3D11ShaderResourceView* srvArray[]{
+		Engine().GetGraphicsEngine().GetNormalMap()->GetNormalMapSRV()
 	};
 	//引数がポインタのポインタ、t2なので引数を2、1にしてる
 	d3dDeviceContext->PSSetShaderResources(0, 1, srvArray);
@@ -96,11 +99,15 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 	
 }
 
-void EdgeDetection::Draw(PostEffect& postEffect)
+void EdgeDetection::Draw(PostEffect& postEffect ,RenderTarget* renderTarget)
 {
-	auto mainRT = Engine().GetGraphicsEngine().GetMainRenderTarget();
-	Engine().GetGraphicsEngine().ChangeRenderTarget(mainRT, mainRT->GetViewport());
-
+	if (renderTarget != nullptr) {
+		Engine().GetGraphicsEngine().ChangeRenderTarget(renderTarget, renderTarget->GetViewport());
+	}
+	else {
+		auto mainRT = Engine().GetGraphicsEngine().GetMainRenderTarget();
+		Engine().GetGraphicsEngine().ChangeRenderTarget(mainRT, mainRT->GetViewport());
+	}
 	auto deviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 
 	//合成したボケテクスチャのアドレスをt0レジスタに設定する。

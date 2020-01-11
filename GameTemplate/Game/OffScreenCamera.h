@@ -42,6 +42,11 @@ public:
 	{
 		m_camera.SetViewAngle(angle);
 	}
+	//ƒJƒƒ‰‚ğæ“¾
+	Camera* GetCamera()
+	{
+		return &m_camera;
+	}
 private:
 	Camera m_camera;									//ƒJƒƒ‰
 	CVector3 m_position = {0.0f,200.0f,500.0f};			//À•W

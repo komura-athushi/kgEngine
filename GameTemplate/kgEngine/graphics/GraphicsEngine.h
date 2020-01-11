@@ -82,6 +82,16 @@ public:
 	{
 		return m_depthValueMao;
 	}
+	//エッジマップを取得
+	EdgeDetection* GetEdgeDelection()
+	{
+		return m_edgeDelection;
+	}
+	//全画面描画用のポストエフェクトを取得
+	PostEffect* GetPostEffect()
+	{
+		return m_postEffect;
+	}
 	//Sprite取得
 	DirectX::SpriteBatch* GetSpriteBatch() const
 	{

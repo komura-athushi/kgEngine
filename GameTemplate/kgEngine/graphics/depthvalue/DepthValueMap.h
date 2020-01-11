@@ -16,7 +16,11 @@ public:
 		return m_depthValueMapRT.GetRenderTargetSRV();
 	}
 	void RenderDepthValueMap();
-
+	//レンダーターゲットを取得
+	RenderTarget* GetRenderTarget()
+	{
+		return &m_depthValueMapRT;
+	}
 private:
 	RenderTarget m_depthValueMapRT;								//法線を描画するレンダリングターゲット
 	std::vector<SkinModel*> m_modelList;				//モデルの配列

@@ -17,8 +17,12 @@ public:
 	{
 		return m_normalMapRT.GetRenderTargetSRV();
 	}
-	void RenderNormalMap();
-	
+	void RenderNormalMap(Camera* camera = nullptr , SkinModel* skinModel = nullptr);
+	//レンダーターゲットを取得
+	RenderTarget* GetRenderTarget()
+	{
+		return &m_normalMapRT;
+	}
 private:
 	RenderTarget m_normalMapRT;								//法線を描画するレンダリングターゲット
 	std::vector<SkinModel*> m_modelList;				//モデルの配列

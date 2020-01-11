@@ -8,7 +8,7 @@
 
 SkinModel::SkinModel()
 {
-	m_dirLight.direction[0] = { 0.577f, -0.577f, -0.577f, 0.0f };
+	m_dirLight.direction[0] = { -0.577f, -0.577f, -0.577f, 0.0f };
 	m_dirLight.lightcolor[0] = { 0.5f, 0.5f, 0.5f, 1.0f };
 
 	m_dirLight.direction[1] = { -0.707f, -0.707f, 0.0f, 0.0f };
@@ -218,7 +218,7 @@ void SkinModel::UpdateInstancingData(const CMatrix& worldMatrix)
 	}
 }
 
-void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderMode)
+void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderMode ,bool isShadowReceiver)
 {
 	if (m_isInstancing && m_numInstance == 0) {
 		return;
@@ -258,11 +258,16 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 	
 	vsCb.mLightProj = shadowMap->GetLightProjMatrix();
 	vsCb.mLightView = shadowMap->GetLightViewMatrix();
-	if (m_isShadowReceiver == true) {
-		vsCb.isShadowReciever = 1;
+	if (!isShadowReceiver) {
+		vsCb.isShadowReciever = 0;
 	}
 	else {
-		vsCb.isShadowReciever = 0;
+		if (m_isShadowReceiver == true) {
+			vsCb.isShadowReciever = 1;
+		}
+		else {
+			vsCb.isShadowReciever = 0;
+		}
 	}
 	ID3D11ShaderResourceView* srvArray[]{
 		shadowMap->GetShadowMapSRV()

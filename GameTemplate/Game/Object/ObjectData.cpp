@@ -9,17 +9,18 @@ ObjectData::ObjectData()
 	FILE* fp = NULL;
 	const char* fname = "Assets/binarydata/test.cag";
 	float x = 0, y = 0, z = 0, volume = 0;
-	int issphere = 0,islinesegment = 0,isanimation = 0, isMeshCollider = 0;
+	int issphere = 0, islinesegment = 0, isanimation = 0, isMeshCollider = 0, isDefalutSe = 0;
 	//fopen_sでファイルのオープンに成功したら0が返るらしい
 	if(fopen_s(&fp, fname, "rb") == 0) {
 		//fscanfの戻り値がEOF(-1)になるまでループさせる
 		//読みこんだデータを構造体として保存する
 		int i = 1;
 		while (i != EOF) {
-			wchar_t* name = new wchar_t[100];
-			char* jName = new char[100];
+			wchar_t* name = new wchar_t[50];
+			char* jName = new char[50];
+			wchar_t* seFileName = new wchar_t[50];
 			//fscanfでファイルを読み込む、戻り値がEOFだった場合処理を終了する
-			i = fscanf(fp, "%ls %s %f %f %f %f %d %d %d %d", name, jName, &x, &y, &z, &volume, &issphere, &islinesegment, &isanimation, &isMeshCollider);
+			i = fscanf(fp, "%ls %s %f %f %f %f %d %d %d %d %d %ls", name, jName, &x, &y, &z, &volume, &issphere, &islinesegment, &isanimation, &isMeshCollider,&isDefalutSe,seFileName);
 			if (i == EOF) {
 				break;
 			}
@@ -42,10 +43,10 @@ ObjectData::ObjectData()
 					linevector = CVector3::AxisZ() * z;
 					state = enState_Z;
 				}
-				m_objectdataList.push_back({ name, jName, x, y, z, volume, issphere,islinesegment,isMeshCollider,isanimation,linevector,state });
+				m_objectdataList.push_back({ name, jName, x, y, z, volume, issphere,islinesegment,isanimation,isMeshCollider,isDefalutSe,seFileName,linevector,state });
 			}
 			else {
-				m_objectdataList.push_back({ name, jName, x, y, z, volume, issphere,islinesegment,isanimation,isMeshCollider });
+				m_objectdataList.push_back({ name, jName, x, y, z, volume, issphere,islinesegment,isanimation,isMeshCollider,isDefalutSe,seFileName });
 			}
 
 			if (m_modelObjDataList.count(volume) == 0) {

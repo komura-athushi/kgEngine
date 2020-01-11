@@ -19,7 +19,7 @@ NormalMap::~NormalMap()
 
 }
 
-void NormalMap::RenderNormalMap()
+void NormalMap::RenderNormalMap(Camera* camera, SkinModel* skinModel)
 {
 
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
@@ -35,7 +35,14 @@ void NormalMap::RenderNormalMap()
 	float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 	m_normalMapRT.ClearRenderTarget(clearColor);
 
-	if (m_modelList.size() >= 1) {
+	if (skinModel != nullptr) {
+		skinModel->Draw(
+			camera->GetViewMatrix(),
+			camera->GetProjectionMatrix(),
+			enRenderMode_NormalMap
+		);
+	}
+	else if (m_modelList.size() >= 1) {
 		//シャドウキャスターをシャドウマップにレンダリング。
 		for (auto& caster : m_modelList) {
 			caster->Draw(

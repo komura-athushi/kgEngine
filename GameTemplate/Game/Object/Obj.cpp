@@ -216,7 +216,7 @@ void Obj::ClcVertex()
 
 void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 {
-	const float seVolume = 3.0f;
+	const float seVolume = 0.4f;
 
 	//プレイヤーの逆行列を求める
 	CMatrix ReverseMatrix;
@@ -253,7 +253,14 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 
 	//巻き込まれたら音出す
 	CSoundSource* se = new CSoundSource();
-	se->Init(L"Assets/sound/water.wav");
+	if (m_objdata->s_isDefalutSe != 0) {
+		wchar_t name[256];
+		swprintf_s(name, L"Assets/sound/mono/%ls.wav", m_objdata->seFileName);
+		se->Init(name);
+	}
+	else {
+		se->Init(L"Assets/sound/water.wav");
+	}
 	se->Play(false);
 	se->SetVolume(seVolume);
 }
