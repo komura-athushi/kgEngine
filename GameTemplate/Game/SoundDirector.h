@@ -9,6 +9,7 @@ enum EnBGM {
 	enBGM_Stage1,
 	enBGM_Stage2,
 	enBGM_Stage3,
+	enBGM_Result,
 	enBGM_Non
 };
 

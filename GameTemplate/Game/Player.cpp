@@ -346,10 +346,26 @@ void Player::PostRender()
 	//ステージなら塊の大きさを表示する
 	if (m_gamedata->GetScene() == enScene_Stage) {
 		wchar_t output[256];
-		swprintf_s(output, L"%.f\n", m_radius * 2.0f);
+		int playerSize = int(m_radius * 2.0f);
+		int goalSize = int(m_gamedata->GetGoalPlayerSize());
+		swprintf_s(output, L"%d\n", playerSize);
 		//swprintf_s(output, L"%f\n", m_position.y);
 		//swprintf_s(output, L"x %f y %f z %f\n", m_position.x , m_position.y ,m_position.z);
-		m_font.DrawScreenPos(output, CVector2(0.0f, 50.0f), CVector4::White(), { 1.5f,1.5f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(70.0f, 80.0f), CVector4::White(), { 0.8f,0.8f });
+		CVector4 color;
+		if (playerSize >= goalSize) {
+			color = CVector4::Blue();
+		}
+		else {
+			color = CVector4::Red();
+		}
+		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f), color, { 1.5f,1.5f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(75.0f, 45.0f), color, { 0.8f,0.8f });
+
+		wchar_t output2[256];
+		swprintf_s(output2, L"%d\n", goalSize);
+		m_font.DrawScreenPos(output2, CVector2(155.0f, 65.0f), CVector4::White(), { 1.0f,1.0f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(210.0f, 85.0f), CVector4::White(), { 0.5f,0.5f });
+
+		m_font.DrawScreenPos(L"/\n", CVector2(110.0f, 30.0f), CVector4::White(), { 2.0f,2.0f });
 	}
 }

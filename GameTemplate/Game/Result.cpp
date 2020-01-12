@@ -6,6 +6,7 @@
 #include "Object/Obj.h"
 #include "StageSelect.h"
 #include "sound/SoundSource.h"
+#include "SoundDirector.h"
 
 Result::Result()
 {
@@ -40,7 +41,7 @@ bool Result::Start()
 	m_gameCamera->SetPosition({ 0.0f,0.0f ,150.0f });
 	m_gameCamera->SetTarget(CVector3::Zero());
 
-
+	SoundData().SetBGM(enBGM_Result);
 	return true;
 }
 

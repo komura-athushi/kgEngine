@@ -37,7 +37,7 @@ private:
 	ID3D11RasterizerState* m_rasterizerState = NULL;	//ラスタライザステート。
 	float m_degree = 0.0f;								//回転の角度
 	StructObjectData* m_objData = nullptr;				//オブジェクトデータ
-
+	CSprite m_sprite;
 
 };
 

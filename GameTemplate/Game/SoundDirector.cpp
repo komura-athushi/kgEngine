@@ -13,8 +13,11 @@ SoundDirector::~SoundDirector()
 
 void SoundDirector::SetBGM(EnBGM state)
 {
+	if (state == enBGM_Result) {
+		m_bgm->Stop();
+	}
 	//¡Ä¶’†‚ÌBGM‚Æˆá‚Á‚Ä‚½‚çV‚µ‚­BGM‚ğÄ¶
-	if (m_state != state) {
+	else if (m_state != state) {
 		if (m_bgm != nullptr) {
 			delete m_bgm;
 		}

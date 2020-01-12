@@ -48,12 +48,24 @@ void Time::PostRender()
 	int minutes = m_timer / 60;
 	int seconds = m_timer - minutes * 60;
 	wchar_t output[256];
+	wchar_t output2[256];
+	CVector2 pos;
 	if (minutes < 1) {
-		swprintf_s(output, L"あと%dびょう\n", seconds);
+		swprintf_s(output, L"%d\n", seconds);
+		swprintf_s(output2, L"ビョウ");
+		if (seconds > 10) {
+			pos = CVector2(1070.0f, 50.0f);
+		}
+		else {
+			pos = CVector2(1040.0f, 50.0f);
+		}
 	}
 	else {
-		swprintf_s(output, L"あと%dぷん\n", minutes);
+		swprintf_s(output, L"%d\n", minutes);
+		swprintf_s(output2, L"フン\n");
+		pos = CVector2(1040.0f, 50.0f);
 	}
-	
-	m_font.DrawScreenPos(output, CVector2(1000.0f, 30.0f), CVector4::Blue(), CVector2(0.8f, 0.8f));
+	m_font.DrawScreenPos(L"アト\n", CVector2(960.0f, 50.0f), CVector4::Yellow(), CVector2(0.6f, 0.6f));
+	m_font.DrawScreenPos(output, CVector2(1000.0f, 25.0f), CVector4::Yellow(), CVector2(1.2f, 1.2f));
+	m_font.DrawScreenPos(output2, pos, CVector4::Yellow(), CVector2(0.6f, 0.6f));
 }

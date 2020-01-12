@@ -216,7 +216,7 @@ void Obj::ClcVertex()
 
 void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 {
-	const float seVolume = 0.4f;
+	const float seVolume = 0.25f;
 
 	//プレイヤーの逆行列を求める
 	CMatrix ReverseMatrix;

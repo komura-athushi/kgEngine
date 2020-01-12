@@ -31,6 +31,7 @@ bool OffScreen::Start()
 	InitSamplerState();
 	m_postEffect.InitScreenQuadPrimitive(CVector2(0.5f, -1.0f), CVector2(1.0f, -1.0f), CVector2(0.5f, -0.5f), CVector2(1.0f, -0.5f));
 	
+	m_sprite.Init(L"Resource/sprite/komado.dds");
 	
 	return true;
 }
@@ -69,6 +70,8 @@ void OffScreen::PostRender()
 	Engine().GetGraphicsEngine().GetNormalMap()->GetRenderTarget()->ClearRenderTarget(clearColor2);
 	Engine().GetGraphicsEngine().GetDepthValueMap()->GetRenderTarget()->ClearRenderTarget(clearColor2);
 
+	m_sprite.Draw();
+
 	if (m_skinModel != nullptr) {
 		//ƒ‚ƒfƒ‹‚É‚ ‚í‚¹‚ÄƒJƒƒ‰‚ÌÀ•W‚ðÝ’è
 		float x = m_objData->s_x * 5.0f;
@@ -103,7 +106,7 @@ void OffScreen::PostRender()
 		m_skinModel->UpdateWorldMatrix(m_position, m_rot, m_scale);
 		m_skinModel->Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix(), enRenderMode_Normal, false);
 
-		Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), m_skinModel);
+		//Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), m_skinModel);
 
 		Engine().GetGraphicsEngine().GetEdgeDelection()->EdgeRender(*Engine().GetGraphicsEngine().GetPostEffect());
 		Engine().GetGraphicsEngine().GetEdgeDelection()->Draw(*Engine().GetGraphicsEngine().GetPostEffect(), &m_offRenderTarget);
