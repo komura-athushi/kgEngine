@@ -253,9 +253,6 @@
     <None Include="Assets\sprite\stageselect.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\title.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
     <None Include="Assets\modelData\zunko\zunko.FBX">
       <Filter>Asset\modelData</Filter>
     </None>
@@ -445,10 +442,13 @@
     <None Include="Assets\sprite\tekitou.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\sprite\komado.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
     <None Include="Assets\sprite\pressstart.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\komado.png">
+    <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
     </None>
   </ItemGroup>

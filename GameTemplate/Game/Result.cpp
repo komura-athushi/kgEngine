@@ -119,7 +119,7 @@ void Result::PostRender()
 	case EnResultScene_MoveResult:
 		wchar_t output2[256];
 		if (m_gameData->GetisGameClear()) {
-			swprintf_s(output2, L"GAMECLEAR");
+			swprintf_s(output2, L"STAGECLEAR");
 		}
 
 		else {

@@ -50,10 +50,11 @@ void Time::PostRender()
 	wchar_t output[256];
 	wchar_t output2[256];
 	CVector2 pos;
+	//残り時間が1分より大きかったら分表示、小さかったら秒表示
 	if (minutes < 1) {
 		swprintf_s(output, L"%d\n", seconds);
 		swprintf_s(output2, L"ビョウ");
-		if (seconds > 10) {
+		if (seconds > 9) {
 			pos = CVector2(1070.0f, 50.0f);
 		}
 		else {

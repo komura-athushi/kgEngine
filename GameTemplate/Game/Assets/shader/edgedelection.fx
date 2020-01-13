@@ -26,12 +26,13 @@ struct PS_EdgeInput {
 Texture2D<float4> normalTexture : register(t0);	//シーンテクスチャ。
 Texture2D<float4> depthValueTexture : register(t1); //深度値テクスチャ
 
-sampler Sampler : register(s0);
+sampler Sampler : register(s0);		//サンプラー
 
 PS_EdgeInput VSXEdge(VSInput In)
 {
 	float2 texSize;
 	float level;
+	//テクスチャーのサイズを取得する
 	normalTexture.GetDimensions(0, texSize.x, texSize.y, level);
 
 	PS_EdgeInput Out;
@@ -39,58 +40,61 @@ PS_EdgeInput VSXEdge(VSInput In)
 	float2 tex = In.uv;
 
 	float offset = 0.2f;
-	//真ん中
-	Out.tex0 = tex;
+	//法線
+	{
+		//真ん中のピクセル
+		Out.tex0 = tex;
 
-	//右上
-	Out.tex1.xy = tex + float2(offset / texSize.x, -offset / texSize.y);
-	
-	//上
-	Out.tex2.xy = tex + float2(0.0f, -offset / texSize.y);
-	
-	//左上
-	Out.tex3.xy = tex + float2(-offset / texSize.x, -offset / texSize.y);
+		//右上のピクセル
+		Out.tex1.xy = tex + float2(offset / texSize.x, -offset / texSize.y);
 
-	//右
-	Out.tex4.xy = tex + float2(offset / texSize.x, 0.0f);
+		//上のピクセル
+		Out.tex2.xy = tex + float2(0.0f, -offset / texSize.y);
 
-	//左
-	Out.tex5.xy = tex + float2(-offset / texSize.x, 0.0f);
+		//左上のピクセル
+		Out.tex3.xy = tex + float2(-offset / texSize.x, -offset / texSize.y);
+		
+		//右のピクセル
+		Out.tex4.xy = tex + float2(offset / texSize.x, 0.0f);
 
-	//右下
-	Out.tex6.xy = tex + float2(offset / texSize.x, offset / texSize.y);
+		//左のピクセル
+		Out.tex5.xy = tex + float2(-offset / texSize.x, 0.0f);
 
-	//下	
-	Out.tex7.xy = tex + float2(0.0f, offset / texSize.y);
+		//右下のピクセル
+		Out.tex6.xy = tex + float2(offset / texSize.x, offset / texSize.y);
 
-	//左下
-	Out.tex8.xy = tex + float2(-offset / texSize.x, offset / texSize.y);
+		//下のピクセル
+		Out.tex7.xy = tex + float2(0.0f, offset / texSize.y);
+
+		//左下のピクセル
+		Out.tex8.xy = tex + float2(-offset / texSize.x, offset / texSize.y);
+	}
 
 	{
 		//深度値を取り出すときに使うUV座標
 		offset = 1.0f;
-		//右上
+		//右上のピクセル
 		Out.tex1.zw = tex + float2(offset / texSize.x, -offset / texSize.y);
 
-		//上
+		//上のピクセル
 		Out.tex2.zw = tex + float2(0.0f, -offset / texSize.y);
 
-		//左上
+		//左上のピクセル
 		Out.tex3.zw = tex + float2(-offset / texSize.x, -offset / texSize.y);
 
-		//右
+		//右のピクセル
 		Out.tex4.zw = tex + float2(offset / texSize.x, 0.0f);
 
-		//左
+		//左のピクセル
 		Out.tex5.zw = tex + float2(-offset / texSize.x, 0.0f);
 
-		//右下
+		//右下のピクセル
 		Out.tex6.zw = tex + float2(offset / texSize.x, offset / texSize.y);
 
-		//下	
+		//下のピクセル
 		Out.tex7.zw = tex + float2(0.0f, offset / texSize.y);
 
-		//左下
+		//左下のピクセル
 		Out.tex8.zw = tex + float2(-offset / texSize.x, offset / texSize.y);
 
 	}
@@ -100,11 +104,12 @@ PS_EdgeInput VSXEdge(VSInput In)
 float4 PSEdge(PS_EdgeInput In) : SV_Target0
 {
 	float depth = depthValueTexture.Sample(Sampler,In.tex0);
-	//float depth = In.pos.z / In.pos.w;
+
 	if (depth < 0.0025f) {
 		clip(-1);
 	}
 
+	//周囲のピクセルの法線の値の平均を計算する。
 	float3 Normal;
 	Normal = normalTexture.Sample(Sampler, In.tex0).xyz * -8.0f;
 	Normal += normalTexture.Sample(Sampler, In.tex1.xy).xyz;
@@ -126,17 +131,9 @@ float4 PSEdge(PS_EdgeInput In) : SV_Target0
 	depth2 += depthValueTexture.Sample(Sampler, In.tex7.zw).x;
 	depth2 += depthValueTexture.Sample(Sampler, In.tex8.zw).x;
 	depth2 /= 8.0f;
-	//Normal = normalTexture.Sample(Sampler, In.tex0).xyz * -4.0f;
-	////Normal += normalTexture.Sample(Sampler, In.tex1).xyz;
-	//Normal += normalTexture.Sample(Sampler, In.tex2).xyz;
-	////Normal += normalTexture.Sample(Sampler, In.tex3).xyz;
-	//Normal += normalTexture.Sample(Sampler, In.tex4).xyz;
-	//Normal += normalTexture.Sample(Sampler, In.tex5).xyz;
-	////Normal += normalTexture.Sample(Sampler, In.tex6).xyz;
-	//Normal += normalTexture.Sample(Sampler, In.tex7).xyz;
-	////Normal += normalTexture.Sample(Sampler, In.tex8).xyz;
 
 	float4 Color;
+	//法線の計算結果、あるいは深度値の計算結果が一定以上ならエッジとみなす。
 	if (length(Normal) >= 0.2f || abs(depth2-depth) > 0.001f ) {
 		Color = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	}

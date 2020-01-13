@@ -128,9 +128,11 @@ void Game::Update()
 		if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
 			if (m_gameData->GetisPose()) {
 				m_gameData->SetPoseCancel();
+				SoundData().SetPlayBGM();
 			}
 			else {
 				m_gameData->SetPose();
+				SoundData().SetStopBGM();
 			}
 		}
 	}

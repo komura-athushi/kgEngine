@@ -27,6 +27,16 @@ public:
 	}
 	//再生するBGMのステートを設定
 	void SetBGM(EnBGM state);
+	//再生中のBGMをストップ
+	void SetStopBGM()
+	{
+		m_bgm->Pause();
+	}
+	//ストップ中のBGMを再生
+	void SetPlayBGM()
+	{
+		m_bgm->Play(true);
+	}
 private:
 	CSoundSource* m_bgm = nullptr;						//現在再生中のBGM
 	EnBGM m_state = enBGM_Non;							//なんのBGMを再生しているか

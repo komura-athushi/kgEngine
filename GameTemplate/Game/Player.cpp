@@ -359,7 +359,7 @@ void Player::PostRender()
 			color = CVector4::Red();
 		}
 		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f), color, { 1.5f,1.5f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(75.0f, 45.0f), color, { 0.8f,0.8f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(78.0f, 38.0f), color, { 0.8f,0.8f });
 
 		wchar_t output2[256];
 		swprintf_s(output2, L"%d\n", goalSize);

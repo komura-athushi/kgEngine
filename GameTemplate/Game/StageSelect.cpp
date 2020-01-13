@@ -37,7 +37,6 @@ bool StageSelect::Start()
 	//ゲームデータからステージの番号を取得
 	m_gameData = &GetGameData();
 	m_stageNumber = m_gameData->GetStageNumber();
-	m_player.Init(L"Resource/modelData/zunko.cmo");
 	//レベルを読み込んで配置する
 	m_level.Init(L"Assets/level/stageselect.tkl", [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"point")) {
@@ -66,7 +65,9 @@ bool StageSelect::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"zunko")) {
+			m_player.Init(L"Resource/modelData/zunko.cmo");
 			m_player.SetPosition(objdata.position);
+			m_player.SetRotation(CQuaternion::Identity());
 			return true;
 		}
 		return true;
