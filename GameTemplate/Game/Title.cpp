@@ -31,14 +31,11 @@ bool Title::Start()
 {
 	//画像を読み込む
 	m_sprite.Init(L"Resource/sprite/title.dds", false);
-	m_player = NewGO<Player>(0);
-	m_player->SetPosition({0.0f,70.0f,0.0f});
-	m_player->SetisTitle();
-	m_gameCamera = NewGO<GameCamera>(0);
 	m_model = NewGO<CSkinModelRender>(0);
 	m_model->Init(L"Resource/modelData/ground1.cmo");
 	m_model->SetPosition({0.0f,0.0f,0.0f});
 	m_model->SetShadowCaster(false);
+	m_model->SetShadowReceiver(false);
 	m_model->SetOffToonShader();
 	m_staticobject.CreateMeshObject(m_model,CVector3::Zero(),CQuaternion::Identity());
 	m_pressStart.Init(L"Resource/sprite/pressstart.dds");
@@ -47,6 +44,10 @@ bool Title::Start()
 
 	GameData::GetInstance().SetScene(enScene_Title);
 	GameData::GetInstance().SetPoseCancel();
+
+	MainCamera().SetPosition(CVector3(0.0f, 50.0f, 50.0f));
+	MainCamera().SetTarget(CVector3(0.0f, 50.0f, 0.0f));
+	MainCamera().Update();
 	return true;
 }
 
@@ -54,15 +55,21 @@ void Title::Update()
 {
 	const float Speed = 100.0f;
 
-	//タイトルの画像を移動させる
-	m_titlePosition.y += GameTime().GetFrameDeltaTime() * Speed;
-	if (m_titlePosition.y >= FRAME_BUFFER_H / 2) {
-		m_titlePosition.y = FRAME_BUFFER_H / 2;
-		m_isStart = true;
+	if (!m_isStart) {
+		//タイトルの画像を移動させる
+		m_titlePosition.y += GameTime().GetFrameDeltaTime() * Speed;
+		if (m_titlePosition.y >= FRAME_BUFFER_H / 2) {
+			m_titlePosition.y = FRAME_BUFFER_H / 2;
+			m_isStart = true;
+			m_player = NewGO<Player>(0);
+			m_player->SetPosition({ 0.0f,70.0f,0.0f });
+			m_player->SetisTitle();
+			m_gameCamera = NewGO<GameCamera>(0);
+		}
 	}
 	//m_player->SetPosition({ 0.0f,0.0f,0.0f });
 	//スタートボタンが押されたら画面を切り替える
-	if (Engine().GetPad(0).IsTrigger(enButtonStart) && m_isStart) {
+	else if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
 		m_isWaitFadeout = true;
 		NewGO<StageSelect>(0);
 		DeleteGO(this);

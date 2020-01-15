@@ -527,6 +527,16 @@
   <ItemGroup>
     <None Include="Assets\sprite\komado.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\end.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\gameover.png" />
+    <None Include="Assets\sprite\stageclear.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

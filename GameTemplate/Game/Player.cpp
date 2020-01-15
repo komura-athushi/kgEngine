@@ -165,6 +165,11 @@ void Player::Move()
 	const float TimeLimit = 0.3f;
 	const int CountLimit = 5;
 	const float DushSpeed = 5.0f;
+	//連続で衝突音を出さないために
+	const float CollisionTime = 0.2f;
+	const float BrakeVolume = 0.7f;
+	const float CollisionVolume = 1.8;
+	const float CollisionAtten = 0.5f;
 	
 	CVector3 Stick = CVector3::Zero();
 	//両方のスティックが入力されていたら
@@ -245,12 +250,12 @@ void Player::Move()
 			move.Normalize();
 			float angle = addMove.Dot(move);
 			//移動方向とスティックの入力の角度がある程度大きかったらブレーキ
-			if (fabs(acosf(angle)) >= CMath::PI * 0.5f) {
+			if (fabs(acosf(angle)) >= CMath::PI * 0.5f && m_collisionTimer >= CollisionTime) {
 				m_movespeed *= MoveSpeedAtten2;
 				CSoundSource* se = new CSoundSource();
 				se->Init(L"Assets/sound/brake.wav");
 				se->Play(false);
-				se->SetVolume(0.7f);
+				se->SetVolume(BrakeVolume);
 				m_isBrake = true;
 			}
 		}
@@ -283,7 +288,7 @@ void Player::Move()
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
 	//衝突したら
 	if (m_characon.GetisCollision()) {
-		if (m_count2 >= 1) {
+		if (m_count2 >= 1 && m_collisionTimer >= CollisionTime) {
 			CVector3 Normal = m_characon.GetWallNormalVector();
 			Normal.y = 0.0f;
 			Normal.Normalize();
@@ -291,17 +296,20 @@ void Player::Move()
 			CVector3 vt = Normal * t;
 			CVector3 InversionSpeed = CVector3(-m_movespeed.x, 0.0f, -m_movespeed.z);
 			CVector3 va = InversionSpeed + vt * 2;
-			m_movespeed.x = -va.x * 0.5f;
-			m_movespeed.z = -va.z * 0.5f;
+			m_movespeed.x = -va.x * CollisionAtten;
+			m_movespeed.z = -va.z * CollisionAtten;
 			CSoundSource* se = new CSoundSource();
 			se->Init(L"Assets/sound/syoutotu.wav");
 			se->Play(false);
+			se->SetVolume(CollisionVolume);
+			m_collisionTimer = 0.0f;
 		}
 		
 		m_count2++;
 	}
 	else {
 		m_count2 = 0;
+		m_collisionTimer += GameTime().GetFrameDeltaTime();
 	}
 	if (m_characon.IsOnGround()) {
 		/*if (m_isbound) {
@@ -309,9 +317,9 @@ void Player::Move()
 		}
 		else {*/
 			m_movespeed.y = 0.0f;
-			if (GetPad(0).IsTrigger(enButtonB)) {
-				m_movespeed.y = JumpMoveSpeed;
-			}
+			//if (GetPad(0).IsTrigger(enButtonB)) {
+				//m_movespeed.y = JumpMoveSpeed;
+			//}
 		//}
 		//m_movespeed.y = 0.0f;
 	}
@@ -358,14 +366,23 @@ void Player::PostRender()
 		else {
 			color = CVector4::Red();
 		}
+		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 1.6f,1.6f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(82.0f, 38.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.86f,0.86f });
 		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f), color, { 1.5f,1.5f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(78.0f, 38.0f), color, { 0.8f,0.8f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(82.0f, 38.0f), color, { 0.8f,0.8f });
+	
+		//m_font.DrawScreenPos(L"cm\n", CVector2(78.0f, 38.0f), color, { 0.8f,0.8f });
 
 		wchar_t output2[256];
 		swprintf_s(output2, L"%d\n", goalSize);
-		m_font.DrawScreenPos(output2, CVector2(155.0f, 65.0f), CVector4::White(), { 1.0f,1.0f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(210.0f, 85.0f), CVector4::White(), { 0.5f,0.5f });
+		m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 1.07f,1.07f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.55f,0.55f });
 
-		m_font.DrawScreenPos(L"/\n", CVector2(110.0f, 30.0f), CVector4::White(), { 2.0f,2.0f });
+		m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f), CVector4::White(), { 1.0f,1.0f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f), CVector4::White(), { 0.5f,0.5f });
+
+		m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 2.15f,2.15f });
+		m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f), CVector4::White(), { 2.0f,2.0f });
+		
 	}
 }

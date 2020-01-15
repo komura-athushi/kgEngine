@@ -12,15 +12,20 @@ struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 	CVector3 hitNormal = CVector3::Zero();				//衝突点の法線。
 	btCollisionObject* me = nullptr;					//自分自身。自分自身との衝突を除外するためのメンバ。
 	float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
+	float playerRadius = 0.0f;							//プレイヤーの半径
 
 														//衝突したときに呼ばれるコールバック関数。
 	virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 	{
 		if (convexResult.m_hitCollisionObject == me
 			|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character
-			|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_User) {
+			|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_User
+			|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_LineSegment) {
 			//自分に衝突した。or キャラクタ属性のコリジョンと衝突した。
 			return 0.0f;
+		}
+		if (GetCompareSize(playerRadius, convexResult.m_hitCollisionObject->GetSize()) && convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object) {
+			convexResult.m_hitCollisionObject->SetisHit();
 		}
 		//衝突点の法線を引っ張ってくる。
 		CVector3 hitNormalTmp = *(CVector3*)& convexResult.m_hitNormalLocal;
@@ -142,6 +147,7 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 		SweepResultGround callback;
 		callback.me = m_rigidBody.GetBody();
 		callback.startPos.Set(start.getOrigin());
+		callback.playerRadius = m_player->GetRadius();
 		//衝突検出。
 		if (fabsf(nextPosition.y - callback.startPos.y) > FLT_EPSILON) {
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);

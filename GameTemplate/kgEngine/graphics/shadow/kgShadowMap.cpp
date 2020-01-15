@@ -44,7 +44,7 @@ void ShadowMap::UpdateFromLightDirection(const CVector3& lightCameraPos,const CV
 		500,
 		500,
 		10.0f,
-		1000.0f
+		1500.0f
 	);
 }
 

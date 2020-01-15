@@ -112,9 +112,9 @@ public:
 	}
 private:
 	bool m_stageClearList[EnStageNumber::enState_LastStage] = { false,false,false };								//各ステージをクリアしたかどうか
-	float m_firstPlayerSize[EnStageNumber::enState_LastStage] = { 5.0f,10.0f,40.0f };								//各ステージのプレイヤーの最初の大きさ
+	float m_firstPlayerSize[EnStageNumber::enState_LastStage] = { 6.0f,10.0f,40.0f };								//各ステージのプレイヤーの最初の大きさ
 	float m_goalPlayerSize[EnStageNumber::enState_LastStage] = { 25.0f,80.0f,200.0f };							//各ステージのプレイヤーのクリア目標の大きさ
-	float m_resultPlayerSize = 0.0f;																				//ステージ終了時のプレイヤーの大きさ
+	float m_resultPlayerSize = 0.0f;							//25.0f													//ステージ終了時のプレイヤーの大きさ
 	float m_stageLimitTime[EnStageNumber::enState_LastStage] = { 4.6f * 60.0f , 8.0f * 60.0f, 10.0f * 60.0f };		//各ステージの制限時間
  	EnStageNumber m_stageNumber = enState_FirstStage;				//4.6f												//ステージの番号
 	bool m_isPose = false;																							//ポーズ中かどうか

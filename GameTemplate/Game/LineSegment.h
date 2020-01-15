@@ -25,6 +25,11 @@ public:
 	/// <param name="position">座標</param>
 	/// <param name="linesegment">線分</param>
 	void Execute(const CVector3& position, const CVector3& linesegment);
+	//剛体を取得
+	RigidBody* GetRigidBody()
+	{
+		return &m_rigidBody;
+	}
 private:
 
 	bool 				m_isJump = false;					//ジャンプ中？

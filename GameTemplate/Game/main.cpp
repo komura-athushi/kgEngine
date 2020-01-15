@@ -9,6 +9,7 @@
 #include "StageSelect.h"
 #include "Object/ObjectData.h"
 #include "GameData.h"
+#include "Result.h"
 
 ///////////////////////////////////////////////////////////////////
 // ウィンドウプログラムのメイン関数。
@@ -31,7 +32,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//Game* game = NewGO<Game>(0);
 	//Fade::GetInstance();
 	NewGO<Title>(0);
-	
+	//NewGO<Game>(0);
+	//NewGO<Result>(0);
 
 	//NewGO<StageSelect>(0);
 	//ゲームループ。

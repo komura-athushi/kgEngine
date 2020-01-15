@@ -34,7 +34,7 @@ EdgeDetection::EdgeDetection()
 	device->CreateBlendState(&blendDesc, &m_disableBlendState);
 
 	//最終合成用のブレンドステートを作成する。
-	//最終合成は加算合成。
+	//最終合成は乗算合成。
 	blendDesc.RenderTarget[0].BlendEnable = true;
 	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
 	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_COLOR;
@@ -75,7 +75,6 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 
-	//シャドウマップをクリア。
 	//一番奥のZは1.0なので、1.0で塗りつぶす。
 	float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 	m_edgeMapRT.ClearRenderTarget(clearColor);
@@ -83,10 +82,11 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 	/*ID3D11ShaderResourceView* srvArray[]{
 		m_gaussianBlur.GetResultTextureSRV()
 	};*/
+	//法線マップをシェーダーリソースに設定
 	ID3D11ShaderResourceView* srvArray[]{
 		Engine().GetGraphicsEngine().GetNormalMap()->GetNormalMapSRV()
 	};
-	//引数がポインタのポインタ、t2なので引数を2、1にしてる
+	//引数がポインタのポインタ、t0なので引数を0、1にしてる
 	d3dDeviceContext->VSSetShaderResources(0, 1, srvArray);
 	d3dDeviceContext->PSSetShaderResources(0, 1, srvArray);
 	
@@ -102,6 +102,7 @@ void EdgeDetection::EdgeRender(PostEffect& postEffect)
 
 void EdgeDetection::Draw(PostEffect& postEffect ,RenderTarget* renderTarget)
 {
+	//レンダーターゲットが設定されてたらそのターゲットに描画する
 	if (renderTarget != nullptr) {
 		Engine().GetGraphicsEngine().ChangeRenderTarget(renderTarget, renderTarget->GetViewport());
 	}
@@ -115,10 +116,7 @@ void EdgeDetection::Draw(PostEffect& postEffect ,RenderTarget* renderTarget)
 	auto srv = m_edgeMapRT.GetRenderTargetSRV();
 	deviceContext->PSSetShaderResources(0, 1, &srv);
 
-	
-
-
-	//加算合成用のブレンディングステートを設定する。
+	//乗算合成用のブレンディングステートを設定する。
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	deviceContext->OMSetBlendState(m_finalBlendState, blendFactor, 0xffffffff);
 	//フルスクリーン描画。

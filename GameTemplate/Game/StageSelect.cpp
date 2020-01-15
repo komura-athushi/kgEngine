@@ -30,6 +30,7 @@ void StageSelect::OnDestroy()
 	}
 	DeleteGO(m_collectionBook);
 	DeleteGO(m_stageSelectGround);
+	DeleteGO(m_player);
 }
 
 bool StageSelect::Start()
@@ -65,15 +66,16 @@ bool StageSelect::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"zunko")) {
-			m_player.Init(L"Resource/modelData/zunko.cmo");
-			m_player.SetPosition(objdata.position);
-			m_player.SetRotation(CQuaternion::Identity());
+			m_player = NewGO<CSkinModelRender>(0);
+			m_player->Init(L"Resource/modelData/zunko.cmo");
+			m_player->SetPosition(objdata.position);
+			m_player->SetScale(CVector3::One());
 			return true;
 		}
 		return true;
 
 	});
-	CVector3 cameraTarget = m_player.GetPosition();
+	CVector3 cameraTarget = m_player->GetPosition();
 	MainCamera().SetPosition({ cameraTarget.x,cameraTarget.y + 80.0f,cameraTarget.x });
 	MainCamera().SetTarget(cameraTarget);
 	MainCamera().Update();
@@ -112,8 +114,6 @@ void StageSelect::Update()
 			se->Init(L"Assets/sound/kettei.wav");
 			se->Play(false);
 		}
-	
-	
 	}
 
 	//B押したらタイトルに戻る
@@ -128,22 +128,26 @@ void StageSelect::Update()
 	DistanceStagePoint();
 
 	//プレイヤーの座標を参照してシャドウマップのカメラを設定する
-	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_player.GetPosition().x + 300.0f, m_player.GetPosition().y + 300.0f, m_player.GetPosition().z + 300.0f));
-	Engine().GetGraphicsEngine().SetLightCameraTarget(m_player.GetPosition());
+	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_player->GetPosition().x + 300.0f, m_player->GetPosition().y + 300.0f, m_player->GetPosition().z + 300.0f));
+	Engine().GetGraphicsEngine().SetLightCameraTarget(m_player->GetPosition());
 }
 
 void StageSelect::TurnPlayer()
 {
+	m_player->SetPosition(m_player->GetPosition());
 	//ちきうの回転方向と反対の方向にモデルを回転させる
 	CVector3 moveSpeed = m_stageSelectGround->GetMoveSpeed();
 	moveSpeed.x = -moveSpeed.x;
 	moveSpeed.z = -moveSpeed.z;
 	if (moveSpeed.LengthSq() <= 0.01f) {
+		CQuaternion rot;
+		rot.SetRotation(CVector3::AxisY(), atan2f(0.0f, 1.0f));
+		m_player->SetRotation(rot);
 		return;
 	}
 	CQuaternion rot;
 	rot.SetRotation(CVector3::AxisY(), atan2f(moveSpeed.x, moveSpeed.z));
-	m_player.SetRotation(rot);
+	m_player->SetRotation(rot);
 }
 
 void StageSelect::DistanceStagePoint()
@@ -151,14 +155,14 @@ void StageSelect::DistanceStagePoint()
 	const float distance = 10.0f * 10.0f;
 
 	//プレイヤーのモデルとステージポイントや本との距離を調べる
-	CVector3 diff = m_player.GetPosition() - m_collectionBook->GetPosition();
+	CVector3 diff = m_player->GetPosition() - m_collectionBook->GetPosition();
 	if (diff.LengthSq() <= distance) {
 		m_isCollection = true;
 	}
 	else {
 		m_isCollection = false;
 		for (auto itr : m_stagePointList) {
-			CVector3 diff = m_player.GetPosition() - itr.second->GetPosition();
+			CVector3 diff = m_player->GetPosition() - itr.second->GetPosition();
 			if (diff.LengthSq() <= distance) {
 				m_stagePoint = itr.second;
 				break;

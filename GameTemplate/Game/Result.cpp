@@ -7,6 +7,7 @@
 #include "StageSelect.h"
 #include "sound/SoundSource.h"
 #include "SoundDirector.h"
+#include "sound\SoundSource.h"
 
 Result::Result()
 {
@@ -42,6 +43,14 @@ bool Result::Start()
 	m_gameCamera->SetTarget(CVector3::Zero());
 
 	SoundData().SetBGM(enBGM_Result);
+
+	m_gameOver.Init(L"Resource/sprite/gameover.dds");
+	m_stageClear.Init(L"Resource/sprite/stageclear.dds");
+
+	CSoundSource* se = new CSoundSource();
+	se->Init(L"Assets/sound/drum-roll.wav");
+	se->Play(false);
+
 	return true;
 }
 
@@ -79,12 +88,27 @@ void Result::MovePlayer()
 	}
 	else {
 		m_resultScene = EnResultScene_MoveGoal;
+		m_timer = 0.0f;
+		CSoundSource* se = new CSoundSource();
+		se->Init(L"Assets/sound/don.wav");
+		se->Play(false);
+		se->SetVolume(7.0f);
 	}
 }
 
 void Result::MoveGoal()
 {
-	m_resultScene = EnResultScene_MoveResult;
+	const float Time = 1.0f;
+	if (m_timer <= Time) {
+		m_timer += GameTime().GetFrameDeltaTime();
+	}
+	else {
+		m_resultScene = EnResultScene_MoveResult;
+		CSoundSource* se = new CSoundSource();
+		se->Init(L"Assets/sound/ddon.wav");
+		se->Play(false);
+		se->SetVolume(7.0f);
+	}
 }
 
 void Result::MoveResult()
@@ -117,18 +141,16 @@ void Result::PostRender()
 	switch(m_resultScene) {
 	case EnResultScene_TransScene:
 	case EnResultScene_MoveResult:
-		wchar_t output2[256];
 		if (m_gameData->GetisGameClear()) {
-			swprintf_s(output2, L"STAGECLEAR");
+			m_stageClear.Draw();
 		}
-
 		else {
-			swprintf_s(output2, L"GAMEOVER");
+			m_gameOver.Draw();
 		}
-		m_font.DrawScreenPos(output2, CVector2(400.0f, 600.0f), CVector4::White(), { 2.3f,2.0f });
 	case EnResultScene_MoveGoal:
 		wchar_t output[256];
 		swprintf_s(output, L"ƒPƒbƒJ    %.f", m_gameData->GetResultPlayerSize());
 		m_font.DrawScreenPos(output, CVector2(700.0f, 300.0f), CVector4::White(), { 1.5f,1.5f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(960.0f, 325.0f), CVector4::White(), { 0.8f,0.8f });
 	}
 }

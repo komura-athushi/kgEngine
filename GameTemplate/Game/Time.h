@@ -24,5 +24,6 @@ private:
 	float m_time = 0.0f;										//制限時間
 	float m_timer = 0.0f;										//タイマー
 	float m_degree = 0.0f;										//円形ゲージの角度
+	int m_beforeSeconds = 60;									//前フレームの秒数
 };
 

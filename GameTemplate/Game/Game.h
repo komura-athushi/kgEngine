@@ -24,6 +24,11 @@ public:
 	{
 		m_owaOwari = true;
 	}
+	//オワオワリ？
+	bool GetisOwaOwari()
+	{
+		return m_owaOwari;
+	}
 private:
 	Ground* m_ground = nullptr;									//グラウンド
 	Player* m_player = nullptr;									//プレイヤー
@@ -40,5 +45,7 @@ private:
 	float m_timer2 = 0.0f;										//タイマー
 	bool m_isPose = false;										//ポーズ中？
 	OffScreen* m_offScreen = nullptr;							//小窓用のクラス
+	CSprite m_pause;											//ポーズ
+	CSprite m_end;												//終わり
 };
 

@@ -232,9 +232,6 @@
     <None Include="Assets\modelData\obj\ohito.FBX">
       <Filter>Asset\modelData\obj\sample</Filter>
     </None>
-    <None Include="Assets\shader\toonmap.png">
-      <Filter>Asset\shader</Filter>
-    </None>
     <None Include="Assets\sprite\arrow.png">
       <Filter>Asset\sprite</Filter>
     </None>
@@ -421,14 +418,8 @@
     <None Include="Assets\modelData\ground\ground2.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
-    <None Include="Assets\modelData\ground\ground1.FBX">
-      <Filter>Asset\modelData\ground</Filter>
-    </None>
     <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
-    </None>
-    <None Include="Assets\modelData\sphere\sphere1.FBX">
-      <Filter>Asset\modelData\sphere</Filter>
     </None>
     <None Include="Assets\sprite\clockkari.png">
       <Filter>Asset\sprite</Filter>
@@ -450,6 +441,27 @@
     </None>
     <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\pause.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\end.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\gameover.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\stageclear.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\shader\toonmap.png">
+      <Filter>Asset\shader</Filter>
+    </None>
+    <None Include="Assets\modelData\ground\ground1.FBX">
+      <Filter>Asset\modelData\ground</Filter>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere1.FBX">
+      <Filter>Asset\modelData\sphere</Filter>
     </None>
   </ItemGroup>
 </Project>

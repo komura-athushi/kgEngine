@@ -37,6 +37,7 @@ private:
 		EnResultScene_TransScene
 	};
 	EnResultScene m_resultScene = EnResultScene_MovePlayer;
-	
+	CSprite m_stageClear;
+	CSprite m_gameOver;
 };
 

@@ -294,14 +294,16 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 	float rim_power = 2.0f;
 	float p = 0.0f;
 	
-	
-	
 	//リムライト...?
 	/*if (isToomShader == 1) {
 		float3 eyeVector = eyeDir;
 		eyeVector = normalize(eyeVector);
-		p = 1.0 - dot(In.Normal, eyeVector);
-		if (p >= 0.7f) {
+		p = dot(In.Normal, eyeVector);
+		p = p * 0.5f + 0.5f;
+		if (p <= 0.7f) {
+			lig += float3(1.0f, 1.0f, 1.0f);
+		}
+		else {
 			lig += float3(0.5f, 0.5f, 0.5f);
 		}
 	}
@@ -311,7 +313,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 
 	//トゥーンシェーダー
 	if (isToomShader == 1) {
-		p += dot(In.Normal * -1.0f, dligDirection[0].xzy);
+		p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
 		p = p * 0.5f + 0.5f;
 		p = p * p;
 		float2 pos = float2(p, 0.0f);

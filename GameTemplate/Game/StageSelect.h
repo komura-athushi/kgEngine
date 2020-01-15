@@ -31,7 +31,7 @@ private:
 	EnStageNumber m_stageNumber = enState_FirstStage;			//ステージの番号
 	Fade* m_fade;												//フェード
 	bool m_isWaitFadeout = false;								//フェードアウトした？
-	CSkinModelRender m_player;									//プレイヤーのスキンモデルレンダー
+	CSkinModelRender* m_player = nullptr;						//プレイヤーのスキンモデルレンダー
 	Level m_level;												//レベル
 	StageSelectGround* m_stageSelectGround = nullptr;			//ちきう
 	std::unordered_map<int, StagePoint*> m_stagePointList;		//ステージポイントのマップ

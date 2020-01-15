@@ -88,13 +88,13 @@ void OffScreen::PostRender()
 		}
 		//https://qiita.com/akurobit/items/a6dd03baef6c05d7eae8
 		//‚ðŽQÆ
-		float angle = atan2f(m_objData->s_y * 3.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
+		float angle = atan2f(m_objData->s_y * 3.3f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
 		float angle2;
 		if (m_objData->s_x >= m_objData->s_z) {
-			angle2 = atan2f(m_objData->s_x * 2.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+			angle2 = atan2f(m_objData->s_x * 2.2f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
 		}
 		else {
-			angle2 = atan2f(m_objData->s_z * 2.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+			angle2 = atan2f(m_objData->s_z * 2.2f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
 		}
 		if (angle >= angle2) {
 			m_offScreenCamera.SetViewAngle(angle);

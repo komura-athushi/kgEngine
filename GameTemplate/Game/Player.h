@@ -145,6 +145,6 @@ private:
 	bool m_isDisplayFont = true;																//塊の大きさを表示する？
 	bool m_isTitle = false;																		//タイトル？
 	bool m_isBrake = false;																		//ブレーキ？
-
+	float m_collisionTimer = 0.0f;																//衝突音を連続で出さないためのタイマー
 };
 

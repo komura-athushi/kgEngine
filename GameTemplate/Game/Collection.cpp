@@ -210,13 +210,13 @@ void Collection::OffScreenRender()
 
 		//https://qiita.com/akurobit/items/a6dd03baef6c05d7eae8
 		//‚ðŽQÆ
-		float angle = atan2f(itr.second->s_y * 3.4f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
+		float angle = atan2f(itr.second->s_y * 3.9f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
 		float angle2;
 		if (itr.second->s_x >= itr.second->s_z) {
-			angle2 = atan2f(itr.second->s_x * 2.8f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
+			angle2 = atan2f(itr.second->s_x * 3.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
 		}
 		else {
-			angle2 = atan2f(itr.second->s_z * 2.8f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
+			angle2 = atan2f(itr.second->s_z * 3.0f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z); // (FRAME_BUFFER_W / FRAME_BUFFER_H);
 		}
 		if (angle >= angle2) {
 			m_offScreenCamera.SetViewAngle(angle);
@@ -255,6 +255,7 @@ void Collection::OffScreenRender()
 			d3dDeviceContext->PSSetShaderResources(0, 1, s);
 
 			wchar_t output[256];
+			//Šª‚«ž‚ñ‚Å‚éƒ‚ƒm‚¾‚Á‚½‚ç–¼‘O•\Ž¦‚·‚Á‚Ø
 			if (itr.second->s_isHit) {
 				size_t wLen = 0;
 				errno_t err = 0;

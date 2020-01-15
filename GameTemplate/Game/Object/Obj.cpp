@@ -112,15 +112,15 @@ bool Obj::Start()
 		m_radius = m_objdata->s_x;
 		m_staticobject.CreateSphereObject(m_size, m_position, m_rotation);
 	}
-	//メッシュコライダーじゃない？
-	else if(m_objdata->s_isMeshCollider == 0) {
-		m_staticobject.CreateBoxObject(m_position, m_rotation, {m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2});
-		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
-		m_radius = pow(m_objdata->s_volume, 1.0f / 3.0f) / 2.0f;
-	}
-	//メッシュコライダー
 	else {
-		m_staticobject.CreateMeshObject(&m_modeldata->s_skinmodel,m_position, m_rotation);
+		//メッシュコライダーじゃない？
+		if (m_objdata->s_isMeshCollider == 0) {
+			m_staticobject.CreateBoxObject(m_position, m_rotation, { m_objdata->s_x * 2,m_objdata->s_y * 2,m_objdata->s_z * 2 });
+		}
+		//メッシュコライダー
+		else {
+			m_staticobject.CreateMeshObject(&m_modeldata->s_skinmodel, m_position, m_rotation);
+		}
 		m_lenght = (m_objdata->s_x + m_objdata->s_y + m_objdata->s_z) * 2;
 		m_radius = pow(m_objdata->s_volume, 1.0f / 3.0f) / 2.0f;
 	}
@@ -212,8 +212,6 @@ void Obj::ClcVertex()
 	}
 }
 
-
-
 void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 {
 	const float seVolume = 0.25f;
@@ -244,6 +242,7 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	m_staticobject.Release();
 	if (m_islinesegment) {
 		m_linesegment.Init(m_position);
+		m_linesegment.GetRigidBody()->GetBody()->setUserIndex(4);
 	}
 	m_box.Init(CVector3(m_objdata->s_x, m_objdata->s_y, m_objdata->s_z));
 	OffScreen* offScreen = FindGO<OffScreen>();
