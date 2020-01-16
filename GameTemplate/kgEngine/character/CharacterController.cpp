@@ -11,7 +11,6 @@ namespace {
 	//衝突したときに呼ばれる関数オブジェクト(地面用)
 	struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 	{
-		float radius = 0.0f;
 		bool isHit = false;									//衝突フラグ。
 		CVector3 hitPos = CVector3(0.0f, -FLT_MAX, 0.0f);	//衝突点。
 		CVector3 startPos = CVector3::Zero();					//レイの始点。
@@ -19,7 +18,8 @@ namespace {
 		btCollisionObject* me = nullptr;					//自分自身。自分自身との衝突を除外するためのメンバ。
 		float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 		CVector3 GroundNormalVector = CVector3::AxisY();
-															//衝突したときに呼ばれるコールバック関数。
+		float radius = 0.0f;								//塊の半径
+		//衝突したときに呼ばれるコールバック関数。
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
 			if (convexResult.m_hitCollisionObject == me
@@ -29,7 +29,9 @@ namespace {
 				//自分に衝突した。or キャラクタ属性のコリジョンと衝突した。
 				return 0.0f;
 			}
-			if (GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize()) && convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object) {
+			//コリジョンの属性がモノであるかつサイズが塊がモノより十分に大きければ巻き込んだことにする
+			if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object 
+				&& GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize())) {
 				convexResult.m_hitCollisionObject->SetisHit();
 			}
 		
@@ -77,7 +79,7 @@ namespace {
 				//自分に衝突した。or 地面に衝突した。
 				return 0.0f;
 			}
-			if (GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize()) && convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object) {
+			if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object && GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize())) {
 				convexResult.m_hitCollisionObject->SetisHit();
 			}
 			//衝突点の法線を引っ張ってくる。

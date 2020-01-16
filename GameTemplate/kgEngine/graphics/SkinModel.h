@@ -190,6 +190,21 @@ public:
 	{
 		m_dirLight.color = color;
 	}
+	//ディザリングする？
+	void SetisDithering(bool flag)
+	{
+		m_isDithering = flag;
+	}
+	//ディザリングする？
+	bool GetisDithering()
+	{
+		return m_isDithering;
+	}
+	//塊のスクリーン座標系を設定
+	void SetKatamariMatrix(const CVector3& matrix)
+	{
+		m_katamariVector = matrix;
+	}
 private:
 	//定数バッファ。
 	struct SVSConstantBuffer {
@@ -199,11 +214,13 @@ private:
 		CMatrix mLightView;		//todo ライトビュー行列。
 		CMatrix mLightProj;		//todo ライトプロジェクション行列。
 		int isShadowReciever;	//todo シャドウレシーバーのフラグ。
+		int isDithering = 0;
+		CVector3 katamariVector = CVector3::One();
 	};
 	EnFbxUpAxis			m_enFbxUpAxis = enFbxUpAxisZ;	//!<FBXの上方向。
 	ID3D11Buffer*		m_cb = nullptr;					//!<定数バッファ。
 	Skeleton			m_skeleton;						//!<スケルトン。
-	CMatrix				m_worldMatrix;					//!<ワールド行列。
+	CMatrix				m_worldMatrix = CMatrix::Identity();	//!<ワールド行列。
 	DirectX::Model*		m_modelDx;						//!<DirectXTKが提供するモデルクラス。
 	ID3D11SamplerState* m_samplerState = nullptr;		//!<サンプラステート。
 	ID3D11Buffer* m_lightCb = nullptr;	//!<ライト用の定数バッファ。
@@ -222,5 +239,7 @@ private:
 	float m_UVscroll = 0.0f;
 	ToonMap* m_toonMap = nullptr;
 	bool m_isToonShader = true;
+	bool m_isDithering = false;
+	CVector3 m_katamariVector;
 };
 

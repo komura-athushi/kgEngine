@@ -35,6 +35,8 @@ cbuffer VSPSCb : register(b0){
 	float4x4 mLightView;	//ライトビュー行列。
 	float4x4 mLightProj;	//ライトプロジェクション行列。
 	int isShadowReciever;	//シャドウレシーバーフラグ。
+	int isDithering;
+	float3 katamariVector;
 };
 static const int NUM_DIRECTION_LIG = 4;
 /// <summary>
@@ -114,6 +116,18 @@ struct PSOutPut {
 	float4 color : SV_Target0;
 	float4 normal : SV_Target1;
 	float depthView : SV_Target2;
+};
+
+//ディザパターン
+static const int pattern[] = {
+	0, 32,  8, 40,  2, 34, 10, 42,   /* 8x8 Bayer ordered dithering  */
+	48, 16, 56, 24, 50, 18, 58, 26,  /* pattern.  Each input pixel   */
+	12, 44,  4, 36, 14, 46,  6, 38,  /* is scaled to the 0..63 range */
+	60, 28, 52, 20, 62, 30, 54, 22,  /* before looking in this table */
+	3, 35, 11, 43,  1, 33,  9, 41,   /* to determine the action.     */
+	51, 19, 59, 27, 49, 17, 57, 25,
+	15, 47,  7, 39, 13, 45,  5, 37,
+	63, 31, 55, 23, 61, 29, 53, 21
 };
 
 /*!
@@ -293,7 +307,22 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 
 	float rim_power = 2.0f;
 	float p = 0.0f;
-	
+	/*if (isDithering == 1) {
+		if (katamariVector.z >= In.Position.z) {
+			//ディザリングを試す
+			float2 uv = fmod(In.TexCoord * 1000.0f, 8.0f);
+			int t = 0;
+			int x = (int)clamp(uv.x, 0.0f, 7.0f);
+			int y = (int)clamp(uv.y, 0.0f, 7.0f);
+			int index = y * 8 + x;
+			t = pattern[index];
+			if (t >= 30) {
+				clip(-1);
+			}
+		}
+	}*/
+
+
 	//リムライト...?
 	/*if (isToomShader == 1) {
 		float3 eyeVector = eyeDir;

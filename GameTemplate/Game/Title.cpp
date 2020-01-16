@@ -37,6 +37,8 @@ bool Title::Start()
 	m_model->SetShadowCaster(false);
 	m_model->SetShadowReceiver(false);
 	m_model->SetOffToonShader();
+	m_model->GetSkinModel().SetisDithering(true);
+	//m_model->GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
 	m_staticobject.CreateMeshObject(m_model,CVector3::Zero(),CQuaternion::Identity());
 	m_pressStart.Init(L"Resource/sprite/pressstart.dds");
 
@@ -54,6 +56,10 @@ bool Title::Start()
 void Title::Update()
 {
 	const float Speed = 100.0f;
+
+	if (m_player != nullptr) {
+		m_model->GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
+	}
 
 	if (!m_isStart) {
 		//ƒ^ƒCƒgƒ‹‚Ì‰æ‘œ‚ðˆÚ“®‚³‚¹‚é

@@ -68,6 +68,7 @@ void Player::Update()
 	//Judgment();
 	Move();
 	Turn();
+	ScreenPosition();
 	m_characon.SetPosition(m_position);
 	m_beforeposition = m_position;
 	m_skinModelRender.SetPosition(m_position + CVector3::AxisY() * m_radius);
@@ -347,6 +348,16 @@ void Player::Turn()
 	rot.SetRotationDeg(pos, Lengh * RotationSpeed);
 	//求めたクォータニオンを乗算する
 	m_rotation.Multiply(rot,m_rotation);
+}
+
+void Player::ScreenPosition()
+{
+    //m_skinModelRender.GetSkinModel().GetWorldMatrix().Mul(worldPos);
+	//CVector3 worldPos = CVector3(m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][0], m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][1], m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][2]);
+	CVector3 worldPos = m_position + CVector3::AxisY() * m_radius;
+	MainCamera().GetViewMatrix().Mul(worldPos);
+	MainCamera().GetProjectionMatrix().Mul(worldPos);
+	m_katamariVector = worldPos;
 }
 
 void Player::PostRender()

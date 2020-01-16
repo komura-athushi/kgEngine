@@ -415,9 +415,6 @@
     <None Include="Assets\modelData\obj\rittaiya\oapple.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
-    <None Include="Assets\modelData\ground\ground2.FBX">
-      <Filter>Asset\modelData\ground</Filter>
-    </None>
     <None Include="Assets\modelData\ground\ground.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
@@ -436,14 +433,14 @@
     <None Include="Assets\sprite\komado.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\pressstart.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
     <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\pause.png">
-      <Filter>Asset\sprite</Filter>
+    <None Include="Assets\shader\toonmap.png">
+      <Filter>Asset\shader</Filter>
+    </None>
+    <None Include="Assets\modelData\sphere\sphere1.FBX">
+      <Filter>Asset\modelData\sphere</Filter>
     </None>
     <None Include="Assets\sprite\end.png">
       <Filter>Asset\sprite</Filter>
@@ -451,17 +448,20 @@
     <None Include="Assets\sprite\gameover.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\stageclear.png">
+    <None Include="Assets\sprite\pause.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\shader\toonmap.png">
-      <Filter>Asset\shader</Filter>
+    <None Include="Assets\sprite\pressstart.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\stageclear.png">
+      <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\modelData\ground\ground1.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
-    <None Include="Assets\modelData\sphere\sphere1.FBX">
-      <Filter>Asset\modelData\sphere</Filter>
+    <None Include="Assets\modelData\ground\ground2.FBX">
+      <Filter>Asset\modelData\ground</Filter>
     </None>
   </ItemGroup>
 </Project>

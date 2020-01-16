@@ -86,6 +86,11 @@ public:
 	{
 		m_isTitle = true;
 	}
+	//塊のスクリーン座標系を取得するよ
+	const CVector3& GetScreenPos()
+	{
+		return m_katamariVector;
+	}
 private:
 	//移動
 	void Move();
@@ -93,6 +98,8 @@ private:
 	void Turn();
 	//判定
 	void Judgment();
+	//スクリーン座標計算するよ
+	void ScreenPosition();
 private:
 	CharacterController m_characon;																//キャラコン
 	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforeposition = CVector3::Zero();			//座標
@@ -146,5 +153,6 @@ private:
 	bool m_isTitle = false;																		//タイトル？
 	bool m_isBrake = false;																		//ブレーキ？
 	float m_collisionTimer = 0.0f;																//衝突音を連続で出さないためのタイマー
+	CVector3 m_katamariVector = CVector3::One();												//塊のスクリーン座標系
 };
 

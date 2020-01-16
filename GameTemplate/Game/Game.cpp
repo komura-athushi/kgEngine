@@ -103,7 +103,6 @@ bool Game::Start()
 	default:
 		break;
 	}
-
 	m_pause.Init(L"Resource/sprite/pause.dds");
 	m_end.Init(L"Resource/sprite/end.dds");
 
@@ -111,9 +110,8 @@ bool Game::Start()
 }
 
 void Game::Update()
-{	
+{
 	const float Time = 2.0f;
-
 	//ステージが終了したら
 	if (m_owaOwari) {
 		SoundData().SetStopBGM();
@@ -138,11 +136,11 @@ void Game::Update()
 			}
 		}
 	}
+
 }
 
 void Game::PostRender()
 {
-
 	if (m_owaOwari) {
 		m_end.Draw();
 	}

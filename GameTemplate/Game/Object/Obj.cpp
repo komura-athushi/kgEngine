@@ -88,7 +88,7 @@ Obj::~Obj()
 	if (m_rot != nullptr) {
 		delete m_rot;
 	}
-	if (m_gamedata->GetScene() == enScene_Result && m_movestate == enMove_MoveHit) {
+	if (m_gamedata->GetScene() == enScene_Result) {
 		ObjectData::GetInstance().SetisHit(m_objdata->s_volume);
 	}
 }
@@ -136,7 +136,7 @@ bool Obj::Start()
 	m_staticobject.SetSize(m_radius);
 	m_staticobject.GetRigidBody()->GetBody()->setUserIndex(3);
 
-	
+	m_modeldata->s_skinmodel.GetSkinModel().SetisDithering(true);
 	return true;
 }
 
@@ -317,6 +317,9 @@ void Obj::Update()
 		m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation, CVector3::One(), m_anim.GetPlayAnimationType());
 	}
 	m_anim.PlayAnimation(m_movestate);
+	if (m_modeldata->s_skinmodel.GetSkinModel().GetisDithering()) {
+		m_modeldata->s_skinmodel.GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
+	}
 }
 
 void Obj::PostRender()

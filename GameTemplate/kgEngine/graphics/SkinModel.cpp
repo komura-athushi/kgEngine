@@ -171,13 +171,14 @@ void SkinModel::UpdateWorldMatrix(CVector3 position, CQuaternion rotation, CVect
 	transMatrix.MakeTranslation( position );
 	//回転行列を作成する。
 	rotMatrix.MakeRotationFromQuaternion( rotation );
-	rotMatrix.Mul(mBias, rotMatrix);
+	//rotMatrix.Mul(mBias, rotMatrix);
 	//拡大行列を作成する。
 	scaleMatrix.MakeScaling(scale);
 	//ワールド行列を作成する。
 	//拡大×回転×平行移動の順番で乗算するように！
 	//順番を間違えたら結果が変わるよ。
-	m_worldMatrix.Mul(scaleMatrix, rotMatrix);
+	m_worldMatrix.Mul(mBias,scaleMatrix);
+	m_worldMatrix.Mul(m_worldMatrix, rotMatrix);
 	m_worldMatrix.Mul(m_worldMatrix, transMatrix);
 
 	//スケルトンの更新。
@@ -268,6 +269,13 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 		else {
 			vsCb.isShadowReciever = 0;
 		}
+	}
+	if (m_isDithering) {
+		vsCb.isDithering = 1;
+		vsCb.katamariVector = m_katamariVector;
+	}
+	else {
+		vsCb.isDithering = 0;
 	}
 	ID3D11ShaderResourceView* srvArray[]{
 		shadowMap->GetShadowMapSRV()
