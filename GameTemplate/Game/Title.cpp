@@ -50,6 +50,9 @@ bool Title::Start()
 	MainCamera().SetPosition(CVector3(0.0f, 50.0f, 50.0f));
 	MainCamera().SetTarget(CVector3(0.0f, 50.0f, 0.0f));
 	MainCamera().Update();
+
+	m_fade = &Fade::GetInstance();
+	m_fade->StartFadeIn();
 	return true;
 }
 
@@ -61,28 +64,35 @@ void Title::Update()
 		m_model->GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
 	}
 
-	if (!m_isStart) {
-		//タイトルの画像を移動させる
-		m_titlePosition.y += GameTime().GetFrameDeltaTime() * Speed;
-		if (m_titlePosition.y >= FRAME_BUFFER_H / 2) {
-			m_titlePosition.y = FRAME_BUFFER_H / 2;
-			m_isStart = true;
-			m_player = NewGO<Player>(0);
-			m_player->SetPosition({ 0.0f,70.0f,0.0f });
-			m_player->SetisTitle();
-			m_gameCamera = NewGO<GameCamera>(0);
+	if (m_isWaitFadeout) {
+		if (!m_fade->IsFade()) {
+			NewGO<StageSelect>(0);
+			DeleteGO(this);
 		}
-	}
-	//m_player->SetPosition({ 0.0f,0.0f,0.0f });
-	//スタートボタンが押されたら画面を切り替える
-	else if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
-		m_isWaitFadeout = true;
-		NewGO<StageSelect>(0);
-		DeleteGO(this);
 
-	 	CSoundSource* se = new CSoundSource();
-		se->Init(L"Assets/sound/kettei.wav");
-		se->Play(false);
+	}
+	else {
+		if (!m_isStart) {
+			//タイトルの画像を移動させる
+			m_titlePosition.y += GameTime().GetFrameDeltaTime() * Speed;
+			if (m_titlePosition.y >= FRAME_BUFFER_H / 2) {
+				m_titlePosition.y = FRAME_BUFFER_H / 2;
+				m_isStart = true;
+				m_player = NewGO<Player>(0);
+				m_player->SetPosition({ 0.0f,70.0f,0.0f });
+				m_player->SetisTitle();
+				m_gameCamera = NewGO<GameCamera>(0);
+			}
+		}
+		//m_player->SetPosition({ 0.0f,0.0f,0.0f });
+		//スタートボタンが押されたら画面を切り替える
+		else if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+			m_isWaitFadeout = true;
+			CSoundSource* se = new CSoundSource();
+			se->Init(L"Assets/sound/kettei.wav");
+			se->Play(false);
+			m_fade->StartFadeOut();
+		}
 	}
 	//m_player->SetPosition({ 0.0f,500.0f,0.0f });
 

@@ -3,6 +3,7 @@
 
 Fade::Fade()
 {
+	SetPriorityGO(this, 5);
 }
 
 
@@ -20,7 +21,7 @@ void Fade::Update()
 {
 	switch (m_state) {
 	case enState_FadeIn:
-		m_currentAlpha -= 2.0f * GameTime().GetFrameDeltaTime();
+		m_currentAlpha -= 1.5f * GameTime().GetFrameDeltaTime();
 		if (m_currentAlpha <= 0.0f) {
 			m_currentAlpha = 0.0f;
 			m_state = enState_Idle;
@@ -34,7 +35,7 @@ void Fade::Update()
 		}
 		break;
 	case enState_FadeOut:
-		m_currentAlpha += 2.0f * GameTime().GetFrameDeltaTime();
+		m_currentAlpha += 1.5f * GameTime().GetFrameDeltaTime();
 		if (m_currentAlpha >= 1.0f) {
 			m_currentAlpha = 1.0f;
 			m_state = enState_Idle;

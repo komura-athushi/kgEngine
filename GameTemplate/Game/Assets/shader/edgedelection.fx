@@ -134,7 +134,7 @@ float4 PSEdge(PS_EdgeInput In) : SV_Target0
 
 	float4 Color;
 	//法線の計算結果、あるいは深度値の計算結果が一定以上ならエッジとみなす。
-	if (length(Normal) >= 0.2f || abs(depth2-depth) > 0.001f ) {
+	if (length(Normal) >= 0.2f || abs(depth2-depth) > 0.0006f ) {
 		Color = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 	else {

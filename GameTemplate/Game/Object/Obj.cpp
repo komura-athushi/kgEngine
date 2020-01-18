@@ -317,6 +317,8 @@ void Obj::Update()
 		m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation, CVector3::One(), m_anim.GetPlayAnimationType());
 	}
 	m_anim.PlayAnimation(m_movestate);
+
+
 	if (m_modeldata->s_skinmodel.GetSkinModel().GetisDithering()) {
 		m_modeldata->s_skinmodel.GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
 	}

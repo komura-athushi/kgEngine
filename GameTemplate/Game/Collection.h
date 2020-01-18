@@ -3,6 +3,7 @@
 #include "OffScreenCamera.h"
 #include "Object/ObjectData.h"
 
+class Fade;
 class Collection : public IGameObject
 {
 public:
@@ -43,5 +44,7 @@ private:
 	CFont m_font;										//•¶š
 	int m_hitNumber = 0;								//Šª‚«‚ñ‚¾‚à‚Ì‚Ì”
 	SkinModel m_model;									//¶’[—p‚Ìƒ‚ƒfƒ‹
+	bool m_isWaitFadeout = false;
+	Fade* m_fade = nullptr;				
 };
 

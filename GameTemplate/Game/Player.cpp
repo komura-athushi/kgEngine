@@ -356,8 +356,11 @@ void Player::ScreenPosition()
 	//CVector3 worldPos = CVector3(m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][0], m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][1], m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][2]);
 	CVector3 worldPos = m_position + CVector3::AxisY() * m_radius;
 	MainCamera().GetViewMatrix().Mul(worldPos);
-	MainCamera().GetProjectionMatrix().Mul(worldPos);
-	m_katamariVector = worldPos;
+	CVector4 tmp = worldPos;
+	MainCamera().GetProjectionMatrix().Mul(tmp);
+	m_katamariVector.x = tmp.x / tmp.w;
+	m_katamariVector.y = tmp.y / tmp.w;
+	m_katamariVector.z = tmp.z / tmp.w;
 }
 
 void Player::PostRender()
@@ -382,15 +385,19 @@ void Player::PostRender()
 		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f), color, { 1.5f,1.5f });
 		m_font.DrawScreenPos(L"cm\n", CVector2(82.0f, 38.0f), color, { 0.8f,0.8f });
 	
+		m_font.DrawScreenPos(L"イマ", CVector2(50.0f, 80.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.86f,0.86f });
+		m_font.DrawScreenPos(L"イマ", CVector2(50.0f, 80.0f), CVector4::White(), { 0.8f,0.8f });
 		//m_font.DrawScreenPos(L"cm\n", CVector2(78.0f, 38.0f), color, { 0.8f,0.8f });
 
 		wchar_t output2[256];
 		swprintf_s(output2, L"%d\n", goalSize);
 		m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 1.07f,1.07f });
 		m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.55f,0.55f });
-
 		m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f), CVector4::White(), { 1.0f,1.0f });
 		m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f), CVector4::White(), { 0.5f,0.5f });
+
+		m_font.DrawScreenPos(L"モクヒョ", CVector2(175.0f, 40.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.55f,0.55f });
+		m_font.DrawScreenPos(L"モクヒョ", CVector2(175.0f, 40.0f), CVector4::White(), { 0.5f,0.5f });
 
 		m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 2.15f,2.15f });
 		m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f), CVector4::White(), { 2.0f,2.0f });

@@ -37,8 +37,7 @@ void NormalMap::RenderNormalMap(Camera* camera, SkinModel* skinModel)
 
 	if (skinModel != nullptr) {
 		skinModel->Draw(
-			camera->GetViewMatrix(),
-			camera->GetProjectionMatrix(),
+			camera,
 			enRenderMode_NormalMap
 		);
 	}
@@ -46,8 +45,7 @@ void NormalMap::RenderNormalMap(Camera* camera, SkinModel* skinModel)
 		//シャドウキャスターをシャドウマップにレンダリング。
 		for (auto& caster : m_modelList) {
 			caster->Draw(
-				MainCamera().GetViewMatrix(),
-				MainCamera().GetProjectionMatrix(),
+				&MainCamera(),
 				enRenderMode_NormalMap
 			);
 		}

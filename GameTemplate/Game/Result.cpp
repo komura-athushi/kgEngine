@@ -8,6 +8,7 @@
 #include "sound/SoundSource.h"
 #include "SoundDirector.h"
 #include "sound\SoundSource.h"
+#include "Fade.h"
 
 Result::Result()
 {
@@ -47,30 +48,49 @@ bool Result::Start()
 	m_gameOver.Init(L"Resource/sprite/gameover.dds");
 	m_stageClear.Init(L"Resource/sprite/stageclear.dds");
 
-	CSoundSource* se = new CSoundSource();
-	se->Init(L"Assets/sound/drum-roll.wav");
-	se->Play(false);
-
+	m_fade = &Fade::GetInstance();
+	m_fade->StartFadeIn();
 	return true;
 }
 
 void Result::Update()
 {
-	switch(m_resultScene)
-	{
-	case EnResultScene_MovePlayer:
-		MovePlayer();
-		break;
-	case EnResultScene_MoveGoal:
-		MoveGoal();
-		break;
-	case EnResultScene_MoveResult:
-		MoveResult();
-		break;
-	case EnResultScene_TransScene:
-		TransScene();
-		break;
+	if (m_isWaitFadeout) {
+		if (!m_fade->IsFade()) {
+			NewGO<StageSelect>(0);
+			DeleteGO(this);
+		}
 	}
+	else {
+		switch (m_resultScene)
+		{
+		case EnResultScene_FadeIn:
+			if (m_fade->IsFade()) {
+				return;
+			}
+			else {
+				CSoundSource* se = new CSoundSource();
+				se->Init(L"Assets/sound/drum-roll.wav");
+				se->Play(false);
+				m_resultScene = EnResultScene_MovePlayer;
+			}
+			break;
+		case EnResultScene_MovePlayer:
+			MovePlayer();
+			break;
+		case EnResultScene_MoveGoal:
+			MoveGoal();
+			break;
+		case EnResultScene_MoveResult:
+			MoveResult();
+			break;
+		case EnResultScene_TransScene:
+			TransScene();
+			break;
+		}
+	}
+
+	
 }
 
 void Result::MovePlayer()
@@ -120,14 +140,15 @@ void Result::TransScene()
 {
 	//Aボタン押したらステージセレクトに遷移
 	if (Engine().GetPad(0).IsTrigger(enButtonA)) {
-		NewGO<StageSelect>(0);
-		DeleteGO(this);
 		CSoundSource* se = new CSoundSource();
 		se->Init(L"Assets/sound/kettei.wav");
 		se->Play(false);
 		if (m_gameData->GetisGameClear()) {
 			m_gameData->SetStageClear();
 		}
+
+		m_fade->StartFadeOut();
+		m_isWaitFadeout = true;
 	}
 }
 
@@ -151,6 +172,6 @@ void Result::PostRender()
 		wchar_t output[256];
 		swprintf_s(output, L"ケッカ    %.f", m_gameData->GetResultPlayerSize());
 		m_font.DrawScreenPos(output, CVector2(700.0f, 300.0f), CVector4::White(), { 1.5f,1.5f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(960.0f, 325.0f), CVector4::White(), { 0.8f,0.8f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(963.0f, 325.0f), CVector4::White(), { 0.8f,0.8f });
 	}
 }

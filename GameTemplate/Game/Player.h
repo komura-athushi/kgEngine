@@ -35,6 +35,10 @@ public:
 		m_position = pos;
 		m_characon.SetPosition(pos);
 		m_skinModelRender.SetPosition(pos + CVector3::AxisY() * m_radius);
+		if (m_isStart) {
+			m_skinModelRender.UpdateWorldMatrix();
+			m_skinModelRender2.UpdateWorldMatrix();
+		}
 	}
 	//‰Šú‚©‚ç‚Ç‚ê‚¾‚¯‘å‚«‚­‚È‚Á‚½‚©‚ğæ“¾
 	float GetMag() const

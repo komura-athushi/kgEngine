@@ -219,7 +219,7 @@ void SkinModel::UpdateInstancingData(const CMatrix& worldMatrix)
 	}
 }
 
-void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderMode ,bool isShadowReceiver)
+void SkinModel::Draw(Camera* camera,EnRenderMode renderMode ,bool isShadowReceiver)
 {
 	if (m_isInstancing && m_numInstance == 0) {
 		return;
@@ -247,8 +247,8 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 	SVSConstantBuffer vsCb;
 	vsCb.mWorld = m_worldMatrix;
 	if (renderMode == enRenderMode_Normal || renderMode == enRenderMode_NormalMap || renderMode == enRenderMode_DepthValueMap) {
-		vsCb.mProj = projMatrix;
-		vsCb.mView = viewMatrix;
+		vsCb.mProj = camera->GetProjectionMatrix();
+		vsCb.mView = camera->GetViewMatrix();
 	}
 	//シャドウマップを作るときはらいとカメラの行列を使う
 	else if (renderMode == enRenderMode_CreateShadowMap) {
@@ -290,8 +290,9 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 	//ライト用の定数バッファを更新
 	d3dDeviceContext->PSSetConstantBuffers(1, 1, &m_lightCb);
 
-	m_dirLight.eyePos = MainCamera().GetTarget();
-	m_dirLight.m_eyeDir = MainCamera().GetPosition() - MainCamera().GetTarget();
+	m_dirLight.eyePos = camera->GetTarget();
+	m_dirLight.m_eyeDir = camera->GetTarget() - camera->GetPosition();
+	//m_dirLight.eyePos.y = 0.0f;
 	if (m_isToonShader) {
 		m_dirLight.isToomShader = 1;
 	}
@@ -336,8 +337,8 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 			d3dDeviceContext,
 			state,
 			m_worldMatrix,
-			viewMatrix,
-			projMatrix
+			camera->GetProjectionMatrix(),
+			camera->GetViewMatrix()
 		);
 	}
 	else {
@@ -345,8 +346,8 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix,EnRenderMode renderM
 			d3dDeviceContext,
 			state,
 			m_worldMatrix,
-			viewMatrix,
-			projMatrix,
+			camera->GetProjectionMatrix(),
+			camera->GetViewMatrix(),
 			false,
 			m_numInstance
 		);

@@ -26,6 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	ObjectData::GetInstance();
 	GetGameData().LoadDataStageClear();
+
 	////ÉvÉåÉCÉÑÅ[
 	//Player player;
 	//Player* player = NewGO<Player>(0);

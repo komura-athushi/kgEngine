@@ -4,6 +4,7 @@
 class GameData;
 class Player;
 class GameCamera;
+class Fade;
 class Result:public IGameObject
 {
 public:
@@ -31,13 +32,16 @@ private:
 	float m_timer = 0.0f;										//プレイヤーを動かすタイマー
 	CFont m_font;												//文字
 	enum EnResultScene {
+		EnResultScene_FadeIn,
 		EnResultScene_MovePlayer,
 		EnResultScene_MoveGoal,
 		EnResultScene_MoveResult,
 		EnResultScene_TransScene
 	};
-	EnResultScene m_resultScene = EnResultScene_MovePlayer;
+	EnResultScene m_resultScene = EnResultScene_FadeIn;
 	CSprite m_stageClear;
 	CSprite m_gameOver;
+	Fade* m_fade = nullptr;
+	bool m_isWaitFadeout = false;
 };
 

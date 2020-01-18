@@ -6,6 +6,7 @@
 #include "graphics\normal\NormalMap.h"
 #include "graphics\normal\EdgeDetection.h"
 #include "graphics\depthvalue\DepthValueMap.h"
+#include "Fade.h"
 
 Collection::Collection()
 {
@@ -78,6 +79,9 @@ bool Collection::Start()
 	}
 
 	Engine().GetGraphicsEngine().SetisEdge(false);
+
+	m_fade = &Fade::GetInstance();
+	m_fade->StartFadeIn();
 	return true;
 }
 
@@ -143,13 +147,21 @@ void Collection::Draw()
 
 	//各種モデルを描画
 	OffScreenRender();
-	//B押したらステージセレクトに遷移
-	if (Engine().GetPad(0).IsTrigger(enButtonB)) {
-		NewGO<StageSelect>(0);
-		DeleteGO(this);
-		CSoundSource* se = new CSoundSource();
-		se->Init(L"Assets/sound/kettei.wav");
-		se->Play(false);
+	if (m_isWaitFadeout) {
+		if (!m_fade->IsFade()) {
+			NewGO<StageSelect>(0);
+			DeleteGO(this);
+		}
+	}
+	else {
+		//B押したらステージセレクトに遷移
+		if (Engine().GetPad(0).IsTrigger(enButtonB)) {
+			CSoundSource* se = new CSoundSource();
+			se->Init(L"Assets/sound/kettei.wav");
+			se->Play(false);
+			m_isWaitFadeout = true;
+			m_fade->StartFadeOut();
+		}
 	}
 }
 
@@ -233,7 +245,7 @@ void Collection::OffScreenRender()
 			itr.second->s_skinModel.SetColor(CVector4::White());
 		}
 		itr.second->s_skinModel.UpdateWorldMatrix(m_position, m_rot, m_scale);
-		itr.second->s_skinModel.Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix(),enRenderMode_Normal, false);
+		itr.second->s_skinModel.Draw(m_offScreenCamera.GetCamera(),enRenderMode_Normal, false);
 
 		//Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), &itr.second->s_skinModel);
 

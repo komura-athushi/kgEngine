@@ -203,6 +203,9 @@
     <Filter Include="Asset\modelData\obj\game\unity">
       <UniqueIdentifier>{99ea4ffa-1b0e-4ef4-b2bd-8adcd2f820c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\modelData\obj\game\touhoku">
+      <UniqueIdentifier>{50f44ed7-dcae-425d-8d2a-36dd943e9ee9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\obj\obox1.FBX">
@@ -236,9 +239,6 @@
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\collection.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
-    <None Include="Assets\sprite\loading.png">
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\result.png">
@@ -433,9 +433,6 @@
     <None Include="Assets\sprite\komado.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\title.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
     <None Include="Assets\shader\toonmap.png">
       <Filter>Asset\shader</Filter>
     </None>
@@ -457,11 +454,20 @@
     <None Include="Assets\sprite\stageclear.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\modelData\ground\ground2.FBX">
+      <Filter>Asset\modelData\ground</Filter>
+    </None>
     <None Include="Assets\modelData\ground\ground1.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
-    <None Include="Assets\modelData\ground\ground2.FBX">
-      <Filter>Asset\modelData\ground</Filter>
+    <None Include="Assets\sprite\title.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\touhoku\okiritan.fbx">
+      <Filter>Asset\modelData\obj\game\touhoku</Filter>
+    </None>
+    <None Include="Assets\sprite\loading.png">
+      <Filter>Asset\sprite</Filter>
     </None>
   </ItemGroup>
 </Project>

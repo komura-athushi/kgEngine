@@ -36,6 +36,7 @@ cbuffer VSPSCb : register(b0){
 	float4x4 mLightProj;	//ライトプロジェクション行列。
 	int isShadowReciever;	//シャドウレシーバーフラグ。
 	int isDithering;
+	
 	float3 katamariVector;
 };
 static const int NUM_DIRECTION_LIG = 4;
@@ -307,20 +308,23 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 
 	float rim_power = 2.0f;
 	float p = 0.0f;
-	/*if (isDithering == 1) {
-		if (katamariVector.z >= In.Position.z) {
-			//ディザリングを試す
-			float2 uv = fmod(In.TexCoord * 1000.0f, 8.0f);
-			int t = 0;
-			int x = (int)clamp(uv.x, 0.0f, 7.0f);
-			int y = (int)clamp(uv.y, 0.0f, 7.0f);
-			int index = y * 8 + x;
-			t = pattern[index];
-			if (t >= 30) {
-				clip(-1);
-			}
-		}
-	}*/
+	//if (isDithering == 1) {
+	//	if (katamariVector.z >= In.Position.z ) {
+	//		//ディザリングを試す
+	//		float2 pos = In.Position.xy / In.Position.w;
+	//		pos *= 0.5f;
+	//		pos += 0.5f;
+	//		float2 uv = fmod(pos * 1000.0f, 8.0f);
+	//		int t = 0;
+	//		int x = (int)clamp(uv.x, 0.0f, 7.0f);
+	//		int y = (int)clamp(uv.y, 0.0f, 7.0f);
+	//		int index = y * 8 + x;
+	//		t = pattern[index];
+	//		if (t >= 30) {
+	//			clip(-1);
+	//		}
+	//	}
+	//}
 
 
 	//リムライト...?
@@ -347,7 +351,15 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		p = p * p;
 		float2 pos = float2(p, 0.0f);
 		float4 Col = toonMap.Sample(ToonSampler, pos);
-		lig += Col.xyz;
+		lig += Col.xyz * 0.7f;
+		//リムライトの計算
+		float3 eye = normalize(eyeDir);
+		float rim = saturate(1.0f - dot(-eye, In.Normal));
+		if (rim >= 0.75f) {
+			lig += float3(1.5f, 1.5f, 1.5f);
+		}
+		//rim = pow(rim, 3.0f);
+		//lig += float3(1.0f, 1.0f, 1.0f) * rim;
 	}
 	else {
 		lig += float3(0.5f, 0.5f, 0.5f);

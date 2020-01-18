@@ -16,7 +16,7 @@
 #include "OffScreen.h"
 #include "SoundDirector.h"
 #include "sound/SoundSource.h"
-
+#include "Fade.h"
 
 Game::Game()
 {
@@ -106,6 +106,8 @@ bool Game::Start()
 	m_pause.Init(L"Resource/sprite/pause.dds");
 	m_end.Init(L"Resource/sprite/end.dds");
 
+	m_fade = &Fade::GetInstance();
+	m_fade->StartFadeIn();
 	return true;
 }
 
@@ -113,26 +115,34 @@ void Game::Update()
 {
 	const float Time = 2.0f;
 	//ステージが終了したら
-	if (m_owaOwari) {
-		SoundData().SetStopBGM();
-		m_gameData->SetPose();
-		m_timer2 += GameTime().GetFrameDeltaTime();
-		m_gameData->SetReusltPlayerSsize(m_player->GetRadius());
-		if (m_timer2 >= Time) {
+	if (m_isWaitFadeout) {
+		if (!m_fade->IsFade()) {
 			NewGO<Result>(0);
 			DeleteGO(this);
 		}
 	}
 	else {
-		//スタートボタンが押されたらポーズする、もっかい押したら解除
-		if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
-			if (m_gameData->GetisPose()) {
-				m_gameData->SetPoseCancel();
-				SoundData().SetPlayBGM();
+		if (m_owaOwari) {
+			SoundData().SetStopBGM();
+			m_gameData->SetPose();
+			m_timer2 += GameTime().GetFrameDeltaTime();
+			m_gameData->SetReusltPlayerSsize(m_player->GetRadius());
+			if (m_timer2 >= Time) {
+				m_isWaitFadeout = true;
+				m_fade->StartFadeOut();
 			}
-			else {
-				m_gameData->SetPose();
-				SoundData().SetStopBGM();
+		}
+		else {
+			//スタートボタンが押されたらポーズする、もっかい押したら解除
+			if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+				if (m_gameData->GetisPose()) {
+					m_gameData->SetPoseCancel();
+					SoundData().SetPlayBGM();
+				}
+				else {
+					m_gameData->SetPose();
+					SoundData().SetStopBGM();
+				}
 			}
 		}
 	}

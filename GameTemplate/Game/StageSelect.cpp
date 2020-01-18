@@ -86,6 +86,8 @@ bool StageSelect::Start()
 	GetGameData().SaveDataStageClear();
 	SoundData().SetBGM(enBGM_StageSelect);
 
+	m_fade = &Fade::GetInstance();
+	m_fade->StartFadeIn();
 	return true;
 }
 
@@ -97,35 +99,59 @@ void StageSelect::PrePostRender()
 void StageSelect::Update()
 {
 
-	//Aボタンが押されたら決定したステージの番号を設定する、または図鑑画面に遷移する
-	if (Engine().GetPad(0).IsTrigger(enButtonA)) {
-		if (m_stagePoint != nullptr) {
-			m_gameData->SetStageNumber(EnStageNumber(m_stagePoint->GetNumber()));
-			NewGO<Game>(0);
-			DeleteGO(this);
-			CSoundSource* se = new CSoundSource();
-			se->Init(L"Assets/sound/kettei.wav");
-			se->Play(false);
+	if (m_isWaitFadeout) {
+		if (!m_fade->IsFade()) {
+			if (m_isTransTitle) {
+				NewGO<Title>(0);
+				DeleteGO(this);
+			}
+			else {
+				if (m_isCollection) {
+					NewGO<Collection>(0);
+					DeleteGO(this);
+				}
+				else {
+					NewGO<Game>(0);
+					DeleteGO(this);
+				}
+		
+			}
 		}
-		else if (m_isCollection) {
-			NewGO<Collection>(0);
-			DeleteGO(this);
-			CSoundSource* se = new CSoundSource();
-			se->Init(L"Assets/sound/kettei.wav");
-			se->Play(false);
-		}
-	}
 
-	//B押したらタイトルに戻る
-	if (Engine().GetPad(0).IsTrigger(enButtonB)) {
-		NewGO<Title>(0);
-		DeleteGO(this);
-		CSoundSource* se = new CSoundSource();
-		se->Init(L"Assets/sound/kettei.wav");
-		se->Play(false);
 	}
-	TurnPlayer();
-	DistanceStagePoint();
+	else {
+
+		//Aボタンが押されたら決定したステージの番号を設定する、または図鑑画面に遷移する
+		if (Engine().GetPad(0).IsTrigger(enButtonA)) {
+			if (m_stagePoint != nullptr) {
+				m_gameData->SetStageNumber(EnStageNumber(m_stagePoint->GetNumber()));
+				CSoundSource* se = new CSoundSource();
+				se->Init(L"Assets/sound/kettei.wav");
+				se->Play(false);
+				m_isWaitFadeout = true;
+				m_fade->StartFadeOut();
+			}
+			else if (m_isCollection) {
+				CSoundSource* se = new CSoundSource();
+				se->Init(L"Assets/sound/kettei.wav");
+				se->Play(false);
+				m_isWaitFadeout = true;
+				m_fade->StartFadeOut();
+			}
+		}
+		//B押したらタイトルに戻る
+		else if (Engine().GetPad(0).IsTrigger(enButtonB)) {
+			CSoundSource* se = new CSoundSource();
+			se->Init(L"Assets/sound/kettei.wav");
+			se->Play(false);
+			m_isWaitFadeout = true;
+			m_fade->StartFadeOut();
+			m_isTransTitle = true;
+		}
+		TurnPlayer();
+		DistanceStagePoint();
+	}
+	
 
 	//プレイヤーの座標を参照してシャドウマップのカメラを設定する
 	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_player->GetPosition().x + 300.0f, m_player->GetPosition().y + 300.0f, m_player->GetPosition().z + 300.0f));

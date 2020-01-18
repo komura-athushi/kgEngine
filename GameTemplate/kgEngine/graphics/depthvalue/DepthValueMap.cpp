@@ -39,8 +39,7 @@ void  DepthValueMap::RenderDepthValueMap()
 		//シャドウキャスターをシャドウマップにレンダリング。
 		for (auto& caster : m_modelList) {
 			caster->Draw(
-				MainCamera().GetViewMatrix(),
-				MainCamera().GetProjectionMatrix(),
+				&MainCamera(),
 				enRenderMode_DepthValueMap
 			);
 		}

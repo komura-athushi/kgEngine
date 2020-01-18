@@ -2,6 +2,8 @@
 
 #include "Skeleton.h"
 #include "ToonMap.h"
+
+class Camera;
 const int NUM_DIRECTION_LIG = 4;
 /*!
 *@brief	ディレクションライト。
@@ -72,7 +74,7 @@ public:
 	/*!
 	*@brief	モデルを描画。
 	*/
-	void Draw(CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal , bool isShadowReceiver = true);
+	void Draw(Camera* camera, EnRenderMode renderMode = enRenderMode_Normal , bool isShadowReceiver = true);
 	//座標、回転、拡大を指定してモデルをドロー
 	//void Draw(const CVector3& m_position, const CQuaternion& rot, const CVector3& scale, CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal);
 	/*!
@@ -215,6 +217,8 @@ private:
 		CMatrix mLightProj;		//todo ライトプロジェクション行列。
 		int isShadowReciever;	//todo シャドウレシーバーのフラグ。
 		int isDithering = 0;
+		int pad0;
+		int pad1;
 		CVector3 katamariVector = CVector3::One();
 	};
 	EnFbxUpAxis			m_enFbxUpAxis = enFbxUpAxisZ;	//!<FBXの上方向。

@@ -37,6 +37,7 @@ float4 PSMain(
 		}
 	}
 	float4 Color = Texture.Sample(TextureSampler, texCoord);
+	Color.w *= color.w;
 	//Color *= mulColor;
 	return Color;
 }

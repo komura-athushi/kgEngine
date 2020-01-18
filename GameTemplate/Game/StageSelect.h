@@ -40,6 +40,6 @@ private:
 	CollectionBook* m_collectionBook;							//本
 	bool m_isCollection = false;								//図鑑画面に遷移？
 	CSprite m_backSprite;										//拝啓の画像
-	
+	bool m_isTransTitle = false;								//タイトルに遷移する？
 };
 

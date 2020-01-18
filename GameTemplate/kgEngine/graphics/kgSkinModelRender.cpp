@@ -145,7 +145,7 @@ void CSkinModelRender::Draw()
 			}*/
 			//アクティブならモデルをドローする
 			if (m_isActive) {
-				itr->second->s_skinModel.Draw(MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+				itr->second->s_skinModel.Draw(&MainCamera());
 			}
 		}
 	}

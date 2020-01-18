@@ -39,6 +39,7 @@ private:
 	Level m_level;												//レベル
 	Time* m_time;												//タイム
 	Fade* m_fade;												//フェード
+	bool m_isWaitFadeout = false;
 	GameData* m_gameData = nullptr;								//ゲームデータ
 	bool m_owaOwari = false;									//ステージをオワらせるか
 	CFont m_font;												//フォント

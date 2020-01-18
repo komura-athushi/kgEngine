@@ -104,7 +104,7 @@ void OffScreen::PostRender()
 		}
 		m_offScreenCamera.Update();
 		m_skinModel->UpdateWorldMatrix(m_position, m_rot, m_scale);
-		m_skinModel->Draw(m_offScreenCamera.GetViewMatrix(), m_offScreenCamera.GetProjectionMatrix(), enRenderMode_Normal, false);
+		m_skinModel->Draw(m_offScreenCamera.GetCamera(), enRenderMode_Normal, false);
 
 		//Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), m_skinModel);
 
