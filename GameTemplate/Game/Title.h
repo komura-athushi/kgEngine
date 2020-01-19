@@ -27,6 +27,7 @@ private:
 	CVector2 m_titlePosition = { 1280.0f / 2, 720.0f / 2 - 370.0f };	//タイトル画像の座標
 	bool m_isStart = false;												//スタートできる？
 	CSprite m_pressStart;												//プレススタートの画像
+	float m_timer = 0.0f;
 	
 };
 

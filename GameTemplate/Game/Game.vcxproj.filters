@@ -457,16 +457,19 @@
     <None Include="Assets\modelData\ground\ground2.FBX">
       <Filter>Asset\modelData\ground</Filter>
     </None>
-    <None Include="Assets\modelData\ground\ground1.FBX">
-      <Filter>Asset\modelData\ground</Filter>
-    </None>
     <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\modelData\obj\touhoku\okiritan.fbx">
       <Filter>Asset\modelData\obj\game\touhoku</Filter>
     </None>
+    <None Include="Assets\modelData\ground\ground1.FBX">
+      <Filter>Asset\modelData\ground</Filter>
+    </None>
     <None Include="Assets\sprite\loading.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\loading3.png">
       <Filter>Asset\sprite</Filter>
     </None>
   </ItemGroup>

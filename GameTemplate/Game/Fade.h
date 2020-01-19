@@ -21,7 +21,7 @@ public:
 	void PostRender() override;
 	void StartFadeIn()
 	{
-		m_state = enState_FadeIn;
+		m_state = enState_FadeOutLoading;
 	}
 	void StartFadeOut()
 	{
@@ -43,17 +43,25 @@ public:
 	{
 		return m_currentAlpha;
 	}
-
+	bool IsFadeIn() const
+	{
+		return m_state == enState_FadeIn;
+	}
 private:
 	enum EnState {
 		enState_FadeIn,			//!<フェードイン中。
 		enState_FadeSlowIn,     //フェードイン中(スロウ)
 		enState_FadeOut,		//!<フェードアウト中。
 		enState_FadeSlowOut,    //フェードアウト中(スロウ)
+		enState_FadeInLoading,  //文字をフェードイン
+		enState_FadeOutLoading, //文字をフェードアウト
 		enState_Idle,		//!<アイドル中。
+
 	};
 	CSprite m_sprite;
+	CSprite m_loading;
 	EnState m_state = enState_Idle;	//!<状態。
-	float m_currentAlpha = 1.0f;		//!<現在のα値。
+	float m_currentAlpha = 0.0f;		//!<現在のα値。
+	CVector2 m_position = CVector2(FRAME_BUFFER_W / 2, FRAME_BUFFER_H / 2);
 };
 

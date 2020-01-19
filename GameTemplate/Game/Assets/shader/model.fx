@@ -351,13 +351,14 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		p = p * p;
 		float2 pos = float2(p, 0.0f);
 		float4 Col = toonMap.Sample(ToonSampler, pos);
-		lig += Col.xyz * 0.7f;
+		lig += Col.xyz * 1.0f;
 		//ƒŠƒ€ƒ‰ƒCƒg‚ÌŒvŽZ
-		float3 eye = normalize(eyeDir);
+		/*float3 eye = normalize(eyeDir);
 		float rim = saturate(1.0f - dot(-eye, In.Normal));
 		if (rim >= 0.75f) {
-			lig += float3(1.5f, 1.5f, 1.5f);
-		}
+			rim = pow(rim, 3.0f);
+			lig += float3(2.0f, 2.0f, 2.0f) * rim;
+		}*/
 		//rim = pow(rim, 3.0f);
 		//lig += float3(1.0f, 1.0f, 1.0f) * rim;
 	}

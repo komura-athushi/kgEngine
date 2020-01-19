@@ -66,8 +66,8 @@ private:
 	DirectX::SpriteBatch* m_spriteBatch = nullptr;
 	DirectX::SpriteFont* m_spriteFont = nullptr;
 	CVector2 m_screenSize;
-
+	Shader m_ps;
 	static FontFactory m_fontfactory;
-
+	ID3D11Buffer* m_cb = nullptr;							//!<定数バッファ。
 };
 

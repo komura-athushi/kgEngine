@@ -43,7 +43,7 @@ void Time::PostRender()
 	else {
 		if (!m_gamedata->GetisPose()) {
 			//タイマーを減らす
-			m_timer -= GameTime().GetFrameDeltaTime();
+			m_timer -= GameTime().GetFrameVariableDeltaTime();
 		}
 	}
 	m_degree = (m_timer / m_time) * 180.0f;

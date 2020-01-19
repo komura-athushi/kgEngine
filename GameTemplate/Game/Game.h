@@ -48,5 +48,6 @@ private:
 	OffScreen* m_offScreen = nullptr;							//小窓用のクラス
 	CSprite m_pause;											//ポーズ
 	CSprite m_end;												//終わり
+	bool m_isStart = false;
 };
 

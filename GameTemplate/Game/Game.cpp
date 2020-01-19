@@ -122,26 +122,39 @@ void Game::Update()
 		}
 	}
 	else {
-		if (m_owaOwari) {
-			SoundData().SetStopBGM();
-			m_gameData->SetPose();
-			m_timer2 += GameTime().GetFrameDeltaTime();
-			m_gameData->SetReusltPlayerSsize(m_player->GetRadius());
-			if (m_timer2 >= Time) {
-				m_isWaitFadeout = true;
-				m_fade->StartFadeOut();
+		if (!m_isStart) {
+			if (!m_fade->IsFadeIn()) {
+				SoundData().SetStopBGM();
+				m_gameData->SetPose();
+			}
+			else {
+				SoundData().SetPlayBGM();
+				m_gameData->SetPoseCancel();
+				m_isStart = true;
 			}
 		}
 		else {
-			//スタートボタンが押されたらポーズする、もっかい押したら解除
-			if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
-				if (m_gameData->GetisPose()) {
-					m_gameData->SetPoseCancel();
-					SoundData().SetPlayBGM();
+			if (m_owaOwari) {
+				SoundData().SetStopBGM();
+				m_gameData->SetPose();
+				m_timer2 += GameTime().GetFrameDeltaTime();
+				m_gameData->SetReusltPlayerSsize(m_player->GetRadius());
+				if (m_timer2 >= Time) {
+					m_isWaitFadeout = true;
+					m_fade->StartFadeOut();
 				}
-				else {
-					m_gameData->SetPose();
-					SoundData().SetStopBGM();
+			}
+			else {
+				//スタートボタンが押されたらポーズする、もっかい押したら解除
+				if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+					if (m_gameData->GetisPose()) {
+						m_gameData->SetPoseCancel();
+						SoundData().SetPlayBGM();
+					}
+					else {
+						m_gameData->SetPose();
+						SoundData().SetStopBGM();
+					}
 				}
 			}
 		}

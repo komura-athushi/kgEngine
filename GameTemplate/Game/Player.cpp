@@ -64,6 +64,7 @@ void Player::Update()
 	}
 	if (m_gamecamera == nullptr) {
 		m_gamecamera = FindGO<GameCamera>();
+		return;
 	}
 	//Judgment();
 	Move();
