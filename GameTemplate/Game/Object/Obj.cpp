@@ -88,7 +88,7 @@ Obj::~Obj()
 	if (m_rot != nullptr) {
 		delete m_rot;
 	}
-	if (m_gamedata->GetScene() == enScene_Result) {
+	if (m_gamedata->GetScene() == enScene_Result && m_gamedata->GetisGameClear()) {
 		ObjectData::GetInstance().SetisHit(m_objdata->s_volume);
 	}
 }

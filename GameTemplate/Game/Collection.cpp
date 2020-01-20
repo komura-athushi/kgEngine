@@ -121,7 +121,12 @@ void Collection::Draw()
 				m_page++;
 				m_cursorNumber += W_NUMBER * H_NUMBER - W_NUMBER + 1;
 				if (m_cursorNumber > m_listSize) {
-					m_cursorNumber = m_listSize - W_NUMBER + 1;
+					if (m_listSize % 4 > 0) {
+						m_cursorNumber = m_listSize - m_listSize % 4 + 1;
+					}
+					else {
+						m_cursorNumber = m_listSize - W_NUMBER + 1;
+					}
 				}
 			}
 		}

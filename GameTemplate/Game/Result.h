@@ -36,6 +36,7 @@ private:
 		EnResultScene_MovePlayer,
 		EnResultScene_MoveGoal,
 		EnResultScene_MoveResult,
+		EnResultScene_SetSe,
 		EnResultScene_TransScene
 	};
 	EnResultScene m_resultScene = EnResultScene_FadeIn;
@@ -43,5 +44,6 @@ private:
 	CSprite m_gameOver;
 	Fade* m_fade = nullptr;
 	bool m_isWaitFadeout = false;
+	float m_timer2 = 0.0f;
 };
 

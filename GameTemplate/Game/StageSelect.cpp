@@ -150,6 +150,7 @@ void StageSelect::Update()
 		}
 		TurnPlayer();
 		DistanceStagePoint();
+	
 	}
 	
 

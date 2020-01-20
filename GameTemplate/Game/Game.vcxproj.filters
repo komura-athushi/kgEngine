@@ -472,5 +472,8 @@
     <None Include="Assets\sprite\loading3.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\sprite\loading4.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
   </ItemGroup>
 </Project>
