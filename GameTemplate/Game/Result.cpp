@@ -50,6 +50,7 @@ bool Result::Start()
 
 	m_fade = &Fade::GetInstance();
 	m_fade->StartFadeIn();
+
 	return true;
 }
 
@@ -133,16 +134,39 @@ void Result::MoveGoal()
 
 void Result::MoveResult()
 {
-	m_resultScene = EnResultScene_TransScene;
+	const float Time2 = 0.3f;
+	const float SeVolume = 3.0f;
+
+	m_timer2 += GameTime().GetFrameDeltaTime();
+	if (m_timer2 >= Time2) {
+		if (m_gameData->GetisGameClear()) {
+			m_se.InitStreaming(L"Assets/sound/clear.wav");
+		}
+		else {
+			m_se.InitStreaming(L"Assets/sound/gameover.wav");
+		}
+		m_se.Play(false);
+		m_se.SetVolume(SeVolume);
+		m_resultScene = EnResultScene_TransScene;
+	}
+	
 }
 
 void Result::TransScene()
 {
 	//Aボタン押したらステージセレクトに遷移
-	if (Engine().GetPad(0).IsTrigger(enButtonA)) {
+	/*if (Engine().GetPad(0).IsTrigger(enButtonA)) {
 		CSoundSource* se = new CSoundSource();
 		se->Init(L"Assets/sound/kettei.wav");
 		se->Play(false);
+		if (m_gameData->GetisGameClear()) {
+			m_gameData->SetStageClear();
+		}
+
+		m_fade->StartFadeOut();
+		m_isWaitFadeout = true;
+	}*/
+	if (!m_se.IsPlaying()) {
 		if (m_gameData->GetisGameClear()) {
 			m_gameData->SetStageClear();
 		}

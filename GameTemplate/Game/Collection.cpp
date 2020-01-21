@@ -127,6 +127,9 @@ void Collection::Draw()
 					else {
 						m_cursorNumber = m_listSize - W_NUMBER + 1;
 					}
+					if (m_cursorNumber > m_listSize) {
+						m_cursorNumber = m_listSize;
+					}
 				}
 			}
 		}
@@ -146,6 +149,14 @@ void Collection::Draw()
 			m_cursorNumber += W_NUMBER;
 		}
 	}
+	if (m_cursorNumber > m_listSize) {
+		m_cursorNumber = m_listSize;
+	}
+	else if (m_cursorNumber == 0) {
+		m_cursorNumber = 1;
+	}
+
+
 
 	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
 	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "sound\SoundSource.h"
 
 class GameData;
 class Player;
 class GameCamera;
 class Fade;
+
 class Result:public IGameObject
 {
 public:
@@ -36,7 +38,6 @@ private:
 		EnResultScene_MovePlayer,
 		EnResultScene_MoveGoal,
 		EnResultScene_MoveResult,
-		EnResultScene_SetSe,
 		EnResultScene_TransScene
 	};
 	EnResultScene m_resultScene = EnResultScene_FadeIn;
@@ -45,5 +46,6 @@ private:
 	Fade* m_fade = nullptr;
 	bool m_isWaitFadeout = false;
 	float m_timer2 = 0.0f;
+	CSoundSource m_se;
 };
 

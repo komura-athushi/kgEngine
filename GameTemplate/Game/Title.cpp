@@ -54,7 +54,7 @@ bool Title::Start()
 	m_fade = &Fade::GetInstance();
 	m_fade->StartFadeIn();
 
-	
+	GameData::GetInstance().SetStageNumber(enState_FirstStage);
 	return true;
 }
 
