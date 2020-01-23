@@ -71,6 +71,7 @@
       <Filter>stageselect</Filter>
     </ClInclude>
     <ClInclude Include="SoundDirector.h" />
+    <ClInclude Include="Ranking.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -144,6 +145,7 @@
       <Filter>stageselect</Filter>
     </ClCompile>
     <ClCompile Include="SoundDirector.cpp" />
+    <ClCompile Include="Ranking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">

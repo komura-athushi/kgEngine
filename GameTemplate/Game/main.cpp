@@ -10,6 +10,7 @@
 #include "Object/ObjectData.h"
 #include "GameData.h"
 #include "Result.h"
+#include "Ranking.h"
 
 ///////////////////////////////////////////////////////////////////
 // ウィンドウプログラムのメイン関数。
@@ -33,6 +34,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//Game* game = NewGO<Game>(0);
 	//Fade::GetInstance();
 	NewGO<Title>(0);
+	Ranking::GetInstance();
 	//NewGO<Game>(0);
 	//NewGO<Result>(0);
 

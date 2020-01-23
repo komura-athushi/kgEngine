@@ -120,18 +120,18 @@ void CEngine::Update()
 	m_watch.Start();
 	//描画開始。
 	m_graphicsEngine->BegineRender();
-
-	m_gameobjectmanager->PreUpdate();
 	
 	//ゲームパッドの更新。	
 	for (auto& pad : m_pad) {
 		pad.Update();
 	}
 
-
+	m_gameobjectmanager->PreUpdate();
 
 	//物理エンジンの更新。
 	m_physicsEngine->Update();
+
+
 
 	//ゲームオブジェクトの処理
 	m_gameobjectmanager->Start();

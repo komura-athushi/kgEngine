@@ -9,7 +9,7 @@ void GameData::LoadDataStageClear()
 	std::map<int, int> stageClearList;
 
 	FILE* fp = NULL;
-	const char* fname = "Assets/binarydata/savadata_stageclear.txt";
+	const char* fname = "Assets/binarydata/savedata_stageclear.txt";
 	int number = 0;
 	if (fopen_s(&fp, fname, "rb") == 0) {
 		int i = 1;
@@ -31,7 +31,7 @@ void GameData::LoadDataStageClear()
 
 void GameData::SaveDataStageClear()
 {
-	std::string fileName = "Assets/binarydata/savadata_stageclear.txt";
+	std::string fileName = "Assets/binarydata/savedata_stageclear.txt";
 
 	std::ofstream file;
 	file.open(fileName, std::ios::trunc);

@@ -6,7 +6,7 @@ class GameData;
 class Player;
 class GameCamera;
 class Fade;
-
+class Ranking;
 class Result:public IGameObject
 {
 public:
@@ -47,5 +47,6 @@ private:
 	bool m_isWaitFadeout = false;
 	float m_timer2 = 0.0f;
 	CSoundSource m_se;
+	Ranking* m_ranking = nullptr;
 };
 

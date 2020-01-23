@@ -9,6 +9,7 @@
 #include "SoundDirector.h"
 #include "sound\SoundSource.h"
 #include "Fade.h"
+#include "Ranking.h"
 
 Result::Result()
 {
@@ -51,6 +52,10 @@ bool Result::Start()
 	m_fade = &Fade::GetInstance();
 	m_fade->StartFadeIn();
 
+	m_ranking = &Ranking::GetInstance();
+	m_ranking->Load();
+	m_ranking->Sort();
+	m_ranking->Save();
 	return true;
 }
 
@@ -183,6 +188,8 @@ void Result::PrePostRender()
 
 void Result::PostRender()
 {
+	const int rankingNumber = 3;
+
 	switch(m_resultScene) {
 	case EnResultScene_TransScene:
 	case EnResultScene_MoveResult:
@@ -194,8 +201,12 @@ void Result::PostRender()
 		}
 	case EnResultScene_MoveGoal:
 		wchar_t output[256];
-		swprintf_s(output, L"ケッカ    %.f", m_gameData->GetResultPlayerSize());
+		swprintf_s(output, L"ケッカ    %d", m_gameData->GetResultPlayerSize());
 		m_font.DrawScreenPos(output, CVector2(700.0f, 300.0f), CVector4::White(), { 1.5f,1.5f });
 		m_font.DrawScreenPos(L"cm\n", CVector2(963.0f, 325.0f), CVector4::White(), { 0.8f,0.8f });
+
+		for (int i = 0; i < rankingNumber; i++) {
+
+		}
 	}
 }

@@ -178,6 +178,7 @@
     <ClInclude Include="OffScreen.h" />
     <ClInclude Include="OffScreenCamera.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Ranking.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="SoundDirector.h" />
     <ClInclude Include="StagePoint.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="Player.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="SoundDirector.cpp" />
     <ClCompile Include="StagePoint.cpp" />
