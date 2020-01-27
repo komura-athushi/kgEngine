@@ -33,9 +33,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//Player* player = NewGO<Player>(0);
 	//Game* game = NewGO<Game>(0);
 	//Fade::GetInstance();
-	//NewGO<Title>(0);
+	NewGO<Title>(0);
 	Ranking::GetInstance();
-	NewGO<Game>(0);
+	//NewGO<Game>(0);
 	//NewGO<Result>(0);
 
 	//NewGO<StageSelect>(0);
