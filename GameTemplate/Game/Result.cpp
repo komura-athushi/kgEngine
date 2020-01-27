@@ -29,7 +29,7 @@ void Result::OnDestroy()
 		DeleteGO(object);
 		return true;
     });
-	GetObjModelDataFactory().DeleteAllData();
+	//GetObjModelDataFactory().DeleteAllData();
 	
 }
 
@@ -189,7 +189,7 @@ void Result::PrePostRender()
 void Result::PostRender()
 {
 	const int rankingNumber = 3;
-
+	CVector2 pos = CVector2(1000.0f, 400.0f);
 	switch(m_resultScene) {
 	case EnResultScene_TransScene:
 	case EnResultScene_MoveResult:
@@ -199,14 +199,32 @@ void Result::PostRender()
 		else {
 			m_gameOver.Draw();
 		}
+		for (int i = 0; i < Ranking::m_rankingSize; i++) {
+			wchar_t output[256];
+			swprintf_s(output, L"%d", i + 1);
+			m_font.DrawScreenPos(output, pos, CVector4::White(), { 1.2f,1.2f });
+			m_font.DrawScreenPos(L"イ", CVector2(pos.x + 37, pos.y + 20), CVector4::White(), { 0.7f,0.7f });
+
+			CVector4 color;
+			if (m_ranking->GetThisRanking() == i + 1) {
+				color = CVector4::Red();
+			}
+			else {
+				color = CVector4::White();
+			}
+			CVector2 pos2 = pos;
+			pos2.x += 100.0f;
+			wchar_t output2[256];
+			swprintf_s(output2, L"%d", m_ranking->GetRanking(i + 1));
+			m_font.DrawScreenPos(output2, pos2, color, { 1.2f,1.2f });
+			m_font.DrawScreenPos(L"cm", CVector2(pos2.x + 67, pos2.y + 20), color, { 0.7f,0.7f });
+
+			pos.y += 60.0f;
+		}
 	case EnResultScene_MoveGoal:
 		wchar_t output[256];
 		swprintf_s(output, L"ケッカ    %d", m_gameData->GetResultPlayerSize());
 		m_font.DrawScreenPos(output, CVector2(700.0f, 300.0f), CVector4::White(), { 1.5f,1.5f });
 		m_font.DrawScreenPos(L"cm\n", CVector2(963.0f, 325.0f), CVector4::White(), { 0.8f,0.8f });
-
-		for (int i = 0; i < rankingNumber; i++) {
-
-		}
 	}
 }

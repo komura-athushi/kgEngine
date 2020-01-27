@@ -43,17 +43,15 @@ void Ranking::Load()
 
 void Ranking::Sort()
 {
-	if (m_rankingList.size() < 3) {
-		m_rankingList.push_back(m_gameData->GetResultPlayerSize());
-	}
-
 	for (int i = 0; i < m_rankingList.size(); i++) {
-		if (m_rankingList[i] < m_gameData->GetResultPlayerSize()) {
+		if (m_rankingList[i] <= m_gameData->GetResultPlayerSize()) {
 			Comparison(i);
 			m_rankingList[i] = m_gameData->GetResultPlayerSize();
+			m_number = i + 1;
 			return;
 		}
 	}
+	m_number = 0;
 }
 
 void Ranking::Comparison(const int number)
