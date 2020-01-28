@@ -331,26 +331,55 @@ void SkinModel::Draw(Camera* camera,EnRenderMode renderMode ,bool isShadowReceiv
 		//}
 	});
 
-	//•`‰æB
-	if (m_numInstance == 0) {
-		m_modelDx->Draw(
-			d3dDeviceContext,
-			state,
-			m_worldMatrix,
-			camera->GetProjectionMatrix(),
-			camera->GetViewMatrix()
-		);
+	if (renderMode != enRenderMode_CreateShadowMap) {
+		for (int i = 0; i < 2; i++) {
+			Engine().GetGraphicsEngine().SetSplitViewPort(i);
+			//•`‰æB
+			if (m_numInstance == 0) {
+				m_modelDx->Draw(
+					d3dDeviceContext,
+					state,
+					m_worldMatrix,
+					camera->GetProjectionMatrix(),
+					camera->GetViewMatrix()
+				);
+			}
+			else {
+				m_modelDx->Draw(
+					d3dDeviceContext,
+					state,
+					m_worldMatrix,
+					camera->GetProjectionMatrix(),
+					camera->GetViewMatrix(),
+					false,
+					m_numInstance
+				);
+			}
+		}
 	}
 	else {
-		m_modelDx->Draw(
-			d3dDeviceContext,
-			state,
-			m_worldMatrix,
-			camera->GetProjectionMatrix(),
-			camera->GetViewMatrix(),
-			false,
-			m_numInstance
-		);
+		//Engine().GetGraphicsEngine().SetNormalViewPort();
+		//•`‰æB
+		if (m_numInstance == 0) {
+			m_modelDx->Draw(
+				d3dDeviceContext,
+				state,
+				m_worldMatrix,
+				camera->GetProjectionMatrix(),
+				camera->GetViewMatrix()
+			);
+		}
+		else {
+			m_modelDx->Draw(
+				d3dDeviceContext,
+				state,
+				m_worldMatrix,
+				camera->GetProjectionMatrix(),
+				camera->GetViewMatrix(),
+				false,
+				m_numInstance
+			);
+		}
 	}
 }
 

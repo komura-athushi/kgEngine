@@ -151,6 +151,24 @@ public:
 	{
 		ChangeRenderTarget(m_frameBufferRenderTargetView, m_frameBufferDepthStencilView, &m_frameBufferViewports);
 	}
+	//ビューポートを設定
+	void SetViewPort()
+	{
+		m_pd3dDeviceContext->RSSetViewports(1, &m_frameBufferViewports);
+	}
+	//ビューポートを画面分割用に設定
+	void SetSplitViewPort(const int number)
+	{
+		//m_frameBufferViewports = m_splitViewPorts[number];
+		m_pd3dDeviceContext->RSSetViewports(1, &m_splitViewPorts[number]);
+	}
+	//ビューポートを通常に設定
+	void SetNormalViewPort()
+	{
+		//m_frameBufferViewports = m_normalViewPorts;
+		m_pd3dDeviceContext->RSSetViewports(1, &m_normalViewPorts);
+	}
+
 private:
 	D3D_FEATURE_LEVEL		m_featureLevel;				//Direct3D デバイスのターゲットとなる機能セット。
 	ID3D11Device*			m_pd3dDevice = NULL;		//D3D11デバイス。
@@ -181,6 +199,9 @@ private:
 	CVector3 m_position = { 0.0f,1000.0f,1000.0f };
 
 	bool m_isEdge = true;
+	//ビューポートは描画する範囲を指定する、シャドウマップの時は変えるんじゃぞ
+	D3D11_VIEWPORT m_normalViewPorts;				//通常ビューポート
+	D3D11_VIEWPORT m_splitViewPorts[2];				//分割ビューポート
 };
 
 //extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン

@@ -159,14 +159,28 @@ void GraphicsEngine::Init(HWND hWnd)
 	//ラスタライザとビューポートを初期化。
 	m_pd3dDevice->CreateRasterizerState(&desc, &m_rasterizerState);
 
-	D3D11_VIEWPORT viewport;
-	viewport.Width = FRAME_BUFFER_W;
-	viewport.Height = FRAME_BUFFER_H;
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	m_pd3dDeviceContext->RSSetViewports(1, &viewport);
+	m_normalViewPorts.Width = FRAME_BUFFER_W;
+	m_normalViewPorts.Height = FRAME_BUFFER_H;
+	m_normalViewPorts.TopLeftX = 0;
+	m_normalViewPorts.TopLeftY = 0;
+	m_normalViewPorts.MinDepth = 0.0f;
+	m_normalViewPorts.MaxDepth = 1.0f;
+
+	m_splitViewPorts[0].Width = FRAME_BUFFER_W;
+	m_splitViewPorts[0].Height = FRAME_BUFFER_H / 2;
+	m_splitViewPorts[0].TopLeftX = 0;
+	m_splitViewPorts[0].TopLeftY = 0;
+	m_splitViewPorts[0].MinDepth = 0.0f;
+	m_splitViewPorts[0].MaxDepth = 1.0f;
+
+	m_splitViewPorts[1].Width = FRAME_BUFFER_W;
+	m_splitViewPorts[1].Height = FRAME_BUFFER_H / 2;
+	m_splitViewPorts[1].TopLeftX = 0;
+	m_splitViewPorts[1].TopLeftY = FRAME_BUFFER_H / 2;
+	m_splitViewPorts[1].MinDepth = 0.0f;
+	m_splitViewPorts[1].MaxDepth = 1.0f;
+
+	m_pd3dDeviceContext->RSSetViewports(1, &m_splitViewPorts[1]);
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
 	m_shadowMap = new ShadowMap;
 	m_normalMap = new NormalMap;
@@ -277,7 +291,8 @@ void GraphicsEngine::ChangeMainRenderTarget()
 		m_depthValueMao->GetRenderTarget()->GetRenderTargetView()
 	};
 	m_pd3dDeviceContext->OMSetRenderTargets(3, rt, m_mainRenderTarget.GetDepthStensilView());
-	m_pd3dDeviceContext->RSSetViewports(1, m_mainRenderTarget.GetViewport());
+	//m_pd3dDeviceContext->RSSetViewports(1, m_mainRenderTarget.GetViewport());
+	m_pd3dDeviceContext->RSSetViewports(1, &m_frameBufferViewports);
 	//メインレンダリングターゲットをクリアする。
 	float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float clearColor2[] = { 1.0f,1.0f,1.0f,1.0f };
@@ -302,8 +317,12 @@ void GraphicsEngine::PostRender()
 		&m_frameBufferViewports
 	);
 
+	SetNormalViewPort();
+
 	//ドロドロ
 	m_copyMainRtToFrameBufferSprite.Draw();
+
+	SetSplitViewPort(0);
 
 	m_frameBufferRenderTargetView->Release();
 	m_frameBufferDepthStencilView->Release();

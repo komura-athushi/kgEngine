@@ -136,7 +136,7 @@ void CSprite::DrawScreenPos(
 
 	);
 	//Engine().GetGraphicsEngine().GetSpriteBatch()->Begin();
-	m_spriteBatch->Draw(m_srv, pos.vec, &m_sourceRectangle, color, rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(scale.x, scale.y), effects, layerDepth);
+	m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(pos.vec.x,pos.vec.y / 2), &m_sourceRectangle, color, rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(scale.x, scale.y / 2), effects, layerDepth);
 	//m_spriteBatch->Draw(m_srv, pos.vec);
 	//m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(0.0f,0.0f));
 	Engine().GetGraphicsEngine().GetSpriteBatch()->End();
@@ -146,6 +146,12 @@ void CSprite::Draw()
 {
 	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin();
 	m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(0.0f, 0.0f));
+	m_sourceRectangle.top = 0;
+	m_sourceRectangle.left = 0;
+	m_sourceRectangle.bottom = FRAME_BUFFER_H;
+	m_sourceRectangle.right = FRAME_BUFFER_W;
+	//m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(FRAME_BUFFER_W / 2, FRAME_BUFFER_H / 2 / 2),&m_sourceRectangle, CVector4::White(), 0.0f, DirectX::XMFLOAT2(0.5f, 0.5f),DirectX::XMFLOAT2(1.0f,0.5f),DirectX::SpriteEffects_None);
+	//m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(FRAME_BUFFER_W / 2, 0.0f), &m_sourceRectangle,CVector4::White(), 0.0f, DirectX::XMFLOAT2(0.5 * FRAME_BUFFER_W, 0.5 * FRAME_BUFFER_H), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::SpriteEffects_None, 0.5f);
 	m_spriteBatch->End();
 }
 

@@ -150,10 +150,12 @@ void Game::Update()
 					if (m_gameData->GetisPose()) {
 						m_gameData->SetPoseCancel();
 						SoundData().SetPlayBGM();
+						//Engine().GetGraphicsEngine().SetSplitViewPort();
 					}
 					else {
 						m_gameData->SetPose();
 						SoundData().SetStopBGM();
+						//Engine().GetGraphicsEngine().SetNormalViewPort();
 					}
 				}
 			}

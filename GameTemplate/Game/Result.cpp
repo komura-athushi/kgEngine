@@ -29,7 +29,7 @@ void Result::OnDestroy()
 		DeleteGO(object);
 		return true;
     });
-	//GetObjModelDataFactory().DeleteAllData();
+	GetObjModelDataFactory().DeleteAllData();
 	
 }
 
@@ -171,14 +171,6 @@ void Result::TransScene()
 		m_fade->StartFadeOut();
 		m_isWaitFadeout = true;
 	}*/
-	if (!m_se.IsPlaying()) {
-		if (m_gameData->GetisGameClear()) {
-			m_gameData->SetStageClear();
-		}
-
-		m_fade->StartFadeOut();
-		m_isWaitFadeout = true;
-	}
 }
 
 void Result::PrePostRender()
@@ -192,6 +184,16 @@ void Result::PostRender()
 	CVector2 pos = CVector2(1000.0f, 400.0f);
 	switch(m_resultScene) {
 	case EnResultScene_TransScene:
+		if (!m_isWaitFadeout) {
+			if (!m_se.IsPlaying()) {
+				if (m_gameData->GetisGameClear()) {
+					m_gameData->SetStageClear();
+				}
+
+				m_fade->StartFadeOut();
+				m_isWaitFadeout = true;
+			}
+		}
 	case EnResultScene_MoveResult:
 		if (m_gameData->GetisGameClear()) {
 			m_stageClear.Draw();
