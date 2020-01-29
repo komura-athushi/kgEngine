@@ -37,10 +37,11 @@ void SoundDirector::SetBGM(EnBGM state)
 			break;
 		case enBGM_Stage2:
 			m_bgm->InitStreaming(L"Assets/sound/stage2.wav");
-			m_bgm->SetVolume(0.25f);
+			m_bgm->SetVolume(0.35f);
 			break;
 		case enBGM_Battle:
 			m_bgm->InitStreaming(L"Assets/sound/battle.wav");
+			m_bgm->SetVolume(0.7f);
 			break;
 		default:
 			break;

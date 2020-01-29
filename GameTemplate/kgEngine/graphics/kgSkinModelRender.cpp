@@ -152,7 +152,10 @@ void CSkinModelRender::Draw()
 					else {
 						Engine().GetGraphicsEngine().SetNormalViewPort();
 					}
-					itr->second->s_skinModel.Draw(&MainCamera(i));
+					itr->second->s_skinModel.Draw(&MainCamera(i),
+						enRenderMode_Normal,
+						true,
+						i);
 				}
 			}
 		}

@@ -252,8 +252,8 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	}
 	//シャドウマップを作るときはらいとカメラの行列を使う
 	else if (renderMode == enRenderMode_CreateShadowMap) {
-		vsCb.mProj = shadowMap->GetLightProjMatrix(number);
 		vsCb.mView = shadowMap->GetLightViewMatrix(number);
+		vsCb.mProj = shadowMap->GetLightProjMatrix(number);
 	}
 	//todo ライトカメラのビュー、プロジェクション行列を送る。
 

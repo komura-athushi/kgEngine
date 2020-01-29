@@ -100,7 +100,7 @@ bool Game::Start()
 
 			if (m_isBattle) {
 				m_player[1] = NewGO<Player>(0);
-				m_player[1]->SetFirstPosition(CVector3(position.x * 1.7f, position.y, position.z * 1.7f));
+				m_player[1]->SetFirstPosition(CVector3(position.x * 2.7f, position.y, position.z * 2.7f));
 				m_player[1]->SetPlayerNumber(1);
 			}
 			return true;

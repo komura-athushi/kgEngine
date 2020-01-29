@@ -391,7 +391,7 @@ void Player::PostRender()
 		//swprintf_s(output, L"%f\n", m_position.y);
 		//swprintf_s(output, L"x %f y %f z %f\n", m_position.x , m_position.y ,m_position.z);
 		CVector4 color;
-		if (playerSize >= goalSize) {
+		if (playerSize >= goalSize && !m_gamedata->GetisBattle()) {
 			color = CVector4::Blue();
 		}
 		else {

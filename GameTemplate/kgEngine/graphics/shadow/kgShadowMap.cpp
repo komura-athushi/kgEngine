@@ -82,12 +82,14 @@ void ShadowMap::RenderToShadowMap()
 		//一番奥のZは1.0なので、1.0で塗りつぶす。
 		float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 		m_shadowMapRT[i].ClearRenderTarget(clearColor);
-	if (m_shadowCasters.size() >= 1) {
+		if (m_shadowCasters.size() >= 1) {
 			//シャドウキャスターをシャドウマップにレンダリング。
 			for (auto& caster : m_shadowCasters) {
 				caster->Draw(
 					&MainCamera(i),
-					enRenderMode_CreateShadowMap
+					enRenderMode_CreateShadowMap,
+					true,
+					i
 				);
 			}
 		}
