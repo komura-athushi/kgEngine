@@ -72,9 +72,13 @@ public:
 		return m_skeleton.GetBone(boneId);
 	}
 	/*!
-	*@brief	モデルを描画。
+	*@brief	ドロー
+	*@param[in]		camera    カメラ
+	*@param[in]		renderMode    レンダーモード
+	*@param[in]		camera    シャドウレシーバー？
+	*@param[in]		camera    1Pか2Pか、1Pなら0
 	*/
-	void Draw(Camera* camera, EnRenderMode renderMode = enRenderMode_Normal , bool isShadowReceiver = true);
+	void Draw(Camera* camera, EnRenderMode renderMode = enRenderMode_Normal , bool isShadowReceiver = true , const int number = 0);
 	//座標、回転、拡大を指定してモデルをドロー
 	//void Draw(const CVector3& m_position, const CQuaternion& rot, const CVector3& scale, CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal);
 	/*!

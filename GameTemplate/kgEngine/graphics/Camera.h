@@ -3,10 +3,12 @@ class Camera
 {
 public:
 	//インスタンスを取得
-	static Camera& GetInstance()
+	//0で一番目ね
+	static Camera& GetInstance(const int number)
 	{
-		static Camera instance;
-		return instance;
+		static Camera instance[2];
+
+		return instance[number];
 	}
 	/*!
 	 * @brief	カメラ行列、プロジェクション行列の更新。
@@ -115,7 +117,9 @@ private:
 	float m_near = 1.0f;							//近平面までの距離。
 };
 
-static inline Camera& MainCamera()
+//メインカメラを取得
+//0で一番目
+static inline Camera& MainCamera(const int number = 0)
 {
-	return Camera::GetInstance();
+	return Camera::GetInstance(number);
 }

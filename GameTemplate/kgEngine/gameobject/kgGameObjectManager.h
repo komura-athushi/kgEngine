@@ -131,7 +131,7 @@ public:
 						//dynamic_castで型変換(基本クラスを派生クラスの型に変換する)
 						//後にポインタを返す
 						T* p = dynamic_cast<T*>(go);
-						if (p != nullptr) {
+						if (p != nullptr && !p->m_isDead) {
 							return p;
 						}
 					}
@@ -157,7 +157,7 @@ public:
 				if (go->m_nameKey == nameKey) {
 					//型変換
 					T* p = dynamic_cast<T*>(go);
-					if (p != nullptr) {
+					if (p != nullptr && !p->m_isDead) {
 						//引数に設定してある関数実行してfalseならクエリ中断
 						if (func(p) == false) {
 							//クエリ中断

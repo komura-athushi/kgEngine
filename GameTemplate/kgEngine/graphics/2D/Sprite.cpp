@@ -108,7 +108,8 @@ void CSprite::DrawScreenPos(
 	const CVector4& color,
 	DirectX::SpriteEffects effects,
 	float layerDepth,
-	float degree
+	float degree,
+	bool isIgnoreSplit
 )
 {
 	if (m_srv == nullptr) { return; }
@@ -135,8 +136,15 @@ void CSprite::DrawScreenPos(
 		}
 
 	);
+	CVector2 position = pos;
+	CVector2 size = scale;
+	
+	if (Engine().GetGraphicsEngine().GetSplitNumber() != 1 && !isIgnoreSplit) {
+		position.y /= Engine().GetGraphicsEngine().GetSplitNumber();
+		size.y /= Engine().GetGraphicsEngine().GetSplitNumber();
+	}
 	//Engine().GetGraphicsEngine().GetSpriteBatch()->Begin();
-	m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(pos.vec.x,pos.vec.y / 2), &m_sourceRectangle, color, rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(scale.x, scale.y / 2), effects, layerDepth);
+	m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(position.x,position.y), &m_sourceRectangle, color, rotation, DirectX::XMFLOAT2(pivot.x * m_width, pivot.y * m_height), DirectX::XMFLOAT2(size.x, size.y), effects, layerDepth);
 	//m_spriteBatch->Draw(m_srv, pos.vec);
 	//m_spriteBatch->Draw(m_srv, DirectX::XMFLOAT2(0.0f,0.0f));
 	Engine().GetGraphicsEngine().GetSpriteBatch()->End();

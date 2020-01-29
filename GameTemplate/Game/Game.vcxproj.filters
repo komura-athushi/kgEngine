@@ -72,6 +72,9 @@
     </ClInclude>
     <ClInclude Include="SoundDirector.h" />
     <ClInclude Include="Ranking.h" />
+    <ClInclude Include="Battle.h">
+      <Filter>stageselect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -146,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="SoundDirector.cpp" />
     <ClCompile Include="Ranking.cpp" />
+    <ClCompile Include="Battle.cpp">
+      <Filter>stageselect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Asset">
@@ -477,5 +483,19 @@
     <None Include="Assets\sprite\loading4.png">
       <Filter>Asset\sprite</Filter>
     </None>
+    <None Include="Assets\modelData\earth\battle.FBX">
+      <Filter>Asset\modelData\stageselect</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\sprite\draw.png">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\winner1.png">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\winner2.png">
+      <Filter>Asset\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

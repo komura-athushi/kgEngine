@@ -31,8 +31,8 @@ public:
 	}
 private:
 	Ground* m_ground = nullptr;									//グラウンド
-	Player* m_player = nullptr;									//プレイヤー
-	GameCamera* m_gamecamera = nullptr;							//カメラ
+	Player* m_player[m_splitMaximumNumber] = { nullptr ,nullptr};									//プレイヤー
+	GameCamera* m_gamecamera[m_splitMaximumNumber] = { nullptr ,nullptr};							//カメラ
 	std::vector<Obj*> m_objList;								//オブジェクトのリスト
 	float m_timer = 0.0f;										//タイマー
 	//level
@@ -49,5 +49,6 @@ private:
 	CSprite m_pause;											//ポーズ
 	CSprite m_end;												//終わり
 	bool m_isStart = false;
+	bool m_isBattle = true;
 };
 

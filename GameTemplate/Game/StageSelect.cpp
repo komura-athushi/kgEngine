@@ -12,6 +12,7 @@
 #include "SoundDirector.h"
 #include "sound/SoundSource.h"
 #include "StageSelectGround.h"
+#include "Battle.h"
 
 StageSelect::StageSelect()
 {
@@ -31,6 +32,7 @@ void StageSelect::OnDestroy()
 	DeleteGO(m_collectionBook);
 	DeleteGO(m_stageSelectGround);
 	DeleteGO(m_player);
+	DeleteGO(m_battle);
 }
 
 bool StageSelect::Start()
@@ -65,6 +67,13 @@ bool StageSelect::Start()
 			m_collectionBook->SetScale(objdata.scale);
 			return true;
 		}
+		else if (objdata.EqualObjectName(L"battle")) {
+			m_battle = NewGO<Battle>(1);
+			m_battle->SetPosition(objdata.position);
+			m_battle->SetRotation(objdata.rotation);
+			m_battle->SetScale(objdata.scale);
+			return true;
+		}
 		else if (objdata.EqualObjectName(L"zunko")) {
 			m_player = NewGO<CSkinModelRender>(0);
 			m_player->Init(L"Resource/modelData/zunko.cmo");
@@ -81,9 +90,11 @@ bool StageSelect::Start()
 	MainCamera().Update();
 	m_backSprite.Init(L"Resource/sprite/space.dds");
 
-	//セーブする
-	ObjectData::GetInstance().SaveData();
-	GetGameData().SaveDataStageClear();
+	if (!m_gameData->GetisBattle()) {
+		//セーブする
+		ObjectData::GetInstance().SaveData();
+		GetGameData().SaveDataStageClear();
+	}
 	SoundData().SetBGM(enBGM_StageSelect);
 
 	m_fade = &Fade::GetInstance();
@@ -109,10 +120,17 @@ void StageSelect::Update()
 				if (m_isCollection) {
 					NewGO<Collection>(0);
 					DeleteGO(this);
+					m_gameData->SetisBattle(false);
+				}
+				else if (m_isBattle) {
+					NewGO<Game>(0);
+					DeleteGO(this);
+					m_gameData->SetisBattle(true);
 				}
 				else {
 					NewGO<Game>(0);
 					DeleteGO(this);
+					m_gameData->SetisBattle(false);
 				}
 		
 			}
@@ -131,7 +149,7 @@ void StageSelect::Update()
 				m_isWaitFadeout = true;
 				m_fade->StartFadeOut();
 			}
-			else if (m_isCollection) {
+			else if (m_isCollection || m_isBattle) {
 				CSoundSource* se = new CSoundSource();
 				se->Init(L"Assets/sound/kettei.wav");
 				se->Play(false);
@@ -183,11 +201,16 @@ void StageSelect::DistanceStagePoint()
 
 	//プレイヤーのモデルとステージポイントや本との距離を調べる
 	CVector3 diff = m_player->GetPosition() - m_collectionBook->GetPosition();
+	CVector3 diff2 = m_player->GetPosition() - m_battle->GetPosition();
 	if (diff.LengthSq() <= distance) {
 		m_isCollection = true;
 	}
+	else if(diff2.LengthSq() <= distance) {
+		m_isBattle = true;
+	}
 	else {
 		m_isCollection = false;
+		m_isBattle = false;
 		for (auto itr : m_stagePointList) {
 			CVector3 diff = m_player->GetPosition() - itr.second->GetPosition();
 			if (diff.LengthSq() <= distance) {
@@ -206,6 +229,11 @@ void StageSelect::PostRender()
 	if (m_isCollection) {
 		wchar_t hoge[256];
 		swprintf_s(hoge, L"コレクション");
+		m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
+	}
+	if (m_isBattle) {
+		wchar_t hoge[256];
+		swprintf_s(hoge, L"タイセン");
 		m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
 	}
 	else if (m_stagePoint != nullptr) {

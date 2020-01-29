@@ -13,6 +13,7 @@ struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 	btCollisionObject* me = nullptr;					//自分自身。自分自身との衝突を除外するためのメンバ。
 	float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 	float playerRadius = 0.0f;							//プレイヤーの半径
+	int playerNumber = 0;								//1Pか2Pか
 
 														//衝突したときに呼ばれるコールバック関数。
 	virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
@@ -25,7 +26,7 @@ struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 			return 0.0f;
 		}
 		if (GetCompareSize(playerRadius, convexResult.m_hitCollisionObject->GetSize()) && convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object) {
-			convexResult.m_hitCollisionObject->SetisHit();
+			convexResult.m_hitCollisionObject->SetisHit(playerNumber);
 		}
 		//衝突点の法線を引っ張ってくる。
 		CVector3 hitNormalTmp = *(CVector3*)& convexResult.m_hitNormalLocal;
@@ -117,10 +118,6 @@ void LineSegment::Init(const CVector3& position)
 
 void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 {
-	if (m_player == nullptr) {
-		m_player = FindGO<Player>();
-	}
-
 	//次の移動先となる座標を計算する
 	CVector3 nextPosition = position;
 	//速度からこのフレームでの移動量を求める、オイラー積分
@@ -148,6 +145,7 @@ void LineSegment::Execute(const CVector3& position, const CVector3& linesegment)
 		callback.me = m_rigidBody.GetBody();
 		callback.startPos.Set(start.getOrigin());
 		callback.playerRadius = m_player->GetRadius();
+		callback.playerNumber = m_player->GetPlayerNumber();
 		//衝突検出。
 		if (fabsf(nextPosition.y - callback.startPos.y) > FLT_EPSILON) {
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);

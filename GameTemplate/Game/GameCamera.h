@@ -39,6 +39,16 @@ public:
 	{
 		return m_radius;
 	}
+	//プレイヤーを設定
+	void SetPlayer(Player* player)
+	{
+		m_player = player;
+	}
+	//プレイヤーの番号を設定
+	void SetPlayerNumber(const int number)
+	{
+		m_playerNumber = number;
+	}
 private:
 	//パッドの入力を考慮してカメラの視点と注視点を計算
 	void Calculation();
@@ -59,5 +69,6 @@ private:
 	bool m_transView = false;							//L3とR3が同時に押された時のカメラを遷移しているか
 	GameData* m_gamedata = nullptr;						//ゲームデータ
 	SpringCamera m_springCamera;						//ばねカメラ
+	int m_playerNumber = 0;								//プレイヤーの番号
 };
 

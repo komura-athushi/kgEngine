@@ -7,6 +7,7 @@ class Fade;
 class GameData;
 class StagePoint;
 class CollectionBook;
+class Battle;
 //ステージセレクト
 class StageSelect:public IGameObject
 {
@@ -38,8 +39,10 @@ private:
 	StagePoint* m_stagePoint = nullptr;							//プレイヤーと近いステージポイント
 	CFont m_font;												//文字
 	CollectionBook* m_collectionBook;							//本
+	Battle* m_battle;											//バトルする？
 	bool m_isCollection = false;								//図鑑画面に遷移？
 	CSprite m_backSprite;										//拝啓の画像
 	bool m_isTransTitle = false;								//タイトルに遷移する？
+	bool m_isBattle = false;									//バトルする？
 };
 

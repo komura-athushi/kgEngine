@@ -52,6 +52,7 @@ public:
 	/// <param name="rotation">‰ñ“]</param>
 	/// <param name="effects">ƒfƒtƒHƒ‹ƒg‚ÍDirectX::SpriteEffects_None</param>
 	/// <param name="layerDepth">•`‰æ‚·‚é‡”Ô</param>
+	/// <param name="isIgnoreSplit">‰æ–Ê•ªŠ„–³‹‚µ‚Ä‰æ‘œ•`‰æ</param>
 	void DrawScreenPos(
 		wchar_t const* text,
 		const CVector2& pos,
@@ -60,7 +61,8 @@ public:
 		const CVector2& pivot = CVector2::Zero(),
 		float rotation = 0.0f,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
-		float layerDepth = 0.5f
+		float layerDepth = 0.5f,
+		bool isIgnoreSplit = false
 	);
 private:
 	DirectX::SpriteBatch* m_spriteBatch = nullptr;

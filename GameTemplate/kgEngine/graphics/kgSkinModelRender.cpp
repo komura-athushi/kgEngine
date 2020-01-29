@@ -145,7 +145,15 @@ void CSkinModelRender::Draw()
 			}*/
 			//アクティブならモデルをドローする
 			if (m_isActive) {
-				itr->second->s_skinModel.Draw(&MainCamera());
+				for (int i = 0; i < Engine().GetGraphicsEngine().GetSplitNumber(); i++) {
+					if (Engine().GetGraphicsEngine().GetisSplit()) {
+						Engine().GetGraphicsEngine().SetSplitViewPort(i);
+					}
+					else {
+						Engine().GetGraphicsEngine().SetNormalViewPort();
+					}
+					itr->second->s_skinModel.Draw(&MainCamera(i));
+				}
 			}
 		}
 	}

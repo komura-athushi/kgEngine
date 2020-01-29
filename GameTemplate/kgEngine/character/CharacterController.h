@@ -102,6 +102,12 @@ public:
 	* @brief	剛体を物理エンジンから削除。。
 	*/
 	void RemoveRigidBoby();
+	//何番目ですか？
+	//0で1P
+	void SetPlayerNumber(const int number)
+	{
+		m_playerNumber = number;
+	}
 private:
 	CVector3 			m_position = CVector3::Zero();	//座標。
 	bool 				m_isJump = false;				//ジャンプ中？
@@ -113,6 +119,7 @@ private:
 	CVector3			m_GroundNormalVector = CVector3::AxisY();
 	bool				m_isCollision = false;			//衝突したかどうか
 	CVector3			m_WallNormalVector = CVector3::Zero();
+	int					m_playerNumber = 0;
 };
 
 //サイズを比べる

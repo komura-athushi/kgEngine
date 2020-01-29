@@ -30,6 +30,11 @@ public:
 	{
 		return &m_rigidBody;
 	}
+	//プレイヤーを設定する
+	void SetPlayer(Player* player)
+	{
+		m_player = player;
+	}
 private:
 
 	bool 				m_isJump = false;					//ジャンプ中？

@@ -16,13 +16,27 @@ GameCamera::~GameCamera()
 
 bool GameCamera::Start()
 {
-	//プレイヤーのインスタンスを探す
-	m_player = FindGO<Player>();
+	QueryGOs<Player>(nullptr, [&](Player* player) {
+		if (player->GetPlayerNumber() == m_playerNumber) {
+			m_player = player;
+			return false;
+		}
+		else {
+			return true;
+		}
+	});
 	//ニアクリップとファークリップを設定する
-	MainCamera().SetNear(1.0f);
-	MainCamera().SetFar(50000.0f);
-	m_gamedata = &GetGameData();
+	if (m_player != nullptr) {
+		m_playerNumber = m_player->GetPlayerNumber();
+	}
+
+	MainCamera(m_playerNumber).SetNear(1.0f);
+	MainCamera(m_playerNumber).SetFar(50000.0f);
+
 	m_springCamera.Init(10000.0f, 0.9f, m_position, m_target);
+	m_springCamera.SetPlayerNumber(m_playerNumber);
+
+	m_gamedata = &GetGameData();
 	return true;
 }
 
@@ -33,9 +47,9 @@ void GameCamera::Update()
 		return;
 	}
 	if (m_gamedata->GetScene() == enScene_Result) {
-		MainCamera().SetPosition(m_position);
-		MainCamera().SetTarget(m_target);
-		MainCamera().Update();
+		MainCamera(m_player->GetPlayerNumber()).SetPosition(m_position);
+		MainCamera(m_player->GetPlayerNumber()).SetTarget(m_target);
+		MainCamera(m_player->GetPlayerNumber()).Update();
 	}
 	else {
 		if (!m_gamedata->GetisPose()) {
@@ -77,12 +91,12 @@ void GameCamera::Calculation()
 	const float Angle = m_degreey;
 	//スティックの入力量をはかる
 	CVector3 stickR;
-	stickR.x = GetPad(0).GetRStickXF();
-	stickR.y = GetPad(0).GetRStickYF();
+	stickR.x = GetPad(m_player->GetPlayerNumber()).GetRStickXF();
+	stickR.y = GetPad(m_player->GetPlayerNumber()).GetRStickYF();
 	stickR.z = 0.0f;
 	CVector3 stickL;
-	stickL.x = GetPad(0).GetLStickXF();
-	stickL.y = GetPad(0).GetLStickYF();
+	stickL.x = GetPad(m_player->GetPlayerNumber()).GetLStickXF();
+	stickL.y = GetPad(m_player->GetPlayerNumber()).GetLStickYF();
 	stickL.z = 0.0f;
 	CVector3 Degree = CVector3::Zero();
 	//右スティックの入力がありかつ
@@ -144,7 +158,7 @@ void GameCamera::Calculation()
 		}
 	}
 	if (m_state != enStick_NoEnterStick && m_state != enStick_EnterStickBoth) {
-		CVector3 Front = MainCamera().GetFront();
+		CVector3 Front = MainCamera(m_player->GetPlayerNumber()).GetFront();
 		CVector3 Back = Front * -1;
 		CVector3 Stick = Degree;
 		Stick.Normalize();
@@ -198,7 +212,7 @@ void GameCamera::Calculation()
 
 void GameCamera::TransView()
 {
-	if (GetPad(0).IsTrigger(enButtonLB3) && GetPad(0).IsTrigger(enButtonRB3) && !m_transView) {
+	if (GetPad(m_player->GetPlayerNumber()).IsTrigger(enButtonLB3) && GetPad(m_player->GetPlayerNumber()).IsTrigger(enButtonRB3) && !m_transView) {
 		m_transView = true;
 	}
 	if (m_transView) {

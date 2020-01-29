@@ -144,7 +144,12 @@ void Obj::ReadMovePath(const int& number)
 {
 	MovePath* mp = new MovePath();
 	wchar_t aiueo[256];
-	swprintf_s(aiueo, L"Assets/path/stage%d/%ls%d.tks", GetGameData().GetStageNumber(),m_objdata->s_name, number);
+	if (GameData::GetInstance().GetisBattle()) {
+		swprintf_s(aiueo, L"Assets/path/stage1/%ls%d.tks", m_objdata->s_name, number);
+	}
+	else {
+		swprintf_s(aiueo, L"Assets/path/stage%d/%ls%d.tks", GetGameData().GetStageNumber(), m_objdata->s_name, number);
+	}
 	mp->ReadPath(aiueo);
 	m_move = mp;
 }
@@ -243,6 +248,7 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	if (m_islinesegment) {
 		m_linesegment.Init(m_position);
 		m_linesegment.GetRigidBody()->GetBody()->setUserIndex(4);
+		m_linesegment.SetPlayer(m_player);
 	}
 	m_box.Init(CVector3(m_objdata->s_x, m_objdata->s_y, m_objdata->s_z));
 	OffScreen* offScreen = FindGO<OffScreen>();
@@ -275,12 +281,17 @@ void Obj::Update()
 	if (!m_draw) {
 		return;
 	}
-	if (m_player == nullptr) {
-		m_player = FindGO<Player>();
-		return;
-	}
 	//Šª‚«ž‚Ü‚ê‚½‚çˆê‰ñ‚¾‚¯ŽÀs‚·‚é
 	if (!m_isHit && m_staticobject.GetRigidBody()->GetBody()->GetisHit()) {
+		QueryGOs<Player>(nullptr, [&](Player* player) {
+			if (player->GetPlayerNumber() == m_staticobject.GetRigidBody()->GetBody()->GetPlayerNumber()) {
+				m_player = player;
+				return false;
+			}
+			else {
+				return true;
+			}
+		});
 		m_isHit = true;
 		m_player->GetCSkinModelRender().UpdateWorldMatrix();
 		ClcLocalMatrix(m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
@@ -319,9 +330,9 @@ void Obj::Update()
 	m_anim.PlayAnimation(m_movestate);
 
 
-	if (m_modeldata->s_skinmodel.GetSkinModel().GetisDithering()) {
+	/*if (m_modeldata->s_skinmodel.GetSkinModel().GetisDithering()) {
 		m_modeldata->s_skinmodel.GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
-	}
+	}*/
 }
 
 void Obj::PostRender()

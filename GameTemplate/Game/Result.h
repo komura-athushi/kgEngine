@@ -48,5 +48,7 @@ private:
 	float m_timer2 = 0.0f;
 	CSoundSource m_se;
 	Ranking* m_ranking = nullptr;
+	bool m_isBattle = false;
+	CSprite m_winner1, m_winner2, m_draw;
 };
 

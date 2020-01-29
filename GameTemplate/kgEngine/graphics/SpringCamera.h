@@ -60,6 +60,12 @@ public:
 	{
 		m_isStop = true;
 	}
+	//プレイヤーの番号を設定
+	//0なら1P
+	void SetPlayerNumber(const int number)
+	{
+		m_playerNumber = number;
+	}
 private:
 	CVector3 m_position = CVector3::Zero();					//座標
 	CVector3 m_target = CVector3::Zero();					//注視点
@@ -69,5 +75,6 @@ private:
 	float m_maxMoveSpeed = 0.0f;							//最高移動速度
 	bool m_isRefresh = false;								//カメラの座標や注視点を一気に切り替える
 	bool m_isStop = false;
+	int m_playerNumber = 0;									//1Pか1Pか
 };
 

@@ -16,7 +16,12 @@ bool Ground::Start()
 	int stageNumber = GetGameData().GetStageNumber();
 	//モデルを読み込む、ステージの番号によって読み込むファイルを設定する
 	wchar_t path[256];
-	swprintf_s(path, L"Resource/modelData/ground%d.cmo", stageNumber);
+	if (GetGameData().GetisBattle()) {
+		swprintf_s(path, L"Resource/modelData/ground1.cmo");
+	}
+	else {
+		swprintf_s(path, L"Resource/modelData/ground%d.cmo", stageNumber);
+	}
 	m_skinModelRender.Init(path);
 	m_skinModelRender.SetPosition(m_position);
 	m_skinModelRender.SetShadowReceiver(true);

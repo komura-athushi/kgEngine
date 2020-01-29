@@ -23,6 +23,7 @@ public:
 	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
 	/// <param name="layerDepth">描画する順番(今は機能してません。。。)</param>
 	/// <param name="degree">ピクセルを表示する角度</param>
+	/// <param name="isIgnoreSplit">画面分割無視して画像描画</param>
 	void DrawScreenPos(const CVector2& pos = { 1280.0f / 2, 720.0f / 2},
 		const CVector2& scale = CVector2::One(),
 		const CVector2& pivot = CVector2(0.5f,0.5f),
@@ -30,7 +31,9 @@ public:
 		const CVector4 & color = CVector4::White(),
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layerDepth = 0.5f,
-		float degree = 0.0f);
+		float degree = 0.0f,
+		bool isIgnoreSplit = false
+	);
 	void Draw();
 private:
 	struct ConstantBuffer {

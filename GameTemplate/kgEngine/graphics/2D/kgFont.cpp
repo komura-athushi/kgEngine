@@ -49,7 +49,8 @@ void CFont::DrawScreenPos(
 	const CVector2& pivot,
 	float rotation,
 	DirectX::SpriteEffects effects,
-	float layerDepth
+	float layerDepth,
+	bool isIgnoreSplit
 )
 {
 	if (text == nullptr) {
@@ -58,15 +59,22 @@ void CFont::DrawScreenPos(
 
 	layerDepth *= 0.999f; layerDepth += 0.001f;
 	layerDepth -= Engine().GetGraphicsEngine().AddAndGetLayerDepthCnt();
+	CVector2 position = pos;
+	CVector2 size = scale;
+
+	if (Engine().GetGraphicsEngine().GetSplitNumber() != 1 && !isIgnoreSplit) {
+		//position.y /= Engine().GetGraphicsEngine().GetSplitNumber();
+		//size.y /= Engine().GetGraphicsEngine().GetSplitNumber();
+	}
 	Engine().GetGraphicsEngine().GetSpriteBatch()->Begin(DirectX::SpriteSortMode_BackToFront);
 	m_spriteFont->DrawString(
 		m_spriteBatch,
 		text,
-		pos.vec,
+		position.vec,
 		color,
 		rotation,
 		DirectX::XMFLOAT2(pivot.x, pivot.y),
-		DirectX::XMFLOAT2(scale.x, scale.y),
+		DirectX::XMFLOAT2(size.x, size.y),
 		effects,
 		layerDepth
 	);

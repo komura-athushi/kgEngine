@@ -63,6 +63,11 @@ public:
 	{
 		return m_renderTargetSRV;
 	}
+	//ビューポートを設定
+	void SetViewPort(D3D11_VIEWPORT& viewPort)
+	{
+		m_viewport = viewPort;
+	}
 	/// <summary>
 	/// ビューポートの取得。
 	/// </summary>

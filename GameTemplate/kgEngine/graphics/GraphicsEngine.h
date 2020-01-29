@@ -7,6 +7,8 @@ class NormalMap;
 class DepthValueMap;
 class EdgeDetection;
 
+
+static const int m_splitMaximumNumber = 2;
 /*!
  *@brief	グラフィックスエンジン。
  */
@@ -59,10 +61,6 @@ public:
 	void EndRender();
 	//シャドウマップを描画
 	void ShadowMapRender();
-	//法線マップを描画
-	void NormalMapRender();
-	//深度値マップを描画
-	void DepthValueMapRender();
 	//エッジ検出
 	void EdgeDelectionRender();
 	//ポストレンダリング
@@ -132,14 +130,14 @@ public:
 	void ChangeRenderTarget(RenderTarget* renderTarget, D3D11_VIEWPORT* viewport);
 	void ChangeRenderTarget(ID3D11RenderTargetView* renderTarget, ID3D11DepthStencilView* depthStensil, D3D11_VIEWPORT* viewport);
 	//シャドウマップ用のライトカメラの注視点を設定
-	void SetLightCameraTarget(const CVector3& target)
+	void SetLightCameraTarget(const CVector3& target, const int number = 0)
 	{
-		m_target = target;
+		m_target[number] = target;
 	}
 	//シャドウマップ用のライトカメラの座標を設定
-	void SetLightCameraPosition(const CVector3& position)
+	void SetLightCameraPosition(const CVector3& position, const int number = 0)
 	{
-		m_position = position;
+		m_position[number] = position;
 	}
 	//エッジ検出のオンオフ
 	void SetisEdge(bool flag)
@@ -157,6 +155,7 @@ public:
 		m_pd3dDeviceContext->RSSetViewports(1, &m_frameBufferViewports);
 	}
 	//ビューポートを画面分割用に設定
+	//0で一番目
 	void SetSplitViewPort(const int number)
 	{
 		//m_frameBufferViewports = m_splitViewPorts[number];
@@ -166,9 +165,30 @@ public:
 	void SetNormalViewPort()
 	{
 		//m_frameBufferViewports = m_normalViewPorts;
+		//m_pd3dDeviceContext->RSSetViewports(1, &m_frameBufferViewports);
 		m_pd3dDeviceContext->RSSetViewports(1, &m_normalViewPorts);
 	}
-
+	//画面分割するを設定
+	void SetisSplit(bool flag)
+	{
+		m_isSplit = flag;
+	}
+	//画面分割する？
+	bool GetisSplit() const
+	{
+		return m_isSplit;
+	}
+	//画面分割数を取得
+	int GetSplitNumber()
+	{
+		if (m_isSplit) {
+			return m_splitMaximumNumber;
+		}
+		else {
+			return 1;
+		}
+	}
+	
 private:
 	D3D_FEATURE_LEVEL		m_featureLevel;				//Direct3D デバイスのターゲットとなる機能セット。
 	ID3D11Device*			m_pd3dDevice = NULL;		//D3D11デバイス。
@@ -195,13 +215,15 @@ private:
 	ID3D11RenderTargetView* m_frameBufferRenderTargetView = nullptr;	//フレームバッファのレンダリングターゲットビュー。
 	ID3D11DepthStencilView* m_frameBufferDepthStencilView = nullptr;	//フレームバッファのデプスステンシルビュー。
 
-	CVector3 m_target = CVector3::Zero();
-	CVector3 m_position = { 0.0f,1000.0f,1000.0f };
+	CVector3 m_target[m_splitMaximumNumber] = { CVector3::Zero() , CVector3::Zero()};
+	CVector3 m_position[m_splitMaximumNumber] = { { 0.0f,1000.0f,1000.0f }, { 0.0f,1000.0f,1000.0f } };
 
 	bool m_isEdge = true;
 	//ビューポートは描画する範囲を指定する、シャドウマップの時は変えるんじゃぞ
 	D3D11_VIEWPORT m_normalViewPorts;				//通常ビューポート
 	D3D11_VIEWPORT m_splitViewPorts[2];				//分割ビューポート
+
+	bool m_isSplit = false;
 };
 
 //extern GraphicsEngine* g_graphicsEngine;			//グラフィックスエンジン

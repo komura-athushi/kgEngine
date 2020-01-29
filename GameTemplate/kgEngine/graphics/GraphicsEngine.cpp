@@ -33,8 +33,13 @@ void GraphicsEngine::BegineRender()
 	);
 	//ビューポートもバックアップを取っておく。
 	unsigned int numViewport = 1;
+	if (!m_isSplit) {
+		m_frameBufferViewports = m_normalViewPorts;
+		//m_mainRenderTarget.SetViewPort(m_normalViewPorts);
+	}
 	d3dDeviceContext->RSGetViewports(&numViewport, &m_frameBufferViewports);
 }
+
 void GraphicsEngine::EndRender()
 {
 	//バックバッファとフロントバッファを入れ替える。
@@ -180,7 +185,7 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_splitViewPorts[1].MinDepth = 0.0f;
 	m_splitViewPorts[1].MaxDepth = 1.0f;
 
-	m_pd3dDeviceContext->RSSetViewports(1, &m_splitViewPorts[1]);
+	m_pd3dDeviceContext->RSSetViewports(1, &m_normalViewPorts);
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
 	m_shadowMap = new ShadowMap;
 	m_normalMap = new NormalMap;
@@ -206,11 +211,14 @@ void GraphicsEngine::Init(HWND hWnd)
 
 void GraphicsEngine::ShadowMapRender()
 {
-	//シャドウマップを更新。
-	m_shadowMap->UpdateFromLightTarget(
-		m_position,
-		m_target
-	);
+	for (int i = 0; i < GetSplitNumber(); i++) {
+		//シャドウマップを更新。
+		m_shadowMap->UpdateFromLightTarget(
+			m_position[i],
+			m_target[i],
+			i
+		);
+	}
 	auto d3dDeviceContext = m_pd3dDeviceContext;
 	//現在のレンダリングターゲットをバックアップしておく。
 	/*ID3D11RenderTargetView* oldRenderTargetView;
@@ -240,18 +248,6 @@ void GraphicsEngine::ShadowMapRender()
 	//oldDepthStencilView->Release();
 
 
-}
-
-void GraphicsEngine::NormalMapRender()
-{
-	m_normalMap->RenderNormalMap();
-	ChangeRenderTarget(&m_mainRenderTarget, m_mainRenderTarget.GetViewport());
-}
-
-void GraphicsEngine::DepthValueMapRender()
-{
-	m_depthValueMao->RenderDepthValueMap();
-	ChangeRenderTarget(&m_mainRenderTarget, m_mainRenderTarget.GetViewport());
 }
 
 void GraphicsEngine::EdgeDelectionRender()
@@ -322,7 +318,7 @@ void GraphicsEngine::PostRender()
 	//ドロドロ
 	m_copyMainRtToFrameBufferSprite.Draw();
 
-	SetSplitViewPort(0);
+	//SetSplitViewPort(0);
 
 	m_frameBufferRenderTargetView->Release();
 	m_frameBufferDepthStencilView->Release();

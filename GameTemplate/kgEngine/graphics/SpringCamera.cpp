@@ -10,8 +10,8 @@ void SpringCamera::Init(
 {
 	m_maxMoveSpeed = maxMoveSpeed;
 	m_attenuationRate = attenuationRate;
-	MainCamera().SetPosition(position);
-	MainCamera().SetTarget(target);
+	MainCamera(m_playerNumber).SetPosition(position);
+	MainCamera(m_playerNumber).SetTarget(target);
 	m_positionMoveSpeed = CVector3::Zero();
 	m_targetMoveSpeed = CVector3::Zero();
 }
@@ -61,8 +61,8 @@ CVector3 SpringCamera::ClcSpringVector(
 void SpringCamera::Update()
 {
 	if (m_isRefresh || m_isStop) {
-		MainCamera().SetPosition(m_position);
-		MainCamera().SetTarget(m_target);
+		MainCamera(m_playerNumber).SetPosition(m_position);
+		MainCamera(m_playerNumber).SetTarget(m_target);
 		if (m_isRefresh) {
 			m_positionMoveSpeed = CVector3::Zero();
 			m_targetMoveSpeed = CVector3::Zero();
@@ -74,10 +74,10 @@ void SpringCamera::Update()
 		
 	}
 	else {
-		m_position = ClcSpringVector(MainCamera().GetPosition(), m_position, m_positionMoveSpeed);
-		m_target = ClcSpringVector(MainCamera().GetTarget(), m_target, m_targetMoveSpeed);
-		MainCamera().SetPosition(m_position);
-		MainCamera().SetTarget(m_target);
+		m_position = ClcSpringVector(MainCamera(m_playerNumber).GetPosition(), m_position, m_positionMoveSpeed);
+		m_target = ClcSpringVector(MainCamera(m_playerNumber).GetTarget(), m_target, m_targetMoveSpeed);
+		MainCamera(m_playerNumber).SetPosition(m_position);
+		MainCamera(m_playerNumber).SetTarget(m_target);
 	}
-	MainCamera().Update();
+	MainCamera(m_playerNumber).Update();
 }

@@ -61,13 +61,19 @@ public:
 	{
 		return m_isHit;
 	}
-	void SetisHit() const
+	int GetPlayerNumber() const
+	{
+		return m_playerNumber;
+	}
+	void SetisHit(const int number) const
 	{
 		m_isHit = true;
+		m_playerNumber = number;
 	}
 protected:
 	mutable float			m_size = 0.0f;
 	mutable bool			m_isHit = false;
+	mutable int				m_playerNumber = 0;
 	btTransform	m_worldTransform;
 
 	///m_interpolationWorldTransform is used for CCD and interpolation

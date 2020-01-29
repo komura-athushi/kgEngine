@@ -7,11 +7,13 @@ ShadowMap::ShadowMap()
 	//シャドウマップ生成用のレンダリングターゲットを作成。
 	//解像度は2048×2048。
 	//テクスチャのフォーマットはR成分のみの32bit浮動小数点型。
-	m_shadowMapRT.Create(
-		4096,
-		4096,
-		DXGI_FORMAT_R32_FLOAT
-	);
+	for (int i = 0; i < m_splitMaximumNumber; i++) {
+		m_shadowMapRT[i].Create(
+			4096,
+			4096,
+			DXGI_FORMAT_R32_FLOAT
+		);
+	}
 }
 
 ShadowMap::~ShadowMap()
@@ -19,7 +21,7 @@ ShadowMap::~ShadowMap()
 
 }
 
-void ShadowMap::UpdateFromLightDirection(const CVector3& lightCameraPos,const CVector3& lightDir)
+void ShadowMap::UpdateFromLightDirection(const CVector3& lightCameraPos,const CVector3& lightDir, const int number)
 {
 	//ライトの方向によって、ライトカメラの上方向を決める。
 	CVector3 lightCameraUpAxis;
@@ -32,15 +34,15 @@ void ShadowMap::UpdateFromLightDirection(const CVector3& lightCameraPos,const CV
 		lightCameraUpAxis = CVector3::AxisY();
 	}
 	//カメラの上方向が決まったので、ライトビュー行列を計算する。
-	m_lightViewMatrix.MakeLookAt(
-		m_lightCameraPosition,
-		m_lightCameraTarget,
+	m_lightViewMatrix[number].MakeLookAt(
+		m_lightCameraPosition[number],
+		m_lightCameraTarget[number],
 		lightCameraUpAxis
 	);
 
 	//ライトプロジェクション行列を作成する。
 	//太陽光からの影を落としたいなら、平行投影行列を作成する。
-	m_lightProjMatrix.MakeOrthoProjectionMatrix(
+	m_lightProjMatrix[number].MakeOrthoProjectionMatrix(
 		500,
 		500,
 		10.0f,
@@ -48,12 +50,12 @@ void ShadowMap::UpdateFromLightDirection(const CVector3& lightCameraPos,const CV
 	);
 }
 
-void ShadowMap::UpdateFromLightTarget(const CVector3& lightCameraPos, CVector3 lightCameraTarget)
+void ShadowMap::UpdateFromLightTarget(const CVector3& lightCameraPos, CVector3 lightCameraTarget, const int number)
 {
-	m_lightCameraTarget = lightCameraTarget;
-	m_lightCameraPosition = lightCameraPos;
+	m_lightCameraTarget[number] = lightCameraTarget;
+	m_lightCameraPosition[number] = lightCameraPos;
 	//ライトの方向を計算する。
-	auto lightDir = m_lightCameraTarget - m_lightCameraPosition;
+	auto lightDir = m_lightCameraTarget[number] - m_lightCameraPosition[number];
 	if (lightDir.Length() < 0.0001f) {
 		//ライトカメラの注視点と視点が近すぎる。
 		//恐らくバグなので、クラッシュさせる。
@@ -62,31 +64,32 @@ void ShadowMap::UpdateFromLightTarget(const CVector3& lightCameraPos, CVector3 l
 	//正規化して、方向ベクトルに変換する。
 	lightDir.Normalize();
 	//
-	UpdateFromLightDirection(lightCameraPos, lightDir);
+	UpdateFromLightDirection(lightCameraPos, lightDir, number);
 }
 
 void ShadowMap::RenderToShadowMap()
 {
-	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
-	//レンダリングターゲットを切り替える。
-	ID3D11RenderTargetView* rts[] = {
-		m_shadowMapRT.GetRenderTargetView()
-	};
-	d3dDeviceContext->OMSetRenderTargets(1, rts, m_shadowMapRT.GetDepthStensilView());
-	//ビューポートを設定。
-	d3dDeviceContext->RSSetViewports(1, m_shadowMapRT.GetViewport());
-	//シャドウマップをクリア。
-	//一番奥のZは1.0なので、1.0で塗りつぶす。
-	float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
-	m_shadowMapRT.ClearRenderTarget(clearColor);
-
+	for (int i = 0; i < Engine().GetGraphicsEngine().GetSplitNumber(); i++) {
+		auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
+		//レンダリングターゲットを切り替える。
+		ID3D11RenderTargetView* rts[] = {
+			m_shadowMapRT[i].GetRenderTargetView()
+		};
+		d3dDeviceContext->OMSetRenderTargets(1, rts, m_shadowMapRT[i].GetDepthStensilView());
+		//ビューポートを設定。
+		d3dDeviceContext->RSSetViewports(1, m_shadowMapRT[i].GetViewport());
+		//シャドウマップをクリア。
+		//一番奥のZは1.0なので、1.0で塗りつぶす。
+		float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
+		m_shadowMapRT[i].ClearRenderTarget(clearColor);
 	if (m_shadowCasters.size() >= 1) {
-		//シャドウキャスターをシャドウマップにレンダリング。
-		for (auto& caster : m_shadowCasters) {
-			caster->Draw(
-				&MainCamera(),
-				enRenderMode_CreateShadowMap
-			);
+			//シャドウキャスターをシャドウマップにレンダリング。
+			for (auto& caster : m_shadowCasters) {
+				caster->Draw(
+					&MainCamera(i),
+					enRenderMode_CreateShadowMap
+				);
+			}
 		}
 	}
 	//キャスターをクリア。

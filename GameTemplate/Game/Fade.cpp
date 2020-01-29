@@ -74,12 +74,16 @@ void Fade::PostRender()
 			0.0f,
 			{ 1.0f, 1.0f, 1.0f, 1.0f },
 			DirectX::SpriteEffects_None,
-			0.1f);
+			0.1f,
+			360.0f,
+			true);
 		m_loading.DrawScreenPos(CVector2::Zero(), CVector2::One(), CVector2::Zero(),
 			0.0f,
 			{ m_currentAlpha, m_currentAlpha, m_currentAlpha, m_currentAlpha},
 			DirectX::SpriteEffects_None,
-			0.1f
+			0.1f,
+			360.0f,
+			true
 		);
 	}
 }

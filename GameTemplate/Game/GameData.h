@@ -71,19 +71,37 @@ public:
 		return m_goalPlayerSize[m_stageNumber - 1];
 	}
 	//プレイヤーの最終の大きさを設定
-	void SetReusltPlayerSsize(const float size)
+	//0で1P
+	void SetReusltPlayerSsize(const float size, const int number = 0)
 	{
-		m_resultPlayerSize = size;
+		m_resultPlayerSize[number] = size;
 	}
     //プレイヤーの最終の大きさを取得
-	int GetResultPlayerSize() const
+	//0で1P
+	int GetResultPlayerSize(const int number = 0) const
 	{
-		return  int(m_resultPlayerSize * 2);
+		return  int(m_resultPlayerSize[number] * 2);
 	}
 	//プレイヤーの大きさが目標の大きさより大きいかどうかを取得
-	bool GetisGameClear() const
+	//0で1P
+	bool GetisGameClear(const int number = 0) const
 	{
-		return int(m_resultPlayerSize * 2) >= int(m_goalPlayerSize[m_stageNumber - 1]);
+		return int(m_resultPlayerSize[number] * 2) >= int(m_goalPlayerSize[m_stageNumber - 1]);
+	}
+	//1P、2Pどっちが大きいか取得
+	//0が1P
+	//引き分けなら-1
+	int GetWinner()
+	{
+		if (int(m_resultPlayerSize[0] * 2) > int(m_resultPlayerSize[1] * 2)) {
+			return 0;
+		}
+		else if (int(m_resultPlayerSize[1] * 2) > int(m_resultPlayerSize[0] * 2)) {
+			return 1;
+		}
+		else {
+			-1;
+		}
 	}
 	//ポーズ中かどうか
 	bool GetisPose() const
@@ -110,15 +128,33 @@ public:
 	{
 		return m_scene;
 	}
+	//バトルするを設定
+	void SetisBattle(bool flag)
+	{
+		m_isBattle = flag;
+	}
+	//バトルする？
+	bool GetisBattle() const
+	{
+		return m_isBattle;
+	}
+	//バトルの制限時間を取得
+	float GetBattleLimitTime() const
+	{
+		return m_battleLimitTIme;
+	}
 private:
 	bool m_stageClearList[EnStageNumber::enState_LastStage] = { false,false,false };								//各ステージをクリアしたかどうか
 	float m_firstPlayerSize[EnStageNumber::enState_LastStage] = { 6.0f,10.0f,40.0f };								//各ステージのプレイヤーの最初の大きさ
 	float m_goalPlayerSize[EnStageNumber::enState_LastStage] = { 25.0f,40.0f,200.0f };							//各ステージのプレイヤーのクリア目標の大きさ
-	float m_resultPlayerSize = 12.0f;							//25.0f													//ステージ終了時のプレイヤーの大きさ
-	float m_stageLimitTime[EnStageNumber::enState_LastStage] = { 4.6f * 60.0f , 5.0f * 60.0f, 10.0f * 60.0f };		//各ステージの制限時間
- 	EnStageNumber m_stageNumber = enState_FirstStage;			//4.6f												//ステージの番号
+	float m_resultPlayerSize[2] = { 12.0f , 12.0f};							//25.0f													//ステージ終了時のプレイヤーの大きさ
+	float m_stageLimitTime[EnStageNumber::enState_LastStage] = { 4.6f * 60.0f , 4.5f * 60.0f, 10.0f * 60.0f };		//各ステージの制限時間
+	float m_battleLimitTIme = 4.6f * 60.0f;							//4.6f		//4.5f
+ 	EnStageNumber m_stageNumber = enState_FirstStage;															//ステージの番号
 	bool m_isPose = false;																							//ポーズ中かどうか
 	EnScene m_scene = enScene_Title;																				//シーン
+	bool m_isBattle = true;
+
 };
 
 static inline  GameData& GetGameData()

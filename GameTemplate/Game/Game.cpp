@@ -33,21 +33,43 @@ void Game::OnDestroy()
 	DeleteGO(m_ground);
 	DeleteGO(m_time);
 	for (Obj* obj : m_objList) {
-		if (!obj->GetisHitPlayer()) {
+		if (m_isBattle) {
 			obj->SetNoDraw();
+		}
+		else {
+			if (!obj->GetisHitPlayer()) {
+				obj->SetNoDraw();
+			}
 		}
 	}
 	DeleteGO(m_offScreen);
-	
+	if (m_isBattle) {
+		m_player[0]->GetCSkinModelRender().SetActive(false);
+		DeleteGO(m_player[1]);
+		DeleteGO(m_gamecamera[1]);
+	}
+
 }
 
 bool Game::Start()
 {
 	m_gameData = &GetGameData();
+	m_isBattle = m_gameData->GetisBattle();
+
 	wchar_t filePath[256];
-	//ステージの番号によって読み込むレベルファイルを設定する
-	swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber() ));
-	m_gamecamera = NewGO<GameCamera>(0);
+	
+	m_gamecamera[0] = NewGO<GameCamera>(0);
+	m_gamecamera[0]->SetPlayerNumber(0);
+	if (m_isBattle) {
+		m_gamecamera[1] = NewGO<GameCamera>(0);
+		m_gamecamera[1]->SetPlayerNumber(1);
+		//ステージの番号によって読み込むレベルファイルを設定する
+		swprintf_s(filePath, L"Assets/level/level01.tkl");
+	}
+	else {
+		//ステージの番号によって読み込むレベルファイルを設定する
+		swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber()));
+	}
 	//レベルを読み込む
 	m_level.Init(filePath, [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"o")) {
@@ -70,8 +92,17 @@ bool Game::Start()
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"sphere")) {
-			m_player = NewGO<Player>(0);
-			m_player->SetPosition(objdata.position);
+			CVector3 position = objdata.position;
+			position.y += 50.0f;
+			m_player[0] = NewGO<Player>(0);
+			m_player[0]->SetFirstPosition(position);
+			m_player[0]->SetPlayerNumber(0);
+
+			if (m_isBattle) {
+				m_player[1] = NewGO<Player>(0);
+				m_player[1]->SetFirstPosition(CVector3(position.x * 1.7f, position.y, position.z * 1.7f));
+				m_player[1]->SetPlayerNumber(1);
+			}
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"ground")) {
@@ -83,31 +114,52 @@ bool Game::Start()
 		return true;
 	});
 	m_time = NewGO<Time>(0);
-	m_time->SetTime(m_gameData->GetStageLimitTime());
+	if (m_isBattle) {
+		m_time->SetTime(m_gameData->GetBattleLimitTime());
+	}
+	else {
+		m_time->SetTime(m_gameData->GetStageLimitTime());
+	}
 	GetObjModelDataFactory().InitInstancingData();
 	m_gameData->SetPoseCancel();
 	m_gameData->SetScene(enScene_Stage);
 	m_offScreen = NewGO<OffScreen>(3);
-	//ステージによって再生するBGMを再生する
-	switch (m_gameData->GetStageNumber())
-	{
-	case enState_Stage1:
-		SoundData().SetBGM(enBGM_Stage1);
-		break;
-	case enState_Stage2:
-		SoundData().SetBGM(enBGM_Stage2);
-		break;
-	case enState_Stage3:
-		SoundData().SetBGM(enBGM_Stage3);
-		break;
-	default:
-		break;
+	if (m_gameData->GetisBattle()) {
+		SoundData().SetBGM(enBGM_Battle);
+	}
+	else {
+		//ステージによって再生するBGMを再生する
+		switch (m_gameData->GetStageNumber())
+		{
+		case enState_Stage1:
+			SoundData().SetBGM(enBGM_Stage1);
+			break;
+		case enState_Stage2:
+			SoundData().SetBGM(enBGM_Stage2);
+			break;
+		case enState_Stage3:
+			SoundData().SetBGM(enBGM_Stage3);
+			break;
+		default:
+			break;
+		}
 	}
 	m_pause.Init(L"Resource/sprite/pause.dds");
 	m_end.Init(L"Resource/sprite/end.dds");
 
 	m_fade = &Fade::GetInstance();
 	m_fade->StartFadeIn();
+
+	m_player[0]->SetGameCamera(m_gamecamera[0]);
+	m_gamecamera[0]->SetPlayer(m_player[0]);
+
+	if (m_isBattle) {
+		m_player[1]->SetGameCamera(m_gamecamera[1]);
+		m_gamecamera[1]->SetPlayer(m_player[1]);
+		Engine().GetGraphicsEngine().SetisSplit(true);
+	}
+
+	
 	return true;
 }
 
@@ -138,24 +190,29 @@ void Game::Update()
 				SoundData().SetStopBGM();
 				m_gameData->SetPose();
 				m_timer2 += GameTime().GetFrameDeltaTime();
-				m_gameData->SetReusltPlayerSsize(m_player->GetRadius());
+				m_gameData->SetReusltPlayerSsize(m_player[0]->GetRadius());
+				if (m_isBattle) {
+					m_gameData->SetReusltPlayerSsize(m_player[1]->GetRadius(), 1);
+				}
 				if (m_timer2 >= Time) {
 					m_isWaitFadeout = true;
 					m_fade->StartFadeOut();
 				}
 			}
 			else {
-				//スタートボタンが押されたらポーズする、もっかい押したら解除
-				if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
-					if (m_gameData->GetisPose()) {
-						m_gameData->SetPoseCancel();
-						SoundData().SetPlayBGM();
-						//Engine().GetGraphicsEngine().SetSplitViewPort();
-					}
-					else {
-						m_gameData->SetPose();
-						SoundData().SetStopBGM();
-						//Engine().GetGraphicsEngine().SetNormalViewPort();
+				if (!m_isBattle) {
+					//スタートボタンが押されたらポーズする、もっかい押したら解除
+					if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+						if (m_gameData->GetisPose()) {
+							m_gameData->SetPoseCancel();
+							SoundData().SetPlayBGM();
+							//Engine().GetGraphicsEngine().SetSplitViewPort();
+						}
+						else {
+							m_gameData->SetPose();
+							SoundData().SetStopBGM();
+							//Engine().GetGraphicsEngine().SetNormalViewPort();
+						}
 					}
 				}
 			}

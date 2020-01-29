@@ -219,7 +219,7 @@ void SkinModel::UpdateInstancingData(const CMatrix& worldMatrix)
 	}
 }
 
-void SkinModel::Draw(Camera* camera,EnRenderMode renderMode ,bool isShadowReceiver)
+void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowReceiver, const int number)
 {
 	if (m_isInstancing && m_numInstance == 0) {
 		return;
@@ -238,7 +238,7 @@ void SkinModel::Draw(Camera* camera,EnRenderMode renderMode ,bool isShadowReceiv
 
 	if (m_numInstance >= 1) {
 		//インスタンシング用のデータを更新
-		d3dDeviceContext->UpdateSubresource(m_instancingDataSB, 0 ,NULL, m_instancingData.get(), 0, 0);
+		d3dDeviceContext->UpdateSubresource(m_instancingDataSB, 0, NULL, m_instancingData.get(), 0, 0);
 		//d3dDeviceContext->VSSetConstantBuffers(3, 1, &m_instancingDataSB);
 		d3dDeviceContext->VSSetShaderResources(3, 1, &m_srv);
 	}
@@ -252,13 +252,13 @@ void SkinModel::Draw(Camera* camera,EnRenderMode renderMode ,bool isShadowReceiv
 	}
 	//シャドウマップを作るときはらいとカメラの行列を使う
 	else if (renderMode == enRenderMode_CreateShadowMap) {
-		vsCb.mProj = shadowMap->GetLightProjMatrix();
-		vsCb.mView = shadowMap->GetLightViewMatrix();
+		vsCb.mProj = shadowMap->GetLightProjMatrix(number);
+		vsCb.mView = shadowMap->GetLightViewMatrix(number);
 	}
 	//todo ライトカメラのビュー、プロジェクション行列を送る。
-	
-	vsCb.mLightProj = shadowMap->GetLightProjMatrix();
-	vsCb.mLightView = shadowMap->GetLightViewMatrix();
+
+	vsCb.mLightProj = shadowMap->GetLightProjMatrix(number);
+	vsCb.mLightView = shadowMap->GetLightViewMatrix(number);
 	if (!isShadowReceiver) {
 		vsCb.isShadowReciever = 0;
 	}
@@ -278,14 +278,14 @@ void SkinModel::Draw(Camera* camera,EnRenderMode renderMode ,bool isShadowReceiv
 		vsCb.isDithering = 0;
 	}
 	ID3D11ShaderResourceView* srvArray[]{
-		shadowMap->GetShadowMapSRV()
+		shadowMap->GetShadowMapSRV(number)
 	};
 	//引数がポインタのポインタ、t2なので引数を2、1にしてる
 	d3dDeviceContext->PSSetShaderResources(2, 1, srvArray);
 	//定数バッファをGPUに転送。
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_cb);
 	d3dDeviceContext->PSSetConstantBuffers(0, 1, &m_cb);
-	
+
 	d3dDeviceContext->UpdateSubresource(m_cb, 0, nullptr, &vsCb, 0, 0);
 	//ライト用の定数バッファを更新
 	d3dDeviceContext->PSSetConstantBuffers(1, 1, &m_lightCb);
@@ -322,65 +322,37 @@ void SkinModel::Draw(Camera* camera,EnRenderMode renderMode ,bool isShadowReceiv
 		auto modelMaterial = reinterpret_cast<ModelEffect*>(material);
 		modelMaterial->SetRenderMode(renderMode);
 		//if (renderMode == enRenderMode_Normal) {
-			if (m_isInstancing) {
-				modelMaterial->SetNumInstance(m_numInstance);
-			}
-			else {
-				modelMaterial->SetNumInstance(0);
-			}
+		if (m_isInstancing) {
+			modelMaterial->SetNumInstance(m_numInstance);
+		}
+		else {
+			modelMaterial->SetNumInstance(0);
+		}
 		//}
 	});
 
-	if (renderMode != enRenderMode_CreateShadowMap) {
-		for (int i = 0; i < 2; i++) {
-			Engine().GetGraphicsEngine().SetSplitViewPort(i);
-			//描画。
-			if (m_numInstance == 0) {
-				m_modelDx->Draw(
-					d3dDeviceContext,
-					state,
-					m_worldMatrix,
-					camera->GetProjectionMatrix(),
-					camera->GetViewMatrix()
-				);
-			}
-			else {
-				m_modelDx->Draw(
-					d3dDeviceContext,
-					state,
-					m_worldMatrix,
-					camera->GetProjectionMatrix(),
-					camera->GetViewMatrix(),
-					false,
-					m_numInstance
-				);
-			}
-		}
+	//描画。
+	if (m_numInstance == 0) {
+		m_modelDx->Draw(
+			d3dDeviceContext,
+			state,
+			m_worldMatrix,
+			camera->GetProjectionMatrix(),
+			camera->GetViewMatrix()
+		);
 	}
 	else {
-		//Engine().GetGraphicsEngine().SetNormalViewPort();
-		//描画。
-		if (m_numInstance == 0) {
-			m_modelDx->Draw(
-				d3dDeviceContext,
-				state,
-				m_worldMatrix,
-				camera->GetProjectionMatrix(),
-				camera->GetViewMatrix()
-			);
-		}
-		else {
-			m_modelDx->Draw(
-				d3dDeviceContext,
-				state,
-				m_worldMatrix,
-				camera->GetProjectionMatrix(),
-				camera->GetViewMatrix(),
-				false,
-				m_numInstance
-			);
-		}
+		m_modelDx->Draw(
+			d3dDeviceContext,
+			state,
+			m_worldMatrix,
+			camera->GetProjectionMatrix(),
+			camera->GetViewMatrix(),
+			false,
+			m_numInstance
+		);
 	}
+
 }
 
 /*void SkinModel::Draw(const CVector3& m_position, const CQuaternion& rot, const CVector3& scale, CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal)

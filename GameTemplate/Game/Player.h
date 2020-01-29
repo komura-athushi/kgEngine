@@ -95,6 +95,28 @@ public:
 	{
 		return m_katamariVector;
 	}
+	//1P、2Pかを設定
+	//0で1P
+	void SetPlayerNumber(const int number)
+	{
+		m_playerNumber = number;
+	}
+	//1P、2Pかを取得
+	int GetPlayerNumber()
+	{
+		return m_playerNumber;
+	}
+	//ゲームカメラを設定
+	void SetGameCamera(GameCamera* gameCamera)
+	{
+		m_gamecamera = gameCamera;
+	}
+	//プレイヤーの初期の座標を設定
+	void SetFirstPosition(const CVector3& position)
+	{
+		m_firstPosition = position;
+		m_position = position;
+	}
 private:
 	//移動
 	void Move();
@@ -158,5 +180,7 @@ private:
 	bool m_isBrake = false;																		//ブレーキ？
 	float m_collisionTimer = 0.0f;																//衝突音を連続で出さないためのタイマー
 	CVector3 m_katamariVector = CVector3::One();												//塊のスクリーン座標系
+	int m_playerNumber = 0;
+	CVector3 m_firstPosition = CVector3::Zero();
 };
 

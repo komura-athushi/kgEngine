@@ -19,6 +19,7 @@ namespace {
 		float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 		CVector3 GroundNormalVector = CVector3::AxisY();
 		float radius = 0.0f;								//塊の半径
+		int playerNumber = 0;
 		//衝突したときに呼ばれるコールバック関数。
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
@@ -32,7 +33,7 @@ namespace {
 			//コリジョンの属性がモノであるかつサイズが塊がモノより十分に大きければ巻き込んだことにする
 			if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object 
 				&& GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize())) {
-				convexResult.m_hitCollisionObject->SetisHit();
+				convexResult.m_hitCollisionObject->SetisHit(playerNumber);
 			}
 		
 			//衝突点の法線を引っ張ってくる。
@@ -71,6 +72,7 @@ namespace {
 		float dist = FLT_MAX;					//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 		CVector3 hitNormal = CVector3::Zero();	//衝突点の法線。
 		btCollisionObject* me = nullptr;		//自分自身。自分自身との衝突を除外するためのメンバ。
+		int playerNumber = 0;
 												//衝突したときに呼ばれるコールバック関数。
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
@@ -80,7 +82,7 @@ namespace {
 				return 0.0f;
 			}
 			if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object && GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize())) {
-				convexResult.m_hitCollisionObject->SetisHit();
+				convexResult.m_hitCollisionObject->SetisHit(playerNumber);
 			}
 			//衝突点の法線を引っ張ってくる。
 			CVector3 hitNormalTmp;
@@ -180,6 +182,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 			callback.me = m_rigidBody.GetBody();
 			callback.startPos = posTmp;
 			callback.radius = m_radius;
+			callback.playerNumber = m_playerNumber;
 			//衝突検出。
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 
@@ -282,6 +285,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 		callback.me = m_rigidBody.GetBody();
 		callback.startPos.Set(start.getOrigin());
 		callback.radius = m_radius;
+		callback.playerNumber = m_playerNumber;
 		//衝突検出。
 		if(fabsf(endPos.y - callback.startPos.y) > FLT_EPSILON){
 			Engine().GetPhysicsEngine().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);

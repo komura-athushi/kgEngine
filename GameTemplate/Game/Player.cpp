@@ -20,16 +20,22 @@ Player::~Player()
 bool Player::Start()
 {
 	GameData* gameData = &GetGameData();
-	m_protradius = gameData->GetPlayerSize();
-	if (m_isTitle) {
+	
+
+	wchar_t filePath[256];
+	if (m_isTitle || gameData->GetisBattle()) {
 		m_radius = gameData->GetFirstPlayerSize();
+		m_protradius = m_radius;
+		swprintf_s(filePath, L"Resource/modelData/sphere1.cmo");
 	}
 	else {
 		m_radius = gameData->GetPlayerSize();
+		m_protradius = gameData->GetPlayerSize();
+		swprintf_s(filePath, L"Resource/modelData/sphere%d.cmo", (int)gameData->GetStageNumber());
 	}
 	//cmoファイルの読み込み、ステージの番号によって読み込むファイルを設定する
-	wchar_t filePath[256];
-	swprintf_s(filePath, L"Resource/modelData/sphere%d.cmo", (int)gameData->GetStageNumber());
+	
+
 	m_skinModelRender.Init(filePath);
 	m_skinModelRender.SetShadowCaster(true);
 	m_skinModelRender.SetShadowReceiver(true);
@@ -39,6 +45,8 @@ bool Player::Start()
 		m_radius,			//半径。 
 		m_position - CVector3::AxisY() * m_radius			//初期位置。
 	);
+	m_characon.SetPlayerNumber(m_playerNumber);
+
 	m_beforeposition = m_position;
 	//体積を求める
 	m_volume = CMath::PI * pow(m_radius, 3.0f) * 4 / 3;
@@ -74,7 +82,7 @@ void Player::Update()
 	m_beforeposition = m_position;
 	m_skinModelRender.SetPosition(m_position + CVector3::AxisY() * m_radius);
 	m_skinModelRender.SetRotation(m_rotation);
-	CVector3 pos = MainCamera().GetFront();
+	CVector3 pos = MainCamera(m_playerNumber).GetFront();
 	CQuaternion rot;
 	rot.SetRotation(CVector3::AxisY(), atan2f(pos.x, pos.z));
 	m_skinModelRender2.SetRotation(rot);
@@ -82,8 +90,8 @@ void Player::Update()
 	pos = m_position - pos;
 	m_skinModelRender2.SetPosition(pos);
 	//シャドウマップのカメラをプレイヤーの座標を元に設定する
-	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x + 300.0f,m_position.y + 300.0f,m_position.z + 300.0f));
-	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position);
+	Engine().GetGraphicsEngine().SetLightCameraPosition(CVector3(m_position.x + 300.0f,m_position.y + 300.0f,m_position.z + 300.0f),m_playerNumber);
+	Engine().GetGraphicsEngine().SetLightCameraTarget(m_position,m_playerNumber);
 	m_skinModelRender.UpdateWorldMatrix();
 	m_skinModelRender2.UpdateWorldMatrix();
 }
@@ -174,15 +182,23 @@ void Player::Move()
 	const float CollisionAtten = 0.5f;
 	
 	CVector3 Stick = CVector3::Zero();
+
+	//はまったりしたときの
+	//B押したら初期位置に移動する
+	if (GetPad(m_playerNumber).IsTrigger(enButtonB)) {
+		m_position = m_firstPosition;
+		m_characon.SetPosition(m_firstPosition);
+	}
+
 	//両方のスティックが入力されていたら
 	if (m_gamecamera->GetStateStick() == enStick_EnterStickBoth) {
 		CVector3 stickL;
-		stickL.x = GetPad(0).GetLStickXF();
-		stickL.y = GetPad(0).GetLStickYF();
+		stickL.x = GetPad(m_playerNumber).GetLStickXF();
+		stickL.y = GetPad(m_playerNumber).GetLStickYF();
 		stickL.z = 0.0f;
 		CVector3 stickR;
-		stickR.x = GetPad(0).GetRStickXF();
-		stickR.y = GetPad(0).GetRStickYF();
+		stickR.x = GetPad(m_playerNumber).GetRStickXF();
+		stickR.y = GetPad(m_playerNumber).GetRStickYF();
 		stickR.z = 0.0f;
 		Stick = stickL + stickR;
 
@@ -219,8 +235,8 @@ void Player::Move()
 		m_isDush = false;
 	}
 	m_timer += GameTime().GetFrameDeltaTime();
-	CVector3 frontxz = MainCamera().GetFront();
-	CVector3 rightxz = MainCamera().GetRight();
+	CVector3 frontxz = MainCamera(m_playerNumber).GetFront();
+	CVector3 rightxz = MainCamera(m_playerNumber).GetRight();
 	if (m_count >= CountLimit) {
 		if (m_isDush) {
 			m_movespeed += frontxz * m_movespeedmultiply * DushSpeed;
@@ -356,9 +372,9 @@ void Player::ScreenPosition()
     //m_skinModelRender.GetSkinModel().GetWorldMatrix().Mul(worldPos);
 	//CVector3 worldPos = CVector3(m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][0], m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][1], m_skinModelRender.GetSkinModel().GetWorldMatrix().m[3][2]);
 	CVector3 worldPos = m_position + CVector3::AxisY() * m_radius;
-	MainCamera().GetViewMatrix().Mul(worldPos);
+	MainCamera(m_playerNumber).GetViewMatrix().Mul(worldPos);
 	CVector4 tmp = worldPos;
-	MainCamera().GetProjectionMatrix().Mul(tmp);
+	MainCamera(m_playerNumber).GetProjectionMatrix().Mul(tmp);
 	m_katamariVector.x = tmp.x / tmp.w;
 	m_katamariVector.y = tmp.y / tmp.w;
 	m_katamariVector.z = tmp.z / tmp.w;
@@ -381,27 +397,34 @@ void Player::PostRender()
 		else {
 			color = CVector4::Red();
 		}
-		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 1.6f,1.6f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(82.0f, 38.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.86f,0.86f });
-		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f), color, { 1.5f,1.5f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(82.0f, 38.0f), color, { 0.8f,0.8f });
+
+		float y = 0.0f;
+		if (m_playerNumber == 1) {
+			y = FRAME_BUFFER_H / 2.0f;
+		}
+
+		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f + y), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 1.6f,1.6f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(82.0f, 38.0f + y), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.86f,0.86f });
+		m_font.DrawScreenPos(output, CVector2(0.0f, 10.0f + y), color, { 1.5f,1.5f });
+		m_font.DrawScreenPos(L"cm\n", CVector2(82.0f, 38.0f + y), color, { 0.8f,0.8f });
 	
-		m_font.DrawScreenPos(L"イマ", CVector2(50.0f, 80.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.86f,0.86f });
-		m_font.DrawScreenPos(L"イマ", CVector2(50.0f, 80.0f), CVector4::White(), { 0.8f,0.8f });
+		m_font.DrawScreenPos(L"イマ", CVector2(50.0f, 80.0f + y), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.86f,0.86f });
+		m_font.DrawScreenPos(L"イマ", CVector2(50.0f, 80.0f + y), CVector4::White(), { 0.8f,0.8f });
 		//m_font.DrawScreenPos(L"cm\n", CVector2(78.0f, 38.0f), color, { 0.8f,0.8f });
 
-		wchar_t output2[256];
-		swprintf_s(output2, L"%d\n", goalSize);
-		m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 1.07f,1.07f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.55f,0.55f });
-		m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f), CVector4::White(), { 1.0f,1.0f });
-		m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f), CVector4::White(), { 0.5f,0.5f });
+		if (!m_gamedata->GetisBattle()) {
+			wchar_t output2[256];
+			swprintf_s(output2, L"%d\n", goalSize);
+			m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f + y), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 1.07f,1.07f });
+			m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f + y), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.55f,0.55f });
+			m_font.DrawScreenPos(output2, CVector2(160.0f, 65.0f + y), CVector4::White(), { 1.0f,1.0f });
+			m_font.DrawScreenPos(L"cm\n", CVector2(217.0f, 85.0f + y), CVector4::White(), { 0.5f,0.5f });
 
-		m_font.DrawScreenPos(L"モクヒョ", CVector2(175.0f, 40.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.55f,0.55f });
-		m_font.DrawScreenPos(L"モクヒョ", CVector2(175.0f, 40.0f), CVector4::White(), { 0.5f,0.5f });
+			m_font.DrawScreenPos(L"モクヒョ", CVector2(175.0f, 40.0f + y), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 0.55f,0.55f });
+			m_font.DrawScreenPos(L"モクヒョ", CVector2(175.0f, 40.0f + y), CVector4::White(), { 0.5f,0.5f });
 
-		m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 2.15f,2.15f });
-		m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f), CVector4::White(), { 2.0f,2.0f });
-		
+			m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f + y), CVector4(0.0f, 0.0f, 0.0f, 1.0f), { 2.15f,2.15f });
+			m_font.DrawScreenPos(L"/\n", CVector2(112.0f, 30.0f + y), CVector4::White(), { 2.0f,2.0f });
+		}
 	}
 }

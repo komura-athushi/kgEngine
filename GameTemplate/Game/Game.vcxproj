@@ -154,6 +154,7 @@
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Battle.h" />
     <ClInclude Include="Collection.h" />
     <ClInclude Include="CollectionBook.h" />
     <ClInclude Include="Fade.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Title.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Collection.cpp" />
     <ClCompile Include="CollectionBook.cpp" />
     <ClCompile Include="Fade.cpp" />
@@ -549,6 +551,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\sprite\loading4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\modelData\earth\battle.FBX">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\draw.png" />
+    <None Include="Assets\sprite\winner1.png" />
+    <None Include="Assets\sprite\winner2.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,7 +13,7 @@ SoundDirector::~SoundDirector()
 
 void SoundDirector::SetBGM(EnBGM state)
 {
-	return;
+	//return;
 	if (state == enBGM_Result) {
 		m_bgm->Stop();
 	}
@@ -38,6 +38,10 @@ void SoundDirector::SetBGM(EnBGM state)
 		case enBGM_Stage2:
 			m_bgm->InitStreaming(L"Assets/sound/stage2.wav");
 			m_bgm->SetVolume(0.25f);
+			break;
+		case enBGM_Battle:
+			m_bgm->InitStreaming(L"Assets/sound/battle.wav");
+			break;
 		default:
 			break;
 		}
