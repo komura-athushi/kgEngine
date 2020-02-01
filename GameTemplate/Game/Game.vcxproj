@@ -562,6 +562,9 @@
     <None Include="Assets\sprite\winner1.png" />
     <None Include="Assets\sprite\winner2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\sprite\start.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

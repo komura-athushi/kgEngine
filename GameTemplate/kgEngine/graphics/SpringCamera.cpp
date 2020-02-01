@@ -14,6 +14,10 @@ void SpringCamera::Init(
 	MainCamera(m_playerNumber).SetTarget(target);
 	m_positionMoveSpeed = CVector3::Zero();
 	m_targetMoveSpeed = CVector3::Zero();
+	m_position = position;
+	m_target = target;
+
+	MainCamera(m_playerNumber).Update();
 }
 
 CVector3 SpringCamera::ClcSpringVector(

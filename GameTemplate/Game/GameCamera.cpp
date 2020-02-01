@@ -16,6 +16,12 @@ GameCamera::~GameCamera()
 
 bool GameCamera::Start()
 {
+	m_gamedata = &GetGameData();
+
+	//ニアクリップとファークリップを設定する
+	MainCamera(m_playerNumber).SetNear(1.0f);
+	MainCamera(m_playerNumber).SetFar(50000.0f);
+
 	QueryGOs<Player>(nullptr, [&](Player* player) {
 		if (player->GetPlayerNumber() == m_playerNumber) {
 			m_player = player;
@@ -25,34 +31,50 @@ bool GameCamera::Start()
 			return true;
 		}
 	});
-	//ニアクリップとファークリップを設定する
+	
 	if (m_player != nullptr) {
 		m_playerNumber = m_player->GetPlayerNumber();
+		//注視点をプレイヤーより↑にする
+		const float HeightTarget = 60.0f + ((60.0f * (m_gamedata->GetPlayerSize() / m_player->GetStandardSize())) - 60.0f) * 0.9f;
+		m_radius = m_protradius + ((m_protradius * (m_gamedata->GetPlayerSize() / m_player->GetStandardSize())) - m_protradius) * 0.9f;
+		m_target = CVector3::Zero();
+		m_target = m_player->GetPosition();
+		m_target.y += HeightTarget;
+		//Y軸周りに回転させる
+		CQuaternion rot;
+		rot.SetRotationDeg(CVector3::AxisY(), m_degreey);
+		CVector3 toPos = CVector3::AxisZ();
+		rot.Multiply(toPos);
+		//上下に回転させる
+		CVector3 rotAxis;
+		rotAxis.Cross(toPos, CVector3::AxisY());
+		rotAxis.Normalize();
+		rot.SetRotationDeg(rotAxis, m_degreexz);
+		rot.Multiply(toPos);
+		toPos *= m_radius;
+		m_position = m_target + toPos;
 	}
 
-	MainCamera(m_playerNumber).SetNear(1.0f);
-	MainCamera(m_playerNumber).SetFar(50000.0f);
-
-	m_springCamera.Init(10000.0f, 0.9f, m_position, m_target);
 	m_springCamera.SetPlayerNumber(m_playerNumber);
+	m_springCamera.Init(10000.0f, 0.9f, m_position, m_target);
 
-	m_gamedata = &GetGameData();
+
 	return true;
 }
 
 void GameCamera::Update()
 {
-	if (m_player == nullptr) {
+	/*if (m_player == nullptr) {
 		m_player = FindGO<Player>();
 		return;
-	}
+	}*/
 	if (m_gamedata->GetScene() == enScene_Result) {
 		MainCamera(m_player->GetPlayerNumber()).SetPosition(m_position);
 		MainCamera(m_player->GetPlayerNumber()).SetTarget(m_target);
 		MainCamera(m_player->GetPlayerNumber()).Update();
 	}
 	else {
-		if (!m_gamedata->GetisPose()) {
+		if (!m_gamedata->GetisPose() || !m_gamedata->GetisStart()) {
 			TransView();
 			TransRadius();
 			Calculation();
@@ -99,6 +121,12 @@ void GameCamera::Calculation()
 	stickL.y = GetPad(m_player->GetPlayerNumber()).GetLStickYF();
 	stickL.z = 0.0f;
 	CVector3 Degree = CVector3::Zero();
+
+	if (!m_gamedata->GetisStart()) {
+		stickR = CVector3::Zero();
+		stickL = CVector3::Zero();
+	}
+
 	//右スティックの入力がありかつ
 	if (stickR.LengthSq() >= EnterStick) {
 		//左スティックの入力が無いなら

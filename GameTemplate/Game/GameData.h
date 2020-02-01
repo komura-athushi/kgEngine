@@ -143,6 +143,16 @@ public:
 	{
 		return m_battleLimitTIme;
 	}
+	//ゲームがスタートした？
+	bool GetisStart() const
+	{
+		return m_isStart;
+	}
+	//スタートしたかどうかを設定
+	void SetisStart(const bool flag)
+	{
+		m_isStart = flag;
+	}
 private:
 	bool m_stageClearList[EnStageNumber::enState_LastStage] = { false,false,false };								//各ステージをクリアしたかどうか
 	float m_firstPlayerSize[EnStageNumber::enState_LastStage] = { 6.0f,10.0f,40.0f };								//各ステージのプレイヤーの最初の大きさ
@@ -154,7 +164,7 @@ private:
 	bool m_isPose = false;																							//ポーズ中かどうか
 	EnScene m_scene = enScene_Title;																				//シーン
 	bool m_isBattle = true;
-
+	bool m_isStart = true;
 };
 
 static inline  GameData& GetGameData()

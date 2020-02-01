@@ -47,6 +47,10 @@ public:
 	{
 		return m_state == enState_FadeIn;
 	}
+	bool IsIdle() const
+	{
+		return m_state == enState_Idle;
+	}
 private:
 	enum EnState {
 		enState_FadeIn,			//!<フェードイン中。

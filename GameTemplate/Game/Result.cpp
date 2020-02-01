@@ -272,15 +272,15 @@ void Result::PostRender()
 			CVector2 plusPos = CVector2(190.0f, 25.0f);
 			wchar_t output[256];
 			swprintf_s(output, L"1P  %d", m_gameData->GetResultPlayerSize(0));
-			m_font.DrawScreenPos(output, pos, CVector4::White(), { 1.5f,1.5f });
-			m_font.DrawScreenPos(L"cm\n", CVector2(pos.x + plusPos.x, pos.y + plusPos.y), CVector4::White(), { 0.8f,0.8f });
+			m_font.DrawScreenPos(output, pos, CVector4::Red(), { 1.5f,1.5f });
+			m_font.DrawScreenPos(L"cm\n", CVector2(pos.x + plusPos.x, pos.y + plusPos.y), CVector4::Red(), { 0.8f,0.8f });
 
 			pos.x += 700.0f;
 
 			wchar_t output2[256];
 			swprintf_s(output2, L"2P  %d", m_gameData->GetResultPlayerSize(1));
-			m_font.DrawScreenPos(output2, pos, CVector4::White(), { 1.5f,1.5f });
-			m_font.DrawScreenPos(L"cm\n", CVector2(pos.x + plusPos.x, pos.y + plusPos.y), CVector4::White(), { 0.8f,0.8f });
+			m_font.DrawScreenPos(output2, pos, CVector4::Blue(), { 1.5f,1.5f });
+			m_font.DrawScreenPos(L"cm\n", CVector2(pos.x + plusPos.x, pos.y + plusPos.y), CVector4::Blue(), { 0.8f,0.8f });
 		}
 	}
 }

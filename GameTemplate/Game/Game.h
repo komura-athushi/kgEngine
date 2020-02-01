@@ -48,7 +48,12 @@ private:
 	OffScreen* m_offScreen = nullptr;							//小窓用のクラス
 	CSprite m_pause;											//ポーズ
 	CSprite m_end;												//終わり
+	CSprite m_start;											//スタートした？
 	bool m_isStart = false;
 	bool m_isBattle = true;
+	float m_timer3 = 4.9f;
+	float m_firstTimer3 = m_timer3;
+	int m_startTime = 4;
+
 };
 

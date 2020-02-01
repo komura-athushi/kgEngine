@@ -453,9 +453,6 @@
     <None Include="Assets\sprite\gameover.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\sprite\pause.png">
-      <Filter>Asset\sprite</Filter>
-    </None>
     <None Include="Assets\sprite\pressstart.png">
       <Filter>Asset\sprite</Filter>
     </None>
@@ -486,16 +483,14 @@
     <None Include="Assets\modelData\earth\battle.FBX">
       <Filter>Asset\modelData\stageselect</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Assets\sprite\draw.png">
+    <None Include="Assets\sprite\draw.png" />
+    <None Include="Assets\sprite\winner1.png" />
+    <None Include="Assets\sprite\winner2.png" />
+    <None Include="Assets\sprite\pause.png">
       <Filter>Asset\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Assets\sprite\winner1.png">
+    </None>
+    <None Include="Assets\sprite\start.png">
       <Filter>Asset\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Assets\sprite\winner2.png">
-      <Filter>Asset\sprite</Filter>
-    </ImageContentTask>
+    </None>
   </ItemGroup>
 </Project>

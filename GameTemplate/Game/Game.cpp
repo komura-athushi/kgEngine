@@ -70,6 +70,7 @@ bool Game::Start()
 		//ステージの番号によって読み込むレベルファイルを設定する
 		swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber()));
 	}
+	
 	//レベルを読み込む
 	m_level.Init(filePath, [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"o")) {
@@ -92,17 +93,17 @@ bool Game::Start()
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"sphere")) {
-			CVector3 position = objdata.position;
-			position.y += 50.0f;
-			m_player[0] = NewGO<Player>(0);
-			m_player[0]->SetFirstPosition(position);
-			m_player[0]->SetPlayerNumber(0);
-
-			if (m_isBattle) {
+			if (m_gameData->GetisBattle() && m_player[0] != nullptr) {
 				m_player[1] = NewGO<Player>(0);
-				m_player[1]->SetFirstPosition(CVector3(position.x * 2.7f, position.y, position.z * 2.7f));
+				m_player[1]->SetFirstPosition(objdata.position);
 				m_player[1]->SetPlayerNumber(1);
 			}
+			else if(m_player[0] == nullptr) {
+				m_player[0] = NewGO<Player>(0);
+				m_player[0]->SetFirstPosition(objdata.position);
+				m_player[0]->SetPlayerNumber(0);
+			}
+		
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"ground")) {
@@ -146,6 +147,7 @@ bool Game::Start()
 	}
 	m_pause.Init(L"Resource/sprite/pause.dds");
 	m_end.Init(L"Resource/sprite/end.dds");
+	m_start.Init(L"Resource/sprite/start.dds");
 
 	m_fade = &Fade::GetInstance();
 	m_fade->StartFadeIn();
@@ -159,13 +161,15 @@ bool Game::Start()
 		Engine().GetGraphicsEngine().SetisSplit(true);
 	}
 
-	
+	m_gameData->SetisStart(false);
 	return true;
 }
 
 void Game::Update()
 {
 	const float Time = 2.0f;
+
+
 	//ステージが終了したら
 	if (m_isWaitFadeout) {
 		if (!m_fade->IsFade()) {
@@ -175,14 +179,32 @@ void Game::Update()
 	}
 	else {
 		if (!m_isStart) {
-			if (!m_fade->IsFadeIn()) {
+			if (m_fade->IsIdle()) {
+				m_startTime = int(m_timer3);
+				m_timer3 -= GameTime().GetFrameVariableDeltaTime();
+				if (m_startTime != int(m_timer3)) {
+					if (m_startTime <= 1) {
+						CSoundSource* se = new CSoundSource();
+						se->Init(L"Assets/sound/start.wav");
+						se->Play(false);
+					}
+					else {
+						CSoundSource* se = new CSoundSource();
+						se->Init(L"Assets/sound/pin.wav");
+						se->Play(false);
+					}
+				}
+				if (m_timer3 <= 0.0f) {
+					m_isStart = true;
+					m_gameData->SetPoseCancel();
+					SoundData().SetPlayBGM();
+					m_gameData->SetisStart(true);
+				}
+				
+			}
+			else if (!m_fade->IsFadeIn()) {
 				SoundData().SetStopBGM();
 				m_gameData->SetPose();
-			}
-			else {
-				SoundData().SetPlayBGM();
-				m_gameData->SetPoseCancel();
-				m_isStart = true;
 			}
 		}
 		else {
@@ -226,7 +248,19 @@ void Game::PostRender()
 	if (m_owaOwari) {
 		m_end.Draw();
 	}
-	else if (m_gameData->GetisPose()) {
+	else if (m_gameData->GetisPose() && m_gameData->GetisStart()) {
 		m_pause.Draw();
+	}
+	else if (!m_isStart) {
+		if (m_startTime < 4) {
+			if (m_startTime >= 1) {
+				wchar_t output[10];
+				swprintf_s(output, L"%d", m_startTime);
+				m_font.DrawScreenPos(output, CVector2(600.0f, 320.0f), CVector4::Red(), CVector2(2.5f, 2.5f));
+			}
+			else {
+				m_start.Draw();
+			}
+		}
 	}
 }
