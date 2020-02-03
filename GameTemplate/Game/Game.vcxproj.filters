@@ -484,12 +484,16 @@
       <Filter>Asset\modelData\stageselect</Filter>
     </None>
     <None Include="Assets\sprite\draw.png" />
-    <None Include="Assets\sprite\winner1.png" />
-    <None Include="Assets\sprite\winner2.png" />
     <None Include="Assets\sprite\pause.png">
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\start.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\winner1.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\winner2.png">
       <Filter>Asset\sprite</Filter>
     </None>
   </ItemGroup>

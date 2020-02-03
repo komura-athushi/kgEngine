@@ -253,13 +253,27 @@ void Game::PostRender()
 	}
 	else if (!m_isStart) {
 		if (m_startTime < 4) {
+			float hoge = m_timer3 - m_startTime;
+			hoge = 1.0f - hoge;
+			hoge *= 1.5f;
 			if (m_startTime >= 1) {
 				wchar_t output[10];
 				swprintf_s(output, L"%d", m_startTime);
-				m_font.DrawScreenPos(output, CVector2(600.0f, 320.0f), CVector4::Red(), CVector2(2.5f, 2.5f));
+				
+				m_font.DrawScreenPos(output, CVector2(600.0f, 320.0f), CVector4::Red(), CVector2(1.0f + hoge, 1.0f + hoge));
 			}
 			else {
-				m_start.Draw();
+				CVector2 pos;
+				CVector2 scale;
+				if (Engine().GetGraphicsEngine().GetisSplit()) {
+					pos = CVector2(FRAME_BUFFER_W / 2, FRAME_BUFFER_H);
+					scale = CVector2(0.0f + hoge, (0.0f + hoge) * 2);
+				}
+				else {
+					pos = CVector2(FRAME_BUFFER_W / 2, FRAME_BUFFER_H / 2);
+					scale = CVector2(0.0f + hoge, (0.0f + hoge));
+				}
+				m_start.DrawScreenPos(pos, scale);
 			}
 		}
 	}

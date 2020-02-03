@@ -48,9 +48,9 @@ void Time::PostRender()
 	}
 	m_degree = (m_timer / m_time) * 180.0f;
 	m_sprite1.DrawScreenPos(CVector2(1180.0f, 130.0f), CVector2(0.6f, 0.6f), CVector2(0.5f, 0.5f), 0.0f, CVector4(1.0f, 1.0f, 1.0f, 0.7f),
-		DirectX::SpriteEffects_None, 0.5f);
+		DirectX::SpriteEffects_None, 0.5f, 360.0f, true);
 	m_sprite2.DrawScreenPos(CVector2(1180.0f, 130.0f), CVector2(0.6f, 0.6f), CVector2(0.5f, 0.5f), 0.0f, CVector4(1.0f, 1.0f, 1.0f, 0.7f),
-		DirectX::SpriteEffects_None, 0.5f, m_degree);
+		DirectX::SpriteEffects_None, 0.5f, m_degree, true);
 	int minutes = m_timer / 60;
 	int seconds = m_timer - minutes * 60;
 	wchar_t output[256];
