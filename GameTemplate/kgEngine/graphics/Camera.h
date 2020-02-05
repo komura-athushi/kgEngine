@@ -113,6 +113,7 @@ private:
 	CVector3 m_front = CVector3::Zero();			//カメラの前方向
 	CVector3 m_right = CVector3::Zero();			//カメラの右方向
 	float m_viewAngle = CMath::DegToRad(60.0f);		//画角。
+	float m_splitViewAngle = CMath::DegToRad(50.0f);		//画面分割の画角。
 	float m_far = 10000.0f;							//遠い平面までの距離。
 	float m_near = 1.0f;							//近平面までの距離。
 };

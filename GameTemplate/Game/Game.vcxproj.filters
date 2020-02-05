@@ -483,7 +483,6 @@
     <None Include="Assets\modelData\earth\battle.FBX">
       <Filter>Asset\modelData\stageselect</Filter>
     </None>
-    <None Include="Assets\sprite\draw.png" />
     <None Include="Assets\sprite\pause.png">
       <Filter>Asset\sprite</Filter>
     </None>
@@ -494,6 +493,9 @@
       <Filter>Asset\sprite</Filter>
     </None>
     <None Include="Assets\sprite\winner2.png">
+      <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\sprite\draw.png">
       <Filter>Asset\sprite</Filter>
     </None>
   </ItemGroup>

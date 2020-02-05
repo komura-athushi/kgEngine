@@ -11,13 +11,25 @@ void Camera::Update()
 		m_target,
 		m_up
 	);
-	//プロジェクション行列を計算。
-	m_projMatrix.MakeProjectionMatrix(
-		m_viewAngle,					//画角。
-		FRAME_BUFFER_W / FRAME_BUFFER_H,	//アスペクト比。
-		m_near,
-		m_far
-	);
+	if(Engine().GetGraphicsEngine().GetisSplit()) {
+
+		//プロジェクション行列を計算。
+		m_projMatrix.MakeProjectionMatrix(
+			m_splitViewAngle,					//画角。
+			FRAME_BUFFER_W / ( FRAME_BUFFER_H / 2) ,	//アスペクト比。
+			m_near,
+			m_far
+		);
+	}
+	else {
+		//プロジェクション行列を計算。
+		m_projMatrix.MakeProjectionMatrix(
+			m_viewAngle,					//画角。
+			FRAME_BUFFER_W / FRAME_BUFFER_H,	//アスペクト比。
+			m_near,
+			m_far
+		);
+	}
 	//ビュー行列の逆行列を計算。
 	CMatrix ViewMatrixInv;
 	ViewMatrixInv.Inverse(m_viewMatrix);

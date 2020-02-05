@@ -8,7 +8,7 @@ cbuffer cb : register(b0){
 //float4 mulColor : register(b0);
 Texture2D<float4> Texture : register(t0);	//カラーテクスチャ。
 sampler TextureSampler : register(s0);
-//角度    
+//角度   
 float Angle : register(t1);
 //フォントの大きさ
 float2 Scale : register(t2);
@@ -51,11 +51,11 @@ float4 PSMain_Font(
 	float2 texSize;
 	float level;
 	//テクスチャーのサイズを取得する
-	Texture.GetDimensions(0, texSize.x, texSize.y, level);
+	//Texture.GetDimensions(0, texSize.x, texSize.y, level);
 
 	float2 tex = texCoord;
-	float4 Color;
-	//if (Scale.x >= 1.1f) {
+	//float4 Color;
+	/*if (Scale.x >= 1.1f) {
 		//tex /= Scale;
 
 		float offset = 0.1f;
@@ -98,7 +98,7 @@ float4 PSMain_Font(
 	//Color = Color / 4;*/
 
 
-	//float4 Color = Texture.Sample(TextureSampler, texCoord);
+	float4 Color = Texture.Sample(TextureSampler, texCoord);
 	Color *= color;
 	//Color *= mulColor;
 	return Color;

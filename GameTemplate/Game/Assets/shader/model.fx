@@ -6,7 +6,7 @@
 /////////////////////////////////////////////////////////////
 // Shader Resource View
 /////////////////////////////////////////////////////////////
-//アルベドテクスチャ。
+//アルベドテクスチャ。	
 Texture2D<float4> albedoTexture : register(t0);	
 Texture2D<float4> shadowMap : register(t2);		//todo シャドウマップ。
 Texture2D<float4> toonMap : register(t4);		//toonシェーダー用のテクスチャー
