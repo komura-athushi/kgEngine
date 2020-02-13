@@ -207,7 +207,7 @@ void Result::PostRender()
 		}
 		else if (!m_isWaitFadeout) {
 			if (!m_se.IsPlaying()) {
-				if (m_gameData->GetisGameClear()) {
+				if (m_gameData->GetisGameClear() && !m_gameData->GetisBattle()) {
 					m_gameData->SetStageClear();
 				}
 
