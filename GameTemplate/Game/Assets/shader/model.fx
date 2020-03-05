@@ -363,7 +363,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		//lig += float3(1.0f, 1.0f, 1.0f) * rim;
 	}
 	else {
-		lig += float3(0.5f, 0.5f, 0.5f);
+		lig += float3(0.7f, 0.7f, 0.7f);
 	}
 
 
