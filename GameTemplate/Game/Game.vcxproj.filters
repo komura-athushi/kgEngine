@@ -459,9 +459,6 @@
     <None Include="Assets\sprite\stageclear.png">
       <Filter>Asset\sprite</Filter>
     </None>
-    <None Include="Assets\modelData\ground\ground2.FBX">
-      <Filter>Asset\modelData\ground</Filter>
-    </None>
     <None Include="Assets\sprite\title.png">
       <Filter>Asset\sprite</Filter>
     </None>
@@ -498,5 +495,10 @@
     <None Include="Assets\sprite\draw.png">
       <Filter>Asset\sprite</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\ground\ground2.FBX">
+      <Filter>Asset\modelData\ground</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>
