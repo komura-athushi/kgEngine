@@ -4,6 +4,7 @@
 #include "normal\NormalMap.h"
 #include "normal\EdgeDetection.h"
 #include "depthvalue\DepthValueMap.h"
+#include "shadow\CascadeShadowMap.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -188,6 +189,7 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_pd3dDeviceContext->RSSetViewports(1, &m_normalViewPorts);
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
 	m_shadowMap = new ShadowMap;
+	m_cascadeShadowMap = new CascadeShadowMap;
 	m_normalMap = new NormalMap;
 	m_depthValueMao = new DepthValueMap;
 	m_edgeDelection = new EdgeDetection;
@@ -219,6 +221,7 @@ void GraphicsEngine::ShadowMapRender()
 			i
 		);
 	}
+	m_cascadeShadowMap->Update();
 	auto d3dDeviceContext = m_pd3dDeviceContext;
 	//現在のレンダリングターゲットをバックアップしておく。
 	/*ID3D11RenderTargetView* oldRenderTargetView;
@@ -234,7 +237,8 @@ void GraphicsEngine::ShadowMapRender()
 	d3dDeviceContext->RSGetViewports(&numViewport, &m_frameBufferViewports);*/
 
 	//シャドウマップにレンダリング
-	m_shadowMap->RenderToShadowMap();
+	//m_shadowMap->RenderToShadowMap();
+	m_cascadeShadowMap->RenderToShadowMap();
 
 	//元に戻す。
 	/*d3dDeviceContext->OMSetRenderTargets(

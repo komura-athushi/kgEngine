@@ -10,6 +10,11 @@
 Texture2D<float4> albedoTexture : register(t0);	
 Texture2D<float4> shadowMap : register(t2);		//todo シャドウマップ。
 Texture2D<float4> toonMap : register(t4);		//toonシェーダー用のテクスチャー
+
+Texture2D<float4> cascadeShadowMap1 : register(t5);		//todo カスケードシャドウマップ。
+Texture2D<float4> cascadeShadowMap2 : register(t6);		//todo カスケードシャドウマップ。
+Texture2D<float4> cascadeShadowMap3 : register(t7);		//todo カスケードシャドウマップ。
+
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t1);
 StructuredBuffer<float4x4> instanceMatrix : register(t3);
@@ -24,6 +29,9 @@ sampler ToonSampler : register(s1);
 /////////////////////////////////////////////////////////////
 // 定数バッファ。
 /////////////////////////////////////////////////////////////
+ 
+static const int NUM_CASCADES = 3;
+ 
 /*!
  * @brief	頂点シェーダーとピクセルシェーダー用の定数バッファ。
  */
@@ -34,6 +42,8 @@ cbuffer VSPSCb : register(b0){
 	//todo ライトビュー行列を追加。
 	float4x4 mLightView;	//ライトビュー行列。
 	float4x4 mLightProj;	//ライトプロジェクション行列。
+	float4x4 mLightViewProj[NUM_CASCADES];    //ライトビュープロジェクション行列
+	float4 mFarList[NUM_CASCADES];
 	int isShadowReciever;	//シャドウレシーバーフラグ。
 	int isDithering;
 	
@@ -110,6 +120,8 @@ struct PSInput{
 	float2 TexCoord 	: TEXCOORD0;
 	float4 posInLVP		: TEXCOORD1;	//ライトビュープロジェクション空間での座標。
 	float3 worldPos		: TEXCOORD2;	//ワールド座標
+	float4 posInCamera  : TEXCOORD3;	//ビュー座標
+	float4 posInLVP2[NUM_CASCADES]	: TEXCOORD4;
 };
 
 //ピクセルシェーダーの出力構造体
@@ -160,6 +172,9 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	psInput.worldPos = worldPos;
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
+
+	psInput.posInCamera = psInput.Position;
+
 	//カメラ座標系からスクリーン座標系に変換する
 	psInput.Position = mul(mProj, psInput.Position);
 	if (isShadowReciever == 1) {
@@ -168,6 +183,9 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 		psInput.posInLVP = mul(mLightView, worldPos);
 		//ライトビュー座標系からライトプロジェクション行列に変換
 		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
+		for (int i = 0; i < NUM_CASCADES; i++) {
+			psInput.posInLVP2[i] = mul(mLightViewProj[i], worldPos);
+		}
 	}
 	psInput.TexCoord = In.TexCoord;
 	psInput.Normal = normalize(mul(mWorld, In.Normal));
@@ -185,6 +203,7 @@ PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID
 	//float4 worldPos = mul(mWorld, In.Position);
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
+	psInput.posInCamera = psInput.Position;
 	//カメラ座標系からスクリーン座標系に変換する
 	psInput.Position = mul(mProj, psInput.Position);
 	if (isShadowReciever == 1) {
@@ -193,6 +212,9 @@ PSInput VSMainInstancing(VSInputNmTxVcTangent In,uint instanceID : SV_InstanceID
 		psInput.posInLVP = mul(mLightView, worldPos);
 		//ライトビュー座標系からライトプロジェクション行列に変換
 		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
+		for (int i = 0; i < NUM_CASCADES; i++) {
+			psInput.posInLVP2[i] = mul(mLightViewProj[i], worldPos);
+		}
 	}
 	psInput.TexCoord = In.TexCoord;
 	psInput.Normal = normalize(mul(instanceMatrix[instanceID], In.Normal));
@@ -237,6 +259,7 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
+	psInput.posInCamera = psInput.Position;
 	//カメラ座標系からスクリーン座標系に変換する
 	psInput.Position = mul(mProj, psInput.Position);
 	if (isShadowReciever == 1) {
@@ -245,6 +268,9 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 		psInput.posInLVP = mul(mLightView, worldPos);
 		//ライトビュー座標系からライトプロジェクション行列に変換
 		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
+		for (int i = 0; i < NUM_CASCADES; i++) {
+			psInput.posInLVP2[i] = mul(mLightViewProj[i], worldPos);
+		}
 	}
 	psInput.TexCoord = In.TexCoord;
     return psInput;
@@ -285,6 +311,7 @@ PSInput VSMainSkinInstancing(VSInputNmTxWeights In, uint instanceID : SV_Instanc
 
 	//ワールド座標系からカメラ座標系に変換する
 	psInput.Position = mul(mView, worldPos);
+	psInput.posInCamera = psInput.Position;
 	//カメラ座標系からスクリーン座標系に変換する
 	psInput.Position = mul(mProj, psInput.Position);
 	if (isShadowReciever == 1) {
@@ -293,6 +320,9 @@ PSInput VSMainSkinInstancing(VSInputNmTxWeights In, uint instanceID : SV_Instanc
 		psInput.posInLVP = mul(mLightView, worldPos);
 		//ライトビュー座標系からライトプロジェクション行列に変換
 		psInput.posInLVP = mul(mLightProj, psInput.posInLVP);
+		for (int i = 0; i < NUM_CASCADES; i++) {
+			psInput.posInLVP2[i] = mul(mLightViewProj[i], worldPos);
+		}
 	}
 	psInput.TexCoord = In.TexCoord;
 	return psInput;
@@ -361,6 +391,16 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		}*/
 		//rim = pow(rim, 3.0f);
 		//lig += float3(1.0f, 1.0f, 1.0f) * rim;
+
+		/*for (int i = 0; i < 4; i++) {
+			p = dot(In.Normal * -1.0f, dligDirection[i].xzy);
+			p = p * 0.5f + 0.5f;
+			p = p * p;
+			p *= 0.1f;
+			float2 pos = float2(p, 0.0f);
+			float4 Col = toonMap.Sample(ToonSampler, pos);
+			lig += Col.xyz * 1.0f;
+		}*/
 	}
 	else {
 		lig += float3(0.7f, 0.7f, 0.7f);
@@ -370,7 +410,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 	//ディレクションライトの拡散反射光を計算する。
 	/*for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
-	}
+	}*/
 	//ディレクションライトの鏡面反射光を計算する。
 	{
 		//実習　鏡面反射を計算しなさい。
@@ -391,16 +431,16 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		//	 LightCbを参照するように。
 		float3 specLig = 0.0f;
 		for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
-			specLig += pow(t, specPow) * dligColor[i].xyz;
+			specLig += pow(t, specPow) * dligColor[i].xyz * 2.0f;
 		}
 		specLig /= 4;
 		//⑤ スペキュラ反射が求まったら、ligに加算する。
 		//鏡面反射を反射光に加算する。
-		lig += specLig;
-	}*/
+		//lig += specLig;
+	}
 	lig.xyz += ambientlight.xyz;
 	if (isShadowReciever == 1) {	//シャドウレシーバー。
-		//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。
+		/*//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。
 		//プロジェクション行列をシャドウマップのUV座標に変換している
 		float2 shadowMapUV = In.posInLVP.xy / In.posInLVP.w;
 		shadowMapUV *= float2(0.5f, -0.5f);
@@ -420,6 +460,44 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 			if (zInLVP > zInShadowMap + 0.001f) {
 				//影が落ちているので、光を弱くする
 				lig *= 0.5f;
+			}
+		}*/
+		for (int i = 0; i < NUM_CASCADES; i++) {
+			if (mFarList[i].x > In.posInCamera.z) {
+				//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。
+				//プロジェクション行列をシャドウマップのUV座標に変換している
+				float2 shadowMapUV = In.posInLVP2[i].xy / In.posInLVP2[i].w;
+				shadowMapUV *= float2(0.5f, -0.5f);
+				shadowMapUV += 0.5f;
+				//spsOut.shadow = shadowMapUV.x;
+				//シャドウマップのUV座標範囲内かどうかを判定する。
+				if (shadowMapUV.x <= 1.0f
+					&& shadowMapUV.x >= 0.0f
+					&& shadowMapUV.y <= 1.0f
+					&& shadowMapUV.y >= 0.0f
+					) {
+					///LVP空間での深度値を計算。
+					float zInLVP = In.posInLVP2[i].z / In.posInLVP2[i].w;
+					float zInShadowMap = 1.0f;
+					//シャドウマップに書き込まれている深度値を取得。
+					if (i == 0) {
+						zInShadowMap = cascadeShadowMap1.Sample(Sampler, shadowMapUV);
+					}
+					else if (i == 1) {
+						zInShadowMap = cascadeShadowMap2.Sample(Sampler, shadowMapUV);
+					}
+					else if (i == 2) {
+						zInShadowMap = cascadeShadowMap3.Sample(Sampler, shadowMapUV);
+					}
+					if (zInLVP > zInShadowMap + 0.0001f * (4 - i)) {
+						//影が落ちているので、光を弱くする
+						lig *= 0.5f;
+					
+					}
+					break;
+
+
+				}
 			}
 		}
 	}
@@ -488,6 +566,57 @@ PSInput_ShadowMap VSMainSkinInstancing_ShadowMap(VSInputNmTxWeights In, uint ins
 	psInput.Position = pos;
 	return psInput;
 }
+
+// <summary>
+/// スキン無しカスケードシャドウマップ生成用の頂点シェーダー。
+/// </summary>
+PSInput_ShadowMap VSMain_CascadeShadowMap(VSInputNmTxVcTangent In)
+{
+	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
+	//ライトプロジェクション行列に変換している
+	float4 pos = mul(mWorld, In.Position);
+	pos = mul(mLightViewProj[0], pos);
+	psInput.Position = pos;
+	return psInput;
+}
+// <summary>
+/// スキン無しカスケードシャドウマップ生成用の頂点シェーダー、インスタンシング用
+/// </summary>
+PSInput_ShadowMap VSMainInstancing_CascadeShadowMap(VSInputNmTxVcTangent In, uint instanceID : SV_InstanceID)
+{
+	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
+	//ライトプロジェクション行列に変換している
+	float4 pos = mul(instanceMatrix[instanceID], In.Position);
+	pos = mul(mLightViewProj[0], pos);
+	psInput.Position = pos;
+	return psInput;
+}
+// <summary>
+/// スキンありカスケードシャドウマップ生成用の頂点シェーダー。
+/// </summary>
+PSInput_ShadowMap VSMainSkin_CascadeShadowMap(VSInputNmTxWeights In)
+{
+	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
+	float4x4 skinning = CalcSkinMatrix(In);
+	float4 pos = mul(skinning, In.Position);
+	pos = mul(mLightViewProj[0], pos);
+	psInput.Position = pos;
+	return psInput;
+}
+// <summary>
+/// スキンありカスケードシャドウマップ生成用の頂点シェーダー、インスタンシング用
+/// </summary>
+PSInput_ShadowMap VSMainSkinInstancing_CascadeShadowMap(VSInputNmTxWeights In, uint instanceID : SV_InstanceID)
+{
+	PSInput_ShadowMap psInput = (PSInput_ShadowMap)0;
+	float4x4 skinning = CalcSkinMatrix(In);
+	skinning = mul(instanceMatrix[instanceID], skinning);
+	float4 pos = mul(skinning, In.Position);
+	pos = mul(mLightViewProj[0], pos);
+	psInput.Position = pos;
+	return psInput;
+}
+
 /// <summary>
 /// ピクセルシェーダーのエントリ関数。
 /// </summary>
@@ -496,6 +625,31 @@ float4 PSMain_ShadowMap(PSInput_ShadowMap In) : SV_Target0
 	//射影空間でのZ値を返す。
 	return In.Position.z / In.Position.w;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

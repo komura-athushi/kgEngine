@@ -15,6 +15,8 @@ protected:
 	Shader m_vsShaderInstancing;
 	Shader m_vsShadowMap;			//シャドウマップ生成用の頂点シェーダー。
 	Shader m_vsShadowMapInstancing;			//シャドウマップ生成用の頂点シェーダー、インスタンシング用
+	Shader m_vsCascadeShadowMap;			//カスケードシャドウマップ生成用の頂点シェーダー
+	Shader m_vsCascadeShadowMapInstancing;     //カスケードシャドウマップ生成用の頂点シェーダー、インスタンシング用
 	Shader m_psShadowMap;		//シャドウマップ生成用のピクセルシェーダー。
 	Shader m_vsNormalMap;			//シャドウマップ生成用の頂点シェーダー。
 	Shader m_vsNormalMapInstancing;			//シャドウマップ生成用の頂点シェーダー、インスタンシング用
@@ -84,6 +86,9 @@ public:
 		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMain_ShadowMap", Shader::EnType::VS);
 		m_vsShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainInstancing_ShadowMap", Shader::EnType::VS);
 
+		m_vsCascadeShadowMap.Load("Assets/shader/model.fx", "VSMain_CascadeShadowMap", Shader::EnType::VS);
+		m_vsCascadeShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainInstancing_CascadeShadowMap", Shader::EnType::VS);
+
 		m_vsNormalMap.Load("Assets/shader/model.fx", "VSMain_NormalMap", Shader::EnType::VS);
 		m_vsNormalMapInstancing.Load("Assets/shader/model.fx", "VSMainInstancing_NormalMap", Shader::EnType::VS);
 		isSkining = false;
@@ -104,6 +109,9 @@ public:
 		//スキンありシャドウマップ
 		m_vsShadowMap.Load("Assets/shader/model.fx", "VSMainSkin_ShadowMap", Shader::EnType::VS);
 		m_vsShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainSkinInstancing_ShadowMap", Shader::EnType::VS);
+
+		m_vsCascadeShadowMap.Load("Assets/shader/model.fx", "VSMainSkin_CascadeShadowMap", Shader::EnType::VS);
+		m_vsCascadeShadowMapInstancing.Load("Assets/shader/model.fx", "VSMainSkinInstancing_CascadeShadowMap", Shader::EnType::VS);
 
 		m_vsNormalMap.Load("Assets/shader/model.fx", "VSMainSkin_NormalMap", Shader::EnType::VS);
 		m_vsNormalMapInstancing.Load("Assets/shader/model.fx", "VSMainSkinInstancing_NormalMap", Shader::EnType::VS);

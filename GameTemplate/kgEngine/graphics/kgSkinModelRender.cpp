@@ -2,6 +2,7 @@
 #include "kgSkinModelRender.h"
 #include "SkinModelDataManager.h"
 #include "shadow/kgShadowMap.h"
+#include "shadow\CascadeShadowMap.h"
 CSkinModelRender::CSkinModelRender()
 {
 
@@ -167,6 +168,7 @@ void CSkinModelRender::PreUpdate()
 	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
 		if (itr->second->s_skinModel.isShadowCaster()) {
 			Engine().GetGraphicsEngine().GetShadowMap()->RegistShadowCaster(&itr->second->s_skinModel);
+			Engine().GetGraphicsEngine().GetCascadeShadowMap()->RegistShadowCaster(&itr->second->s_skinModel);
 		}
 	}
 }

@@ -235,6 +235,7 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	ID3D11DeviceContext* d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 
 	auto shadowMap = Engine().GetGraphicsEngine().GetShadowMap();
+	auto cascadeShadowMap = Engine().GetGraphicsEngine().GetCascadeShadowMap();
 
 	if (m_numInstance >= 1) {
 		//インスタンシング用のデータを更新
@@ -249,6 +250,19 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	if (renderMode == enRenderMode_Normal || renderMode == enRenderMode_NormalMap || renderMode == enRenderMode_DepthValueMap) {
 		vsCb.mProj = camera->GetProjectionMatrix();
 		vsCb.mView = camera->GetViewMatrix();
+		for (int i = 0; i < CascadeShadowMap::SHADOWMAP_NUM; i++) {
+			vsCb.mLightViewProj[i] = cascadeShadowMap->GetLightViewProjMatrix(number, i);
+			vsCb.mFarList[i] = { cascadeShadowMap->GetFar(number, i),0.0f,0.0f,0.0f};
+			ID3D11ShaderResourceView* srvArray[]{
+				cascadeShadowMap->GetRenderTarget(number,i)->GetRenderTargetSRV()
+			};
+			//引数がポインタのポインタ、t2なので引数を2、1にしてる
+			d3dDeviceContext->PSSetShaderResources(5 + i, 1, srvArray);
+		}
+		
+	}
+	else if (renderMode == enRenderMode_CreateCascadeShadowMap) {
+		vsCb.mLightViewProj[0] = cascadeShadowMap->GetLightViewProjMatrix(number);
 	}
 	//シャドウマップを作るときはらいとカメラの行列を使う
 	else if (renderMode == enRenderMode_CreateShadowMap) {
@@ -256,9 +270,12 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 		vsCb.mProj = shadowMap->GetLightProjMatrix(number);
 	}
 	//todo ライトカメラのビュー、プロジェクション行列を送る。
-
 	vsCb.mLightProj = shadowMap->GetLightProjMatrix(number);
 	vsCb.mLightView = shadowMap->GetLightViewMatrix(number);
+
+	
+	
+
 	if (!isShadowReceiver) {
 		vsCb.isShadowReciever = 0;
 	}

@@ -2,6 +2,7 @@
 
 #include "Skeleton.h"
 #include "ToonMap.h"
+#include "shadow\CascadeShadowMap.h"
 
 class Camera;
 const int NUM_DIRECTION_LIG = 4;
@@ -219,6 +220,8 @@ private:
 		CMatrix mProj;
 		CMatrix mLightView;		//todo ライトビュー行列。
 		CMatrix mLightProj;		//todo ライトプロジェクション行列。
+		CMatrix mLightViewProj[CascadeShadowMap::SHADOWMAP_NUM];    //ライトビュープロジェクション行列
+		CVector4 mFarList[CascadeShadowMap::SHADOWMAP_NUM];		//深度値のリスト
 		int isShadowReciever;	//todo シャドウレシーバーのフラグ。
 		int isDithering = 0;
 		int pad0;

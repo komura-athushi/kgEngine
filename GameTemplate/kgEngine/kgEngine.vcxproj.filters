@@ -179,6 +179,7 @@
     <ClCompile Include="graphics\normal\NormalMap.cpp" />
     <ClCompile Include="graphics\normal\EdgeDetection.cpp" />
     <ClCompile Include="graphics\depthvalue\DepthValueMap.cpp" />
+    <ClCompile Include="graphics\shadow\CascadeShadowMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -331,5 +332,6 @@
     <ClInclude Include="graphics\normal\NormalMap.h" />
     <ClInclude Include="graphics\normal\EdgeDetection.h" />
     <ClInclude Include="graphics\depthvalue\DepthValueMap.h" />
+    <ClInclude Include="graphics\shadow\CascadeShadowMap.h" />
   </ItemGroup>
 </Project>

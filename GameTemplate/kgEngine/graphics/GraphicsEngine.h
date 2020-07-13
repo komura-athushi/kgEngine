@@ -6,7 +6,7 @@ class ShadowMap;
 class NormalMap;
 class DepthValueMap;
 class EdgeDetection;
-
+class CascadeShadowMap;
 
 static const int m_splitMaximumNumber = 2;
 /*!
@@ -18,6 +18,7 @@ static const int m_splitMaximumNumber = 2;
 enum EnRenderMode {
 	enRenderMode_Invalid,			//不正なレンダリングモード。
 	enRenderMode_CreateShadowMap,	//シャドウマップ生成。
+	enRenderMode_CreateCascadeShadowMap,	//カスケードシャドウマップの生成
 	enRenderMode_Normal,			//通常レンダリング。
 	enRenderMode_NormalMap,			//法線マップ生成
 	enRenderMode_DepthValueMap,		//深度値マップ生成
@@ -69,6 +70,11 @@ public:
 	ShadowMap* GetShadowMap()
 	{
 		return m_shadowMap;
+	}
+	//カスケードシャドウマップを取得
+	CascadeShadowMap* GetCascadeShadowMap()
+	{
+		return m_cascadeShadowMap;
 	}
 	//法線マップを取得
 	NormalMap* GetNormalMap()
@@ -199,6 +205,7 @@ private:
 	ID3D11Texture2D*		m_depthStencil = NULL;		//デプスステンシル。
 	ID3D11DepthStencilView* m_depthStencilView = NULL;	//デプスステンシルビュー。
 	ShadowMap*				m_shadowMap = nullptr;		//シャドウマップ
+	CascadeShadowMap* m_cascadeShadowMap = nullptr;		//カスケードシャドウマップ
 	NormalMap*				m_normalMap = nullptr;		//法線マップ
 	DepthValueMap*			m_depthValueMao = nullptr;  //深度値マップ
 	EdgeDetection*			m_edgeDelection = nullptr;  //エッジ検出

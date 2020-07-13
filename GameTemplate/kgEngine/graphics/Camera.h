@@ -104,6 +104,16 @@ public:
 	{
 		m_viewAngle = angle;
 	}
+	//画角を取得
+	float GetViewAngle() const
+	{
+		return m_viewAngle;
+	}
+	//アスペクト比を取得
+	float GetAspect() const
+	{
+		return 1280.0f / 720.0f;
+	}
 private:
 	CMatrix	m_viewMatrix = CMatrix::Identity();		//ビュー行列。
 	CMatrix m_projMatrix = CMatrix::Identity();		//プロジェクション行列。
