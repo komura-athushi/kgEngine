@@ -14,10 +14,12 @@ struct StructObjectData {
 	int s_islinesegment;					//線分を生成するかどうか
 	int s_isanimation;						//アニメーションがあるかどうか
 	int s_isMeshCollider;					//メッシュコライダーにするかどうか
+	int s_isJewelryShader = 0;
 	int s_isDefalutSe = 0;						//巻き込まれた時にデフォルトのSE使うか？
 	wchar_t* seFileName;						//SEファイルの名前
 	CVector3 s_linevector = CVector3::Zero();	//線分のベクトル
 	Enxyz s_state = enState_No;					//線分がどの方向か
+
 };
 
 struct SkinModel_ObjData {

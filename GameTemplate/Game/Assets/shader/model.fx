@@ -62,6 +62,7 @@ cbuffer LightCb : register(b1) {
 	float3 eyeDir;
 	int isToomShader;
 	float4 color;
+	int isJewelryShader = 0;
 };
 
 /// <summary>
@@ -376,10 +377,20 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 
 	//トゥーンシェーダー
 	if (isToomShader == 1) {
-		p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
+		if (isJewelryShader == 1) {
+			for (int i = 0; i < 4; i++) {
+				p += dot(In.Normal * -1.0f, dligDirection[i].xzy);
+			}
+		}
+		else {
+			p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
+		}
+	
+		//p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
 		p = p * 0.5f + 0.5f;
 		p = p * p;
 		float2 pos = float2(p, 0.0f);
+		//float4 Col = float4(0.3f, 0.3f, 0.3f, 0.3f);
 		float4 Col = toonMap.Sample(ToonSampler, pos);
 		lig += Col.xyz * 1.0f;
 		//リムライトの計算
@@ -403,7 +414,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		}*/
 	}
 	else {
-		lig += float3(0.7f, 0.7f, 0.7f);
+		lig += float3(0.5f, 0.5f, 0.5f);
 	}
 
 
@@ -412,7 +423,8 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}*/
 	//ディレクションライトの鏡面反射光を計算する。
-	{
+	if (isJewelryShader == 1) {
+	
 		//実習　鏡面反射を計算しなさい。
 		//① ライトを当てる面から視点に伸びるベクトルtoEyeDirを求める。
 		//	 視点の座標は定数バッファで渡されている。LightCbを参照するように。
@@ -427,16 +439,17 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 			t += max(0.0f, dot(-dligDirection[i], reflectEyeDir));
 		}
 		t /= 4;
+		//t = 0.5f;
 		//④ pow関数を使って、スペキュラを絞る。絞りの強さは定数バッファで渡されている。
 		//	 LightCbを参照するように。
-		float3 specLig = 0.0f;
+		float3 specLig = float3(0.0,0.0f,0.0f);
 		for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
-			specLig += pow(t, specPow) * dligColor[i].xyz * 2.0f;
+			specLig += pow(t, specPow) * dligColor[i].xyz * 1.5f;
 		}
 		specLig /= 4;
 		//⑤ スペキュラ反射が求まったら、ligに加算する。
 		//鏡面反射を反射光に加算する。
-		//lig += specLig;
+		lig += specLig;
 	}
 	lig.xyz += ambientlight.xyz;
 	if (isShadowReciever == 1) {	//シャドウレシーバー。

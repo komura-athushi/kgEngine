@@ -128,7 +128,9 @@ bool Obj::Start()
 		m_islinesegment = true;
 		m_linevector = m_objdata->s_linevector;
 	}
-	
+	if (m_objdata->s_isJewelryShader == 1) {
+		m_modeldata->s_skinmodel.SetjewelryShader(true);
+	}
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
 	m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation,CVector3::One(),m_anim.GetPlayAnimationType());

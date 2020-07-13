@@ -13,12 +13,13 @@ struct SDirectionLight {
 	CVector4 direction[NUM_DIRECTION_LIG];		//ライトの方向。
 	//CVector4 direction;
 	CVector4 lightcolor[NUM_DIRECTION_LIG];			//ライトのカラー。
-	CVector4 ambientlight = CVector4(0.3f, 0.3f, 0.3f, 1.0f);
+	CVector4 ambientlight = CVector4(0.4f, 0.4f, 0.4f, 1.0f);
 	CVector3 eyePos;				//カメラの視点。
 	float specPow = 0.3f;			//スペキュラライトの絞り。
 	CVector3 m_eyeDir;
 	int isToomShader = 1;
 	CVector4 color = CVector4::White();
+	int isJewelryShader = 0;
 };
 
 /*!
@@ -212,6 +213,14 @@ public:
 	{
 		m_katamariVector = matrix;
 	}
+	/// <summary>
+	/// 宝石シェーダーを設定する
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetjewelryShader(bool flag)
+	{
+		m_isjewelryShader = flag;
+	}
 private:
 	//定数バッファ。
 	struct SVSConstantBuffer {
@@ -252,5 +261,6 @@ private:
 	bool m_isToonShader = true;
 	bool m_isDithering = false;
 	CVector3 m_katamariVector;
+	bool m_isjewelryShader = false;
 };
 

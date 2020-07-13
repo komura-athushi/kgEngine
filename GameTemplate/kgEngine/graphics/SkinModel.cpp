@@ -316,7 +316,12 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	else {
 		m_dirLight.isToomShader = 0;
 	}
-
+	if (m_isjewelryShader) {
+		m_dirLight.isJewelryShader = 1;
+	}
+	else {
+		m_dirLight.isJewelryShader = 0;
+	}
 	d3dDeviceContext->UpdateSubresource(m_lightCb, 0, nullptr, &m_dirLight, 0, 0);
 	//サンプラステートを設定。
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);

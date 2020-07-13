@@ -160,6 +160,16 @@ public:
 			itr->second->s_skinModel.SetOffToonShader();
 		}
 	}
+	/// <summary>
+	/// 宝石シェーダーを設定する
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetjewelryShader(bool flag)
+	{
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second->s_skinModel.SetjewelryShader(flag);
+		}
+	}
 private:
 	//SkinModel m_skinModel;										//スキンモデル
 	AnimationClip* m_animationClip;								//アニメーションクリップの数
