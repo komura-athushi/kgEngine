@@ -14,6 +14,9 @@ Texture2D<float4> toonMap : register(t4);		//toonシェーダー用のテクスチャー
 Texture2D<float4> cascadeShadowMap1 : register(t5);		//todo カスケードシャドウマップ。
 Texture2D<float4> cascadeShadowMap2 : register(t6);		//todo カスケードシャドウマップ。
 Texture2D<float4> cascadeShadowMap3 : register(t7);		//todo カスケードシャドウマップ。
+Texture2D<float4> g_normalMap : register(t8);
+Texture2D<float4> g_specMap : register(t9);
+Texture2D<float4> g_emissionMap : register(t10);
 
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t1);
@@ -62,7 +65,9 @@ cbuffer LightCb : register(b1) {
 	float3 eyeDir;
 	int isToomShader;
 	float4 color;
-	int isJewelryShader = 0;
+	int	isSpec;		//スペキュラマップ
+	int	isNormal;	//法線マップ
+	int	isEmission;	//エミッションマップ
 };
 
 /// <summary>
@@ -377,14 +382,14 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 
 	//トゥーンシェーダー
 	if (isToomShader == 1) {
-		if (isJewelryShader == 1) {
+		/*if (isJewelryShader == 1) {
 			for (int i = 0; i < 4; i++) {
 				p += dot(In.Normal * -1.0f, dligDirection[i].xzy);
 			}
 		}
-		else {
+		else {*/
 			p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
-		}
+		//}
 	
 		//p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
 		p = p * 0.5f + 0.5f;
@@ -392,6 +397,8 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		float2 pos = float2(p, 0.0f);
 		//float4 Col = float4(0.3f, 0.3f, 0.3f, 0.3f);
 		float4 Col = toonMap.Sample(ToonSampler, pos);
+		Col *= 0.6f;
+		Col.xyz += float3(0.3f, 0.3f, 0.3f);
 		lig += Col.xyz * 1.0f;
 		//リムライトの計算
 		/*float3 eye = normalize(eyeDir);
@@ -416,14 +423,29 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 	else {
 		lig += float3(0.5f, 0.5f, 0.5f);
 	}
-
+	if (isSpec == 1) {
+		float3 R = dligDirection[0].xyz
+			+ 2 * dot(In.Normal, -dligDirection[0].xyz)
+			* In.Normal;
+		//②　視点からライトを当てる物体に伸びるベクトルEを求める。
+		float3 E = normalize(In.worldPos - eyePos);
+		//①と②で求まったベクトルの内積を計算する。
+		//スペキュラ反射の強さを求める。
+		float specPower = max(0, dot(R, -E));
+		float spec = g_specMap.Sample(Sampler, In.TexCoord).r;
+		//spec = 1.0f - spec;
+		float3 specLig = pow(specPower, 2.0f) * dligColor[0].xyz * spec * 7.0f;
+		//⑤ スペキュラ反射が求まったら、ligに加算する。
+		//鏡面反射を反射光に加算する。
+		lig += specLig;
+	}
 
 	//ディレクションライトの拡散反射光を計算する。
 	/*for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}*/
 	//ディレクションライトの鏡面反射光を計算する。
-	if (isJewelryShader == 1) {
+	/*if (isJewelryShader == 1) {
 	
 		//実習　鏡面反射を計算しなさい。
 		//① ライトを当てる面から視点に伸びるベクトルtoEyeDirを求める。
@@ -450,7 +472,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		//⑤ スペキュラ反射が求まったら、ligに加算する。
 		//鏡面反射を反射光に加算する。
 		lig += specLig;
-	}
+	}*/
 	lig.xyz += ambientlight.xyz;
 	if (isShadowReciever == 1) {	//シャドウレシーバー。
 		/*//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。
@@ -502,7 +524,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 					else if (i == 2) {
 						zInShadowMap = cascadeShadowMap3.Sample(Sampler, shadowMapUV);
 					}
-					if (zInLVP > zInShadowMap + 0.0001f * (4 - i)) {
+					if (zInLVP > zInShadowMap + 0.0001f) {
 						//影が落ちているので、光を弱くする
 						lig *= 0.5f;
 					

@@ -128,8 +128,12 @@ bool Obj::Start()
 		m_islinesegment = true;
 		m_linevector = m_objdata->s_linevector;
 	}
-	if (m_objdata->s_isJewelryShader == 1) {
-		m_modeldata->s_skinmodel.SetjewelryShader(true);
+	if (m_objdata->s_isSpec == 1) {
+		TextureData textureData;
+		wchar_t output[256];
+		swprintf_s(output, L"Resource/sprite/%ls.dds", m_objdata->s_specName);
+		textureData.specFilePath = output;
+		m_modeldata->s_skinmodel.InitTexture(&textureData);
 	}
 	m_box.Init(CVector3(m_objdata->s_x,m_objdata->s_y,m_objdata->s_z));
 	ClcVertex();
@@ -320,7 +324,12 @@ void Obj::Update()
 				m_staticobject.SetPosition(m_position);
 			}
 			if (m_rotstate != enRot_No) {
-				m_rotation = m_rot->Rot(m_move->GetMoveVector());
+				if (m_rotstate == enRot_DirectionRot) {
+					m_rotation = m_rot->Rot(m_move->GetMoveVector());
+				}
+				else if (m_rotstate == enRot_Rot) {
+					m_rotation = m_rot->Rot(CVector3::Zero());
+				}
 				m_staticobject.SetRotation(m_rotation);
 			}
 			if (m_movestate != enMove_No || m_rotstate != enRot_No) {

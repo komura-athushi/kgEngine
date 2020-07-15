@@ -22,7 +22,10 @@ void RotSelf::Init(const CQuaternion& rot, const float& speed)
 
 CQuaternion RotSelf::Rot(const CVector3& move)
 {
-	m_degree += m_speed * 360.0f * GameTime().GetFrameDeltaTime();
-	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degree);
-	return m_rotation;
+	m_degree += m_speed * GameTime().GetFrameDeltaTime() * 60.0f;
+	CQuaternion rot;
+	rot.SetRotationDeg(CVector3::AxisY(), m_degree);
+	CQuaternion finalRot;
+	finalRot.Multiply(rot,m_rotation);
+	return finalRot;
 }

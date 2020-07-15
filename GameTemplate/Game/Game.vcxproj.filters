@@ -214,6 +214,9 @@
     <Filter Include="Asset\modelData\obj\game\touhoku">
       <UniqueIdentifier>{50f44ed7-dcae-425d-8d2a-36dd943e9ee9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\sprite\spec">
+      <UniqueIdentifier>{cf21c5dd-444e-41d8-a88f-b8165f8d6a9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\modelData\obj\obox1.FBX">
@@ -405,9 +408,6 @@
     <None Include="Assets\modelData\obj\rittaiya\oemerald.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
-    <None Include="Assets\modelData\obj\rittaiya\odaia.FBX">
-      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
-    </None>
     <None Include="Assets\modelData\obj\rittaiya\ocoin.FBX">
       <Filter>Asset\modelData\obj\game\rittaiya</Filter>
     </None>
@@ -494,6 +494,21 @@
     </None>
     <None Include="Assets\sprite\draw.png">
       <Filter>Asset\sprite</Filter>
+    </None>
+    <None Include="Assets\modelData\obj\rittaiya\odaia.FBX">
+      <Filter>Asset\modelData\obj\game\rittaiya</Filter>
+    </None>
+    <None Include="Assets\sprite\daiaspec.png">
+      <Filter>Asset\sprite\spec</Filter>
+    </None>
+    <None Include="Assets\sprite\emeraldspec.png">
+      <Filter>Asset\sprite\spec</Filter>
+    </None>
+    <None Include="Assets\sprite\rubyspec.png">
+      <Filter>Asset\sprite\spec</Filter>
+    </None>
+    <None Include="Assets\sprite\sapphirespec.png">
+      <Filter>Asset\sprite\spec</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

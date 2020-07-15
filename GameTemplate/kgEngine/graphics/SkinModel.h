@@ -19,7 +19,15 @@ struct SDirectionLight {
 	CVector3 m_eyeDir;
 	int isToomShader = 1;
 	CVector4 color = CVector4::White();
-	int isJewelryShader = 0;
+	int	isSpec;		//スペキュラマップ
+	int	isNormal;	//法線マップ
+	int	isEmission;	//エミッションマップ
+};
+
+struct TextureData {
+	const wchar_t* normalFilePath = nullptr;
+	const wchar_t* specFilePath = nullptr;
+	const wchar_t* emissionFilePath = nullptr;
 };
 
 /*!
@@ -49,6 +57,11 @@ public:
 	*@param[in] enFbxUpAxis		fbxの上軸。デフォルトはenFbxUpAxisZ。
 	*/
 	void Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis = enFbxUpAxisZ);
+	/// <summary>
+	/// 色んなテクスチャーの初期化
+	/// </summary>
+	/// <param name="textureData"></param>
+	void InitTexture(TextureData* textureData);
 	//インスタンシング描画のデータの数を設定
 	void SetInstancingNumber(const int& numInstance)
 	{
@@ -175,19 +188,6 @@ public:
 	{
 
 	}
-	/*!
-	*@brief	サンプラステートの初期化。
-	*/
-	void InitSamplerState();
-	/*!
-	*@brief	定数バッファの作成。
-	*/
-	void InitConstantBuffer();
-	/*!
-	*@brief	スケルトンの初期化。
-	*@param[in]	filePath		ロードするcmoファイルのファイルパス。
-	*/
-	void InitSkeleton(const wchar_t* filePath);
 	//トゥーンシェーダーをオフ
 	void SetOffToonShader()
 	{
@@ -213,14 +213,22 @@ public:
 	{
 		m_katamariVector = matrix;
 	}
-	/// <summary>
-	/// 宝石シェーダーを設定する
-	/// </summary>
-	/// <param name="flag"></param>
-	void SetjewelryShader(bool flag)
-	{
-		m_isjewelryShader = flag;
-	}
+private:
+	/*!
+	*@brief	サンプラステートの初期化。
+	*/
+	void InitSamplerState();
+	/*!
+	*@brief	定数バッファの作成。
+	*/
+	void InitConstantBuffer();
+	/*!
+	*@brief	スケルトンの初期化。
+	*@param[in]	filePath		ロードするcmoファイルのファイルパス。
+	*/
+	void InitSkeleton(const wchar_t* filePath);
+
+	void SetTexture();
 private:
 	//定数バッファ。
 	struct SVSConstantBuffer {
@@ -261,6 +269,8 @@ private:
 	bool m_isToonShader = true;
 	bool m_isDithering = false;
 	CVector3 m_katamariVector;
-	bool m_isjewelryShader = false;
+	ID3D11ShaderResourceView* m_normalMap = nullptr;
+	ID3D11ShaderResourceView* m_specMap = nullptr;
+	ID3D11ShaderResourceView* m_emissionMap = nullptr;
 };
 

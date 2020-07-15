@@ -37,6 +37,12 @@ public:
 	void UpdateWorldMatrix();
 	//アニメーションの初期化
 	void InitAnimation(AnimationClip* animationClips, int numAnimationClips, const wchar_t* filePath = nullptr);
+	void InitTexture(TextureData* textureData)
+	{
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second->s_skinModel.InitTexture(textureData);
+		}
+	}
 public:
 	//スキンモデルを取得
 	SkinModel& GetSkinModel()
@@ -158,16 +164,6 @@ public:
 	{
 		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
 			itr->second->s_skinModel.SetOffToonShader();
-		}
-	}
-	/// <summary>
-	/// 宝石シェーダーを設定する
-	/// </summary>
-	/// <param name="flag"></param>
-	void SetjewelryShader(bool flag)
-	{
-		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-			itr->second->s_skinModel.SetjewelryShader(flag);
 		}
 	}
 private:

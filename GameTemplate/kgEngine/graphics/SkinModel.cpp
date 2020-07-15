@@ -5,11 +5,12 @@
 #include "shadow/kgShadowMap.h"
 #include "normal/NormalMap.h"
 #include "depthvalue\DepthValueMap.h"
+#include "SkinModelShaderConst.h"
 
 SkinModel::SkinModel()
 {
 	m_dirLight.direction[0] = { -0.577f, -0.577f, -0.577f, 0.0f };
-	m_dirLight.lightcolor[0] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	m_dirLight.lightcolor[0] = { 0.4f, 0.4f, 0.4f, 1.0f };
 
 	m_dirLight.direction[1] = { -0.707f, -0.707f, 0.0f, 0.0f };
 	m_dirLight.lightcolor[1] = { 0.3f, 0.3f, 0.3f, 1.0f };
@@ -62,6 +63,57 @@ void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 
 	m_toonMap = &ToonMap::GetIntance();
 }
+
+void SkinModel::InitTexture(TextureData* textureData)
+{
+	//D3Dデバイスを取得。
+	auto d3dDevice = Engine().GetGraphicsEngine().GetD3DDevice();
+
+	if (textureData->normalFilePath != nullptr) {
+		DirectX::CreateDDSTextureFromFileEx(
+			d3dDevice,
+			textureData->normalFilePath,
+			0,
+			D3D11_USAGE_DEFAULT,
+			D3D11_BIND_SHADER_RESOURCE,
+			0,
+			0,
+			false,
+			nullptr,
+			&m_normalMap);
+	}
+
+
+	if (textureData->specFilePath != nullptr) {
+		DirectX::CreateDDSTextureFromFileEx(
+			d3dDevice,
+			textureData->specFilePath,
+			0,
+			D3D11_USAGE_DEFAULT,
+			D3D11_BIND_SHADER_RESOURCE,
+			0,
+			0,
+			false,
+			nullptr,
+			&m_specMap);
+	}
+
+	if (textureData->emissionFilePath != nullptr) {
+		DirectX::CreateDDSTextureFromFileEx(
+			d3dDevice,
+			textureData->emissionFilePath,
+			0,
+			D3D11_USAGE_DEFAULT,
+			D3D11_BIND_SHADER_RESOURCE,
+			0,
+			0,
+			false,
+			nullptr,
+			&m_emissionMap);
+	}
+}
+
+
 void SkinModel::InitInstancingData()
 {
 	if (m_maxInstance >= 1) {
@@ -307,7 +359,7 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	//ライト用の定数バッファを更新
 	d3dDeviceContext->PSSetConstantBuffers(1, 1, &m_lightCb);
 
-	m_dirLight.eyePos = camera->GetTarget();
+	m_dirLight.eyePos = camera->GetPosition();
 	m_dirLight.m_eyeDir = camera->GetTarget() - camera->GetPosition();
 	//m_dirLight.eyePos.y = 0.0f;
 	if (m_isToonShader) {
@@ -316,12 +368,7 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	else {
 		m_dirLight.isToomShader = 0;
 	}
-	if (m_isjewelryShader) {
-		m_dirLight.isJewelryShader = 1;
-	}
-	else {
-		m_dirLight.isJewelryShader = 0;
-	}
+	
 	d3dDeviceContext->UpdateSubresource(m_lightCb, 0, nullptr, &m_dirLight, 0, 0);
 	//サンプラステートを設定。
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
@@ -353,6 +400,8 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 		//}
 	});
 
+	SetTexture();
+
 	//描画。
 	if (m_numInstance == 0) {
 		m_modelDx->Draw(
@@ -376,6 +425,24 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	}
 
 }
+
+void SkinModel::SetTexture()
+{
+	ID3D11DeviceContext* d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
+	if (m_normalMap != nullptr) {
+		d3dDeviceContext->PSSetShaderResources(enSkinModelSRVReg_NormalTexture, 1, &m_normalMap);
+		m_dirLight.isNormal = 1;
+	}
+	if (m_specMap != nullptr) {
+		d3dDeviceContext->PSSetShaderResources(enSkinModelSRVReg_SpecTexture, 1, &m_specMap);
+		m_dirLight.isSpec = 1;
+	}
+	if (m_emissionMap != nullptr) {
+		d3dDeviceContext->PSSetShaderResources(enSkinModelSRVReg_EmissionTexture, 1, &m_emissionMap);
+		m_dirLight.isEmission = 1;
+	}
+}
+
 
 /*void SkinModel::Draw(const CVector3& m_position, const CQuaternion& rot, const CVector3& scale, CMatrix viewMatrix, CMatrix projMatrix, EnRenderMode renderMode = enRenderMode_Normal)
 {
