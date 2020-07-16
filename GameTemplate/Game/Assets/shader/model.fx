@@ -382,20 +382,12 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 
 	//トゥーンシェーダー
 	if (isToomShader == 1) {
-		/*if (isJewelryShader == 1) {
-			for (int i = 0; i < 4; i++) {
-				p += dot(In.Normal * -1.0f, dligDirection[i].xzy);
-			}
-		}
-		else {*/
-			p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
-		//}
 	
-		//p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
+		p = dot(In.Normal * -1.0f, dligDirection[0].xzy);
+	
 		p = p * 0.5f + 0.5f;
 		p = p * p;
 		float2 pos = float2(p, 0.0f);
-		//float4 Col = float4(0.3f, 0.3f, 0.3f, 0.3f);
 		float4 Col = toonMap.Sample(ToonSampler, pos);
 		Col *= 0.6f;
 		Col.xyz += float3(0.3f, 0.3f, 0.3f);
@@ -424,18 +416,18 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		lig += float3(0.5f, 0.5f, 0.5f);
 	}
 	if (isSpec == 1) {
+
 		float3 R = dligDirection[0].xyz
 			+ 2 * dot(In.Normal, -dligDirection[0].xyz)
 			* In.Normal;
-		//②　視点からライトを当てる物体に伸びるベクトルEを求める。
+		//視点からライトを当てる物体に伸びるベクトルEを求める。
 		float3 E = normalize(In.worldPos - eyePos);
 		//①と②で求まったベクトルの内積を計算する。
 		//スペキュラ反射の強さを求める。
 		float specPower = max(0, dot(R, -E));
 		float spec = g_specMap.Sample(Sampler, In.TexCoord).r;
-		//spec = 1.0f - spec;
 		float3 specLig = pow(specPower, 2.0f) * dligColor[0].xyz * spec * 5.0f;
-		//⑤ スペキュラ反射が求まったら、ligに加算する。
+		//スペキュラ反射が求まったら、ligに加算する。
 		//鏡面反射を反射光に加算する。
 		lig += specLig;
 	}
@@ -444,35 +436,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 	/*for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
 		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
 	}*/
-	//ディレクションライトの鏡面反射光を計算する。
-	/*if (isJewelryShader == 1) {
 	
-		//実習　鏡面反射を計算しなさい。
-		//① ライトを当てる面から視点に伸びるベクトルtoEyeDirを求める。
-		//	 視点の座標は定数バッファで渡されている。LightCbを参照するように。
-		float3 toEyeDir = normalize(eyePos - In.worldPos);
-
-		//② １で求めたtoEyeDirの反射ベクトルを求める。
-		float3 reflectEyeDir = -toEyeDir + 2 * dot(In.Normal, toEyeDir) * In.Normal;
-
-		//③ ２で求めた反射ベクトルとディレクションライトの方向との内積を取って、スペキュラの強さを計算する。
-		float t = 0.0f;
-		for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
-			t += max(0.0f, dot(-dligDirection[i], reflectEyeDir));
-		}
-		t /= 4;
-		//t = 0.5f;
-		//④ pow関数を使って、スペキュラを絞る。絞りの強さは定数バッファで渡されている。
-		//	 LightCbを参照するように。
-		float3 specLig = float3(0.0,0.0f,0.0f);
-		for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
-			specLig += pow(t, specPow) * dligColor[i].xyz * 1.5f;
-		}
-		specLig /= 4;
-		//⑤ スペキュラ反射が求まったら、ligに加算する。
-		//鏡面反射を反射光に加算する。
-		lig += specLig;
-	}*/
 	lig.xyz += ambientlight.xyz;
 	if (isShadowReciever == 1) {	//シャドウレシーバー。
 		/*//LVP空間から見た時の最も手前の深度値をシャドウマップから取得する。

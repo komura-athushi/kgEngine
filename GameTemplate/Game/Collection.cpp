@@ -255,7 +255,7 @@ void Collection::OffScreenRender()
 		m_offScreenCamera.Update();
 		//Šª‚«ž‚ñ‚Å‚È‚¢‚à‚Ì‚Í•F‚Å•\Ž¦‚·‚é‚Á‚Ø
 		if (!itr.second->s_isHit) {
-			itr.second->s_skinModel.SetColor(CVector4(0.0f, 0.0f, 0.0f, 1.0f));
+			itr.second->s_skinModel.SetColor(CVector4(0.25f, 0.25f, 0.25f, 1.0f));
 		}
 		else {
 			itr.second->s_skinModel.SetColor(CVector4::White());
