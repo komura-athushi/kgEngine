@@ -6,7 +6,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Moji.h" />
     <ClInclude Include="Object\Obj.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -75,6 +74,15 @@
     <ClInclude Include="Battle.h">
       <Filter>stageselect</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Move\MoveNone.h">
+      <Filter>Object\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Rotation\RotNone.h">
+      <Filter>Object\Rot</Filter>
+    </ClInclude>
+    <ClInclude Include="Moji.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -82,7 +90,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Moji.cpp" />
     <ClCompile Include="Object\Obj.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -151,6 +158,15 @@
     <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="Battle.cpp">
       <Filter>stageselect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Move\MoveNone.cpp">
+      <Filter>Object\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Rotation\RotNone.cpp">
+      <Filter>Object\Rot</Filter>
+    </ClCompile>
+    <ClCompile Include="Moji.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,8 @@ public:
 	{
 		m_state = state;
 	}
+protected:
+	CQuaternion m_rotation = CQuaternion::Identity();					//‰ñ“]
 private:
 	EnRotate m_state;
 };

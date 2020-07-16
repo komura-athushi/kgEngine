@@ -46,7 +46,7 @@ CVector3 MoveFB::Move()
 		}
 	}
 	//ç¿ïWÇåvéZ
-	m_position += m_movevector * GameTime().GetFrameDeltaTime() * m_movespeed;
+	m_position += m_movevector * GameTime().GetFrameDeltaTime() * m_movespeed * 2.0f;
 	if (m_isstart) {
 		m_timer += GameTime().GetFrameDeltaTime() * 2;
 	}

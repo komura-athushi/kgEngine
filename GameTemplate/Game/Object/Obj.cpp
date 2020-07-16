@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Obj.h"
 #include "Move/MoveLR.h"
+#include "Move\MoveFB.h"
 #include "Move/MoveUp.h"
 #include "Move/MovePath.h"
 #include "Rotation/IRot.h"
@@ -10,6 +11,8 @@
 #include "GameData.h"
 #include "OffScreen.h"
 #include "sound/SoundSource.h"
+#include "Move\MoveNone.h"
+#include "Rotation\RotNone.h"
 
 
 ObjModelDataFactory::ObjModelDataFactory()
@@ -168,6 +171,9 @@ void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const f
 	case enMove_Lr:
 		m_move = new MoveLR();
 		break;
+	case enMove_Fb:
+		m_move = new MoveFB();
+		break;
 	case enMove_Up:
 		m_move = new MoveUp();
 		break;
@@ -175,12 +181,13 @@ void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const f
 		//ここでnewしない
 		break;
 	default:
+		m_move = new MoveNone();
 		break;
 	}
-	if (state != enMove_No) {
-		m_move->Init(pos, move, movelimit, rot);
-		m_move->SetMoveState();
-	}
+	
+	m_move->Init(pos, move, movelimit, rot);
+	m_move->SetMoveState();
+
 	m_movestate = state;
 	m_position = pos;
 	m_rotation = rot;
@@ -197,12 +204,11 @@ void Obj::InitRot(EnRotate state, const float& speed)
 	case enRot_DirectionRot:
 		m_rot = new RotDirection();
 		break;
-	default:
+	case enRot_No:
+		m_rot = new RotNone();
 		break;
 	}
-	if (state != enRot_No) {
-		m_rot->Init(m_rotation, speed);
-	}
+	m_rot->Init(m_rotation, speed);
 	m_rotstate = state;
 }
 
@@ -303,9 +309,11 @@ void Obj::Update()
 		ClcLocalMatrix(m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
 		m_player->AddVolume(m_objdata->s_volume);
 	}
-	//巻き込まれた時の処理
-	if (m_movestate == enMove_MoveHit) {
-		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {
+
+	//ポーズ中かあるいはリザルト画面じゃなかったら
+	if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {
+		//巻き込まれてる
+		if (m_movestate == enMove_MoveHit) {
 			ClcMatrix();
 			if (m_islinesegment) {
 				ClcVertex();
@@ -314,36 +322,31 @@ void Obj::Update()
 				}
 			}
 		}
-		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());
-	}
-	//巻き込まれてない時の処理
-	else {
-		if (!m_gamedata->GetisPose() || m_gamedata->GetScene() == enScene_Result) {
-			if (m_movestate != enMove_No) {
-				m_position = m_move->Move();
-				m_staticobject.SetPosition(m_position);
-			}
-			if (m_rotstate != enRot_No) {
-				if (m_rotstate == enRot_DirectionRot) {
-					m_rotation = m_rot->Rot(m_move->GetMoveVector());
-				}
-				else if (m_rotstate == enRot_Rot) {
-					m_rotation = m_rot->Rot(CVector3::Zero());
-				}
-				m_staticobject.SetRotation(m_rotation);
-			}
+		//巻き込まれていない
+		else {
+			//移動
+			m_position = m_move->Move();
+			m_staticobject.SetPosition(m_position);
+
+			//回転
+			m_rotation = m_rot->Rot(m_move->GetMoveVector());
+			m_staticobject.SetRotation(m_rotation);
+
+			//当たり判定処理、動いたり回転してなかったりしたら更新しない
 			if (m_movestate != enMove_No || m_rotstate != enRot_No) {
 				ClcVertex();
 			}
 		}
+	}
+	//インスタンシング処理
+	if (m_movestate == enMove_MoveHit) {
+		m_modeldata->s_skinmodel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());
+	}
+	else {
 		m_modeldata->s_skinmodel.UpdateInstancingData(m_position, m_rotation, CVector3::One(), m_anim.GetPlayAnimationType());
 	}
+	//アニメーション
 	m_anim.PlayAnimation(m_movestate);
-
-
-	/*if (m_modeldata->s_skinmodel.GetSkinModel().GetisDithering()) {
-		m_modeldata->s_skinmodel.GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
-	}*/
 }
 
 void Obj::PostRender()

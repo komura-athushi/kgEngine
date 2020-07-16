@@ -168,6 +168,7 @@
     <ClInclude Include="Object\Move\IMove.h" />
     <ClInclude Include="Object\Move\MoveFB.h" />
     <ClInclude Include="Object\Move\MoveLR.h" />
+    <ClInclude Include="Object\Move\MoveNone.h" />
     <ClInclude Include="Object\Move\MovePath.h" />
     <ClInclude Include="Object\Move\MoveUp.h" />
     <ClInclude Include="Object\Move\Path.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Object\ObjectData.h" />
     <ClInclude Include="Object\Rotation\IRot.h" />
     <ClInclude Include="Object\Rotation\RotDirection.h" />
+    <ClInclude Include="Object\Rotation\RotNone.h" />
     <ClInclude Include="Object\Rotation\RotSelf.h" />
     <ClInclude Include="OffScreen.h" />
     <ClInclude Include="OffScreenCamera.h" />
@@ -205,6 +207,7 @@
     <ClCompile Include="Object\Move\IMove.cpp" />
     <ClCompile Include="Object\Move\MoveFB.cpp" />
     <ClCompile Include="Object\Move\MoveLR.cpp" />
+    <ClCompile Include="Object\Move\MoveNone.cpp" />
     <ClCompile Include="Object\Move\MovePath.cpp" />
     <ClCompile Include="Object\Move\MoveUp.cpp" />
     <ClCompile Include="Object\Move\Path.cpp" />
@@ -212,6 +215,7 @@
     <ClCompile Include="Object\ObjectData.cpp" />
     <ClCompile Include="Object\Rotation\IRot.cpp" />
     <ClCompile Include="Object\Rotation\RotDirection.cpp" />
+    <ClCompile Include="Object\Rotation\RotNone.cpp" />
     <ClCompile Include="Object\Rotation\RotSelf.cpp" />
     <ClCompile Include="OffScreen.cpp" />
     <ClCompile Include="OffScreenCamera.cpp" />

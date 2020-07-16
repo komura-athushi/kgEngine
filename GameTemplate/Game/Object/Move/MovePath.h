@@ -29,9 +29,7 @@ public:
 		return m_movevector;
 	}
 private:
-	CVector3 m_position = CVector3::Zero();					//座標
 	float m_movespeed = 0.0f;								//移動速度
-	CVector3 m_movevector = CVector3::Zero();				//移動ベクトル
 	bool m_isaccessup = true;								//上側の座標に近づくかどうか
 	bool m_isculcmovevector = false;						//移動ベクトルを計算したかどうか
 	Path m_path;											//パス

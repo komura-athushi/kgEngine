@@ -8,6 +8,9 @@ MOJI::MOJI()
 	//左右に移動、移動速度
 	MOVE.push_back(L"R");
 	MOVESTATE.push_back(enMove_Lr);
+	//前後に移動、移動速度
+	MOVE.push_back(L"F");
+	MOVESTATE.push_back(enMove_Fb);
 	//上下に移動、移動速度
 	MOVE.push_back(L"U");
 	MOVESTATE.push_back(enMove_Up);
