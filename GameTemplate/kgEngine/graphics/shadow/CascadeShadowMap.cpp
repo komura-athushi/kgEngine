@@ -111,50 +111,6 @@ void CascadeShadowMap::Update()
 
 void CascadeShadowMap::UpdateLightViewProjMatrix(const int splitNumber)
 {
-	CMatrix lightViewRot;
-	{
-		//シーンをレンダリング使用としているカメラを使って、ライトカメラの回転を求める。
-		auto cameraDir = MainCamera(splitNumber).GetFront();
-		if (fabs(cameraDir.x) < FLT_EPSILON && fabsf(cameraDir.z) < FLT_EPSILON) {
-			//ほぼ真上をむいている。
-			return;
-		}
-		//ライトビュー行列の回転成分を計算する。
-		CVector3 lightViewForward = m_lightDir;
-		CVector3 lightViewUp;
-		if (fabsf(lightViewForward.y) > 0.999f) {
-			//ほぼ真上。
-			lightViewUp.Cross(lightViewForward, CVector3::Right());
-		}
-		else {
-			lightViewUp.Cross(lightViewForward, CVector3::Up());
-		}
-		lightViewUp.Normalize();
-		CVector3 lgihtViewRight;
-		lgihtViewRight.Cross(lightViewUp, lightViewForward);
-		lgihtViewRight.Normalize();
-
-
-		//ライトビューの横を設定する。
-		lightViewRot.m[0][0] = lgihtViewRight.x;
-		lightViewRot.m[0][1] = lgihtViewRight.y;
-		lightViewRot.m[0][2] = lgihtViewRight.z;
-		lightViewRot.m[0][3] = 0.0f;
-		//ライトビューの上を設定する。
-		lightViewRot.m[1][0] = lightViewUp.x;
-		lightViewRot.m[1][1] = lightViewUp.y;
-		lightViewRot.m[1][2] = lightViewUp.z;
-		lightViewRot.m[1][3] = 0.0f;
-		//ライトビューの前を設定する。
-		lightViewRot.m[2][0] = lightViewForward.x;
-		lightViewRot.m[2][1] = lightViewForward.y;
-		lightViewRot.m[2][2] = lightViewForward.z;
-		lightViewRot.m[2][3] = 0.0f;
-
-
-
-	}
-
 	CMatrix	inverseViewMatrix = MainCamera(splitNumber).GetViewMatrix();
 	//CMatrix inverseViewMatrix = g_camera3D.GetViewMatrix2();
 	inverseViewMatrix.Inverse(inverseViewMatrix);
@@ -215,13 +171,14 @@ void CascadeShadowMap::UpdateLightViewProjMatrix(const int splitNumber)
 		topPos.z = 0.0f;
 		float s = m_lightDir.Dot(topPos);
 		CVector3 lightPos = centerPos + m_lightDir * s;
-		CMatrix lightViewMatrix = lightViewRot;
-		//ライトの座標を代入して、ライトビュー行列完成
-		lightViewMatrix.m[3][0] = lightPos.x;
-		lightViewMatrix.m[3][1] = lightPos.y;
-		lightViewMatrix.m[3][2] = lightPos.z;
-		lightViewMatrix.m[3][3] = 1.0f;
-		lightViewMatrix.Inverse(lightViewMatrix);	//ライトビュー完成。
+
+		//視錘台の中心とライトの座標でライトビュー行列を作る
+		CMatrix lightViewMatrix;
+		lightViewMatrix.MakeLookAt(
+			lightPos,
+			centerPos,
+			CVector3::AxisY()
+		);
 
 		CVector3 vectorMin = CVector3(FLT_MAX, FLT_MAX, FLT_MAX);
 		CVector3 vectorMax = CVector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
