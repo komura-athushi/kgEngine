@@ -442,9 +442,9 @@
     <None Include="Assets\sprite\result.png" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\ground\ground2.FBX">
+    <None Include="Assets\modelData\ground\ground2.FBX">
       <FileType>Document</FileType>
-    </MeshContentTask>
+    </None>
     <None Include="Assets\modelData\obj\dougubako\odougubako.FBX">
       <FileType>Document</FileType>
     </None>

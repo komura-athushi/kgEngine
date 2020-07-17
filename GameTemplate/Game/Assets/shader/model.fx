@@ -416,17 +416,17 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		lig += float3(0.5f, 0.5f, 0.5f);
 	}
 	if (isSpec == 1) {
-
+		//反射ベクトルRを求める
 		float3 R = dligDirection[0].xyz
 			+ 2 * dot(In.Normal, -dligDirection[0].xyz)
 			* In.Normal;
 		//視点からライトを当てる物体に伸びるベクトルEを求める。
 		float3 E = normalize(In.worldPos - eyePos);
-		//①と②で求まったベクトルの内積を計算する。
+		//RとEで求まったベクトルの内積を計算する。
 		//スペキュラ反射の強さを求める。
 		float specPower = max(0, dot(R, -E));
 		float spec = g_specMap.Sample(Sampler, In.TexCoord).r;
-		float3 specLig = pow(specPower, 2.0f) * dligColor[0].xyz * spec * 5.0f;
+		float3 specLig = pow(specPower, 2.0f) * dligColor[0].xyz * spec * 8.0f;
 		//スペキュラ反射が求まったら、ligに加算する。
 		//鏡面反射を反射光に加算する。
 		lig += specLig;

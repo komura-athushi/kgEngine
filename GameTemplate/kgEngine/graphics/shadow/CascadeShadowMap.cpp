@@ -6,9 +6,9 @@
 CascadeShadowMap::CascadeShadowMap()
 {
 	static float resTbl[SHADOWMAP_NUM][2] = {
-		{4096, 4096},
 		{2048, 2048},
 		{1024, 1024},
+		{512,   512}
 	};
 
 	/*static float resTbl[SHADOWMAP_NUM][2] = {
