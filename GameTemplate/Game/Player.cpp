@@ -5,6 +5,7 @@
 #include "math/kgBox.h"
 #include "GameData.h"
 #include "sound\SoundSource.h"
+#include "graphics\CEffektEngine.h"
 
 Player::Player()
 {
@@ -68,6 +69,8 @@ bool Player::Start()
 	pos.y -= m_radius;
 	m_skinModelRender2.SetPosition(pos);
 
+	m_hitEffect = CEffektEngine::GetInstance().CreateEffekseerEffect(L"Assets/effect/hit.efk");
+	//m_smokeEffect = CEffektEngine::GetInstance().CreateEffekseerEffect(L"Assets/effect/hit.efk");
 	return true;
 }
 
@@ -286,6 +289,12 @@ void Player::Move()
 				se->Play(false);
 				se->SetVolume(BrakeVolume);
 				m_isBrake = true;
+				/*auto effectEngine = CEffektEngine::GetInstance();
+				m_smokeEffectHandle = effectEngine.Play(m_smokeEffect);
+				effectEngine.SetPosition(m_smokeEffectHandle, m_position);
+				effectEngine.SetScale(m_smokeEffectHandle, CVector3::One() * (m_radius / m_gamedata->GetFirstPlayerSize()) * 4.0f);
+				effectEngine.SetRotation(m_smokeEffectHandle, 0.0f, 0.0f, 00.0f);*/
+
 			}
 		}
 		else {
@@ -335,6 +344,11 @@ void Player::Move()
 			se->Play(false);
 			se->SetVolume(CollisionVolume);
 			m_collisionTimer = 0.0f;
+			auto effectEngine = CEffektEngine::GetInstance();
+			m_playEffectHandle = effectEngine.Play(m_hitEffect);
+			effectEngine.SetPosition(m_playEffectHandle,m_characon.GetHitPos());
+			effectEngine.SetScale(m_playEffectHandle, CVector3::One()* (m_radius / m_gamedata->GetFirstPlayerSize()) * 4.0f);
+
 		}
 		
 		m_count2++;

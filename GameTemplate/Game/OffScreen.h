@@ -2,6 +2,7 @@
 #include "graphics/RenderTarget.h"
 #include "OffScreenCamera.h"
 #include "Object/ObjectData.h"
+#include "graphics/2D/kgFont.h"
 
 class OffScreen : public IGameObject
 {
@@ -38,6 +39,6 @@ private:
 	float m_degree = 0.0f;								//回転の角度
 	StructObjectData* m_objData = nullptr;				//オブジェクトデータ
 	CSprite m_sprite;
-
+	CFont m_font;																				//文字
 };
 

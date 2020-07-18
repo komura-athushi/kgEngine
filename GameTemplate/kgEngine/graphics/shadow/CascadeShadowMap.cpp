@@ -118,8 +118,8 @@ void CascadeShadowMap::UpdateLightViewProjMatrix(const int splitNumber)
 
 	float shadowAreaTbl[] = {
 		m_lightHeight * 0.4f,
-		m_lightHeight * 1.2f,
-		m_lightHeight * 2.4f,
+		m_lightHeight * 1.0f,
+		m_lightHeight * 2.0f,
 		0.0f
 	};
 	float farClip = shadowAreaTbl[0];

@@ -108,6 +108,14 @@ public:
 	{
 		m_playerNumber = number;
 	}
+	/// <summary>
+	/// 衝突した場所を取得(壁)
+	/// </summary>
+	/// <returns></returns>
+	CVector3& GetHitPos()
+	{
+		return m_hitPosition;
+	}
 private:
 	CVector3 			m_position = CVector3::Zero();	//座標。
 	bool 				m_isJump = false;				//ジャンプ中？
@@ -120,6 +128,7 @@ private:
 	bool				m_isCollision = false;			//衝突したかどうか
 	CVector3			m_WallNormalVector = CVector3::Zero();
 	int					m_playerNumber = 0;
+	CVector3			m_hitPosition = CVector3::Zero();
 };
 
 //サイズを比べる

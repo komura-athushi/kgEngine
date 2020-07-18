@@ -198,6 +198,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 				nextPosition.z += callback.hitNormal.z * m_radius;
 				m_isCollision = true;
 				m_WallNormalVector = callback.hitNormal;
+				m_hitPosition = callback.hitPos;
 #else
 				CVector3 vT0, vT1;
 				//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。

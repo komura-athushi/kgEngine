@@ -5,6 +5,7 @@
 #include "normal\EdgeDetection.h"
 #include "depthvalue\DepthValueMap.h"
 #include "shadow\CascadeShadowMap.h"
+#include "CEffektEngine.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -209,6 +210,8 @@ void GraphicsEngine::Init(HWND hWnd)
 
 	m_postEffect = new PostEffect();
 	m_postEffect->InitFullScreenQuadPrimitive();
+
+	CEffektEngine::GetInstance().InitEffekseer();
 }
 
 void GraphicsEngine::ShadowMapRender()
@@ -328,3 +331,15 @@ void GraphicsEngine::PostRender()
 	m_frameBufferDepthStencilView->Release();
 }
 
+void GraphicsEngine::EffektUpdate()
+{
+	auto effectEngine = CEffektEngine::GetInstance();
+
+	effectEngine.Update();
+
+	for (int i = 0; i < GetSplitNumber(); i++) {
+		effectEngine.CameraEffekseer(i);
+		effectEngine.Draw(i);
+
+	}
+}

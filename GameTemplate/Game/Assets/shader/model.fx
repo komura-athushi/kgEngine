@@ -392,25 +392,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		Col *= 0.6f;
 		Col.xyz += float3(0.2f, 0.2f, 0.2f);
 		lig += Col.xyz * 1.0f;
-		//リムライトの計算
-		/*float3 eye = normalize(eyeDir);
-		float rim = saturate(1.0f - dot(-eye, In.Normal));
-		if (rim >= 0.75f) {
-			rim = pow(rim, 3.0f);
-			lig += float3(2.0f, 2.0f, 2.0f) * rim;
-		}*/
-		//rim = pow(rim, 3.0f);
-		//lig += float3(1.0f, 1.0f, 1.0f) * rim;
-
-		/*for (int i = 0; i < 4; i++) {
-			p = dot(In.Normal * -1.0f, dligDirection[i].xzy);
-			p = p * 0.5f + 0.5f;
-			p = p * p;
-			p *= 0.1f;
-			float2 pos = float2(p, 0.0f);
-			float4 Col = toonMap.Sample(ToonSampler, pos);
-			lig += Col.xyz * 1.0f;
-		}*/
+	
 	}
 	else {
 		lig += float3(0.5f, 0.5f, 0.5f);
@@ -430,12 +412,15 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		//スペキュラ反射が求まったら、ligに加算する。
 		//鏡面反射を反射光に加算する。
 		lig += specLig;
+		//リムライトの計算
+		float rim = saturate(1.0f - dot(-eyeDir, In.Normal));
+		if (rim >= 0.4f) {
+			lig += float3(2.0f, 2.0f, 2.0f);
+		}
+
 	}
 
-	//ディレクションライトの拡散反射光を計算する。
-	/*for (int i = 0; i < NUM_DIRECTION_LIG; i++) {
-		lig += max(0.0f, dot(In.Normal * -1.0f, dligDirection[i])) * dligColor[i];
-	}*/
+
 	
 	lig.xyz += ambientlight.xyz;
 	if (isShadowReciever == 1) {	//シャドウレシーバー。

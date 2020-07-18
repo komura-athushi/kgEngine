@@ -182,5 +182,11 @@ private:
 	CVector3 m_katamariVector = CVector3::One();												//塊のスクリーン座標系
 	int m_playerNumber = 0;
 	CVector3 m_firstPosition = CVector3::Zero();
+	Effekseer::Handle m_playEffectHandle = 1;
+	//エフェクト
+	Effekseer::Effect* m_hitEffect = nullptr;
+	Effekseer::Handle m_smokeEffectHandle = 1;
+	//エフェクト
+	Effekseer::Effect* m_smokeEffect = nullptr;
 };
 

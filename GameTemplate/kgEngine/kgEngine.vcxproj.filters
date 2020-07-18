@@ -188,6 +188,9 @@
     <ClCompile Include="graphics\normal\NormalMap.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\CEffektEngine.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -347,6 +350,9 @@
       <Filter>graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\normal\NormalMap.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\CEffektEngine.h">
       <Filter>graphics</Filter>
     </ClInclude>
   </ItemGroup>

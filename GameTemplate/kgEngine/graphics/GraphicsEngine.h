@@ -64,6 +64,7 @@ public:
 	void ShadowMapRender();
 	//エッジ検出
 	void EdgeDelectionRender();
+	void EffektUpdate();
 	//ポストレンダリング
 	void PostRender();
 	//シャドウマップを取得

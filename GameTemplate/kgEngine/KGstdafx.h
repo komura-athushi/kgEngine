@@ -63,6 +63,10 @@
 #include "graphics/shadow/kgShadowMap.h"
 #include "graphics/RenderTarget.h"
 #include "graphics/2D/Sprite.h"
+
+#include"EffekseerRuntime130/src/Effekseer/Effekseer.h"
+#include"EffekseerRuntime130/src/EffekseerRendererDX11/EffekseerRendererDX11.h"
+
 const float FRAME_BUFFER_W = 1280.0f;				//フレームバッファの幅。
 const float FRAME_BUFFER_H = 720.0f;				//フレームバッファの高さ。
 

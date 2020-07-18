@@ -3,6 +3,7 @@
 #include "graphics\normal\NormalMap.h"
 #include "graphics\normal\EdgeDetection.h"
 #include "graphics\depthvalue\DepthValueMap.h"
+#include < locale.h >
 
 OffScreen::OffScreen()
 {
@@ -123,6 +124,14 @@ void OffScreen::PostRender()
 	m_postEffect.DrawFullScreenQuadPrimitive(d3dDeviceContext, m_vs, m_ps);
 	ID3D11ShaderResourceView* s[] = { NULL };
 	d3dDeviceContext->PSSetShaderResources(0, 1, s);
+	if (m_skinModel != nullptr) {
 
+		wchar_t output[256];
+		size_t wLen = 0;
+		errno_t err = 0;
+		setlocale(LC_ALL, "japanese");
+		err = mbstowcs_s(&wLen, output, 20, m_objData->s_jName, _TRUNCATE);
+		m_font.DrawScreenPos(output, CVector2(1050.0f, 685), CVector4::Yellow(), { 0.7f,0.7f });
+	}
 }
 
