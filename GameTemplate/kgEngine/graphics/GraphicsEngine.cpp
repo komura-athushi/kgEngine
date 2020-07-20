@@ -338,6 +338,7 @@ void GraphicsEngine::EffektUpdate()
 	effectEngine.Update();
 
 	for (int i = 0; i < GetSplitNumber(); i++) {
+		SetSplitViewPort(i);
 		effectEngine.CameraEffekseer(i);
 		effectEngine.Draw(i);
 

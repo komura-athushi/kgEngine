@@ -93,6 +93,7 @@ void Title::Update()
 			}
 			//スタートボタンが押されたら画面を切り替える
 			if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+			//if(Engine().GetPad(0).IsTrigger(enButtonA)) {
 				m_isWaitFadeout = true;
 				CSoundSource* se = new CSoundSource();
 				se->Init(L"Assets/sound/kettei.wav");
