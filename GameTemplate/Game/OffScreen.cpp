@@ -51,6 +51,9 @@ void OffScreen::InitSamplerState()
 
 void OffScreen::PostRender()
 {
+	if (Engine().GetGraphicsEngine().GetSplitNumber() != 1) {
+		return;
+	}
 	//return;
 	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
 	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);	
