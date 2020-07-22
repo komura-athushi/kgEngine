@@ -105,7 +105,7 @@ float4 PSEdge(PS_EdgeInput In) : SV_Target0
 {
 	float depth = depthValueTexture.Sample(Sampler,In.tex0);
 
-	if (depth < 0.002f) {
+	if (depth < 0.0015f) {
 		clip(-1);
 	}
 
