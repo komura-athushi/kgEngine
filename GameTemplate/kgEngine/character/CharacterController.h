@@ -116,6 +116,14 @@ public:
 	{
 		return m_hitPosition;
 	}
+	/// <summary>
+	/// キャラクタ属性のコリジョンと衝突したか
+	/// </summary>
+	/// <returns></returns>
+	bool GetisHitCharacter()
+	{
+		return m_isHitCharacter;
+	}
 private:
 	CVector3 			m_position = CVector3::Zero();	//座標。
 	bool 				m_isJump = false;				//ジャンプ中？
@@ -129,6 +137,8 @@ private:
 	CVector3			m_WallNormalVector = CVector3::Zero();
 	int					m_playerNumber = 0;
 	CVector3			m_hitPosition = CVector3::Zero();
+	bool				m_isHitCharacter = false;		//キャラクタ属性のコリジョンと衝突したか？
+	CVector3			m_moveVector = CVector3::Zero();
 };
 
 //サイズを比べる

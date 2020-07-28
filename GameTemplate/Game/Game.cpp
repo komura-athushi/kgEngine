@@ -159,6 +159,9 @@ bool Game::Start()
 		m_player[1]->SetGameCamera(m_gamecamera[1]);
 		m_gamecamera[1]->SetPlayer(m_player[1]);
 		Engine().GetGraphicsEngine().SetisSplit(true);
+
+		m_player[0]->SetPlayer(m_player[1]);
+		m_player[1]->SetPlayer(m_player[0]);
 	}
 
 	m_gameData->SetisStart(false);

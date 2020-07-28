@@ -87,6 +87,14 @@ void Player::Update()
 		m_gamecamera = FindGO<GameCamera>();
 		return;
 	}
+	if (m_isStopTime) {
+		m_stopTimer += GameTime().GetFrameDeltaTime();
+		if (m_stopTimer >= 1.5f) {
+			m_isStopTime = false;
+			m_stopTimer = 0.0f;
+		}
+		return;
+	}
 	//Judgment();
 	Move();
 	Turn();
@@ -273,7 +281,7 @@ void Player::Move()
 		addMoveSpeed.y = 0.0f;
 		//ブレーキしてないかつ、移動速度がある程度あったら
 		if (!m_isBrake &&
-			moveSpeed.LengthSq() >= (m_movespeedmultiply * 40.0f) * (m_movespeedmultiply * 40.0f) &&
+			moveSpeed.LengthSq() >= (m_movespeedmultiply * 45.0f) * (m_movespeedmultiply * 45.0f) &&
 			addMoveSpeed.LengthSq() >= 0.8f) {
 
 			CVector3 addMove = addMoveSpeed;
@@ -330,6 +338,12 @@ void Player::Move()
 	//衝突したら
 	if (m_characon.GetisCollision()) {
 		if (m_count2 >= 1 && m_collisionTimer >= CollisionTime) {
+			frontxz *= Stick.y;
+			rightxz *= Stick.x;
+			CVector3 addMoveSpeed = (frontxz + rightxz);
+			CVector3 moveSpeed = m_movespeed;
+			moveSpeed.y = 0.0f;
+			addMoveSpeed.y = 0.0f;
 			CVector3 Normal = m_characon.GetWallNormalVector();
 			Normal.y = 0.0f;
 			Normal.Normalize();
@@ -348,6 +362,23 @@ void Player::Move()
 			m_playEffectHandle = effectEngine.Play(m_hitEffect);
 			effectEngine.SetPosition(m_playEffectHandle,m_characon.GetHitPos());
 			effectEngine.SetScale(m_playEffectHandle, CVector3::One()* (m_radius / m_gamedata->GetFirstPlayerSize()) * 4.0f);
+			//キャラクタ属性のコリジョンと衝突したら
+			if (m_characon.GetisHitCharacter()) {
+				//ある程度早さがあったら
+				if (!m_isBrake &&
+					moveSpeed.LengthSq() >= (m_movespeedmultiply * 45.0f) * (m_movespeedmultiply * 45.0f) &&
+					addMoveSpeed.LengthSq() >= 0.8f) {
+					moveSpeed.Normalize();
+					CVector3 hitVector = m_characon.GetHitPos() - m_position;
+					hitVector.y = 0.0f;
+					hitVector.Normalize();
+					float angle = acosf(hitVector.Dot(moveSpeed));
+					if (fabsf(angle) < CMath::PI * 0.25f) {
+						m_player->SetStopTime();
+					}
+				}
+
+			}
 
 		}
 		

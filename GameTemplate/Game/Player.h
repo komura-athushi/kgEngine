@@ -117,6 +117,29 @@ public:
 		m_firstPosition = position;
 		m_position = position;
 	}
+	/// <summary>
+	/// もう一人のプレイヤーを設定
+	/// </summary>
+	/// <param name="player"></param>
+	void SetPlayer(Player* player)
+	{
+		m_player = player;
+	}
+	/// <summary>
+	/// 一定時間停止させるよ
+	/// </summary>
+	void SetStopTime()
+	{
+		m_isStopTime = true;
+	}
+	/// <summary>
+	/// 一定時間停止してるかどうか
+	/// </summary>
+	/// <returns></returns>
+	bool GetisStopTime()
+	{
+		return m_isStopTime;
+	}
 private:
 	//移動
 	void Move();
@@ -188,5 +211,8 @@ private:
 	Effekseer::Handle m_smokeEffectHandle = 1;
 	//エフェクト
 	Effekseer::Effect* m_smokeEffect = nullptr;
+	Player* m_player = nullptr;																	//もう一人のプレイヤー
+	bool m_isStopTime = false;
+	float m_stopTimer = 0.0f;
 };
 

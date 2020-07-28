@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
 #include "GameData.h"
+#include <random>
 GameCamera::GameCamera()
 {
 
@@ -75,7 +76,9 @@ void GameCamera::Update()
 	}
 	else {
 		if (!m_gamedata->GetisPose() || !m_gamedata->GetisStart()) {
-			TransView();
+			if (!m_player->GetisStopTime()) {
+				TransView();
+			}
 			TransRadius();
 			Calculation();
 		}
@@ -161,13 +164,17 @@ void GameCamera::Calculation()
 	}
 	//両方のスティックに入力があったら
 	if (m_state == enStick_EnterStickBoth) {
+		if (m_player->GetisStopTime()) {
+			stickR = CVector3::Zero();
+			stickL = CVector3::Zero();
+		}
 		CVector3 R = stickR;
 		CVector3 L = stickL;
 		CVector3 Rx(stickR.x,0.0f,0.0f);
 		CVector3 Lx(stickL.x,0.0f,0.0f);
 		R.Normalize();
 		L.Normalize();
-		float LimitStickX = 0.3f;
+		float LimitStickX = 0.5f;
 		float Angle = acosf(R.Dot(L));
 		Angle *= 180.0f / M_PI;
 		const float LimitStickDegree = 50.0f;
@@ -236,6 +243,11 @@ void GameCamera::Calculation()
 	rot.Multiply(toPos);
 	toPos *= m_radius;
 	m_position = m_target + toPos;
+	if (m_player->GetisStopTime()) {
+		//縦にカメラが揺れる。ガクガクしている。
+		m_position.y += rand() % 5000 * GameTime().GetFrameDeltaTime() * 0.1f;
+		m_position.x += rand() % 1200 * GameTime().GetFrameDeltaTime() * 0.1f;
+	}
 }
 
 void GameCamera::TransView()

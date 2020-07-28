@@ -408,6 +408,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		//スペキュラ反射の強さを求める。
 		float specPower = max(0, dot(R, -E));
 		float spec = g_specMap.Sample(Sampler, In.TexCoord).r;
+		//float3 specLig = pow(specPower, 2.0f) * dligColor[0].xyz * spec * 8.0f;
 		float3 specLig = pow(specPower, 2.0f) * dligColor[0].xyz * spec * 8.0f;
 		//スペキュラ反射が求まったら、ligに加算する。
 		//鏡面反射を反射光に加算する。

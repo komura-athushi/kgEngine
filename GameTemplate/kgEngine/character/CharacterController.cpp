@@ -73,6 +73,7 @@ namespace {
 		CVector3 hitNormal = CVector3::Zero();	//衝突点の法線。
 		btCollisionObject* me = nullptr;		//自分自身。自分自身との衝突を除外するためのメンバ。
 		int playerNumber = 0;
+		bool isHitCharacter = false;
 												//衝突したときに呼ばれるコールバック関数。
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
@@ -80,6 +81,9 @@ namespace {
 				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_LineSegment) {
 				//自分に衝突した。or 地面に衝突した。
 				return 0.0f;
+			}
+			else if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character) {
+				isHitCharacter = true;
 			}
 			if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Object && GetCompareSize(radius, convexResult.m_hitCollisionObject->GetSize())) {
 				convexResult.m_hitCollisionObject->SetisHit(playerNumber);
@@ -199,6 +203,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 				m_isCollision = true;
 				m_WallNormalVector = callback.hitNormal;
 				m_hitPosition = callback.hitPos;
+				m_isHitCharacter = callback.isHitCharacter;
 #else
 				CVector3 vT0, vT1;
 				//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。
@@ -235,6 +240,7 @@ const CVector3& CharacterController::Execute(float deltaTime, CVector3& moveSpee
 			else {
 				//どことも当たらないので終わり。
 				m_isCollision = false;
+				m_isHitCharacter = false;
 				break;
 			}
 			loopCount++;
