@@ -281,7 +281,7 @@ void Player::Move()
 		addMoveSpeed.y = 0.0f;
 		//ブレーキしてないかつ、移動速度がある程度あったら
 		if (!m_isBrake &&
-			moveSpeed.LengthSq() >= (m_movespeedmultiply * 45.0f) * (m_movespeedmultiply * 45.0f) &&
+			moveSpeed.LengthSq() >= (m_movespeedmultiply * 55.0f) * (m_movespeedmultiply * 55.0f) &&
 			addMoveSpeed.LengthSq() >= 0.8f) {
 
 			CVector3 addMove = addMoveSpeed;
@@ -366,7 +366,7 @@ void Player::Move()
 			if (m_characon.GetisHitCharacter()) {
 				//ある程度早さがあったら
 				if (!m_isBrake &&
-					moveSpeed.LengthSq() >= (m_movespeedmultiply * 45.0f) * (m_movespeedmultiply * 45.0f) &&
+					moveSpeed.LengthSq() >= (m_movespeedmultiply * 55.0f) * (m_movespeedmultiply * 55.0f) &&
 					addMoveSpeed.LengthSq() >= 0.8f) {
 					moveSpeed.Normalize();
 					CVector3 hitVector = m_characon.GetHitPos() - m_position;

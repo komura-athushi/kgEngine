@@ -246,7 +246,12 @@ void GameCamera::Calculation()
 	if (m_player->GetisStopTime()) {
 		//c‚ÉƒJƒƒ‰‚ª—h‚ê‚éBƒKƒNƒKƒN‚µ‚Ä‚¢‚éB
 		m_position.y += rand() % 5000 * GameTime().GetFrameDeltaTime() * 0.1f;
-		m_position.x += rand() % 1200 * GameTime().GetFrameDeltaTime() * 0.1f;
+		if (rand() % 2 == 0) {
+			m_position.x += rand() % 1200 * GameTime().GetFrameDeltaTime() * 0.1f;
+		}
+		else {
+			m_position.x -= rand() % 1200 * GameTime().GetFrameDeltaTime() * 0.1f;
+		}
 	}
 }
 
