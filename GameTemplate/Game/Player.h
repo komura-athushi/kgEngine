@@ -214,5 +214,6 @@ private:
 	Player* m_player = nullptr;																	//もう一人のプレイヤー
 	bool m_isStopTime = false;
 	float m_stopTimer = 0.0f;
+	float m_respawnTimer = 0.0f;
 };
 

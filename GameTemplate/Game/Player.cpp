@@ -206,10 +206,17 @@ void Player::Move()
 
 	//はまったりしたときの
 	//B押したら初期位置に移動する
-	if (GetPad(m_playerNumber).IsTrigger(enButtonB)) {
-		m_position = m_firstPosition;
-		m_position.y += 50.0f;
-		m_characon.SetPosition(m_firstPosition);
+	if (GetPad(m_playerNumber).IsPress(enButtonB)) {
+		m_respawnTimer += GameTime().GetFrameDeltaTime();
+		if (m_respawnTimer >= 3.0f) {
+			m_position = m_firstPosition;
+			m_position.y += 50.0f;
+			m_characon.SetPosition(m_firstPosition);
+			m_respawnTimer = 0.0f;
+		}
+	}
+	else {
+		m_respawnTimer = 0.0f;
 	}
 
 	//両方のスティックが入力されていたら
@@ -373,7 +380,7 @@ void Player::Move()
 					hitVector.y = 0.0f;
 					hitVector.Normalize();
 					float angle = acosf(hitVector.Dot(moveSpeed));
-					if (fabsf(angle) < CMath::PI * 0.25f) {
+					if (fabsf(angle) < CMath::PI * 0.40f) {
 						m_player->SetStopTime();
 					}
 				}
