@@ -400,6 +400,11 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 		//}
 	});
 
+	ID3D11ShaderResourceView* srvArray3[]{
+		Engine().GetGraphicsEngine().GetMainRenderTarget()->GetRenderTargetSRV()
+	};
+	d3dDeviceContext->PSSetShaderResources(11, 1, srvArray3);
+
 	SetTexture();
 
 	//•`‰æB

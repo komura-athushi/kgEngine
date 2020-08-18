@@ -17,6 +17,7 @@ Texture2D<float4> cascadeShadowMap3 : register(t7);		//todo カスケードシャドウマ
 Texture2D<float4> g_normalMap : register(t8);
 Texture2D<float4> g_specMap : register(t9);
 Texture2D<float4> g_emissionMap : register(t10);
+Texture2D<float4> mainRender : register(t11);
 
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t1);
@@ -380,6 +381,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		lig += float3(0.5f, 0.5f, 0.5f);
 	}*/
 
+	bool isToon = false;
 	//トゥーンシェーダー
 	if (isToomShader == 1) {
 	
@@ -389,10 +391,8 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		p = p * p;
 		float2 pos = float2(p, 0.0f);
 		float4 Col = toonMap.Sample(ToonSampler, pos);
-		Col *= 0.6f;
-		Col.xyz += float3(0.2f, 0.2f, 0.2f);
 		lig += Col.xyz * 1.0f;
-	
+		//lig += float3(0.5f, 0.5f, 0.5f);
 	}
 	else {
 		lig += float3(0.5f, 0.5f, 0.5f);
@@ -418,7 +418,7 @@ PSOutPut PSMain( PSInput In ) : SV_Target0
 		if (rim >= 0.4f) {
 			lig += float3(2.0f, 2.0f, 2.0f);
 		}
-
+		//albedoColor = mainRender.Sample(Sampler, float2(In.Position.x,In.Position.y) / In.Position.w);
 	}
 
 

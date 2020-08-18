@@ -8,6 +8,7 @@ class GameData;
 class StagePoint;
 class CollectionBook;
 class Battle;
+class StageSelectPoint;
 //ステージセレクト
 class StageSelect:public IGameObject
 {
@@ -36,7 +37,7 @@ private:
 	Level m_level;												//レベル
 	StageSelectGround* m_stageSelectGround = nullptr;			//ちきう
 	std::unordered_map<int, StagePoint*> m_stagePointList;		//ステージポイントのマップ
-	StagePoint* m_stagePoint = nullptr;							//プレイヤーと近いステージポイント
+	//StagePoint* m_stagePoint = nullptr;							//プレイヤーと近いステージポイント
 	CFont m_font;												//文字
 	CollectionBook* m_collectionBook;							//本
 	Battle* m_battle;											//バトルする？
@@ -44,5 +45,7 @@ private:
 	CSprite m_backSprite;										//拝啓の画像
 	bool m_isTransTitle = false;								//タイトルに遷移する？
 	bool m_isBattle = false;									//バトルする？
+	std::vector<StageSelectPoint*> m_stageSelectPointList;		//ステージセレクトのポイントのリスト
+	StageSelectPoint* m_stageSelectPoint = nullptr;
 };
 

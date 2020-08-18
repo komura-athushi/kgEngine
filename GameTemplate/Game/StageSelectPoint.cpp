@@ -1,23 +1,41 @@
 #include "stdafx.h"
-#include "Battle.h"
+#include "StageSelectPoint.h"
 #include "StageSelectGround.h"
 #include "GameData.h"
 
-Battle::Battle()
+StageSelectPoint::StageSelectPoint()
 {
 
 }
 
-Battle::~Battle()
+StageSelectPoint::~StageSelectPoint()
 {
 
 }
 
-bool Battle::Start()
+bool StageSelectPoint::Start()
 {
+	auto& gameData = GameData::GetInstance();
 
-	m_model.Init(L"Resource/modelData/battle.cmo");
-
+	switch (m_enPoint) {
+	case enPoint_Stage1:
+	case enPoint_Stage2:
+		//クリアしてるかどうかで読み込むモデル変える
+		if (gameData.GetisStageClear(EnStageNumber(m_enPoint))) {
+			m_model.Init(L"Resource/modelData/pointclear.cmo");
+		}
+		else {
+			m_model.Init(L"Resource/modelData/pointnoclear.cmo");
+		}
+		break;
+	case enPoint_Battle:
+		m_model.Init(L"Resource/modelData/battle.cmo");
+		break;
+	case enPoint_Collection:
+	
+		m_model.Init(L"Resource/modelData/book.cmo");
+		break;
+	}
 	m_model.SetPosition(m_position);
 	m_model.SetRotation(m_rotation);
 	m_model.SetScale(m_scale);
@@ -25,7 +43,7 @@ bool Battle::Start()
 	return true;
 }
 
-void  Battle::ClcLocalMatrix()
+void StageSelectPoint::ClcLocalMatrix()
 {
 
 	CMatrix worldMatrix = m_stageSelectGround->GetModel().GetSkinModel().GetWorldMatrix();
@@ -53,18 +71,22 @@ void  Battle::ClcLocalMatrix()
 	m_localMatrix.Mul(objworldMatrix, ReverseMatrix);
 }
 
-void  Battle::Update()
+void StageSelectPoint::Update()
 {
-
 	if (m_stageSelectGround == nullptr) {
 		m_stageSelectGround = FindGO<StageSelectGround>();
-		m_isFind = true;
-		return;
+		if (m_stageSelectGround != nullptr) {
+			m_isFind = true;
+			return;
+		}
+
 	}
 	else if (m_isFind) {
 		ClcLocalMatrix();
 		m_isFind = false;
 	}
+
+
 	//ローカル行列とちきうのワールド行列を乗算する
 	m_worldMatrix.Mul(m_localMatrix, m_stageSelectGround->GetModel().GetSkinModel().GetWorldMatrix());
 	m_model.SetWorldMatrix(m_worldMatrix);

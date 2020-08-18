@@ -118,8 +118,8 @@ void CascadeShadowMap::UpdateLightViewProjMatrix(const int splitNumber)
 
 	float shadowAreaTbl[] = {
 		m_lightHeight * 0.4f,
-		m_lightHeight * 1.0f,
-		m_lightHeight * 2.0f,
+		m_lightHeight * 0.8f,
+		m_lightHeight * 1.5f,
 		0.0f
 	};
 	float farClip = shadowAreaTbl[0];
@@ -157,6 +157,12 @@ void CascadeShadowMap::UpdateLightViewProjMatrix(const int splitNumber)
 			//カメラの逆ビュー行列をかけて、カメラビュー座標をワールド座標に変換する
 			inverseViewMatrix.Mul(pos[i]);
 			posSum.Add(pos[i]);
+			if (pos[i].y >= MainCamera(splitNumber).GetPosition().y + 500.0f) {
+				pos[i].y = MainCamera(splitNumber).GetPosition().y + 500.0f;
+			}
+			else if (pos[i].y <= MainCamera(splitNumber).GetPosition().y - 500.0f) {
+				pos[i].y = MainCamera(splitNumber).GetPosition().y - 500.0f;
+			}
 		}
 
 		inverseViewMatrix.Mul(centerPosTmp);
@@ -167,7 +173,7 @@ void CascadeShadowMap::UpdateLightViewProjMatrix(const int splitNumber)
 		//ライトのY座標は4000.0にする。
 		CVector3 topPos = centerPos;
 		topPos.x = 0.0f;
-		topPos.y = 2000.0f - centerPos.y;
+		topPos.y = MainCamera(splitNumber).GetPosition().y + 1000.0f - centerPos.y;
 		topPos.z = 0.0f;
 		float s = m_lightDir.Dot(topPos);
 		CVector3 lightPos = centerPos + m_lightDir * s;
@@ -232,7 +238,7 @@ void CascadeShadowMap::RenderToShadowMap()
 			//ビューポートを設定。
 			d3dDeviceContext->RSSetViewports(1, m_shadowMapRT[i][j].GetViewport());
 			//シャドウマップをクリア。
-		//一番奥のZは1.0なので、1.0で塗りつぶす。
+			//一番奥のZは1.0なので、1.0で塗りつぶす。
 			float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 			m_shadowMapRT[i][j].ClearRenderTarget(clearColor);
 			if (m_shadowCaters.size() >= 1) {

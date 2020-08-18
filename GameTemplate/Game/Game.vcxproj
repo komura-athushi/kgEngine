@@ -155,9 +155,7 @@
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Battle.h" />
     <ClInclude Include="Collection.h" />
-    <ClInclude Include="CollectionBook.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
@@ -185,17 +183,15 @@
     <ClInclude Include="Ranking.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="SoundDirector.h" />
-    <ClInclude Include="StagePoint.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="StageSelectGround.h" />
+    <ClInclude Include="StageSelectPoint.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Title.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Collection.cpp" />
-    <ClCompile Include="CollectionBook.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -226,9 +222,9 @@
     <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="SoundDirector.cpp" />
-    <ClCompile Include="StagePoint.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="StageSelectGround.cpp" />
+    <ClCompile Include="StageSelectPoint.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -465,9 +461,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\shader\toonmap.png">
+    <ImageContentTask Include="Assets\shader\toonmap.png">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Resource\sprite\%(Filename).dds</ContentOutput>
-    </None>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\sprite\tekitou.png" />

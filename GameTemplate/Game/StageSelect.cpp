@@ -4,15 +4,13 @@
 #include "Game.h"
 #include "Title.h"
 #include "StageSelectGround.h"
-#include "StagePoint.h"
-#include "CollectionBook.h"
 #include "Collection.h"
 #include "Object/ObjectData.h"
 #include "GameData.h"
 #include "SoundDirector.h"
 #include "sound/SoundSource.h"
 #include "StageSelectGround.h"
-#include "Battle.h"
+#include "StageSelectPoint.h"
 
 StageSelect::StageSelect()
 {
@@ -26,13 +24,12 @@ StageSelect::~StageSelect()
 
 void StageSelect::OnDestroy()
 {
-	for (auto itr : m_stagePointList) {
-		DeleteGO(itr.second);
+	for (auto itr : m_stageSelectPointList) {
+		DeleteGO(itr);
 	}
-	DeleteGO(m_collectionBook);
 	DeleteGO(m_stageSelectGround);
 	DeleteGO(m_player);
-	DeleteGO(m_battle);
+
 }
 
 bool StageSelect::Start()
@@ -47,12 +44,12 @@ bool StageSelect::Start()
 			if (number != 1 && !m_gameData->GetisStageClear(EnStageNumber(number - 1))) {
 				return true;
 			}
-			StagePoint* stagePoint = NewGO<StagePoint>(1);
-			stagePoint->SetPosition(objdata.position);
-			stagePoint->SetRotation(objdata.rotation);
-			stagePoint->SetScale(objdata.scale);
-			stagePoint->SetNumber(number);
-			m_stagePointList.emplace(number, stagePoint);
+			StageSelectPoint* stageSelectPoint = NewGO<StageSelectPoint>(1);
+			stageSelectPoint->SetPosition(objdata.position);
+			stageSelectPoint->SetRotation(objdata.rotation);
+			stageSelectPoint->SetScale(objdata.scale);
+			stageSelectPoint->SetPoint(enPoint(number));
+			m_stageSelectPointList.push_back(stageSelectPoint);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"earth")) {
@@ -61,17 +58,21 @@ bool StageSelect::Start()
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"book")) {
-			m_collectionBook = NewGO<CollectionBook>(1);
-			m_collectionBook->SetPosition(objdata.position);
-			m_collectionBook->SetRotation(objdata.rotation);
-			m_collectionBook->SetScale(objdata.scale);
+			StageSelectPoint* stageSelectPoint = NewGO<StageSelectPoint>(1);
+			stageSelectPoint->SetPosition(objdata.position);
+			stageSelectPoint->SetRotation(objdata.rotation);
+			stageSelectPoint->SetScale(objdata.scale);
+			stageSelectPoint->SetPoint(enPoint_Collection);
+			m_stageSelectPointList.push_back(stageSelectPoint);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"battle")) {
-			m_battle = NewGO<Battle>(1);
-			m_battle->SetPosition(objdata.position);
-			m_battle->SetRotation(objdata.rotation);
-			m_battle->SetScale(objdata.scale);
+			StageSelectPoint* stageSelectPoint = NewGO<StageSelectPoint>(1);
+			stageSelectPoint->SetPosition(objdata.position);
+			stageSelectPoint->SetRotation(objdata.rotation);
+			stageSelectPoint->SetScale(objdata.scale);
+			stageSelectPoint->SetPoint(enPoint_Battle);
+			m_stageSelectPointList.push_back(stageSelectPoint);
 			return true;
 		}
 		else if (objdata.EqualObjectName(L"zunko")) {
@@ -117,22 +118,23 @@ void StageSelect::Update()
 				DeleteGO(this);
 			}
 			else {
-				if (m_isCollection) {
+				switch (m_stageSelectPoint->GetPoint()) {
+				case enPoint_Stage1:
+				case enPoint_Stage2:
+					m_gameData->SetStageNumber(EnStageNumber(m_stageSelectPoint->GetPoint()));
+					m_gameData->SetisBattle(false);
+					NewGO<Game>(0);
+					break;
+				case enPoint_Collection:
+					m_gameData->SetisBattle(false);
 					NewGO<Collection>(0);
-					DeleteGO(this);
-					m_gameData->SetisBattle(false);
-				}
-				else if (m_isBattle) {
-					NewGO<Game>(0);
-					DeleteGO(this);
+					break;
+				case enPoint_Battle:
 					m_gameData->SetisBattle(true);
-				}
-				else {
 					NewGO<Game>(0);
-					DeleteGO(this);
-					m_gameData->SetisBattle(false);
+					break;
 				}
-		
+				DeleteGO(this);
 			}
 		}
 
@@ -141,15 +143,7 @@ void StageSelect::Update()
 
 		//Aボタンが押されたら決定したステージの番号を設定する、または図鑑画面に遷移する
 		if (Engine().GetPad(0).IsTrigger(enButtonA)) {
-			if (m_stagePoint != nullptr) {
-				m_gameData->SetStageNumber(EnStageNumber(m_stagePoint->GetNumber()));
-				CSoundSource* se = new CSoundSource();
-				se->Init(L"Assets/sound/kettei.wav");
-				se->Play(false);
-				m_isWaitFadeout = true;
-				m_fade->StartFadeOut();
-			}
-			else if (m_isCollection || m_isBattle) {
+			if (m_stageSelectPoint != nullptr) {
 				CSoundSource* se = new CSoundSource();
 				se->Init(L"Assets/sound/kettei.wav");
 				se->Play(false);
@@ -199,46 +193,38 @@ void StageSelect::DistanceStagePoint()
 {
 	const float distance = 10.0f * 10.0f;
 
-	//プレイヤーのモデルとステージポイントや本との距離を調べる
-	CVector3 diff = m_player->GetPosition() - m_collectionBook->GetPosition();
-	CVector3 diff2 = m_player->GetPosition() - m_battle->GetPosition();
-	if (diff.LengthSq() <= distance) {
-		m_isCollection = true;
-	}
-	else if(diff2.LengthSq() <= distance) {
-		m_isBattle = true;
-	}
-	else {
-		m_isCollection = false;
-		m_isBattle = false;
-		for (auto itr : m_stagePointList) {
-			CVector3 diff = m_player->GetPosition() - itr.second->GetPosition();
-			if (diff.LengthSq() <= distance) {
-				m_stagePoint = itr.second;
-				break;
-			}
-			else {
-				m_stagePoint = nullptr;
-			}
+	m_stageSelectPoint = nullptr;
+	//各ポイントとプレイヤーとの距離を調べる
+	for (auto itr : m_stageSelectPointList) {
+		CVector3 diff = m_player->GetPosition() - itr->GetPosition();
+		if (diff.LengthSq() <= distance) {
+			m_stageSelectPoint = itr;
+			break;
 		}
 	}
 }
 
 void StageSelect::PostRender()
 {
-	if (m_isCollection) {
-		wchar_t hoge[256];
+	if (m_stageSelectPoint == nullptr) {
+		return;
+	}
+
+	//文字表示すっぺ
+	wchar_t hoge[256];
+	switch (m_stageSelectPoint->GetPoint())
+	{
+	case enPoint_Stage1:
+	case enPoint_Stage2:
+		swprintf_s(hoge, L"ステージ%d", m_stageSelectPoint->GetPoint());
+		break;
+	case enPoint_Collection:
 		swprintf_s(hoge, L"コレクション");
-		m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
-	}
-	if (m_isBattle) {
-		wchar_t hoge[256];
+		break;
+	case enPoint_Battle:
 		swprintf_s(hoge, L"タイセン");
-		m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
+		break;
 	}
-	else if (m_stagePoint != nullptr) {
-		wchar_t hoge[256];
-		swprintf_s(hoge, L"ステージ%d",m_stagePoint->GetNumber());
-		m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
-	}
+
+	m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
 }

@@ -195,7 +195,12 @@ public:
 			return 1;
 		}
 	}
-	
+	void SetBlend()
+	{
+		//乗算合成用のブレンディングステートを設定する。
+		float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		m_pd3dDeviceContext->OMSetBlendState(m_finalBlendState, blendFactor, 0xffffffff);
+	}
 private:
 	D3D_FEATURE_LEVEL		m_featureLevel;				//Direct3D デバイスのターゲットとなる機能セット。
 	ID3D11Device*			m_pd3dDevice = NULL;		//D3D11デバイス。
@@ -230,7 +235,7 @@ private:
 	//ビューポートは描画する範囲を指定する、シャドウマップの時は変えるんじゃぞ
 	D3D11_VIEWPORT m_normalViewPorts;				//通常ビューポート
 	D3D11_VIEWPORT m_splitViewPorts[2];				//分割ビューポート
-
+	ID3D11BlendState* m_finalBlendState = nullptr;		//最終合成用のブレンディングステート。
 	bool m_isSplit = false;
 };
 

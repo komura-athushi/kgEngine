@@ -63,17 +63,8 @@
     <ClInclude Include="StageSelectGround.h">
       <Filter>stageselect</Filter>
     </ClInclude>
-    <ClInclude Include="StagePoint.h">
-      <Filter>stageselect</Filter>
-    </ClInclude>
-    <ClInclude Include="CollectionBook.h">
-      <Filter>stageselect</Filter>
-    </ClInclude>
     <ClInclude Include="SoundDirector.h" />
     <ClInclude Include="Ranking.h" />
-    <ClInclude Include="Battle.h">
-      <Filter>stageselect</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Move\MoveNone.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
@@ -82,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="Moji.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelectPoint.h">
+      <Filter>stageselect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -148,17 +142,8 @@
     <ClCompile Include="StageSelectGround.cpp">
       <Filter>stageselect</Filter>
     </ClCompile>
-    <ClCompile Include="StagePoint.cpp">
-      <Filter>stageselect</Filter>
-    </ClCompile>
-    <ClCompile Include="CollectionBook.cpp">
-      <Filter>stageselect</Filter>
-    </ClCompile>
     <ClCompile Include="SoundDirector.cpp" />
     <ClCompile Include="Ranking.cpp" />
-    <ClCompile Include="Battle.cpp">
-      <Filter>stageselect</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Move\MoveNone.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
@@ -167,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="Moji.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelectPoint.cpp">
+      <Filter>stageselect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -261,9 +249,6 @@
     </None>
     <None Include="Assets\modelData\obj\ohito.FBX">
       <Filter>Asset\modelData\obj\sample</Filter>
-    </None>
-    <None Include="Assets\shader\toonmap.png">
-      <Filter>Asset\shader</Filter>
     </None>
     <None Include="Assets\modelData\a\a.FBX">
       <Filter>Asset\modelData</Filter>
@@ -529,5 +514,10 @@
     <None Include="Assets\sprite\daiaspec.png">
       <Filter>Asset\sprite\spec</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\shader\toonmap.png">
+      <Filter>Asset\shader</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

@@ -203,11 +203,12 @@ void Player::Move()
 	const float CollisionAtten = 0.5f;
 	
 	CVector3 Stick = CVector3::Zero();
-
+	m_skinModelRender.SetColor(CVector4(1.0f, 1.0f, 1.0f, 0.5f));
 	//‚Í‚Ü‚Á‚½‚è‚µ‚½‚Æ‚«‚Ì
 	//B‰Ÿ‚µ‚½‚ç‰ŠúˆÊ’u‚ÉˆÚ“®‚·‚é
 	if (GetPad(m_playerNumber).IsPress(enButtonB)) {
 		m_respawnTimer += GameTime().GetFrameDeltaTime();
+	
 		if (m_respawnTimer >= 3.0f) {
 			m_position = m_firstPosition;
 			m_position.y += 50.0f;

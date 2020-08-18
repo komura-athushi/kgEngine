@@ -166,6 +166,16 @@ public:
 			itr->second->s_skinModel.SetOffToonShader();
 		}
 	}
+	/// <summary>
+	/// 乗算カラーを設定
+	/// </summary>
+	/// <param name="color"></param>
+	void SetColor(const CVector4& color)
+	{
+		for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
+			itr->second->s_skinModel.SetColor(color);
+		}
+	}
 private:
 	//SkinModel m_skinModel;										//スキンモデル
 	AnimationClip* m_animationClip;								//アニメーションクリップの数

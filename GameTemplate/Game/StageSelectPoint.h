@@ -1,11 +1,20 @@
 #pragma once
+
 class StageSelectGround;
-//本
-class CollectionBook : public IGameObject
+
+enum enPoint {
+	enPoint_nun,
+	enPoint_Stage1 = 1,
+	enPoint_Stage2 = 2,
+	enPoint_Collection,
+	enPoint_Battle
+};
+
+class StageSelectPoint:public IGameObject
 {
 public:
-	CollectionBook();
-	~CollectionBook();
+	StageSelectPoint();
+	~StageSelectPoint();
 	bool Start() override;
 	void Update() override;
 	//座標を設定
@@ -28,17 +37,28 @@ public:
 	{
 		m_scale = scale;
 	}
+	//属性を設定
+	void SetPoint(enPoint point)
+	{
+		m_enPoint = point;
+	}
+	//属性を取得
+	enPoint GetPoint()
+	{
+		return m_enPoint;
+	}
 private:
 	//ローカル行列を計算
 	void ClcLocalMatrix();
 private:
 	CSkinModelRender m_model;								//スキンモデルレンダー
-	CVector3 m_position;									//座標
+	CVector3 m_position;									//座標		
 	CQuaternion m_rotation;									//回転
-	CVector3 m_scale = CVector3::One();						//大きさ
+	CVector3 m_scale;										//大きさ
 	CMatrix m_localMatrix;									//ローカル行列
 	CMatrix m_worldMatrix;									//ワールド行列
 	StageSelectGround* m_stageSelectGround = nullptr;		//ちきう
-	bool m_isFind = false;									//ちきう見つけた？
+	bool m_isFind = false;									//ちきう見つかった？
+	enPoint m_enPoint = enPoint_nun;
 };
 

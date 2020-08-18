@@ -212,6 +212,17 @@ void GraphicsEngine::Init(HWND hWnd)
 	m_postEffect->InitFullScreenQuadPrimitive();
 
 	CEffektEngine::GetInstance().InitEffekseer();
+
+	CD3D11_DEFAULT defaultSettings;
+	//デフォルトセッティングで初期化する。
+	CD3D11_BLEND_DESC blendDesc(defaultSettings);
+	auto device = Engine().GetGraphicsEngine().GetD3DDevice();
+	//最終合成用のブレンドステートを作成する。
+	//最終合成は加算合成。
+	blendDesc.RenderTarget[0].BlendEnable = true;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
+	device->CreateBlendState(&blendDesc, &m_finalBlendState);
 }
 
 void GraphicsEngine::ShadowMapRender()
@@ -294,6 +305,7 @@ void GraphicsEngine::ChangeMainRenderTarget()
 		m_depthValueMao->GetRenderTarget()->GetRenderTargetView()
 	};
 	m_pd3dDeviceContext->OMSetRenderTargets(3, rt, m_mainRenderTarget.GetDepthStensilView());
+
 	//m_pd3dDeviceContext->RSSetViewports(1, m_mainRenderTarget.GetViewport());
 	m_pd3dDeviceContext->RSSetViewports(1, &m_frameBufferViewports);
 	//メインレンダリングターゲットをクリアする。
@@ -302,6 +314,9 @@ void GraphicsEngine::ChangeMainRenderTarget()
 	m_mainRenderTarget.ClearRenderTarget(clearColor);
 	m_normalMap->GetRenderTarget()->ClearRenderTarget(clearColor2);
 	m_depthValueMao->GetRenderTarget()->ClearRenderTarget(clearColor2);
+	//加算合成用のブレンディングステートを設定する。
+	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	m_pd3dDeviceContext->OMSetBlendState(m_finalBlendState, blendFactor, 0xffffffff);
 }
 
 void GraphicsEngine::PostRender()
