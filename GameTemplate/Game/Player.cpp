@@ -345,7 +345,7 @@ void Player::Move()
 	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
 	//Õ“Ë‚µ‚½‚ç
 	if (m_characon.GetisCollision()) {
-		if (m_count2 >= 1 && m_collisionTimer >= CollisionTime) {
+		if (m_count2 >= 2 && m_collisionTimer >= CollisionTime) {
 			frontxz *= Stick.y;
 			rightxz *= Stick.x;
 			CVector3 addMoveSpeed = (frontxz + rightxz);

@@ -69,6 +69,7 @@ bool Game::Start()
 	else {
 		//ステージの番号によって読み込むレベルファイルを設定する
 		swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber()));
+		//swprintf_s(filePath, L"Assets/level/stick01.tkl");
 	}
 	
 	//レベルを読み込む
