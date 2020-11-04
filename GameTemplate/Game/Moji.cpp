@@ -1,32 +1,32 @@
 #include "stdafx.h"
 #include "Moji.h"
 
-const wchar_t* MOJI::MOVELIMIT = L"L";
-const wchar_t* MOJI::PATHNUMBER = L"N";
+const wchar_t* MOJI::m_moveLimit = L"L";
+const wchar_t* MOJI::m_pathNumer = L"N";
 MOJI::MOJI()
 {
 	//左右に移動、移動速度
-	MOVE.push_back(L"R");
-	MOVESTATE.push_back(enMove_Lr);
+	m_move.push_back(L"R");
+	m_moveState.push_back(enMove_Lr);
 	//前後に移動、移動速度
-	MOVE.push_back(L"F");
-	MOVESTATE.push_back(enMove_Fb);
+	m_move.push_back(L"F");
+	m_moveState.push_back(enMove_Fb);
 	//上下に移動、移動速度
-	MOVE.push_back(L"U");
-	MOVESTATE.push_back(enMove_Up);
+	m_move.push_back(L"U");
+	m_moveState.push_back(enMove_Up);
 	//回転
-	MOVE.push_back(L"S");
-	MOVESTATE.push_back(enMove_Rot);
+	m_move.push_back(L"S");
+	m_moveState.push_back(enMove_Rot);
 	//パス移動、移動速度
-	MOVE.push_back(L"P");
-	MOVESTATE.push_back(enMove_Path);
+	m_move.push_back(L"P");
+	m_moveState.push_back(enMove_Path);
 
 	//自転
-	ROT.push_back(L"M");
-	ROTSTATE.push_back(enRot_Rot);
+	m_rot.push_back(L"M");
+	m_rotState.push_back(enRot_Rot);
 	//移動方向に回転
-	ROT.push_back(L"D");
-	ROTSTATE.push_back(enRot_DirectionRot);
+	m_rot.push_back(L"D");
+	m_rotState.push_back(enRot_DirectionRot);
 }
 
 MOJI::~MOJI()
@@ -41,8 +41,8 @@ MOVESTATUS MOJI::FindMove(const wchar_t* moji)
 	EnMove State = enMove_No;
 
 	const wchar_t* Moji = moji;
-	for (int i = 0; i < MOVE.size(); i++) {
-		const wchar_t* pdest = wcsstr(Moji,MOVE[i]);
+	for (int i = 0; i < m_move.size(); i++) {
+		const wchar_t* pdest = wcsstr(Moji,m_move[i]);
 		if (pdest != NULL) {
 			//文字列の中でMOVEの情報が書かれてる文字列の最初の添え字
 			int result = (int)(pdest - Moji + 1);
@@ -51,17 +51,17 @@ MOVESTATUS MOJI::FindMove(const wchar_t* moji)
 			//移動速度を取得
 			Move = wcstof(Moji, &mo);
 			//ステートを設定
-			State = MOVESTATE[i];
+			State = m_moveState[i];
 			//ステートがパスだったら番号読み込む、移動範囲の取得は必要無し	
 			if (State == enMove_Path) {
 				const wchar_t* M = moji;
-				const wchar_t* dest = wcsstr(M, PATHNUMBER);
+				const wchar_t* dest = wcsstr(M, m_pathNumer);
 				int r = (int)(dest - M + 1);
 				M += r;
 				Number = wcstof(M, &mo);
 				return MOVESTATUS{ State, Move, MoveLimit,Number };
 			}
-			const wchar_t* dest = wcsstr(Moji, MOVELIMIT);
+			const wchar_t* dest = wcsstr(Moji, m_moveLimit);
 			int re = (int)(dest - Moji + 1);
 			Moji += re;
 			//移動範囲を取得
@@ -78,8 +78,8 @@ MOVESTATUS MOJI::FindMove(const wchar_t* moji)
 ROTSTATUS MOJI::FindRot(const wchar_t* moji)
 {
 	const wchar_t* Moji = moji;
-	for (int i = 0; i < ROT.size(); i++) {
-		const wchar_t* pdest = wcsstr(Moji, ROT[i]);
+	for (int i = 0; i < m_rot.size(); i++) {
+		const wchar_t* pdest = wcsstr(Moji, m_rot[i]);
 		if (pdest != NULL) {
 			//文字列の中でROTの情報が書かれてる文字列の最初の添え字
 			int result = (int)(pdest - Moji + 1);
@@ -88,7 +88,7 @@ ROTSTATUS MOJI::FindRot(const wchar_t* moji)
 			//回転速度を取得
 			float Speed = wcstof(Moji, &mo);
 			//ステートを設定
-			EnRotate State = ROTSTATE[i];
+			EnRotate State = m_rotState[i];
 			return ROTSTATUS{ State, Speed};
 		}
 	}

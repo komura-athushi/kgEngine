@@ -61,8 +61,8 @@ bool Collection::Start()
 		CVector2(-0.4f,1.0f)
 	);
 
-	m_modelList = ObjectData::GetInstance().GetList();
-	m_listSize = m_modelList.size();
+	m_modelList = &ObjectData::GetInstance().GetList();
+	m_listSize = m_modelList->size();
 
 	m_sprite.Init(L"Resource/sprite/tekitou.dds");
 	m_haikei.Init(L"Resource/sprite/collection.dds");
@@ -72,7 +72,7 @@ bool Collection::Start()
 	m_maximumPage = (m_listSize - 1) / (W_NUMBER * H_NUMBER) + 1;
 	m_finalPageNumber = m_listSize % m_maximumPage;
 	//巻き込んだものの数数える
-	for (auto itr : m_modelList) {
+	for (const auto& itr : *m_modelList) {
 		if (itr.second->s_isHit) {
 			m_hitNumber++;
 		}
@@ -186,7 +186,7 @@ void Collection::OffScreenRender()
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	int i = 0;
 	//モデルマップを回す
-	for (auto itr : m_modelList) {
+	for (const auto& itr : *m_modelList) {
 		i++;
 		//ページの最後まで回したらブレイク
 		if (i == W_NUMBER * H_NUMBER * m_page + 1) {

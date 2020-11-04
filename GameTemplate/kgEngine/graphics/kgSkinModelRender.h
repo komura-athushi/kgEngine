@@ -193,7 +193,7 @@ private:
 		SkinModel s_skinModel;
 		Animation s_animation;
 	};
-	std::unordered_map<int, AnimModel*> m_skinModelList;
+	std::unordered_map<int, std::unique_ptr<AnimModel>> m_skinModelList;
 	const wchar_t* m_filepath;
 	bool m_isInstancing = false;
 	int m_maxInstance = 0;

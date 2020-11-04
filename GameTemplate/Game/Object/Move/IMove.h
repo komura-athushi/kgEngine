@@ -45,4 +45,6 @@ protected:
 private:
 	EnMove m_state;							//ステート
 };
+//IMoveのunique_ptrの別名定義。
+using IMovePtr = std::unique_ptr<IMove>;
 

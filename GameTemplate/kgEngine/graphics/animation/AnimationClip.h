@@ -91,7 +91,7 @@ public:
 private:
 	
 	bool m_isLoop = false;									//!<ループフラグ。
-	std::vector<Keyframe*> m_keyframes;						//全てのキーフレーム。
+	std::vector<std::unique_ptr<Keyframe>> m_keyframes;						//全てのキーフレーム。
 	std::vector<keyFramePtrList> m_keyFramePtrListArray;	//ボーンごとのキーフレームのリストを管理するための配列。
 															//例えば、m_keyFramePtrListArray[0]は0番目のボーンのキーフレームのリスト、
 															//m_keyFramePtrListArray[1]は1番目のボーンのキーフレームのリストといった感じ。

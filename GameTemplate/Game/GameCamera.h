@@ -1,8 +1,16 @@
+/*****************************************************************
+ * \file   GameCamera.h
+ * \brief  ゲームカメラ
+ * 
+ * \author komura atushi
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "graphics/SpringCamera.h"
 class Player;
 class GameData;
 //どっちのスティックが回転か
+
 enum StateEnterStick {
 	enStick_EnterStickR,					//右スティックだけ押されている
 	enStick_EnterStickL,					//左スティックだけ押されている
@@ -12,11 +20,25 @@ enum StateEnterStick {
 	enStick_EnterStickBothOppositeRight		//左右のスティックがそれぞれ逆方向に入力されている、右が前方向
 };
 
+/**
+ * \brief	ゲームカメラクラス
+ */
 class GameCamera:public IGameObject
 {
 public:
+	/**
+	 * \brief	コンストラクタ.
+	 */
 	GameCamera();
+	/**
+	 * \brief	デストラクタ.
+	 */
 	~GameCamera();
+	/**
+	 * \brief Start関数.
+	 * 
+	 * \return	trueを返したら初期化終了。
+	 */
 	bool Start() override;
 	void Update() override;
 	//スティックの入力状態を取得
@@ -24,7 +46,11 @@ public:
 	{
 		return m_state;
 	}
-	//座標を設定
+	/**
+	 * \brief 座標を設定.
+	 * 
+	 * \param position	座標。
+	 */
 	void SetPosition(const CVector3& position)
 	{
 		m_position = position;
@@ -55,11 +81,12 @@ private:
 	//プレイヤーの大きさを考慮してカメラの半径を変える
 	void TransRadius();
 	//L3とR3を同時押しした時に視点を変更する
+	
 	void TransView();
 private:
-	CVector3 m_position = CVector3::Zero();				//視点
-	CVector3 m_target = CVector3::One();				//注視点
-	float m_degreey = 0.0f, m_degreexz = 20.0f;			//それぞれカメラの角度
+	CVector3 m_position = CVector3::Zero();				//!視点
+	CVector3 m_target = CVector3::One();				//!注視点
+	float m_degreey = 0.0f, m_degreexz = 20.0f;			//!それぞれカメラの角度
 	Player* m_player = nullptr;							//プレイヤーのポインタ
 	float m_radius = 0.0f;								//カメラの半径
 	const float m_protradius = 170.0f;					//カメラの最初の半径

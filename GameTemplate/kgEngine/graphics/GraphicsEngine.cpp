@@ -189,12 +189,10 @@ void GraphicsEngine::Init(HWND hWnd)
 
 	m_pd3dDeviceContext->RSSetViewports(1, &m_normalViewPorts);
 	m_pd3dDeviceContext->RSSetState(m_rasterizerState);
-	m_shadowMap = new ShadowMap;
-	m_cascadeShadowMap = new CascadeShadowMap;
-	m_normalMap = new NormalMap;
-	m_depthValueMao = new DepthValueMap;
-	m_edgeDelection = new EdgeDetection;
-	m_edgeDelection->InitGaussian(m_normalMap);
+	m_cascadeShadowMap = std::make_unique<CascadeShadowMap>();
+	m_normalMap = std::make_unique<NormalMap>();
+	m_depthValueMao = std::make_unique<DepthValueMap>();
+	m_edgeDelection = std::make_unique<EdgeDetection>();
 	//Sprite初期化
 	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_pd3dDevice, L"Assets/Font/myfile.spritefont");
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_pd3dDeviceContext);
@@ -208,7 +206,7 @@ void GraphicsEngine::Init(HWND hWnd)
 	);
 	m_copyMainRtToFrameBufferSprite.Init(m_mainRenderTarget.GetRenderTargetSRV());
 
-	m_postEffect = new PostEffect();
+	m_postEffect = std::make_unique<PostEffect>();
 	m_postEffect->InitFullScreenQuadPrimitive();
 
 	CEffektEngine::GetInstance().InitEffekseer();
@@ -227,44 +225,10 @@ void GraphicsEngine::Init(HWND hWnd)
 
 void GraphicsEngine::ShadowMapRender()
 {
-	for (int i = 0; i < GetSplitNumber(); i++) {
-		//シャドウマップを更新。
-		m_shadowMap->UpdateFromLightTarget(
-			m_position[i],
-			m_target[i],
-			i
-		);
-	}
 	m_cascadeShadowMap->Update();
-	auto d3dDeviceContext = m_pd3dDeviceContext;
-	//現在のレンダリングターゲットをバックアップしておく。
-	/*ID3D11RenderTargetView* oldRenderTargetView;
-	ID3D11DepthStencilView* oldDepthStencilView;
-	d3dDeviceContext->OMGetRenderTargets(
-		1,
-		&m_frameBufferRenderTargetView,
-		&m_frameBufferDepthStencilView
-	);
-	//ビューポートもバックアップを取っておく。
-	unsigned int numViewport = 1;
-	D3D11_VIEWPORT oldViewports;
-	d3dDeviceContext->RSGetViewports(&numViewport, &m_frameBufferViewports);*/
-
 	//シャドウマップにレンダリング
 	//m_shadowMap->RenderToShadowMap();
 	m_cascadeShadowMap->RenderToShadowMap();
-
-	//元に戻す。
-	/*d3dDeviceContext->OMSetRenderTargets(
-		1,
-		&m_frameBufferRenderTargetView,
-		m_frameBufferDepthStencilView
-	);*/
-	//d3dDeviceContext->RSSetViewports(numViewport, &m_frameBufferViewports);
-	//レンダリングターゲットとデプスステンシルの参照カウンタを下す。
-	//oldRenderTargetView->Release();
-	//oldDepthStencilView->Release();
-
 
 }
 

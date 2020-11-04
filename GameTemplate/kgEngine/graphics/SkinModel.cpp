@@ -118,7 +118,7 @@ void SkinModel::InitInstancingData()
 {
 	if (m_maxInstance >= 1) {
 		//インスタンシング用のデータを作成。
-		m_instancingData.reset(new CMatrix[m_maxInstance]);
+		m_instancingData = std::make_unique<CMatrix[]>(m_maxInstance);
 		D3D11_BUFFER_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
 		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	//SRVとしてバインド可能。
@@ -286,7 +286,6 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 
 	ID3D11DeviceContext* d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 
-	auto shadowMap = Engine().GetGraphicsEngine().GetShadowMap();
 	auto cascadeShadowMap = Engine().GetGraphicsEngine().GetCascadeShadowMap();
 
 	if (m_numInstance >= 1) {
@@ -317,13 +316,13 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 		vsCb.mLightViewProj[0] = cascadeShadowMap->GetLightViewProjMatrix(number);
 	}
 	//シャドウマップを作るときはらいとカメラの行列を使う
-	else if (renderMode == enRenderMode_CreateShadowMap) {
+	/*else if (renderMode == enRenderMode_CreateShadowMap) {
 		vsCb.mView = shadowMap->GetLightViewMatrix(number);
 		vsCb.mProj = shadowMap->GetLightProjMatrix(number);
 	}
 	//todo ライトカメラのビュー、プロジェクション行列を送る。
 	vsCb.mLightProj = shadowMap->GetLightProjMatrix(number);
-	vsCb.mLightView = shadowMap->GetLightViewMatrix(number);
+	vsCb.mLightView = shadowMap->GetLightViewMatrix(number);*/
 
 	
 	
@@ -346,11 +345,11 @@ void SkinModel::Draw(Camera* camera, EnRenderMode renderMode, bool isShadowRecei
 	else {
 		vsCb.isDithering = 0;
 	}
-	ID3D11ShaderResourceView* srvArray[]{
+	/*ID3D11ShaderResourceView* srvArray[]{
 		shadowMap->GetShadowMapSRV(number)
 	};
 	//引数がポインタのポインタ、t2なので引数を2、1にしてる
-	d3dDeviceContext->PSSetShaderResources(2, 1, srvArray);
+	d3dDeviceContext->PSSetShaderResources(2, 1, srvArray);*/
 	//定数バッファをGPUに転送。
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_cb);
 	d3dDeviceContext->PSSetConstantBuffers(0, 1, &m_cb);

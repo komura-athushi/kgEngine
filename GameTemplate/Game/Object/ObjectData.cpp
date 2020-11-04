@@ -53,7 +53,7 @@ ObjectData::ObjectData()
 			if (m_modelObjDataList.count(volume) == 0) {
 				wchar_t filepath[256];
 				swprintf_s(filepath, L"Resource/modelData/%ls.cmo", name);
-				SkinModel_ObjData* data = new SkinModel_ObjData();
+				auto data = std::make_unique<SkinModel_ObjData>();
 				data->s_skinModel.Init(filepath);
 				int key = Util::MakeHash(name);
 				data->s_hashKey = key;
@@ -61,7 +61,7 @@ ObjectData::ObjectData()
 				data->s_y = y;
 				data->s_z = z;
 				data->s_jName = jName;
-				m_modelObjDataList.emplace(volume, data);
+				m_modelObjDataList.emplace(volume, std::move(data));
 			}
 		}
 		fclose(fp);
@@ -90,7 +90,7 @@ void ObjectData::LoadSaveData()
 		fclose(fp);
 	}
 	int j = 0;
-	for (auto itr : m_modelObjDataList) {
+	for (const auto& itr : m_modelObjDataList) {
 		itr.second->s_number = j;
 		if (hitNumberList.count(j) != 0) {
 			itr.second->s_isHit = true;
@@ -107,7 +107,7 @@ void ObjectData::SaveData()
 	std::ofstream file;
 	file.open(fileName, std::ios::trunc);
 
-	for (auto itr : m_modelObjDataList) {
+	for (const auto& itr : m_modelObjDataList) {
 		if (itr.second->s_isHit) {
 			file << itr.second->s_number << std::endl;
 		}

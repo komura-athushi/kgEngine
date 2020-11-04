@@ -168,80 +168,91 @@ bool Game::Start()
 	m_gameData->SetisStart(false);
 	return true;
 }
+void Game::UpdateReadyGo()
+{
+	if (m_fade->IsIdle()) {
+		m_startTime = int(m_timer3);
+		m_timer3 -= GameTime().GetFrameVariableDeltaTime();
+		if (m_startTime != int(m_timer3)) {
+			if (m_startTime <= 1) {
+				CSoundSource* se = new CSoundSource();
+				se->Init(L"Assets/sound/start.wav");
+				se->Play(false);
+			}
+			else {
+				CSoundSource* se = new CSoundSource();
+				se->Init(L"Assets/sound/pin.wav");
+				se->Play(false);
+			}
+		}
+		if (m_timer3 <= 0.0f) {
+			m_isStart = true;
+			m_gameData->SetPoseCancel();
+			SoundData().SetPlayBGM();
+			m_gameData->SetisStart(true);
+		}
 
-void Game::Update()
+	}
+	else if (!m_fade->IsFadeIn()) {
+		SoundData().SetStopBGM();
+		m_gameData->SetPose();
+	}
+}
+void Game::UpdateInGame()
 {
 	const float Time = 2.0f;
-
-
-	//ステージが終了したら
-	if (m_isWaitFadeout) {
-		if (!m_fade->IsFade()) {
-			NewGO<Result>(0);
-			DeleteGO(this);
+	if (m_owaOwari) {
+		SoundData().SetStopBGM();
+		m_gameData->SetPose();
+		m_timer2 += GameTime().GetFrameDeltaTime();
+		m_gameData->SetReusltPlayerSsize(m_player[0]->GetRadius());
+		if (m_isBattle) {
+			m_gameData->SetReusltPlayerSsize(m_player[1]->GetRadius(), 1);
+		}
+		if (m_timer2 >= Time) {
+			m_isWaitFadeout = true;
+			m_fade->StartFadeOut();
 		}
 	}
 	else {
-		if (!m_isStart) {
-			if (m_fade->IsIdle()) {
-				m_startTime = int(m_timer3);
-				m_timer3 -= GameTime().GetFrameVariableDeltaTime();
-				if (m_startTime != int(m_timer3)) {
-					if (m_startTime <= 1) {
-						CSoundSource* se = new CSoundSource();
-						se->Init(L"Assets/sound/start.wav");
-						se->Play(false);
-					}
-					else {
-						CSoundSource* se = new CSoundSource();
-						se->Init(L"Assets/sound/pin.wav");
-						se->Play(false);
-					}
-				}
-				if (m_timer3 <= 0.0f) {
-					m_isStart = true;
+		if (!m_isBattle) {
+			//スタートボタンが押されたらポーズする、もっかい押したら解除
+			if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
+				if (m_gameData->GetisPose()) {
 					m_gameData->SetPoseCancel();
 					SoundData().SetPlayBGM();
-					m_gameData->SetisStart(true);
+					//Engine().GetGraphicsEngine().SetSplitViewPort();
 				}
-				
-			}
-			else if (!m_fade->IsFadeIn()) {
-				SoundData().SetStopBGM();
-				m_gameData->SetPose();
+				else {
+					m_gameData->SetPose();
+					SoundData().SetStopBGM();
+					//Engine().GetGraphicsEngine().SetNormalViewPort();
+				}
 			}
 		}
+	}
+}
+void Game::UpdateEndGame()
+{
+	if (!m_fade->IsFade()) {
+		NewGO<Result>(0);
+		DeleteGO(this);
+	}
+}
+void Game::Update()
+{
+	//ステージが終了したら
+	if (m_isWaitFadeout) {
+		UpdateEndGame();
+	}
+	else {
+		if (!m_isStart) {
+			//レディーゴー演出中の更新処理。
+			UpdateReadyGo();
+		}
 		else {
-			if (m_owaOwari) {
-				SoundData().SetStopBGM();
-				m_gameData->SetPose();
-				m_timer2 += GameTime().GetFrameDeltaTime();
-				m_gameData->SetReusltPlayerSsize(m_player[0]->GetRadius());
-				if (m_isBattle) {
-					m_gameData->SetReusltPlayerSsize(m_player[1]->GetRadius(), 1);
-				}
-				if (m_timer2 >= Time) {
-					m_isWaitFadeout = true;
-					m_fade->StartFadeOut();
-				}
-			}
-			else {
-				if (!m_isBattle) {
-					//スタートボタンが押されたらポーズする、もっかい押したら解除
-					if (Engine().GetPad(0).IsTrigger(enButtonStart)) {
-						if (m_gameData->GetisPose()) {
-							m_gameData->SetPoseCancel();
-							SoundData().SetPlayBGM();
-							//Engine().GetGraphicsEngine().SetSplitViewPort();
-						}
-						else {
-							m_gameData->SetPose();
-							SoundData().SetStopBGM();
-							//Engine().GetGraphicsEngine().SetNormalViewPort();
-						}
-					}
-				}
-			}
+			//ゲーム中の更新処理。
+			UpdateInGame();
 		}
 	}
 

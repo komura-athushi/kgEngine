@@ -67,35 +67,30 @@ public:
 	void EffektUpdate();
 	//ポストレンダリング
 	void PostRender();
-	//シャドウマップを取得
-	ShadowMap* GetShadowMap()
-	{
-		return m_shadowMap;
-	}
 	//カスケードシャドウマップを取得
 	CascadeShadowMap* GetCascadeShadowMap()
 	{
-		return m_cascadeShadowMap;
+		return m_cascadeShadowMap.get();
 	}
 	//法線マップを取得
 	NormalMap* GetNormalMap()
 	{
-		return m_normalMap;
+		return m_normalMap.get();
 	}
 	//深度値マップを主特区
 	DepthValueMap* GetDepthValueMap()
 	{
-		return m_depthValueMao;
+		return m_depthValueMao.get();
 	}
 	//エッジマップを取得
 	EdgeDetection* GetEdgeDelection()
 	{
-		return m_edgeDelection;
+		return m_edgeDelection.get();
 	}
 	//全画面描画用のポストエフェクトを取得
 	PostEffect* GetPostEffect()
 	{
-		return m_postEffect;
+		return m_postEffect.get();
 	}
 	//Sprite取得
 	DirectX::SpriteBatch* GetSpriteBatch() const
@@ -210,11 +205,10 @@ private:
 	ID3D11RasterizerState*	m_rasterizerState = NULL;	//ラスタライザステート。
 	ID3D11Texture2D*		m_depthStencil = NULL;		//デプスステンシル。
 	ID3D11DepthStencilView* m_depthStencilView = NULL;	//デプスステンシルビュー。
-	ShadowMap*				m_shadowMap = nullptr;		//シャドウマップ
-	CascadeShadowMap* m_cascadeShadowMap = nullptr;		//カスケードシャドウマップ
-	NormalMap*				m_normalMap = nullptr;		//法線マップ
-	DepthValueMap*			m_depthValueMao = nullptr;  //深度値マップ
-	EdgeDetection*			m_edgeDelection = nullptr;  //エッジ検出
+	std::unique_ptr<CascadeShadowMap> m_cascadeShadowMap = nullptr;		//カスケードシャドウマップ
+	std::unique_ptr<NormalMap>				m_normalMap = nullptr;		//法線マップ
+	std::unique_ptr<DepthValueMap>			m_depthValueMao = nullptr;  //深度値マップ
+	std::unique_ptr<EdgeDetection>			m_edgeDelection = nullptr;  //エッジ検出
 	RenderTarget			m_mainRenderTarget;			//!<メインレンダリングターゲット。
 	CSprite m_copyMainRtToFrameBufferSprite;
 	//Sprite
@@ -223,7 +217,7 @@ private:
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatchPMA;
 	float m_layerDepthCnt = 0.0f;
 
-	PostEffect* m_postEffect = nullptr;
+	std::unique_ptr<PostEffect> m_postEffect = nullptr;
 	D3D11_VIEWPORT m_frameBufferViewports;			//フレームバッファのビューポート。
 	ID3D11RenderTargetView* m_frameBufferRenderTargetView = nullptr;	//フレームバッファのレンダリングターゲットビュー。
 	ID3D11DepthStencilView* m_frameBufferDepthStencilView = nullptr;	//フレームバッファのデプスステンシルビュー。

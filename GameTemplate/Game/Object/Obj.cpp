@@ -42,9 +42,10 @@ ObjModelData* ObjModelDataFactory::Load(const wchar_t* path)
 		m_modelmap[key].get()->s_skinmodel.Init(filepath, nullptr, 0, enFbxUpAxisZ, true);
 		SetPriorityGO(&m_modelmap[key].get()->s_skinmodel, 2);
 		m_modelmap[key].get()->s_hashKey = key;
-		SkinModel* skinModel = new SkinModel();
+		auto skinModel = std::make_unique<SkinModel>();
 		skinModel->Init(filepath);
-		m_skinModelmap.emplace(key, skinModel);
+		//所有権をムーブする。
+		m_skinModelmap.emplace(key, std::move(skinModel));
 	}
 	m_modelmap[key].get()->s_maxInstance += 1;
 	m_modelmap[key].get()->s_skinmodel.SetInstanceNumber(m_modelmap[key].get()->s_maxInstance);
@@ -85,12 +86,6 @@ Obj::Obj()
 
 Obj::~Obj()
 {
-	if (m_move != nullptr) {
-		delete m_move;
-	}
-	if (m_rot != nullptr) {
-		delete m_rot;
-	}
 	if (m_gamedata->GetScene() == enScene_Result && m_gamedata->GetisGameClear()) {
 		ObjectData::GetInstance().SetisHit(m_objdata->s_volume);
 	}
@@ -151,16 +146,17 @@ bool Obj::Start()
 
 void Obj::ReadMovePath(const int& number)
 {
-	MovePath* mp = new MovePath();
+	auto mp = std::make_unique<MovePath>();
 	wchar_t aiueo[256];
 	if (GameData::GetInstance().GetisBattle()) {
 		swprintf_s(aiueo, L"Assets/path/stage1/%ls%d.tks", m_objdata->s_name, number);
+		
 	}
 	else {
 		swprintf_s(aiueo, L"Assets/path/stage%d/%ls%d.tks", GetGameData().GetStageNumber(), m_objdata->s_name, number);
 	}
 	mp->ReadPath(aiueo);
-	m_move = mp;
+	m_move = std::move(mp);
 }
 
 void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot)
@@ -169,19 +165,19 @@ void Obj::InitMove(EnMove state, const CVector3& pos, const float& move, const f
 	switch (state)
 	{
 	case enMove_Lr:
-		m_move = new MoveLR();
+		m_move = std::make_unique<MoveLR>();
 		break;
 	case enMove_Fb:
-		m_move = new MoveFB();
+		m_move = std::make_unique <MoveFB>();
 		break;
 	case enMove_Up:
-		m_move = new MoveUp();
+		m_move = std::make_unique<MoveUp>();
 		break;
 		case enMove_Path:
 		//ここでnewしない
 		break;
 	default:
-		m_move = new MoveNone();
+		m_move = std::make_unique<MoveNone>();
 		break;
 	}
 	
@@ -199,13 +195,13 @@ void Obj::InitRot(EnRotate state, const float& speed)
 	switch (state)
 	{
 	case enRot_Rot:
-		m_rot = new RotSelf();
+		m_rot = std::make_unique<RotSelf>();
 		break;
 	case enRot_DirectionRot:
-		m_rot = new RotDirection();
+		m_rot = std::make_unique<RotDirection>();
 		break;
 	case enRot_No:
-		m_rot = new RotNone();
+		m_rot = std::make_unique<RotNone>();
 		break;
 	}
 	m_rot->Init(m_rotation, speed);

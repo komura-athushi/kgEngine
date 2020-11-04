@@ -36,4 +36,5 @@ protected:
 private:
 	EnRotate m_state;
 };
-
+//IRotate‚Ìunique_ptr‚Ì•Ê–¼’è‹`B
+using IRotatePtr = std::unique_ptr<IRotate>;

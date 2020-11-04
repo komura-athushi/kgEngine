@@ -31,7 +31,7 @@ struct SkinModel_ObjData {
 	char* s_jName;
 	int s_number = 0;
 };
-
+using SkinModel_ObjDataPtr = std::unique_ptr< SkinModel_ObjData>;
 //オブジェクトのデータをバイナリファイルから読み込む
 class ObjectData
 {
@@ -62,7 +62,7 @@ public:
 		m_modelObjDataList[volume]->s_isHit = true;
 	}
 	//配列取得
-	std::map<float, SkinModel_ObjData*> GetList()
+	const std::map<float, SkinModel_ObjDataPtr>& GetList()
 	{
 		return m_modelObjDataList;
 	}
@@ -73,7 +73,7 @@ private:
 	void LoadSaveData();
 private:
 	std::vector<StructObjectData> m_objectdataList;						//オブジェクトのデータ
-	std::map<float, SkinModel_ObjData*> m_modelObjDataList;				//図鑑で表示するためのオブジェクトのデータ
+	std::map<float, SkinModel_ObjDataPtr> m_modelObjDataList;			//図鑑で表示するためのオブジェクトのデータ
 };
 
 

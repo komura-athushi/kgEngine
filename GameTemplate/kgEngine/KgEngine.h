@@ -56,12 +56,12 @@ public:
 	//グラフィックエンジンを取得
 	GraphicsEngine& GetGraphicsEngine() const
 	{
-		return *m_graphicsEngine;
+		return *m_graphicsEngine.get();
 	}
 	//物理エンジンを取得
 	PhysicsWorld& GetPhysicsEngine() const
 	{
-		return *m_physicsEngine;
+		return *m_physicsEngine.get();
 	}
 	//CPadのインスタンスを取得
 	Pad& GetPad(int padNo)
@@ -70,8 +70,8 @@ public:
 	}
 private:
 	HWND m_hWnd = NULL;				
-	GraphicsEngine* m_graphicsEngine = nullptr;							//グラフィックエンジン
-	PhysicsWorld* m_physicsEngine = nullptr;							//物理エンジン
+	std::unique_ptr<GraphicsEngine> m_graphicsEngine = nullptr;							//グラフィックエンジン
+	std::unique_ptr<PhysicsWorld> m_physicsEngine = nullptr;							//物理エンジン
 	CGameObjectManager* m_gameobjectmanager = nullptr;					//ゲームオブジェクトマネージャー
 	CStopWatch m_watch;													//ゲーム内時間を図る
 	Pad m_pad[Pad::CONNECT_PAD_MAX];									//パッド

@@ -29,13 +29,13 @@ public:
 	ROTSTATUS FindRot(const wchar_t* moji);
 public:
 	//定義はcppファイルに
-    std::vector <const wchar_t*> MOVE;
-	std::vector <EnMove> MOVESTATE;
-	static const wchar_t* MOVELIMIT;
-	static const wchar_t* PATHNUMBER;
+    std::vector <const wchar_t*> m_move;
+	std::vector <EnMove> m_moveState;
+	static const wchar_t* m_moveLimit;
+	static const wchar_t* m_pathNumer;
 	//定義はcppファイルに
-	std::vector <const wchar_t*> ROT;
-	std::vector <EnRotate> ROTSTATE;
+	std::vector <const wchar_t*> m_rot;
+	std::vector <EnRotate> m_rotState;
 };
 
 static inline MOJI& Moji()

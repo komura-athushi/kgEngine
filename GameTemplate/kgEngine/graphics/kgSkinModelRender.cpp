@@ -10,9 +10,6 @@ CSkinModelRender::CSkinModelRender()
 
 CSkinModelRender::~CSkinModelRender()
 {
-	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
-		delete itr->second;
-	}
 }
 
 bool CSkinModelRender::Start()
@@ -31,7 +28,7 @@ void CSkinModelRender::Init(
 	m_enFbxUpAxis = fbxUpAxis;
 	m_filepath = filePath;
 	m_isInstancing = isInstancing;
-	m_skinModelList.emplace(0, new AnimModel());
+	m_skinModelList.emplace(0, std::make_unique<AnimModel>());
 	m_skinModelList[0]->s_skinModel.Init(filePath, fbxUpAxis);
 	InitAnimation(animationClip, numAnimationClips);
 	m_isActive = true;
@@ -57,7 +54,7 @@ void CSkinModelRender::InitAnimation(AnimationClip* animationClips, int numAnima
 	if (m_animationClip != nullptr) {
 		if (m_isInstancing) {
 			for (int i = 1; i <= m_numAnimationClips; i++) {
-				m_skinModelList.emplace(i, new AnimModel());
+				m_skinModelList.emplace(i, std::make_unique<AnimModel>());
 				m_skinModelList[i]->s_skinModel.Init(filePath, m_enFbxUpAxis);
 				m_skinModelList[i]->s_animation.Init(m_skinModelList[i]->s_skinModel, m_animationClip, m_numAnimationClips);
 				m_skinModelList[i]->s_animation.Play(i - 1, 0.0f);
@@ -167,7 +164,7 @@ void CSkinModelRender::PreUpdate()
 {
 	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
 		if (itr->second->s_skinModel.isShadowCaster()) {
-			Engine().GetGraphicsEngine().GetShadowMap()->RegistShadowCaster(&itr->second->s_skinModel);
+			//Engine().GetGraphicsEngine().GetShadowMap()->RegistShadowCaster(&itr->second->s_skinModel);
 			Engine().GetGraphicsEngine().GetCascadeShadowMap()->RegistShadowCaster(&itr->second->s_skinModel);
 		}
 	}

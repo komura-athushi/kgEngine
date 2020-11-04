@@ -30,6 +30,22 @@ public:
 		return m_owaOwari;
 	}
 private:
+	/**
+	 * レディゴー演出中の更新処理.
+	 * 
+	 */
+	void UpdateReadyGo();
+	/**
+	 * ゲーム中の更新処理.
+	 * 
+	 */
+	void UpdateInGame();
+	/**
+	 * ゲーム終了時の更新処理.
+	 * 
+	 */
+	void UpdateEndGame();
+private:
 	Ground* m_ground = nullptr;									//グラウンド
 	Player* m_player[m_splitMaximumNumber] = { nullptr ,nullptr};									//プレイヤー
 	GameCamera* m_gamecamera[m_splitMaximumNumber] = { nullptr ,nullptr};							//カメラ

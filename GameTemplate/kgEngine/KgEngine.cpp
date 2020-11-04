@@ -61,7 +61,7 @@ void CEngine::InitGame(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 	//ウィンドウを初期化。
 	InitWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, appName);
 	//DirectXの初期化。
-	m_graphicsEngine = new GraphicsEngine();
+	m_graphicsEngine = std::make_unique<GraphicsEngine>();
 	m_graphicsEngine->Init(m_hWnd);
 	m_gameobjectmanager = &GameObjectManager();
 	m_gameobjectmanager->Init(255);
@@ -73,7 +73,7 @@ void CEngine::InitGame(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 	m_pad[3].Init(3);
 
 	//物理エンジンの初期化
-	m_physicsEngine = new PhysicsWorld();
+	m_physicsEngine = std::make_unique<PhysicsWorld>();
 	m_physicsEngine->Init();
 }
 
@@ -143,10 +143,6 @@ void CEngine::Update()
 	m_gameobjectmanager->Draw();
 
 	m_graphicsEngine->EffektUpdate();
-
-	//m_graphicsEngine->NormalMapRender();
-
-	//m_graphicsEngine->DepthValueMapRender();
 
 	m_graphicsEngine->EdgeDelectionRender();
 

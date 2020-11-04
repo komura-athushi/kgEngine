@@ -58,22 +58,22 @@ void Ranking::Comparison(const int number)
 {
 	int memory = m_rankingList[number];
 	for (int i = number + 1; i < m_rankingList.size(); i++) {
-		int hoge = m_rankingList[i];
+		int tmp = m_rankingList[i];
 		m_rankingList[i] = memory;
-		memory = hoge;
+		memory = tmp;
 	}
 }
 
 void Ranking::Save()
 {
 	FILE* fp = NULL;
-	char hoge2[256];
-	wchar_t hoge[256];
-	swprintf_s(hoge, L"Assets/binarydata/savedata_ranking%d.txt", m_gameData->GetStageNumber());
+	char tmp2[MAX_PATH];
+	wchar_t tmp[MAX_PATH];
+	swprintf_s(tmp, L"Assets/binarydata/savedata_ranking%d.txt", m_gameData->GetStageNumber());
 	size_t wLen = 0;
 	errno_t err = 0;
-	err = wcstombs_s(&wLen, hoge2, 50, hoge, _TRUNCATE);
-	std::string fileName = hoge2;
+	err = wcstombs_s(&wLen, tmp2, MAX_PATH-1, tmp, _TRUNCATE);
+	std::string fileName = tmp2;
 
 	std::ofstream file;
 	file.open(fileName, std::ios::trunc);

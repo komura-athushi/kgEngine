@@ -180,6 +180,7 @@
     <ClInclude Include="OffScreen.h" />
     <ClInclude Include="OffScreenCamera.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerConst.h" />
     <ClInclude Include="Ranking.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="SoundDirector.h" />

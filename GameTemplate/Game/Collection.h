@@ -29,7 +29,7 @@ private:
 	ID3D11SamplerState* m_samplerState = nullptr;		//サンプラステート。
 	PostEffect m_postEffect[W_NUMBER * H_NUMBER];		//ポストエフェクト、1ページのモデル分
 	ID3D11RasterizerState* m_rasterizerState = NULL;	//ラスタライザステート。
-	std::map<float, SkinModel_ObjData*> m_modelList;	//モデルのマップ
+	const std::map<float, SkinModel_ObjDataPtr>* m_modelList = nullptr;	//モデルのマップ
 	float m_degree = 0.0f;								//モデルの回転の角度
 	int m_page = 1;										//何ページ目か
 	int m_listSize = 0;									//モデルの数

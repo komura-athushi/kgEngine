@@ -37,7 +37,7 @@ public:
 	//スキンモデル取得
 	SkinModel* GetSkinModel(int key)
 	{
-		return m_skinModelmap[key];
+		return m_skinModelmap[key].get();
 	}
 public:
 	ObjModelData* Load(const wchar_t* path);
@@ -45,7 +45,7 @@ private:
 	//unique_ptr  スマートポインタ、newしたメモリを指すポインタが存在しなければ自動的に
 	//deleteされる
 	std::unordered_map<int, std::unique_ptr<ObjModelData>> m_modelmap;			//ゲームで使用するモデルデータのマップ
-	std::unordered_map<int, SkinModel*> m_skinModelmap;							//塊魂小窓用のモデル
+	std::unordered_map<int, std::unique_ptr<SkinModel>> m_skinModelmap;							//塊魂小窓用のモデル
 };
 
 static inline ObjModelDataFactory& GetObjModelDataFactory()
@@ -154,8 +154,8 @@ private:
 	CMatrix m_worldMatrix;													//ワールド行列
 	EnMove m_movestate = enMove_No;											//移動ステート
 	EnRotate m_rotstate = enRot_No;											//回転ステート
-	IMove*  m_move = nullptr;												//移動処理をするクラス
-	IRotate* m_rot = nullptr;												//回転処理をするクラス
+	IMovePtr  m_move;														//移動処理をするクラス
+	IRotatePtr m_rot;														//回転処理をするクラス
 	Anim m_anim;															//アニメーション再生をするクラス
 	Player* m_player = nullptr;												//プレイヤー
 	float m_size = 0.0f;													//オブジェクトの半径
