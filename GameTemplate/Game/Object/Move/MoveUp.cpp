@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "MoveUp.h"
 
-
+namespace {
+	const float speed = 2.0f;
+}
 
 
 MoveUp::MoveUp()
@@ -14,64 +16,64 @@ MoveUp::~MoveUp()
 
 }
 
-void MoveUp::Init(const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot)
+void MoveUp::Init(const CVector3& pos, const float move, const float movelimit, const CQuaternion& rot)
 {
 	//上方向
 	CVector3 Parallel = { 0.0f,1.0f,0.0f };
 	m_position = pos;
-	m_movespeed = move;
-	m_movelimit = movelimit;
+	m_moveSpeed = move;
+	m_moveLimit = movelimit;
 	CQuaternion qrot = rot;
 	//クォータニオン分だけベクトルを回転させて
 	qrot.Multiply(Parallel);
-	Parallel *= m_movelimit / 2;
-	m_movelimitUp = m_position + Parallel;
-	m_movelimitDown = m_position - Parallel;
-	m_limittimer = movelimit / move;
+	Parallel *= m_moveLimit / 2;
+	m_moveLimitUp = m_position + Parallel;
+	m_moveLimitDown = m_position - Parallel;
+	m_limitTimer = movelimit / move;
 	SetMoveState();
 }
 
-CVector3 MoveUp::Move()
+const CVector3& MoveUp::Move()
 {
 	//もし移動ベクトルを計算していなかったら計算する
-	if (!m_isculcmovevector) {
+	if (!m_isCulcMoveVector) {
 		//上側
-		if (m_isaccessup) {
-			m_movevector = m_movelimitUp - m_position;
-			m_movevector.Normalize();
-			m_isculcmovevector = true;
+		if (m_isAccessUp) {
+			m_moveVector = m_moveLimitUp - m_position;
+			m_moveVector.Normalize();
+			m_isCulcMoveVector = true;
 		}
 		//下側
 		else {
-			m_movevector = m_movelimitDown - m_position;
-			m_movevector.Normalize();
-			m_isculcmovevector = true;
+			m_moveVector = m_moveLimitDown - m_position;
+			m_moveVector.Normalize();
+			m_isCulcMoveVector = true;
 		}
 	}
 	//座標を計算
-	m_position += m_movevector * GameTime().GetFrameDeltaTime() * m_movespeed;
-	if (m_isstart) {
-		m_timer += GameTime().GetFrameDeltaTime() * 2;
+	m_position += m_moveVector * GameTime().GetFrameDeltaTime() * m_moveSpeed;
+	if (m_isStart) {
+		m_timer += GameTime().GetFrameDeltaTime() * speed;
 	}
 	else {
 		m_timer += GameTime().GetFrameDeltaTime();
 	}
 	//左側に近づくなら
-	if (m_isaccessup) {
-		if (m_timer >= m_limittimer) {
-			m_isaccessup = false;
-			m_isculcmovevector = false;
+	if (m_isAccessUp) {
+		if (m_timer >= m_limitTimer) {
+			m_isAccessUp = false;
+			m_isCulcMoveVector = false;
 			m_timer = 0.0f;
-			m_isstart = false;
+			m_isStart = false;
 		}
 	}
 	//右側に近づくなら
 	else {
-		if (m_timer >= m_limittimer) {
-			m_isaccessup = true;
-			m_isculcmovevector = false;
+		if (m_timer >= m_limitTimer) {
+			m_isAccessUp = true;
+			m_isCulcMoveVector = false;
 			m_timer = 0.0f;
-			m_isstart = false;
+			m_isStart = false;
 		}
 	}
 	return m_position;

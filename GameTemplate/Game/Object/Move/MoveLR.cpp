@@ -3,7 +3,7 @@
 
 
 namespace {
-	float speed = 2,0f;
+	const float speed = 2.0f;
 }
 
 MoveLR::MoveLR()

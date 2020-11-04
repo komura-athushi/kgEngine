@@ -4,7 +4,7 @@
 namespace {
 	const float molecule = 5.0f;
 	const float addDegree = 180.0f / 2 / 180.0f * CMath::PI;
-	float degreeSpeed = 2.0f;
+	const float degreeSpeed = 2.0f;
 }
 
 MovePath::MovePath()

@@ -46,7 +46,7 @@ public:
 	 * 
 	 * \return ˆÚ“®ƒxƒNƒgƒ‹
 	 */
-	const CVector3& GetMoveVector() const override
+	const CVector3& GetMoveVector() const override final
 	{
 		return m_moveVector;
 	}
