@@ -1,15 +1,46 @@
+/*****************************************************************//**
+ * \file   Anim.h
+ * \brief Animクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "Object/Move/IMove.h"
+/**
+ * \brief オブジェクトのアニメーションの制御する.
+ */
 class Anim
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	Anim();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~Anim();
-	//初期化
+	/**
+	 * \brief 初期化処理.
+	 * 
+	 * \param filepath アニメーションのファイルパス
+	 * \param skin スキンモデルレンダラー
+	 */
 	void Init(const wchar_t* filepath,CSkinModelRender* skin);
-	//アニメーションを再生
+	/**
+	 * \brief アニメーションを再生.
+	 * 
+	 * \param state 移動状態を表すステート
+	 */
 	void PlayAnimation(EnMove state);
-	//現在再生中のアニメーションを取得
+	/**
+	 * \brief 現在再生中のアニメーションを取得.
+	 * 
+	 * \return 再生中のアニメーションの番号
+	 */
 	int GetPlayAnimationType()
 	{
 		return m_animationState;
@@ -23,7 +54,7 @@ private:
 		enAnimationClip_num
 	};
 	AnimationClip m_animClip[enAnimationClip_num];				//アニメーションクリップ
-	EnAnimationClip m_animationState = enAnimationClip_idle;
+	EnAnimationClip m_animationState = enAnimationClip_idle;	//再生中のアニメーションの番号
 	bool m_isInit = false;										//初期化した？
 };
 

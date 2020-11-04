@@ -1,12 +1,10 @@
-/*****************************************************************//**
- * \file   MoveFB.cpp
- * \brief  
- * 
- * \author akuro
- * \date   November 2020
- *********************************************************************/
+
 #include "stdafx.h"
 #include "MoveFB.h"
+
+namespace {
+	float speed = 2.0f;
+}
 
 MoveFB::MoveFB()
 {
@@ -18,64 +16,64 @@ MoveFB::~MoveFB()
 
 }
 
-void MoveFB::Init(const CVector3& pos, const float& move, const float& movelimit, const CQuaternion& rot)
+void MoveFB::Init(const CVector3& pos, const float move, const float movelimit, const CQuaternion& rot)
 {
 	//オブジェクトに平行なベクトル
 	CVector3 Parallel = { 0.0f,0.0f,1.0f };
 	m_position = pos;
-	m_movespeed = move;
-	m_movelimit = movelimit;
+	m_moveSpeed = move;
+	m_moveLimit = movelimit;
 	CQuaternion qrot = rot;
 	//クォータニオン分だけベクトルを回転させて
 	qrot.Multiply(Parallel);
-	Parallel *= m_movelimit / 2;
-	m_movelimitFront = m_position - Parallel;
-	m_movelimitBack = m_position + Parallel;
-	m_limittimer = movelimit / move;
+	Parallel *= m_moveLimit / 2;
+	m_moveLimitFront = m_position - Parallel;
+	m_moveLimitBack = m_position + Parallel;
+	m_limitTimer = movelimit / move;
 	SetMoveState();
 }
 
-CVector3 MoveFB::Move()
+const CVector3& MoveFB::Move() 
 {
 	//もし移動ベクトルを計算していなかったら計算する
-	if (!m_isculcmovevector) {
+	if (!m_isCulcMoveVector) {
 		//前側
-		if (m_isaccessfront) {
-			m_movevector = m_movelimitFront - m_position;
-			m_movevector.Normalize();
-			m_isculcmovevector = true;
+		if (m_isAccessFront) {
+			m_moveVector = m_moveLimitFront - m_position;
+			m_moveVector.Normalize();
+			m_isCulcMoveVector = true;
 		}
 		//後ろ側
 		else {
-			m_movevector = m_movelimitBack - m_position;
-			m_movevector.Normalize();
-			m_isculcmovevector = true;
+			m_moveVector = m_moveLimitBack - m_position;
+			m_moveVector.Normalize();
+			m_isCulcMoveVector = true;
 		}
 	}
 	//座標を計算
-	m_position += m_movevector * GameTime().GetFrameDeltaTime() * m_movespeed * 2.0f;
-	if (m_isstart) {
-		m_timer += GameTime().GetFrameDeltaTime() * 2;
+	m_position += m_moveVector * GameTime().GetFrameDeltaTime() * m_moveSpeed * speed;
+	if (m_isStart) {
+		m_timer += GameTime().GetFrameDeltaTime() * speed;
 	}
 	else {
 		m_timer += GameTime().GetFrameDeltaTime();
 	}
 	//前側に近づくなら
-	if (m_isaccessfront) {
-		if (m_timer >= m_limittimer) {
-			m_isaccessfront = false;
-			m_isculcmovevector = false;
+	if (m_isAccessFront) {
+		if (m_timer >= m_limitTimer) {
+			m_isAccessFront = false;
+			m_isCulcMoveVector = false;
 			m_timer = 0.0f;
-			m_isstart = false;
+			m_isStart = false;
 		}
 	}
 	//後ろ側に近づくなら
 	else {
-		if (m_timer >= m_limittimer) {
-			m_isaccessfront = true;
-			m_isculcmovevector = false;
+		if (m_timer >= m_limitTimer) {
+			m_isAccessFront = true;
+			m_isCulcMoveVector = false;
 			m_timer = 0.0f;
-			m_isstart = false;
+			m_isStart = false;
 		}
 	}
 	return m_position;

@@ -1,10 +1,4 @@
-/*****************************************************************//**
- * \file   Anim.cpp
- * \brief  
- * 
- * \author akuro
- * \date   November 2020
- *********************************************************************/
+
 #include "stdafx.h"
 #include "Anim.h"
 
@@ -41,12 +35,10 @@ void Anim::PlayAnimation(EnMove state)
 	if (m_isInit) {
 		//ヒットしたらヒット用のアニメーションを再生
 		if(state == enMove_MoveHit) {
-			//m_skinModelRender->PlayAnimation(enAnimationClip_idle, 1.0f);
 			m_animationState = enAnimationClip_idle;
 		}
 		//していなかったらそれ以外のアニメーション再生
 		else {
-			//m_skinModelRender->PlayAnimation(enAnimationClip_walk, 1.0f);
 			m_animationState = enAnimationClip_walk;
 		}
 	}

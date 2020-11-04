@@ -1,21 +1,70 @@
+/*****************************************************************//**
+ * \file   Collection.h
+ * \brief  コレクション
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "graphics/RenderTarget.h"
 #include "OffScreenCamera.h"
 #include "Object/ObjectData.h"
 
 class Fade;
+/**
+ * \brief 図鑑を表示するクラス。
+ */
 class Collection : public IGameObject
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	Collection();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~Collection();
-	bool Start() override;
-	void Draw() override;
+	/**
+	 * \brief 更新前の初期化処理.
+	 * 
+	 * \return trueで初期化が終わった.
+	 */
+	bool Start() override final;
+	/**
+	 * \brief 更新処理.
+	 * 
+	 */
+	void Update() override final;
+	/**
+	 * \brief 描画処理.
+	 * 
+	 */
+	void Draw() override final;
 private:
-	//サンプルステート初期化
+	/**
+	 * \brief サンプルステート初期化.
+	 * 
+	 */
 	void InitSamplerState();
-	//モデル描画していく
+	/**
+	 * \brief 各種モデルの描画処理.
+	 * 
+	 */
 	void OffScreenRender();
+	/**
+	 * \brief カーソルの更新処理.
+	 * 
+	 */
+	void UpdateCursor();
+	/**
+	 * \brief カメラの更新処理.
+	 * 
+	 * \param skinModel　スキンモデル
+	 */
+	void UpdateCamera(SkinModel_ObjData* data);
 private:
 	const static int W_NUMBER = 4;						//横幅
 	const static int H_NUMBER = 4;						//縦幅
@@ -44,7 +93,7 @@ private:
 	CFont m_font;										//文字
 	int m_hitNumber = 0;								//巻き込んだものの数
 	SkinModel m_model;									//左端用のモデル
-	bool m_isWaitFadeout = false;
+	bool m_isWaitFadeout = false;						
 	Fade* m_fade = nullptr;				
 };
 
