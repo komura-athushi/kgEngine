@@ -1,52 +1,120 @@
+/*****************************************************************//**
+ * \file   Fade.h
+ * \brief  Fadeクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 
+/**
+ * \brief フェードを管理.
+ */
 class Fade:public IGameObject
 {
-	//シングルトン、そのクラスのインスタンスが一つしか存在しえないことを示すデザインパターンの一つです
 private:
-	//コンストラクタとデストラクタをprivateに宣言することで外部から生成出来なくします
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	Fade();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~Fade();
 public:
-	//この関数を使ってGameDataクラスのインスタンスを生成します
-	//この関数内のローカルな静的変数は最初に関数が呼ばれるときには初期化されますが、以降呼ばれる時は初期化されません
+	/**
+	 * \brief インスタンスを取得.
+	 * 
+	 * \return 
+	 */
 	static Fade& GetInstance()
 	{
 		//privateなコンストラクタを呼び出す
 		static Fade inst;
 		return inst;
 	}
-	bool Start() override;
-	void Update() override;
-	void PostRender() override;
+	/**
+	 * \brief 初期化.
+	 * 
+	 * \return trueで初期化完了
+	 */
+	bool Start() override final;
+	/**
+	 * \brief 更新処理.
+	 * 
+	 */
+	void Update() override final;
+	/**
+	 * \brief 描画処理.
+	 * 
+	 */
+	void PostRender() override final;
+	/**
+	 * \brief スタートフェードイン.
+	 * 
+	 */
 	void StartFadeIn()
 	{
 		m_state = enState_FadeOutLoading;
 	}
+	/**
+	 * \brief スタートフェードアウト.
+	 * 
+	 */
 	void StartFadeOut()
 	{
 		m_state = enState_FadeOut;
 	}
+	/**
+	 * \brief スタートスローフェードイン.
+	 * 
+	 */
 	void StartFadeSlowIn()
 	{
 		m_state = enState_FadeSlowIn;
 	}
+	/**
+	 * \brief スタートスローフェードアウト.
+	 * 
+	 */
 	void StartFadeSlowOut()
 	{
 		m_state = enState_FadeSlowOut;
 	}
+	/**
+	 * \brief フェード中？.
+	 * 
+	 * \return フェードしてたらtrue
+	 */
 	bool IsFade() const
 	{
 		return m_state != enState_Idle;
 	}
+	/**
+	 * \brief アルファ値を取得.
+	 * 
+	 * \return アルファ値
+	 */
 	float GetCurrentAlpha() const
 	{
 		return m_currentAlpha;
 	}
+	/**
+	 * \brief フェードイン中？.
+	 * 
+	 * \return フェードイン中ならtrue
+	 */
 	bool IsFadeIn() const
 	{
 		return m_state == enState_FadeIn;
 	}
+	/**
+	 * \brief 待機中？.
+	 * 
+	 * \return 待機中ならtrue
+	 */
 	bool IsIdle() const
 	{
 		return m_state == enState_Idle;
@@ -62,7 +130,7 @@ private:
 		enState_Idle,		//!<アイドル中。
 
 	};
-	CSprite m_sprite;
+	CSprite m_sprite;						//スプライト
 	CSprite m_loading;
 	EnState m_state = enState_Idle;	//!<状態。
 	float m_currentAlpha = 0.0f;		//!<現在のα値。

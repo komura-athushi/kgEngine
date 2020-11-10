@@ -5,6 +5,7 @@
 #include <math.h> 
 #include "GameData.h"
 #include <random>
+
 GameCamera::GameCamera()
 {
 

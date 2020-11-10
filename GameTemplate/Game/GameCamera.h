@@ -39,9 +39,16 @@ public:
 	 * 
 	 * \return	trueを返したら初期化終了。
 	 */
-	bool Start() override;
-	void Update() override;
-	//スティックの入力状態を取得
+	bool Start() override final;
+	/**
+	 * \brief 更新処理.
+	 */
+	void Update() override final; 
+	/**
+	 * \brief スティックの入力状態を取得.
+	 * 
+	 * \return スティックの入力状態
+	 */
 	StateEnterStick GetStateStick() const
 	{
 		return m_state;
@@ -55,33 +62,57 @@ public:
 	{
 		m_position = position;
 	}
-	//注視点を設定
+	/**
+	 * \brief 注視点.
+	 * 
+	 * \param target 注視点
+	 */
 	void SetTarget(const CVector3& target)
 	{
 		m_target = target;
 	}
-	//カメラの座標から注視点までの距離を取得
+	/**
+	 * \brief 注視点と座標の距離を取得.
+	 * 
+	 * \return 注視点と座標の距離
+	 */
 	float GetRadius() const
 	{
 		return m_radius;
 	}
-	//プレイヤーを設定
+	/**
+	 * \brief プレイヤーを設定.
+	 * 
+	 * \param player プレイヤー
+	 */
 	void SetPlayer(Player* player)
 	{
 		m_player = player;
 	}
-	//プレイヤーの番号を設定
+	/**
+	 * \brief プレイヤーの番号(1Pか2Pか)を設定.
+	 * 
+	 * \param number プレイヤーの番号
+	 */
 	void SetPlayerNumber(const int number)
 	{
 		m_playerNumber = number;
 	}
 private:
-	//パッドの入力を考慮してカメラの視点と注視点を計算
+	/**
+	 * \brief パッドの入力を考慮してカメラの視点と注視点を計算.
+	 * 
+	 */
 	void Calculation();
-	//プレイヤーの大きさを考慮してカメラの半径を変える
+	/**
+	 * \brief プレイヤーの大きさを考慮してカメラの半径を変える.
+	 * 
+	 */
 	void TransRadius();
-	//L3とR3を同時押しした時に視点を変更する
-	
+	/**
+	 * 	L3とR3を同時押しした時に視点を変更する.
+	 * 
+	 */
 	void TransView();
 private:
 	CVector3 m_position = CVector3::Zero();				//!視点

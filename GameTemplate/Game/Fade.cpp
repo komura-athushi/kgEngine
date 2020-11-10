@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "Fade.h"
 
+namespace {
+	const float scaler = 1.0f;
+}
+
 Fade::Fade()
 {
 	SetPriorityGO(this, 5);
@@ -20,33 +24,23 @@ bool Fade::Start()
 }
 void Fade::Update()
 {
-	const float Scaler = 1.0f;
+	
 
 	switch (m_state) {
 	case enState_FadeIn:
-		//m_currentAlpha -= 1.5f * GameTime().GetFrameDeltaTime();
-		m_position.y += FRAME_BUFFER_H * GameTime().GetFrameDeltaTime() * Scaler;
-		m_position.x -= FRAME_BUFFER_W * GameTime().GetFrameDeltaTime() * Scaler;
+		m_position.y += FRAME_BUFFER_H * GameTime().GetFrameDeltaTime() * scaler;
+		m_position.x -= FRAME_BUFFER_W * GameTime().GetFrameDeltaTime() * scaler;
 		if (m_position.y >= FRAME_BUFFER_H) {
 			m_state = enState_Idle;
 			m_position = CVector2(FRAME_BUFFER_W * 2, -FRAME_BUFFER_H);
 		}
-		/*if (m_currentAlpha <= 0.0f) {
-			m_currentAlpha = 0.0f;
-			m_state = enState_Idle;
-		}*/
 		break;
 	case enState_FadeOut:
-		//m_currentAlpha += 1.5f * GameTime().GetFrameDeltaTime();
-		m_position.y += FRAME_BUFFER_H * GameTime().GetFrameDeltaTime() * Scaler;
-		m_position.x -= FRAME_BUFFER_W * GameTime().GetFrameDeltaTime() * Scaler;
+		m_position.y += FRAME_BUFFER_H * GameTime().GetFrameDeltaTime() * scaler;
+		m_position.x -= FRAME_BUFFER_W * GameTime().GetFrameDeltaTime() * scaler;
 		if (m_position.y >= FRAME_BUFFER_H / 2) {
 			m_state = enState_FadeInLoading;
 		}
-		/*if (m_currentAlpha >= 1.0f) {
-			m_currentAlpha = 1.0f;
-			m_state = enState_Idle;
-		}*/
 		break;
 	case enState_FadeInLoading:
 		m_currentAlpha += 1.5f * GameTime().GetFrameDeltaTime();

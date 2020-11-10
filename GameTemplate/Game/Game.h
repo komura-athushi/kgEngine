@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   Game.h
+ * \brief  Gameクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "level/Level.h"
 
@@ -9,39 +16,73 @@ class Time;
 class Fade;
 class GameData;
 class OffScreen;
-//ゲームクラス
+/**
+ * \brief ゲームシーンを管理するクラス.
+ */
 class Game:public IGameObject
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	Game();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~Game();
-	bool Start() override;
-	void Update() override;
-	void OnDestroy() override;
-	void PostRender() override;
-	//ステージがオワオワリと設定する
+	/**
+	 * \brief 初期化処理.
+	 * 
+	 * \return trueで初期化完了
+	 */
+	bool Start() override final;
+	/**
+	 * \brief 更新処理.
+	 * 
+	 */
+	void Update() override final;
+	/**
+	 * \brief delete前の処理.
+	 * 
+	 */
+	void OnDestroy() override final;
+	/**
+	 * \brief 描画処理.
+	 * 
+	 */
+	void PostRender() override final;
+	/**
+	 * \brief ステージ終了フラグを建てる.
+	 * 
+	 */
 	void SetOwaOwari()
 	{
 		m_owaOwari = true;
 	}
-	//オワオワリ？
+	/**
+	 * \brief ステージの終了フラグが建っているかどうか取得.
+	 * 
+	 * \return ステージの終了フラグが建っていたらtrue
+	 */
 	bool GetisOwaOwari()
 	{
 		return m_owaOwari;
 	}
 private:
 	/**
-	 * レディゴー演出中の更新処理.
+	 * \brief レディゴー演出中の更新処理.
 	 * 
 	 */
 	void UpdateReadyGo();
 	/**
-	 * ゲーム中の更新処理.
+	 * \brief ゲーム中の更新処理.
 	 * 
 	 */
 	void UpdateInGame();
 	/**
-	 * ゲーム終了時の更新処理.
+	 * \brief ゲーム終了時の更新処理.
 	 * 
 	 */
 	void UpdateEndGame();

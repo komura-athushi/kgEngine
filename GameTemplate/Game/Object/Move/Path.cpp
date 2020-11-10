@@ -52,6 +52,7 @@ Point* Path::GetNearPoint(const CVector3& pos)
 
 Point* Path::GetPoint(const int& number)
 {
+	//番号が最後のポイントだったら最初のポイント
 	if (number == m_pointList.size()) {
 		return &m_pointList[0];
 	}

@@ -133,7 +133,7 @@ void Player::AddVolume(const float volume)
 
 void Player::Judgment()
 {
-	const float LenghtMultiply = 1.0f;
+	/*const float LenghtMultiply = 1.0f;
 	const float SizeMultiply = 0.9f;
 
 	QueryGOs<Obj>(nullptr, [&](Obj* object) {
@@ -178,7 +178,7 @@ void Player::Judgment()
 			}
 		}
 		return true;
-	});
+	});*/
 }
 
 void Player::Move()

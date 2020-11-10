@@ -1,33 +1,65 @@
+/*****************************************************************//**
+ * \file   Moji.h
+ * \brief  Mojiクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include <wchar.h>
 #include "Object/Move/IMove.h"
 #include "Object/Rotation/IRot.h"
-struct MOVESTATUS {
+struct MoveStatus {
 	EnMove s_state;					//MOVEの種類
 	int s_move;						//移動速度
 	int s_limit;					//移動範囲
-	int s_pathnumber = 0;
+	int s_pathnumber = 0;			//パスの数
 };
 
-struct ROTSTATUS {
+struct RotStatus {
 	EnRotate s_state;				//ROTの種類
 	float s_speed;					//回転の速さ
 };
-//外部ファイルからオブジェクトの情報を取得する
-class MOJI {
+/**
+ * \brief オブジェクトの名前から移動回転などの情報を取得する.
+ */
+class Moji {
 private:
-	MOJI();
-	~MOJI();
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
+	Moji();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
+	~Moji();
 public:
-	static MOJI& GetInstance() {
-		static MOJI instance;
+	/**
+	 * \brief インスタンスを取得.
+	 * 
+	 * \return インスタンス
+	 */
+	static Moji& GetInstance() {
+		static Moji instance;
 		return instance;
 	}
-	//移動について情報を文字列から書き出す
-	MOVESTATUS FindMove(const wchar_t* moji);
-	//回転について情報を文字列から書き出す
-	ROTSTATUS FindRot(const wchar_t* moji);
-public:
+	/**
+	 * \brief オブジェクトの名前から移動の情報を取得.
+	 * 
+	 * \param moji オブジェクトの名前
+	 * \return 移動情報
+	 */
+	 const MoveStatus FindMove(const wchar_t* moji);
+	/**
+	 * \brief オブジェクトの名前から回転の情報を取得.
+	 * 
+	 * \param moji オブジェクトの名前
+	 * \return 回転情報
+	 */
+	const RotStatus FindRot(const wchar_t* moji);
+private:
 	//定義はcppファイルに
     std::vector <const wchar_t*> m_move;
 	std::vector <EnMove> m_moveState;
@@ -38,19 +70,34 @@ public:
 	std::vector <EnRotate> m_rotState;
 };
 
-static inline MOJI& Moji()
+/**
+ * Mojiインスタンスを取得.
+ * 
+ * \return Mojiインスタンス 
+ */
+static inline Moji& GetMoji()
 {
-	return MOJI::GetInstance();
+	return Moji::GetInstance();
 }
 
-//移動の種類と移動速度と移動範囲を返す
-static MOVESTATUS FindMove(const wchar_t* moji)
+/**
+ * \brief オブジェクトの名前から移動の情報を取得.
+ * 
+ * \param moji オブジェクトの名前
+ * \return 移動情報
+ */
+static inline const MoveStatus FindMove(const wchar_t* moji)
 {
-	return Moji().FindMove(moji);
+	return GetMoji().FindMove(moji);
 }
 
-//回転の種類と回転速度を返す
-static ROTSTATUS FindRot(const wchar_t* moji)
+/**
+ * \brief オブジェクトの名前から回転の情報を取得.
+ * 
+ * \param moji オブジェクトの名前
+ * \return 移動情報
+ */
+static inline const RotStatus FindRot(const wchar_t* moji)
 {
-	return Moji().FindRot(moji);
+	return GetMoji().FindRot(moji);
 }

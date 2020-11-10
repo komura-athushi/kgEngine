@@ -3,7 +3,7 @@
  * \brief MoveUpƒNƒ‰ƒX 
  * 
  * 
- * \author akuro
+ * \author komura
  * \date   November 2020
  *********************************************************************/
 #pragma once

@@ -19,16 +19,16 @@ MoveUp::~MoveUp()
 void MoveUp::Init(const CVector3& pos, const float move, const float movelimit, const CQuaternion& rot)
 {
 	//上方向
-	CVector3 Parallel = { 0.0f,1.0f,0.0f };
+	CVector3 parallel = { 0.0f,1.0f,0.0f };
 	m_position = pos;
 	m_moveSpeed = move;
 	m_moveLimit = movelimit;
 	CQuaternion qrot = rot;
 	//クォータニオン分だけベクトルを回転させて
-	qrot.Multiply(Parallel);
-	Parallel *= m_moveLimit / 2;
-	m_moveLimitUp = m_position + Parallel;
-	m_moveLimitDown = m_position - Parallel;
+	qrot.Multiply(parallel);
+	parallel *= m_moveLimit / speed;
+	m_moveLimitUp = m_position + parallel;
+	m_moveLimitDown = m_position - parallel;
 	m_limitTimer = movelimit / move;
 	SetMoveState();
 }

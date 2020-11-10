@@ -5,6 +5,16 @@
 #include "graphics\depthvalue\DepthValueMap.h"
 #include < locale.h >
 
+namespace {
+	const float speed = 30.0f;
+	const float distance = 5.0f;		//大きくすればモデルとカメラの距離が大きくなる
+	const float divide = 1.65f;			//大きくすればカメラのy座標が小さくなる
+	const float angleMagY = 3.3f;		//画角の倍率
+	const float angleMagXZ = 2.3f;		//画角の倍率
+	const CVector2 fontPosition = CVector2(1050.0f, 685);
+	const CVector2 fontSize = CVector2(0.7f, 0.7f);
+}
+
 OffScreen::OffScreen()
 {
 
@@ -51,11 +61,11 @@ void OffScreen::InitSamplerState()
 
 void OffScreen::PostRender()
 {
+	//バトルモードは小窓表示しない
 	if (Engine().GetGraphicsEngine().GetSplitNumber() != 1) {
 		return;
 	}
-	//return;
-	m_degree += GameTime().GetFrameDeltaTime() * 30.0f;
+	m_degree += GameTime().GetFrameDeltaTime() * speed;
 	m_rot.SetRotationDeg(CVector3::AxisY(), m_degree);	
 	auto d3dDeviceContext = Engine().GetGraphicsEngine().GetD3DDeviceContext();
 	//レンダリングターゲットを切り替える。
@@ -77,29 +87,30 @@ void OffScreen::PostRender()
 
 	m_sprite.Draw();
 
+	//モデルが設定されていたら
 	if (m_skinModel != nullptr) {
 		//モデルにあわせてカメラの座標を設定
-		float x = m_objData->s_x * 5.0f;
-		float z = m_objData->s_z * 5.0f;
-		float y = m_objData->s_y * 5.0f;
+		float x = m_objData->s_x * distance;
+		float z = m_objData->s_z * distance;
+		float y = m_objData->s_y * distance;
 		if (x >= z && x >= y) {
-			m_offScreenCamera.SetPosition(CVector3(0.0f, x / 1.65f, x));
+			m_offScreenCamera.SetPosition(CVector3(0.0f, x / divide, x));
 		}
 		else if (z >= y && z >= x) {
-			m_offScreenCamera.SetPosition(CVector3(0.0f, z / 1.65f, z));
+			m_offScreenCamera.SetPosition(CVector3(0.0f, z / divide, z));
 		}
 		else {
-			m_offScreenCamera.SetPosition(CVector3(0.0f, y / 1.65f, y));
+			m_offScreenCamera.SetPosition(CVector3(0.0f, y / divide, y));
 		}
 		//https://qiita.com/akurobit/items/a6dd03baef6c05d7eae8
 		//を参照
-		float angle = atan2f(m_objData->s_y * 3.3f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
+		float angle = atan2f(m_objData->s_y * angleMagY, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
 		float angle2;
 		if (m_objData->s_x >= m_objData->s_z) {
-			angle2 = atan2f(m_objData->s_x * 2.2f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+			angle2 = atan2f(m_objData->s_x * angleMagXZ, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
 		}
 		else {
-			angle2 = atan2f(m_objData->s_z * 2.2f, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+			angle2 = atan2f(m_objData->s_z * angleMagXZ, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
 		}
 		if (angle >= angle2) {
 			m_offScreenCamera.SetViewAngle(angle);
@@ -111,14 +122,10 @@ void OffScreen::PostRender()
 		m_skinModel->UpdateWorldMatrix(m_position, m_rot, m_scale);
 		m_skinModel->Draw(m_offScreenCamera.GetCamera(), enRenderMode_Normal, false);
 
-		//Engine().GetGraphicsEngine().GetNormalMap()->RenderNormalMap(m_offScreenCamera.GetCamera(), m_skinModel);
-
 		Engine().GetGraphicsEngine().GetEdgeDelection()->EdgeRender(*Engine().GetGraphicsEngine().GetPostEffect());
 		Engine().GetGraphicsEngine().GetEdgeDelection()->Draw(*Engine().GetGraphicsEngine().GetPostEffect(), &m_offRenderTarget);
 	}
 
-
-	//Engine().GetGraphicsEngine().ChangeRenderTarget(Engine().GetGraphicsEngine().GetMainRenderTarget(),Engine().GetGraphicsEngine().GetMainRenderTarget()->GetViewport());
 	Engine().GetGraphicsEngine().ChangeRenderTargetFrameBuffer();
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 	//シーンをテクスチャとする。
@@ -128,13 +135,13 @@ void OffScreen::PostRender()
 	ID3D11ShaderResourceView* s[] = { NULL };
 	d3dDeviceContext->PSSetShaderResources(0, 1, s);
 	if (m_skinModel != nullptr) {
-
+		//オブジェクトの名前を表示する
 		wchar_t output[256];
 		size_t wLen = 0;
 		errno_t err = 0;
 		setlocale(LC_ALL, "japanese");
 		err = mbstowcs_s(&wLen, output, 20, m_objData->s_jName, _TRUNCATE);
-		m_font.DrawScreenPos(output, CVector2(1050.0f, 685), CVector4::Yellow(), { 0.7f,0.7f });
+		m_font.DrawScreenPos(output, fontPosition, CVector4::Yellow(), fontSize);
 	}
 }
 

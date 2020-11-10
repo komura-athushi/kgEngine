@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "RotSelf.h"
 
+namespace {
+	const float speed = 30.0f;
+}
+
 RotSelf::RotSelf()
 {
 
@@ -11,7 +15,7 @@ RotSelf::~RotSelf()
 
 }
 
-void RotSelf::Init(const CQuaternion& rot, const float& speed)
+void RotSelf::Init(const CQuaternion& rot, const float speed)
 {
 	m_rotation = rot;
 	m_speed = speed;
@@ -20,9 +24,9 @@ void RotSelf::Init(const CQuaternion& rot, const float& speed)
 	m_degree = acosf(Parallel.Dot(CVector3::AxisZ()));
 }
 
-CQuaternion RotSelf::Rot(const CVector3& move)
+const CQuaternion RotSelf::Rot(const CVector3& move)
 {
-	m_degree += m_speed * GameTime().GetFrameDeltaTime() * 30.0f;
+	m_degree += m_speed * GameTime().GetFrameDeltaTime() * speed;
 	CQuaternion rot;
 	rot.SetRotationDeg(CVector3::AxisY(), m_degree);
 	CQuaternion finalRot;

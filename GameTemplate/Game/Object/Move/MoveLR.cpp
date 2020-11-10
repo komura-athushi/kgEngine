@@ -19,16 +19,16 @@ MoveLR::~MoveLR()
 void MoveLR::Init(const CVector3& pos, const float move, const float movelimit,const CQuaternion& rot)
 {
 	//オブジェクトに平行なベクトル
-	CVector3 Parallel = { 1.0f,0.0f,0.0f };
+	CVector3 parallel = { 1.0f,0.0f,0.0f };
 	m_position = pos;
 	m_moveSpeed = move;
 	m_moveLimit = movelimit;
 	CQuaternion qrot = rot;
 	//クォータニオン分だけベクトルを回転させて
-	qrot.Multiply(Parallel);
-	Parallel *= m_moveLimit / 2;
-	m_moveLimitLeft = m_position - Parallel;
-	m_moveLimitRight = m_position + Parallel;
+	qrot.Multiply(parallel);
+	parallel *= m_moveLimit / 2;
+	m_moveLimitLeft = m_position - parallel;
+	m_moveLimitRight = m_position + parallel;
 	m_limitTimer = movelimit / move;
 	SetMoveState();
 }

@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "StageSelectGround.h"
 
+namespace {
+	const float moveSpeedMultiply = 2.0f;		//移動速度
+	const float rotationSpeed = 0.8f;			//回転速度
+
+}
+
 StageSelectGround::StageSelectGround()
 {
 
@@ -13,6 +19,7 @@ StageSelectGround::~StageSelectGround()
 
 bool StageSelectGround::Start()
 {
+	//モデル初期化
 	m_skinModelRender.Init(L"Resource/modelData/earth.cmo");
 	m_skinModelRender.SetPosition(m_position);
 	m_skinModelRender.SetRotation(m_rotation);
@@ -34,9 +41,7 @@ void StageSelectGround::Update()
 
 void StageSelectGround::Move()
 {
-	//移動速度
-	const float moveSpeedMultiply = 2.0f;
-
+	
 	m_beforePosition = m_currentPosition;
 	CVector3 stickL;
 	stickL.x = GetPad(0).GetLStickXF();
@@ -46,15 +51,10 @@ void StageSelectGround::Move()
 	moveSpeed.z = moveSpeed.y;
 	moveSpeed.y = 0.0f;
 	m_currentPosition += moveSpeed * moveSpeedMultiply;
-	int a = 0;
-	a++;
 }
 
 void StageSelectGround::Turn()
 {
-	//回転速度
-	const float RotationSpeed = 0.8f;
-
 	CVector3 movespeedXZ = m_currentPosition - m_beforePosition;
 	movespeedXZ.y = 0.0f;
 	if (movespeedXZ.LengthSq() <= 0.01f) {
@@ -68,7 +68,7 @@ void StageSelectGround::Turn()
 	pos.Cross(CVector3::AxisY(), movespeedXZ);
 	//外積ベクトルを元に回転させるクォータニオンを求める
 	CQuaternion rot;
-	rot.SetRotationDeg(pos, Lengh * RotationSpeed);
+	rot.SetRotationDeg(pos, Lengh * rotationSpeed);
 	//求めたクォータニオンを乗算する
 	m_rotation.Multiply(rot, m_rotation);
 	m_skinModelRender.SetRotation(m_rotation);

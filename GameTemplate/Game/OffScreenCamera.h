@@ -1,48 +1,101 @@
+/*****************************************************************//**
+ * \file   OffScreenCamera.h
+ * \brief  OffScreenCameraクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "graphics/Camera.h"
+/**
+ * \brief 小窓や図鑑用のカメラ.
+ */
 class OffScreenCamera
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	OffScreenCamera();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~OffScreenCamera();
-	//アップデート
+	/**
+	 * \brief 更新処理.
+	 * 
+	 */
 	void Update();
-	//プロジェクション行列を取得
-	CMatrix GetProjectionMatrix()
+	/**
+	 * \brief プロジェクション行列を取得.
+	 * 
+	 * \return プロジェクション行列
+	 */
+	const CMatrix& GetProjectionMatrix() const
 	{
 		return m_camera.GetProjectionMatrix();
 	}
-	//ビュー行列を取得
-	CMatrix GetViewMatrix()
+	/**
+	 * \brief ビュー行列を取得.
+	 * 
+	 * \return ビュー行列
+	 */
+	const CMatrix& GetViewMatrix() const
 	{
 		return m_camera.GetViewMatrix();
 	}
-	//注視点を設定
+	/**
+	 * \brief 注視点を設定.
+	 * 
+	 * \param target 注視点
+	 */
 	void SetTarget(const CVector3& target)
 	{
 		m_target = target;
 	}
-	//注視点を取得
-	CVector3 GetTarget()
+	/**
+	 * \brief 注視点を取得.
+	 * 
+	 * \return 注視点
+	 */
+	const CVector3& GetTarget() const
 	{
 		return m_target;
 	}
-	//座標を設定
+	/**
+	 * \brief 座標を設定.
+	 * 
+	 * \param position 座標
+	 */
 	void SetPosition(const CVector3& position)
 	{
 		m_position = position;
 	}
-	//座標を取得
-	CVector3 GetPosition()
+	/**
+	 * \brief 座標を取得.
+	 * 
+	 * \return 座標
+	 */
+	const CVector3& GetPosition() const
 	{
 		return m_position;
 	}
-	//画角を設定
-	void SetViewAngle(float angle)
+	/**
+	 * \brief 画角を設定.
+	 * 
+	 * \param angle 画角
+	 */
+	void SetViewAngle(const float angle)
 	{
 		m_camera.SetViewAngle(angle);
 	}
-	//カメラを取得
+	/**
+	 * \brief カメラを取得.
+	 * 
+	 * \return カメラ
+	 */
 	Camera* GetCamera()
 	{
 		return &m_camera;

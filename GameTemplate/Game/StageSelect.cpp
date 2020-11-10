@@ -12,6 +12,12 @@
 #include "StageSelectGround.h"
 #include "StageSelectPoint.h"
 
+namespace {
+	const float cameraPositionY = 80.0f;		//カメラのY座標を＋する
+	const CVector2 fontPosition = CVector2(550.0f, 100.0f);			//フォントの座標
+	const float distance = 10.0f * 10.0f;		//プレイヤーとポイントが一定距離内なら
+}
+
 StageSelect::StageSelect()
 {
 
@@ -85,17 +91,20 @@ bool StageSelect::Start()
 		return true;
 
 	});
+	//カメラ設置
 	CVector3 cameraTarget = m_player->GetPosition();
-	MainCamera().SetPosition({ cameraTarget.x,cameraTarget.y + 80.0f,cameraTarget.x });
+	MainCamera().SetPosition({ cameraTarget.x,cameraTarget.y + cameraPositionY,cameraTarget.x });
 	MainCamera().SetTarget(cameraTarget);
 	MainCamera().Update();
 	m_backSprite.Init(L"Resource/sprite/space.dds");
 
+	//前にプレイしたモードがバトルモードじゃなかったら
 	if (!m_gameData->GetisBattle()) {
 		//セーブする
-		ObjectData::GetInstance().SaveData();
+		GetObjectData().SaveData();
 		GetGameData().SaveDataStageClear();
 	}
+	//BGMを設定
 	SoundData().SetBGM(enBGM_StageSelect);
 
 	m_fade = &Fade::GetInstance();
@@ -191,7 +200,7 @@ void StageSelect::TurnPlayer()
 
 void StageSelect::DistanceStagePoint()
 {
-	const float distance = 10.0f * 10.0f;
+	
 
 	m_stageSelectPoint = nullptr;
 	//各ポイントとプレイヤーとの距離を調べる
@@ -210,7 +219,7 @@ void StageSelect::PostRender()
 		return;
 	}
 
-	//文字表示すっぺ
+	//ポイントに近づいたら、文字表示すっぺ
 	wchar_t hoge[256];
 	switch (m_stageSelectPoint->GetPoint())
 	{
@@ -226,5 +235,5 @@ void StageSelect::PostRender()
 		break;
 	}
 
-	m_font.DrawScreenPos(hoge, { 550.0f,100.0f });
+	m_font.DrawScreenPos(hoge, fontPosition);
 }

@@ -1,28 +1,66 @@
+/*****************************************************************//**
+ * \file   OffScreen.h
+ * \brief  OffScreenクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "graphics/RenderTarget.h"
 #include "OffScreenCamera.h"
 #include "Object/ObjectData.h"
 #include "graphics/2D/kgFont.h"
 
+/**
+ * \brief 右下の小窓に巻き込んだオブジェクトを表示するクラス.
+ */
 class OffScreen : public IGameObject
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	OffScreen();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~OffScreen();
-	bool Start() override;
-	void PostRender() override;
-	//小窓に表示するようのモデルをセット
+	/**
+	 * \brief 初期化処理.
+	 *
+	 * \return trueで初期化完了
+	 */
+	bool Start() override final;
+	/**
+	 * \brief 描画処理.
+	 * 
+	 */
+	void PostRender() override final;
+	/**
+	 * \brief 右下の小窓に表示するモデルを設定.
+	 * 
+	 * \param skinModel モデル
+	 */
 	void SetSkinModel(SkinModel* skinModel)
 	{
 		m_skinModel = skinModel;
 	}
-	//オブジェクトのデータをセット
+	/**
+	 * \brief オブジェクトのデータを設定.
+	 * 
+	 * \param objData オブジェクトデータ
+	 */
 	void SetObjData(StructObjectData* objData)
 	{
 		m_objData = objData;
 	}
 private:
-	//サンプルステート初期化
+	/**
+	 * \brief サンプルステート初期化.
+	 * 
+	 */
 	void InitSamplerState();
 private:
 	RenderTarget m_offRenderTarget;						//小窓のレンダーターゲット

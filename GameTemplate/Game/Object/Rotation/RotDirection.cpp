@@ -11,12 +11,12 @@ RotDirection::~RotDirection()
 
 }
 
-void RotDirection::Init(const CQuaternion& rot, const float& speed)
+void RotDirection::Init(const CQuaternion& rot, const float speed)
 {
 	m_rotation = rot;
 }
 
-CQuaternion RotDirection::Rot(const CVector3& move)
+const CQuaternion RotDirection::Rot(const CVector3& move)
 {
 	CVector3 pos = move;
 	pos.y = 0.0f;

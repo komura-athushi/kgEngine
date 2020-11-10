@@ -18,6 +18,11 @@
 #include "sound/SoundSource.h"
 #include "Fade.h"
 
+namespace {
+	const float time = 2.0f;
+	const CVector2 fontPosition = CVector2(600.0f, 320.0f);
+}
+
 Game::Game()
 {
 
@@ -69,24 +74,23 @@ bool Game::Start()
 	else {
 		//ステージの番号によって読み込むレベルファイルを設定する
 		swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber()));
-		//swprintf_s(filePath, L"Assets/level/stick01.tkl");
 	}
 	
 	//レベルを読み込む
 	m_level.Init(filePath, [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"o")) {
-			for (int i = 0; i < ObjectData::GetInstance().GetListSize(); i++ ) {
-				if (objdata.ForwardMatchName(ObjectData::GetInstance().GetObjectData(i)->s_name)) {
+			for (int i = 0; i < GetObjectData().GetListSize(); i++ ) {
+				if (objdata.ForwardMatchName(GetObjectData().GetObjectData(i)->s_name)) {
 					Obj* obj = NewGO<Obj>(1);
-					obj->SetObjData(ObjectData::GetInstance().GetObjectData(i));
-					MOVESTATUS ms = FindMove(objdata.name);
+					obj->SetObjData(GetObjectData().GetObjectData(i));
+					MoveStatus ms = FindMove(objdata.name);
 					if (ms.s_state == enMove_Path) {
 						obj->ReadMovePath(ms.s_pathnumber);
 					}
 					obj->InitMove(ms.s_state, objdata.position, ms.s_move, ms.s_limit, objdata.rotation);
-					ROTSTATUS rs = FindRot(objdata.name);
+					RotStatus rs = FindRot(objdata.name);
 					obj->InitRot(rs.s_state, rs.s_speed);
-					obj->SetFilePath(ObjectData::GetInstance().GetObjectData(i)->s_name);
+					obj->SetFilePath(GetObjectData().GetObjectData(i)->s_name);
 					m_objList.push_back(obj);
 					return true;
 				}
@@ -200,7 +204,7 @@ void Game::UpdateReadyGo()
 }
 void Game::UpdateInGame()
 {
-	const float Time = 2.0f;
+
 	if (m_owaOwari) {
 		SoundData().SetStopBGM();
 		m_gameData->SetPose();
@@ -209,7 +213,7 @@ void Game::UpdateInGame()
 		if (m_isBattle) {
 			m_gameData->SetReusltPlayerSsize(m_player[1]->GetRadius(), 1);
 		}
-		if (m_timer2 >= Time) {
+		if (m_timer2 >= time) {
 			m_isWaitFadeout = true;
 			m_fade->StartFadeOut();
 		}
@@ -221,12 +225,10 @@ void Game::UpdateInGame()
 				if (m_gameData->GetisPose()) {
 					m_gameData->SetPoseCancel();
 					SoundData().SetPlayBGM();
-					//Engine().GetGraphicsEngine().SetSplitViewPort();
 				}
 				else {
 					m_gameData->SetPose();
 					SoundData().SetStopBGM();
-					//Engine().GetGraphicsEngine().SetNormalViewPort();
 				}
 			}
 		}
@@ -271,12 +273,14 @@ void Game::PostRender()
 			float hoge = m_timer3 - m_startTime;
 			hoge = 1.0f - hoge;
 			hoge *= 1.5f;
+			//スタート前の3、1、1表示
 			if (m_startTime >= 1) {
 				wchar_t output[10];
 				swprintf_s(output, L"%d", m_startTime);
 				
-				m_font.DrawScreenPos(output, CVector2(600.0f, 320.0f), CVector4::Red(), CVector2(1.0f + hoge, 1.0f + hoge));
+				m_font.DrawScreenPos(output, fontPosition, CVector4::Red(), CVector2(1.0f + hoge, 1.0f + hoge));
 			}
+			//START表示
 			else {
 				CVector2 pos;
 				CVector2 scale;
@@ -284,6 +288,7 @@ void Game::PostRender()
 					pos = CVector2(FRAME_BUFFER_W / 2, FRAME_BUFFER_H);
 					scale = CVector2(0.0f + hoge, (0.0f + hoge) * 2);
 				}
+			
 				else {
 					pos = CVector2(FRAME_BUFFER_W / 2, FRAME_BUFFER_H / 2);
 					scale = CVector2(0.0f + hoge, (0.0f + hoge));

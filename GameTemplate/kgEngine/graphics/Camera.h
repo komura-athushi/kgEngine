@@ -21,44 +21,44 @@ public:
 	/*!
 	 * @brief	カメラ行列を取得。
 	 */
-	CMatrix GetViewMatrix()
+	const CMatrix& GetViewMatrix() const
 	{
 		return m_viewMatrix;
 	}
 	/*!
 	 * @brief	プロジェクション行列を取得。
 	 */
-	CMatrix GetProjectionMatrix() 
+	const CMatrix& GetProjectionMatrix() const
 	{
 		return m_projMatrix;
 	}
 	/*!
 	 * @brief	視点を取得。
 	 */
-	CVector3 GetPosition()
+	const CVector3& GetPosition() const
 	{
 		return m_position;
 	}
 	/*!
 	 * @brief	注視点を取得。
 	 */
-	CVector3 GetTarget()
+	const CVector3& GetTarget() const
 	{
 		return m_target;
 	}
 	/*!
 	 * @brief	カメラの上方向を取得。
 	 */
-	CVector3 GetUp()
+	const CVector3& GetUp() const
 	{
 		return m_up;
 	}
 	//カメラの前方向を取得
-	CVector3 GetFront() const
+	const CVector3& GetFront() const
 	{
 		return m_front;
 	}
-	CVector3 GetRight() const
+	const CVector3& GetRight() const
 	{
 		return m_right;
 	}

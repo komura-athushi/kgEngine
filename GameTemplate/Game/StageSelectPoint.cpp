@@ -15,7 +15,7 @@ StageSelectPoint::~StageSelectPoint()
 
 bool StageSelectPoint::Start()
 {
-	auto& gameData = GameData::GetInstance();
+	auto& gameData = GetGameData();
 
 	switch (m_enPoint) {
 	case enPoint_Stage1:
