@@ -22,7 +22,7 @@ private:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~Fade();
+	~Fade() override final;
 public:
 	/**
 	 * \brief インスタンスを取得.

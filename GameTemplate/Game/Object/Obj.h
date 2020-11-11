@@ -38,7 +38,7 @@ private:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~ObjModelDataFactory() {}
+	~ObjModelDataFactory() override final {}
 public:
 	/**
 	 * \brief インスタンスを取得.
@@ -244,6 +244,11 @@ private:
 	 * 
 	 */
 	void ClcVertex();
+	/**
+	 * \brief 移動回転処理.
+	 * 
+	 */
+	void MoveRotation();
 private:
 	ObjModelData* m_modelData;												//スキンモデル
 	CVector3 m_position = CVector3::Zero();									//座標								

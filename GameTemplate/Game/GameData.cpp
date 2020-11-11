@@ -8,6 +8,7 @@ void GameData::LoadDataStageClear()
 {
 	std::map<int, int> stageClearList;
 
+	//ファイルを読み込む
 	FILE* fp = NULL;
 	const char* fname = "Assets/binarydata/savedata_stageclear.txt";
 	int number = 0;
@@ -33,9 +34,11 @@ void GameData::SaveDataStageClear()
 {
 	std::string fileName = "Assets/binarydata/savedata_stageclear.txt";
 
+	//ファイルを読み込む
 	std::ofstream file;
 	file.open(fileName, std::ios::trunc);
 
+	//ファイルに書き込む
 	for (int i = 1; i <= enState_Stage3; i++) {
 		if (m_stageClearList[i - 1]) {
 			file << i << std::endl;

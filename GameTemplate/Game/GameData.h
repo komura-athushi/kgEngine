@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   GameData.h
+ * \brief  GameDataクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 
 enum EnStageNumber {
@@ -13,85 +20,152 @@ enum EnScene {
 	enScene_Stage,
 	enScene_Result
 };
-//なんか色々なデータを管理
+
+/**
+ * \brief ゲーム中の色々なデータを管理.
+ */
 class GameData
 {
 private:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	GameData() {}
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~GameData() {}
 public:
-	//インスタンスを取得
+	/**
+	 * \brief インスタンスを取得.
+	 * 
+	 * \return インスタンス
+	 */
 	static GameData& GetInstance()
 	{
 		static GameData instance;
 		return instance;
 	}
-	//データをロードする
+	/**
+	 * \brief ステージのクリア状況をロードする.
+	 * 
+	 */
 	void LoadDataStageClear();
-	//データをセーブする
+	/**
+	 * \brief ステージのクリア状況をセーブする.
+	 * 
+	 */
 	void SaveDataStageClear();
-	//ステージをクリアした！
+	/**
+	 * \brief ステージをクリアした.
+	 * 
+	 */
 	void SetStageClear()
 	{
 		m_stageClearList[m_stageNumber - 1] = true;
 	}
-	//各ステージをクリアしているかどうかを取得
+	/**
+	 * \brief 該当のステージをクリアしてるかどうか.
+	 * 
+	 * \param number ステージの番号
+	 * \return ステージクリアしていたらtrue
+	 */
 	bool GetisStageClear(const EnStageNumber& number) const
 	{
 		return m_stageClearList[number - 1];
 	}
-	//ステージの番号を設定
+	/**
+	 * \brief プレイするステージの番号を設定.
+	 * 
+	 * \param number プレイするステージの番号
+	 */
 	void SetStageNumber(const EnStageNumber& number)
 	{
 		m_stageNumber = number;
 	}
-	//選択したステージの番号を取得
-	EnStageNumber GetStageNumber() const
+	/**
+	 * \brief プレイしているステージの番号を取得.
+	 * 
+	 * \return プレイしているステージの番号
+	 */
+	const EnStageNumber GetStageNumber() const
 	{
 		return m_stageNumber;
 	}
-	//選択したステージのプレイヤーの初期の大きさを取得
-	float GetPlayerSize() const
+	/**
+	 * \brief プレイするステージのプレイヤーの最初の大きさを取得.
+	 * 
+	 * \return プレイするステージのプレイヤーの最初の大きさを取得
+	 */
+	const float GetPlayerSize() const
 	{
 		return m_firstPlayerSize[m_stageNumber - 1];
 	}
-	//プレイヤーの1ステージ目の大きさを取得
-	float GetFirstPlayerSize() const
+	/**
+	 * \brief ステージ1のプレイヤーの最初の大きさを取得.
+	 * 
+	 * \return ステージ1のプレイヤーの最初の大きさ
+	 */
+	const float GetFirstPlayerSize() const
 	{
 		return m_firstPlayerSize[0];
 	}
-	//ステージの制限時間を取得
-	float GetStageLimitTime() const
+	/**
+	 * \brief プレイするステージの制限時間を取得.
+	 * 
+	 * \return プレイするステージの制限時間
+	 */
+	const float GetStageLimitTime() const
 	{
 		return m_stageLimitTime[m_stageNumber - 1];
 	}
-	//プレイヤーの目標の大きさを取得
-	float GetGoalPlayerSize() const
+	/**
+	 * \brief プレイするステージのプレイヤーの目標の大きさを取得.
+	 * 
+	 * \return プレイするステージのプレイヤーの目標の大きさ
+	 */
+	const float GetGoalPlayerSize() const
 	{
 		return m_goalPlayerSize[m_stageNumber - 1];
 	}
-	//プレイヤーの最終の大きさを設定
-	//0で1P
+	/**
+	 * \brief プレイヤーの最終の大きさを設定.
+	 * 
+	 * \param size プレイヤーの最終の大きさ
+	 * \param number プレイヤーの番号(0で1P)
+	 */
 	void SetReusltPlayerSsize(const float size, const int number = 0)
 	{
 		m_resultPlayerSize[number] = size;
 	}
-    //プレイヤーの最終の大きさを取得
-	//0で1P
-	int GetResultPlayerSize(const int number = 0) const
+	/**
+	 * \brief プレイヤーの最終の大きさを取得.
+	 * 
+	 * \param number プレイヤーの番号(0で1P)
+	 * \return プレイヤーの最終の大きさ
+	 */
+	const int GetResultPlayerSize(const int number = 0) const
 	{
 		return  int(m_resultPlayerSize[number] * 2);
 	}
-	//プレイヤーの大きさが目標の大きさより大きいかどうかを取得
-	//0で1P
-	bool GetisGameClear(const int number = 0) const
+	/**
+	 * \brief プレイヤーの大きさが目標の大きさより大きいかどうかを取得.
+	 * 
+	 * \param number プレイヤーの番号(0で1P)
+	 * \return プレイヤーの最終の大きさがステージの目標の大きさより大きければtrue
+	 */
+	const bool GetisGameClear(const int number = 0) const
 	{
 		return int(m_resultPlayerSize[number] * 2) >= int(m_goalPlayerSize[m_stageNumber - 1]);
 	}
-	//1P、2Pどっちが大きいか取得
-	//0が1P
-	//引き分けなら-1
-	int GetWinner()
+	/**
+	 * \brief 1P、2Pどっちが大きいか取得.
+	 * 
+	 * \return 1Pのほうが大きいなら0,引き分けなら-1
+	 */
+	const int GetWinner()
 	{
 		if (int(m_resultPlayerSize[0] * 2) > int(m_resultPlayerSize[1] * 2)) {
 			return 0;
@@ -103,52 +177,90 @@ public:
 			-1;
 		}
 	}
-	//ポーズ中かどうか
-	bool GetisPose() const
+	/**
+	 * \brief ポーズ中かどうか.
+	 * 
+	 * \return ポーズ中ならtrue
+	 */
+	const bool GetisPose() const
 	{
 		return m_isPose;
 	}
-	//ポーズする
+	/**
+	 * \brief ポーズする.
+	 * 
+	 */
 	void SetPose()
 	{
 		m_isPose = true;
 	}
-	//ポーズ解除
+	/**
+	 * \brief ポーズ解除.
+	 * 
+	 */
 	void SetPoseCancel()
 	{
 		m_isPose = false;
 	}
-	//シーンを設定
-	void SetScene(const EnScene& scene)
+	/**
+	 * \brief どのシーンか設定.
+	 * 
+	 * \param scene
+	 */
+	void SetScene(const EnScene scene)
 	{
 		m_scene = scene;
 	}
-	//シーンを取得
-	EnScene GetScene()
+	/**
+	 * \brief どのシーン中か取得.
+	 * 
+	 * \return シーンの種類
+	 */
+	const EnScene GetScene() const
 	{
 		return m_scene;
 	}
-	//バトルするを設定
-	void SetisBattle(bool flag)
+	/**
+	 * \brief バトルするかどうかを設定.
+	 * 
+	 * \param flag バトルするかどうかのフラグ
+	 */
+	void SetisBattle(const bool flag)
 	{
 		m_isBattle = flag;
 	}
-	//バトルする？
-	bool GetisBattle() const
+	/**
+	 * \brief バトルするかどうかを取得.
+	 * 
+	 * \return バトルする設定だったらtrue
+	 */
+	const bool GetisBattle() const
 	{
 		return m_isBattle;
 	}
-	//バトルの制限時間を取得
-	float GetBattleLimitTime() const
+	/**
+	 * \brief バトル中の制限時間を取得.
+	 * 
+	 * \return バトル中の制限時間
+	 */
+	const float GetBattleLimitTime() const
 	{
 		return m_battleLimitTIme;
 	}
-	//ゲームがスタートした？
-	bool GetisStart() const
+	/**
+	 * \brief ゲームがスタートしたかどうかを取得.
+	 * 
+	 * \return ゲームがスタートしていればtrue
+	 */
+	const bool GetisStart() const
 	{
 		return m_isStart;
 	}
-	//スタートしたかどうかを設定
+	/**
+	 * \brief ゲームがスタートしたかどうかを設定.
+	 * 
+	 * \param flag ゲームがスタートしたかどうか
+	 */
 	void SetisStart(const bool flag)
 	{
 		m_isStart = flag;
@@ -167,6 +279,11 @@ private:
 	bool m_isStart = true;
 };
 
+/**
+ * \brief インスタンスを取得.
+ * 
+ * \return インスタンス
+ */
 static inline  GameData& GetGameData()
 {
 	return GameData::GetInstance();

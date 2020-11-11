@@ -26,7 +26,7 @@ public:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~OffScreen();
+	~OffScreen() override final;
 	/**
 	 * \brief 初期化処理.
 	 *
@@ -62,6 +62,11 @@ private:
 	 * 
 	 */
 	void InitSamplerState();
+	/**
+	 * \brief カメラ更新処理.
+	 * 
+	 */
+	void UpdateCamera();
 private:
 	RenderTarget m_offRenderTarget;						//小窓のレンダーターゲット
 	OffScreenCamera m_offScreenCamera;					//小窓用のカメラ

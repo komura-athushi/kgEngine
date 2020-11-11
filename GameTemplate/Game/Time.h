@@ -1,17 +1,48 @@
+/*****************************************************************//**
+ * \file   Time.h
+ * \brief  Timeクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 class Game;
 class GameData;
 #include "graphics/2D/kgFont.h"
 //ステージの制限時間を管理する
+/**
+ * \brief ステージ中の制限時間を管理する.
+ */
 class Time:public IGameObject
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	Time();
-	~Time();
-	bool Start() override;
-	void PostRender() override;
-	//制限時間を設定する
-	void SetTime(const float& time) 
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
+	~Time() override final;
+	/**
+	 * \brief 初期化処理.
+	 * 
+	 * \return trueで初期化完了
+	 */
+	bool Start() override final;
+	/**
+	 * \brief 描画処理.
+	 * 
+	 */
+	void PostRender() override final;
+	/**
+	 * \brief 制限時間を設定する.
+	 * 
+	 * \param time 制限時間
+	 */
+	void SetTime(const float time) 
 	{
 		m_time = time;
 		m_timer = time;

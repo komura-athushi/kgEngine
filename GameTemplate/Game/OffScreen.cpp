@@ -59,6 +59,40 @@ void OffScreen::InitSamplerState()
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateSamplerState(&desc, &m_samplerState);
 }
 
+void OffScreen::UpdateCamera()
+{
+	//モデルにあわせてカメラの座標を設定
+	float x = m_objData->s_x * distance;
+	float z = m_objData->s_z * distance;
+	float y = m_objData->s_y * distance;
+	if (x >= z && x >= y) {
+		m_offScreenCamera.SetPosition(CVector3(0.0f, x / divide, x));
+	}
+	else if (z >= y && z >= x) {
+		m_offScreenCamera.SetPosition(CVector3(0.0f, z / divide, z));
+	}
+	else {
+		m_offScreenCamera.SetPosition(CVector3(0.0f, y / divide, y));
+	}
+	//https://qiita.com/akurobit/items/a6dd03baef6c05d7eae8
+	//を参照
+	float angle = atan2f(m_objData->s_y * angleMagY, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
+	float angle2;
+	if (m_objData->s_x >= m_objData->s_z) {
+		angle2 = atan2f(m_objData->s_x * angleMagXZ, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+	}
+	else {
+		angle2 = atan2f(m_objData->s_z * angleMagXZ, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
+	}
+	if (angle >= angle2) {
+		m_offScreenCamera.SetViewAngle(angle);
+	}
+	else {
+		m_offScreenCamera.SetViewAngle(angle2);
+	}
+	m_offScreenCamera.Update();
+}
+
 void OffScreen::PostRender()
 {
 	//バトルモードは小窓表示しない
@@ -89,36 +123,7 @@ void OffScreen::PostRender()
 
 	//モデルが設定されていたら
 	if (m_skinModel != nullptr) {
-		//モデルにあわせてカメラの座標を設定
-		float x = m_objData->s_x * distance;
-		float z = m_objData->s_z * distance;
-		float y = m_objData->s_y * distance;
-		if (x >= z && x >= y) {
-			m_offScreenCamera.SetPosition(CVector3(0.0f, x / divide, x));
-		}
-		else if (z >= y && z >= x) {
-			m_offScreenCamera.SetPosition(CVector3(0.0f, z / divide, z));
-		}
-		else {
-			m_offScreenCamera.SetPosition(CVector3(0.0f, y / divide, y));
-		}
-		//https://qiita.com/akurobit/items/a6dd03baef6c05d7eae8
-		//を参照
-		float angle = atan2f(m_objData->s_y * angleMagY, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z);
-		float angle2;
-		if (m_objData->s_x >= m_objData->s_z) {
-			angle2 = atan2f(m_objData->s_x * angleMagXZ, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
-		}
-		else {
-			angle2 = atan2f(m_objData->s_z * angleMagXZ, m_offScreenCamera.GetPosition().z - m_offScreenCamera.GetTarget().z) / (FRAME_BUFFER_H / FRAME_BUFFER_W);
-		}
-		if (angle >= angle2) {
-			m_offScreenCamera.SetViewAngle(angle);
-		}
-		else {
-			m_offScreenCamera.SetViewAngle(angle2);
-		}
-		m_offScreenCamera.Update();
+		UpdateCamera();
 		m_skinModel->UpdateWorldMatrix(m_position, m_rot, m_scale);
 		m_skinModel->Draw(m_offScreenCamera.GetCamera(), enRenderMode_Normal, false);
 

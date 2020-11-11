@@ -119,7 +119,6 @@ void StageSelect::PrePostRender()
 
 void StageSelect::Update()
 {
-
 	if (m_isWaitFadeout) {
 		if (!m_fade->IsFade()) {
 			if (m_isTransTitle) {
@@ -200,8 +199,6 @@ void StageSelect::TurnPlayer()
 
 void StageSelect::DistanceStagePoint()
 {
-	
-
 	m_stageSelectPoint = nullptr;
 	//各ポイントとプレイヤーとの距離を調べる
 	for (auto itr : m_stageSelectPointList) {

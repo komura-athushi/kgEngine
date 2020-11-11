@@ -31,7 +31,7 @@ public:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~StageSelect();
+	~StageSelect() override final;
 	/**
 	 * \brief delete前の処理.
 	 * 

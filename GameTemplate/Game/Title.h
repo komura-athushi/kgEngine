@@ -1,21 +1,54 @@
+/*****************************************************************//**
+ * \file   Title.h
+ * \brief  Titleクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "..//kgEngine/physics/PhysicsStaticObject.h"
-
-
 
 class Player;
 class GameCamera;
 class Fade;
-//タイトル
+
+/**
+ * \brief タイトル画面を管理するクラス.
+ */
 class Title:public IGameObject
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	Title();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~Title();
-	bool Start() override;
-	void Update() override;
-	void PostRender() override;
-	void OnDestroy() override;
+	/**
+	 * \brief 初期化処理.
+	 * 
+	 * \return trueで初期化完了
+	 */
+	bool Start() override final;
+	/**
+	 * \brief 更新処理.
+	 * 
+	 */
+	void Update() override final;
+	/**
+	 * \brief 描画処理.
+	 * 
+	 */
+	void PostRender() override final;
+	/**
+	 * \brief delete前の処理.
+	 * 
+	 */
+	void OnDestroy() override final;
 private:
 	CSprite m_sprite;													//スプライト
 	Fade* m_fade;														//フェード(仮)

@@ -27,8 +27,9 @@ bool Ground::Start()
 	m_skinModelRender.SetShadowReceiver(true);
 	m_skinModelRender.SetShadowCaster(false);
 	m_skinModelRender.SetRotation(m_rotation);
+	//トゥーンシェーダーはしない
 	m_skinModelRender.SetOffToonShader();
-	m_staticobject.CreateMeshObject(&m_skinModelRender, m_position, m_rotation);
+	m_staticObject.CreateMeshObject(&m_skinModelRender, m_position, m_rotation);
 	return true;
 }
 

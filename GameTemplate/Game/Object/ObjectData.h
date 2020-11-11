@@ -72,7 +72,7 @@ public:
 	 * 
 	 * \return オブジェクトの数
 	 */
-	int GetListSize() const
+ 	const int GetListSize() const
 	{
 		return m_objectDataList.size();
 	}

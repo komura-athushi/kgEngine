@@ -31,7 +31,7 @@ public:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~Game();
+	~Game() override final;
 	/**
 	 * \brief 初期化処理.
 	 * 
@@ -72,6 +72,11 @@ public:
 	}
 private:
 	/**
+	 * \brief レベルデータを読み込む.
+	 * 
+	 */
+	void InitLevel();
+	/**
 	 * \brief レディゴー演出中の更新処理.
 	 * 
 	 */
@@ -89,7 +94,7 @@ private:
 private:
 	Ground* m_ground = nullptr;									//グラウンド
 	Player* m_player[m_splitMaximumNumber] = { nullptr ,nullptr};									//プレイヤー
-	GameCamera* m_gamecamera[m_splitMaximumNumber] = { nullptr ,nullptr};							//カメラ
+	GameCamera* m_gameCamera[m_splitMaximumNumber] = { nullptr ,nullptr};							//カメラ
 	std::vector<Obj*> m_objList;								//オブジェクトのリスト
 	float m_timer = 0.0f;										//タイマー
 	//level

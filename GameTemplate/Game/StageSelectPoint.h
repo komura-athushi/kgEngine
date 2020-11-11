@@ -31,7 +31,7 @@ public:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~StageSelectPoint();
+	~StageSelectPoint() override final;
 	/**
 	 * \brief 初期化.
 	 * 

@@ -1,36 +1,62 @@
+/*****************************************************************//**
+ * \file   LineSegment.h
+ * \brief  LineSegmentクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "Physics/SphereCollider.h"
 #include "Physics/CapsuleCollider.h"
 #include "Physics/RigidBody.h"
 class Player;
-//線分
+/**
+ * \brief 塊のガタガタ処理をするクラス.
+ */
 class LineSegment
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 */
 	LineSegment() {};
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~LineSegment() 
 	{
 		if (m_isInitialize) {
 			Engine().GetPhysicsEngine().RemoveRigidBody(m_rigidBody);
 		}
 	};
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	/// <param name="position">座標</param>
+	/**
+	 * \brief 初期化.
+	 * 
+	 * \param position 座標
+	 */
 	void Init(const CVector3& position);
-	/// <summary>
-	/// 更新
-	/// </summary>
-	/// <param name="position">座標</param>
-	/// <param name="linesegment">線分</param>
+	/**
+	 * \brief 更新.
+	 * 
+	 * \param position 座標
+	 * \param linesegment 線分
+	 */
 	void Execute(const CVector3& position, const CVector3& linesegment);
-	//剛体を取得
-	RigidBody* GetRigidBody()
+	/**
+	 * \brief 剛体を取得.
+	 * 
+	 * \return 剛体
+	 */
+	RigidBody* GetRigidBody() 
 	{
 		return &m_rigidBody;
 	}
-	//プレイヤーを設定する
+	/**
+	 * \brief プレイヤーを取得.
+	 * 
+	 * \param player
+	 */
 	void SetPlayer(Player* player)
 	{
 		m_player = player;

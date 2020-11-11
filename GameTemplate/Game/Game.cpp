@@ -35,6 +35,7 @@ Game::~Game()
 
 void Game::OnDestroy()
 {
+	//色々削除
 	DeleteGO(m_ground);
 	DeleteGO(m_time);
 	for (Obj* obj : m_objList) {
@@ -51,23 +52,19 @@ void Game::OnDestroy()
 	if (m_isBattle) {
 		m_player[0]->GetCSkinModelRender().SetActive(false);
 		DeleteGO(m_player[1]);
-		DeleteGO(m_gamecamera[1]);
+		DeleteGO(m_gameCamera[1]);
 	}
 
 }
 
-bool Game::Start()
+void Game::InitLevel()
 {
-	m_gameData = &GetGameData();
-	m_isBattle = m_gameData->GetisBattle();
-
 	wchar_t filePath[256];
-	
-	m_gamecamera[0] = NewGO<GameCamera>(0);
-	m_gamecamera[0]->SetPlayerNumber(0);
+	m_gameCamera[0] = NewGO<GameCamera>(0);
+	m_gameCamera[0]->SetPlayerNumber(0);
 	if (m_isBattle) {
-		m_gamecamera[1] = NewGO<GameCamera>(0);
-		m_gamecamera[1]->SetPlayerNumber(1);
+		m_gameCamera[1] = NewGO<GameCamera>(0);
+		m_gameCamera[1]->SetPlayerNumber(1);
 		//ステージの番号によって読み込むレベルファイルを設定する
 		swprintf_s(filePath, L"Assets/level/level01.tkl");
 	}
@@ -75,11 +72,11 @@ bool Game::Start()
 		//ステージの番号によって読み込むレベルファイルを設定する
 		swprintf_s(filePath, L"Assets/level/level0%d.tkl", int(m_gameData->GetStageNumber()));
 	}
-	
+
 	//レベルを読み込む
 	m_level.Init(filePath, [&](LevelObjectData& objdata) {
 		if (objdata.ForwardMatchName(L"o")) {
-			for (int i = 0; i < GetObjectData().GetListSize(); i++ ) {
+			for (int i = 0; i < GetObjectData().GetListSize(); i++) {
 				if (objdata.ForwardMatchName(GetObjectData().GetObjectData(i)->s_name)) {
 					Obj* obj = NewGO<Obj>(1);
 					obj->SetObjData(GetObjectData().GetObjectData(i));
@@ -103,12 +100,12 @@ bool Game::Start()
 				m_player[1]->SetFirstPosition(objdata.position);
 				m_player[1]->SetPlayerNumber(1);
 			}
-			else if(m_player[0] == nullptr) {
+			else if (m_player[0] == nullptr) {
 				m_player[0] = NewGO<Player>(0);
 				m_player[0]->SetFirstPosition(objdata.position);
 				m_player[0]->SetPlayerNumber(0);
 			}
-		
+
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"ground")) {
@@ -118,7 +115,17 @@ bool Game::Start()
 			return true;
 		}
 		return true;
-	});
+		});
+}
+
+bool Game::Start()
+{
+	m_gameData = &GetGameData();
+	m_isBattle = m_gameData->GetisBattle();
+
+	//レベルデータを読み込む
+	InitLevel();
+	
 	m_time = NewGO<Time>(0);
 	if (m_isBattle) {
 		m_time->SetTime(m_gameData->GetBattleLimitTime());
@@ -150,6 +157,8 @@ bool Game::Start()
 			break;
 		}
 	}
+
+	//色んな画像読み込んで
 	m_pause.Init(L"Resource/sprite/pause.dds");
 	m_end.Init(L"Resource/sprite/end.dds");
 	m_start.Init(L"Resource/sprite/start.dds");
@@ -157,12 +166,12 @@ bool Game::Start()
 	m_fade = &Fade::GetInstance();
 	m_fade->StartFadeIn();
 
-	m_player[0]->SetGameCamera(m_gamecamera[0]);
-	m_gamecamera[0]->SetPlayer(m_player[0]);
+	m_player[0]->SetGameCamera(m_gameCamera[0]);
+	m_gameCamera[0]->SetPlayer(m_player[0]);
 
 	if (m_isBattle) {
-		m_player[1]->SetGameCamera(m_gamecamera[1]);
-		m_gamecamera[1]->SetPlayer(m_player[1]);
+		m_player[1]->SetGameCamera(m_gameCamera[1]);
+		m_gameCamera[1]->SetPlayer(m_player[1]);
 		Engine().GetGraphicsEngine().SetisSplit(true);
 
 		m_player[0]->SetPlayer(m_player[1]);
@@ -262,9 +271,11 @@ void Game::Update()
 
 void Game::PostRender()
 {
+	//終了
 	if (m_owaOwari) {
 		m_end.Draw();
 	}
+	//ポーズ
 	else if (m_gameData->GetisPose() && m_gameData->GetisStart()) {
 		m_pause.Draw();
 	}

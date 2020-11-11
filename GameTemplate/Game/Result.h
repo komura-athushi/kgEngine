@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   Result.h
+ * \brief  Resultクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 
 #include "sound\SoundSource.h"
@@ -7,24 +14,68 @@ class Player;
 class GameCamera;
 class Fade;
 class Ranking;
+/**
+ * \brief リザルト画面の管理.
+ */
 class Result:public IGameObject
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	Result();
-	~Result();
-	bool Start() override;
-	void Update() override;
-	void PrePostRender() override;
-	void PostRender() override;
-	void OnDestroy() override;
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
+	~Result() override final;
+	/**
+	 * \brief 初期化処理.
+	 * 
+	 * \return trueで初期化完了
+	 */
+	bool Start() override final;
+	/**
+	 * \brief 更新処理.
+	 * 
+	 */
+	void Update() override final;
+	/**
+	 * \brief 最初の方の描画処理.
+	 * 
+	 */
+	void PrePostRender() override final;
+	/**
+	 * \brief 描画処理.
+	 * 
+	 */
+	void PostRender() override final;
+	/**
+	 * \brief deleteの前の処理.
+	 * 
+	 */
+	void OnDestroy() override final;
 private:
-	//塊を動かす
+	/**
+	 * \brief 塊を動かす.
+	 * 
+	 */
 	void MovePlayer();
-	//あ
+	/**
+	 * \brief 塊を待機させて.
+	 * 
+	 */
 	void MoveGoal();
-	//結果を表示
+	/**
+	 * \brief 結果を表示.
+	 * 
+	 */
 	void MoveResult();
-	//画面遷移
+	/**
+	 * \brief ステージセレクトに戻る.
+	 * 
+	 */
 	void TransScene();
 private:
 	CSprite m_sprite;											//画像

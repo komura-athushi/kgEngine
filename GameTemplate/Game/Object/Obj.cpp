@@ -14,6 +14,9 @@
 #include "Move\MoveNone.h"
 #include "Rotation\RotNone.h"
 
+namespace {
+	const float seVolume = 0.25f;		//巻き込まれたときのSEのボリューム
+}
 
 ObjModelDataFactory::ObjModelDataFactory()
 {
@@ -111,8 +114,8 @@ void Obj::SetFilePath(const wchar_t* path)
 bool Obj::Start()
 {
 	m_size = (m_objData->s_x + m_objData->s_y + m_objData->s_z) / 3;
+	//球体である
 	if (m_objData->s_isSphere == 1) {
-		//球体である
 		m_isSphere = true;
 		m_size = m_objData->s_x;
 		m_lenght = m_size * 2;
@@ -142,6 +145,7 @@ bool Obj::Start()
 		wchar_t output[256];
 		swprintf_s(output, L"Resource/sprite/%ls.dds", m_objData->s_specName);
 		textureData.specFilePath = output;
+		//スペキュラマップを読み込む
 		m_modelData->s_skinModel.InitTexture(&textureData);
 	}
 	m_box.Init(CVector3(m_objData->s_x,m_objData->s_y,m_objData->s_z));
@@ -244,8 +248,6 @@ void Obj::ClcVertex()
 
 void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 {
-	const float seVolume = 0.25f;
-
 	//プレイヤーの逆行列を求める
 	CMatrix ReverseMatrix;
 	ReverseMatrix.Inverse(worldMatrix);
@@ -271,6 +273,7 @@ void Obj::ClcLocalMatrix(const CMatrix& worldMatrix)
 	m_moveState = enMove_MoveHit;
 	m_staticObject.Release();
 	if (m_isLineSegment) {
+		//ガタガタ処理のための初期化
 		m_lineSegment.Init(m_position);
 		m_lineSegment.GetRigidBody()->GetBody()->setUserIndex(4);
 		m_lineSegment.SetPlayer(m_player);
@@ -301,28 +304,8 @@ void Obj::ClcMatrix()
 	m_worldMatrix.Mul(m_localMatrix, m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
 }
 
-void Obj::Update()
+void Obj::MoveRotation()
 {
-	if (!m_draw) {
-		return;
-	}
-	//巻き込まれたら一回だけ実行する
-	if (!m_isHit && m_staticObject.GetRigidBody()->GetBody()->GetisHit()) {
-		QueryGOs<Player>(nullptr, [&](Player* player) {
-			if (player->GetPlayerNumber() == m_staticObject.GetRigidBody()->GetBody()->GetPlayerNumber()) {
-				m_player = player;
-				return false;
-			}
-			else {
-				return true;
-			}
-		});
-		m_isHit = true;
-		m_player->GetCSkinModelRender().UpdateWorldMatrix();
-		ClcLocalMatrix(m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
-		m_player->AddVolume(m_objData->s_volume);
-	}
-
 	//ポーズ中かあるいはリザルト画面じゃなかったら
 	if (!m_gameData->GetisPose() || m_gameData->GetScene() == enScene_Result) {
 		//巻き込まれてる
@@ -351,6 +334,33 @@ void Obj::Update()
 			}
 		}
 	}
+}
+
+void Obj::Update()
+{
+	if (!m_draw) {
+		return;
+	}
+	//巻き込まれたら一回だけ実行する
+	if (!m_isHit && m_staticObject.GetRigidBody()->GetBody()->GetisHit()) {
+		QueryGOs<Player>(nullptr, [&](Player* player) {
+			if (player->GetPlayerNumber() == m_staticObject.GetRigidBody()->GetBody()->GetPlayerNumber()) {
+				m_player = player;
+				return false;
+			}
+			else {
+				return true;
+			}
+		});
+		m_isHit = true;
+		m_player->GetCSkinModelRender().UpdateWorldMatrix();
+		ClcLocalMatrix(m_player->GetCSkinModelRender().GetSkinModel().GetWorldMatrix());
+		m_player->AddVolume(m_objData->s_volume);
+	}
+
+	//移動回転処理
+	MoveRotation();
+
 	//インスタンシング処理
 	if (m_moveState == enMove_MoveHit) {
 		m_modelData->s_skinModel.UpdateInstancingData(m_worldMatrix, m_anim.GetPlayAnimationType());

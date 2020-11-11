@@ -21,7 +21,7 @@ public:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~StageSelectGround();
+	~StageSelectGround() override final;
 	/**
 	 * \brief 初期化処理.
 	 * 

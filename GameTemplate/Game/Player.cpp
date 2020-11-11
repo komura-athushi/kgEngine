@@ -6,7 +6,7 @@
 #include "GameData.h"
 #include "sound\SoundSource.h"
 #include "graphics\CEffektEngine.h"
-#include "PlayerConst.h""
+#include "PlayerConst.h"
 
 //
 using namespace nsPlayerCnst;
@@ -25,19 +25,19 @@ Player::~Player()
 
 bool Player::Start()
 {
-	m_gamedata = &GetGameData();
+	m_gameData = &GetGameData();
 	
 
 	wchar_t filePath[256];
-	if (m_isTitle || m_gamedata->GetisBattle()) {
-		m_radius = m_gamedata->GetFirstPlayerSize();
-		m_protradius = m_radius;
+	if (m_isTitle || m_gameData->GetisBattle()) {
+		m_radius = m_gameData->GetFirstPlayerSize();
+		m_protRadius = m_radius;
 		swprintf_s(filePath, L"Resource/modelData/sphere1.cmo");
 	}
 	else {
-		m_radius = m_gamedata->GetPlayerSize();
-		m_protradius = m_gamedata->GetPlayerSize();
-		swprintf_s(filePath, L"Resource/modelData/sphere%d.cmo", (int)m_gamedata->GetStageNumber());
+		m_radius = m_gameData->GetPlayerSize();
+		m_protRadius = m_gameData->GetPlayerSize();
+		swprintf_s(filePath, L"Resource/modelData/sphere%d.cmo", (int)m_gameData->GetStageNumber());
 	}
 	//cmoファイルの読み込み、ステージの番号によって読み込むファイルを設定する
 	
@@ -47,13 +47,13 @@ bool Player::Start()
 	m_skinModelRender.SetShadowReceiver(true);
 	m_skinModelRender.SetScale(m_scale);
 	//キャラコン、スフィアコライダーを使う
-	m_characon.Init(
+	m_charaCon.Init(
 		m_radius,			//半径。 
 		m_position - CVector3::AxisY() * m_radius			//初期位置。
 	);
-	m_characon.SetPlayerNumber(m_playerNumber);
+	m_charaCon.SetPlayerNumber(m_playerNumber);
 
-	m_beforeposition = m_position;
+	m_beforePosition = m_position;
 	//体積を求める
 	m_volume = CMath::PI * pow(m_radius, 3.0f) * 4 / 3;
 
@@ -82,14 +82,14 @@ bool Player::Start()
 void Player::Update()
 {
 	//リザルト画面ではキャラクターは非表示
-	if (m_gamedata->GetScene() == enScene_Result) {
+	if (m_gameData->GetScene() == enScene_Result) {
 		m_skinModelRender2.SetisActive(false);
 	}
-	if (m_gamedata->GetisPose() && m_gamedata->GetisStart()) {
+	if (m_gameData->GetisPose() && m_gameData->GetisStart()) {
 		return;
 	}
-	if (m_gamecamera == nullptr) {
-		m_gamecamera = FindGO<GameCamera>();
+	if (m_gameCamera == nullptr) {
+		m_gameCamera = FindGO<GameCamera>();
 		return;
 	}
 	if (m_isStopTime) {
@@ -104,8 +104,8 @@ void Player::Update()
 	Move();
 	Turn();
 	ScreenPosition();
-	m_characon.SetPosition(m_position);
-	m_beforeposition = m_position;
+	m_charaCon.SetPosition(m_position);
+	m_beforePosition = m_position;
 	m_skinModelRender.SetPosition(m_position + CVector3::AxisY() * m_radius);
 	m_skinModelRender.SetRotation(m_rotation);
 	CVector3 pos = MainCamera(m_playerNumber).GetFront();
@@ -128,64 +128,14 @@ void Player::AddVolume(const float volume)
 
 	m_volume += volume * volumeMultiply;
 	m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
-	m_characon.SetRadius(m_radius);
-}
-
-void Player::Judgment()
-{
-	/*const float LenghtMultiply = 1.0f;
-	const float SizeMultiply = 0.9f;
-
-	QueryGOs<Obj>(nullptr, [&](Obj* object) {
-		if (object->GetisStickPlayer()) {
-			return true;
-		}
-		CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
-		if (diff.LengthSq() >= pow(object->GetLenght() + m_radius * LenghtMultiply, 2.0f)) {
-			return true;
-		}
-		if (m_radius >= object->GetRadius() * 3.0f) {
-			if (object->GetisSphere()) {
-				CVector3 diff = object->GetPosition() - m_position - CVector3::AxisY() * m_radius;
-				if (diff.LengthSq() <= pow(m_radius + object->GetSize(), 2.0f) * LenghtMultiply) {
-					object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
-					m_volume += object->GetObjData().s_volume * SizeMultiply;
-					m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
-					m_characon.SetRadius(m_radius);
-					return true;
-				}
-			}
-			else {
-				for (int i = 0; i < CBox::m_SurfaceVectorNumber; i++) {
-					if (pow(m_radius * LenghtMultiply, 2.0f) >= (object->GetBox()->GetSurfaceVector(i)- m_position - CVector3::AxisY() * m_radius).LengthSq()) {
-						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
-						m_volume += object->GetObjData().s_volume * SizeMultiply;
-						m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
-						m_characon.SetRadius(m_radius);
-						return true;
-					}
-				}
-				for (int i = 0; i < CBox::m_vertexNumber; i++) {
-					if (pow(m_radius * LenghtMultiply, 2.0f) >= (object->GetBox()->GetVertexVector(i) - m_position - CVector3::AxisY() * m_radius).LengthSq()) {
-						object->ClcLocalMatrix(m_skinModelRender.GetSkinModel().GetWorldMatrix());
-						m_volume += object->GetObjData().s_volume * SizeMultiply;
-						m_radius = pow(3 * m_volume / (4 * CMath::PI), 1.0 / 3.0f);
-						m_characon.SetRadius(m_radius);
-						return true;
-					}
-				}
-
-			}
-		}
-		return true;
-	});*/
+	m_charaCon.SetRadius(m_radius);
 }
 
 void Player::Move()
 {
 
 	//移動速度
-	m_movespeedmultiply = 5.0f * (m_radius / m_standardSize) * 0.9f;
+	m_moveSpeedMultiply = 5.0f * (m_radius / m_standardSize) * 0.9f;
 
 	CVector3 Stick = CVector3::Zero();
 	m_skinModelRender.SetColor(CVector4(1.0f, 1.0f, 1.0f, 0.5f));
@@ -197,7 +147,7 @@ void Player::Move()
 		if (m_respawnTimer >= 3.0f) {
 			m_position = m_firstPosition;
 			m_position.y += 50.0f;
-			m_characon.SetPosition(m_firstPosition);
+			m_charaCon.SetPosition(m_firstPosition);
 			m_respawnTimer = 0.0f;
 		}
 	}
@@ -206,7 +156,7 @@ void Player::Move()
 	}
 
 	//両方のスティックが入力されていたら
-	if (m_gamecamera->GetStateStick() == enStick_EnterStickBoth) {
+	if (m_gameCamera->GetStateStick() == enStick_EnterStickBoth) {
 		CVector3 stickL;
 		stickL.x = GetPad(m_playerNumber).GetLStickXF();
 		stickL.y = GetPad(m_playerNumber).GetLStickYF();
@@ -219,7 +169,7 @@ void Player::Move()
 
 	}
 	//両方のスティックが逆の方向に入力されていたら、左が前方向
-	else if (m_gamecamera->GetStateStick() == enStick_EnterStickBothOppositeLeft) {
+	else if (m_gameCamera->GetStateStick() == enStick_EnterStickBothOppositeLeft) {
 		if (m_count == 0) {
 			m_timer = 0.0f;
 			m_isRight = true;
@@ -233,7 +183,7 @@ void Player::Move()
 		
 	}
 	//両方のスティックが逆の方向に入力されていたら、右が前方向
-	else if (m_gamecamera->GetStateStick() == enStick_EnterStickBothOppositeRight) {
+	else if (m_gameCamera->GetStateStick() == enStick_EnterStickBothOppositeRight) {
 		if (m_count == 0) {
 			m_timer = 0.0f;
 			m_isRight = false;
@@ -254,13 +204,13 @@ void Player::Move()
 	CVector3 rightxz = MainCamera(m_playerNumber).GetRight();
 	if (m_count >= CountLimit) {
 		if (m_isDush) {
-			m_movespeed += frontxz * m_movespeedmultiply * DushSpeed;
+			m_moveSpeed += frontxz * m_moveSpeedMultiply * DushSpeed;
 		}
 		//ダッシュ時の最初はある程度の移動速度を設定する
 		else {
 			for (int i = 0; i < 30; i++) {
-				m_movespeed += frontxz * m_movespeedmultiply * DushSpeed;
-				m_movespeed *= MoveSpeedAtten;
+				m_moveSpeed += frontxz * m_moveSpeedMultiply * DushSpeed;
+				m_moveSpeed *= MoveSpeedAtten;
 			}
 			m_isDush = true;
 		}
@@ -269,12 +219,12 @@ void Player::Move()
 		frontxz *= Stick.y;
 		rightxz *= Stick.x;
 		CVector3 addMoveSpeed = (frontxz + rightxz);
-		CVector3 moveSpeed = m_movespeed;
+		CVector3 moveSpeed = m_moveSpeed;
 		moveSpeed.y = 0.0f;
 		addMoveSpeed.y = 0.0f;
 		//ブレーキしてないかつ、移動速度がある程度あったら
 		if (!m_isBrake &&
-			moveSpeed.LengthSq() >= (m_movespeedmultiply * 55.0f) * (m_movespeedmultiply * 55.0f) &&
+			moveSpeed.LengthSq() >= (m_moveSpeedMultiply * 55.0f) * (m_moveSpeedMultiply * 55.0f) &&
 			addMoveSpeed.LengthSq() >= 0.8f) {
 
 			CVector3 addMove = addMoveSpeed;
@@ -284,7 +234,7 @@ void Player::Move()
 			float angle = addMove.Dot(move);
 			//移動方向とスティックの入力の角度がある程度大きかったらブレーキ
 			if (fabs(acosf(angle)) >= CMath::PI * 0.5f && m_collisionTimer >= CollisionTime) {
-				m_movespeed *= MoveSpeedAtten2;
+				m_moveSpeed *= MoveSpeedAtten2;
 				CSoundSource* se = new CSoundSource();
 				se->Init(L"Assets/sound/brake.wav");
 				se->Play(false);
@@ -301,7 +251,7 @@ void Player::Move()
 		else {
 			m_isBrake = false;
 		}
-		m_movespeed += addMoveSpeed * m_movespeedmultiply;
+		m_moveSpeed += addMoveSpeed * m_moveSpeedMultiply;
 	}
 	//m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
 	//if (m_characon.IsOnGround()) {
@@ -314,7 +264,7 @@ void Player::Move()
 		
 	//}
 	//else {
-		m_movespeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
+		m_moveSpeed.y -= GravityMoveSpeed * GameTime().GetFrameDeltaTime();
 	//}
 	/*if (m_movespeed.y <= LimitBoundMoveSpeed) {
 		m_isbound = true;
@@ -323,29 +273,29 @@ void Player::Move()
 	else {
 		m_isbound = false;
 	}*/
-	if (!m_gamedata->GetisStart()) {
-		m_movespeed.x = 0.0f;
-		m_movespeed.z = 0.0f;
+	if (!m_gameData->GetisStart()) {
+		m_moveSpeed.x = 0.0f;
+		m_moveSpeed.z = 0.0f;
 	}
-	m_position = m_characon.Execute(GameTime().GetFrameDeltaTime(), m_movespeed);
+	m_position = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
 	//衝突したら
-	if (m_characon.GetisCollision()) {
+	if (m_charaCon.GetisCollision()) {
 		if (m_count2 >= 2 && m_collisionTimer >= CollisionTime) {
 			frontxz *= Stick.y;
 			rightxz *= Stick.x;
 			CVector3 addMoveSpeed = (frontxz + rightxz);
-			CVector3 moveSpeed = m_movespeed;
+			CVector3 moveSpeed = m_moveSpeed;
 			moveSpeed.y = 0.0f;
 			addMoveSpeed.y = 0.0f;
-			CVector3 Normal = m_characon.GetWallNormalVector();
+			CVector3 Normal = m_charaCon.GetWallNormalVector();
 			Normal.y = 0.0f;
 			Normal.Normalize();
-			float t = Normal.Dot(m_movespeed);
+			float t = Normal.Dot(m_moveSpeed);
 			CVector3 vt = Normal * t;
-			CVector3 InversionSpeed = CVector3(-m_movespeed.x, 0.0f, -m_movespeed.z);
+			CVector3 InversionSpeed = CVector3(-m_moveSpeed.x, 0.0f, -m_moveSpeed.z);
 			CVector3 va = InversionSpeed + vt * 2;
-			m_movespeed.x = -va.x * CollisionAtten;
-			m_movespeed.z = -va.z * CollisionAtten;
+			m_moveSpeed.x = -va.x * CollisionAtten;
+			m_moveSpeed.z = -va.z * CollisionAtten;
 			CSoundSource* se = new CSoundSource();
 			se->Init(L"Assets/sound/syoutotu.wav");
 			se->Play(false);
@@ -353,16 +303,16 @@ void Player::Move()
 			m_collisionTimer = 0.0f;
 			auto effectEngine = CEffektEngine::GetInstance();
 			m_playEffectHandle = effectEngine.Play(m_hitEffect);
-			effectEngine.SetPosition(m_playEffectHandle,m_characon.GetHitPos());
-			effectEngine.SetScale(m_playEffectHandle, CVector3::One()* (m_radius / m_gamedata->GetFirstPlayerSize()) * 4.0f);
+			effectEngine.SetPosition(m_playEffectHandle,m_charaCon.GetHitPos());
+			effectEngine.SetScale(m_playEffectHandle, CVector3::One()* (m_radius / m_gameData->GetFirstPlayerSize()) * 4.0f);
 			//キャラクタ属性のコリジョンと衝突したら
-			if (m_characon.GetisHitCharacter()) {
+			if (m_charaCon.GetisHitCharacter()) {
 				//ある程度早さがあったら
 				if (!m_isBrake &&
-					moveSpeed.LengthSq() >= (m_movespeedmultiply * 55.0f) * (m_movespeedmultiply * 55.0f) &&
+					moveSpeed.LengthSq() >= (m_moveSpeedMultiply * 55.0f) * (m_moveSpeedMultiply * 55.0f) &&
 					addMoveSpeed.LengthSq() >= 0.8f) {
 					moveSpeed.Normalize();
-					CVector3 hitVector = m_characon.GetHitPos() - m_position;
+					CVector3 hitVector = m_charaCon.GetHitPos() - m_position;
 					hitVector.y = 0.0f;
 					hitVector.Normalize();
 					float angle = acosf(hitVector.Dot(moveSpeed));
@@ -381,27 +331,27 @@ void Player::Move()
 		m_count2 = 0;
 		m_collisionTimer += GameTime().GetFrameDeltaTime();
 	}
-	if (m_characon.IsOnGround()) {
+	if (m_charaCon.IsOnGround()) {
 		/*if (m_isbound) {
 			m_movespeed.y = -MoveSpeedY * BoundMultiply;
 		}
 		else {*/
-			m_movespeed.y = 0.0f;
+			m_moveSpeed.y = 0.0f;
 			//if (GetPad(0).IsTrigger(enButtonB)) {
 				//m_movespeed.y = JumpMoveSpeed;
 			//}
 		//}
 		//m_movespeed.y = 0.0f;
 	}
-	m_movespeed.x *= MoveSpeedAtten;
-	m_movespeed.z *= MoveSpeedAtten;
+	m_moveSpeed.x *= MoveSpeedAtten;
+	m_moveSpeed.z *= MoveSpeedAtten;
 }
 
 void Player::Turn()
 {
-	const float RotationSpeed = 1.0f * (m_protmovespeedmultiply / m_movespeedmultiply); //-((1.0f * (m_radius / m_protradius)) - 1.0f);
+	const float RotationSpeed = 1.0f * (m_protMoveSpeedMultiply / m_moveSpeedMultiply); //-((1.0f * (m_radius / m_protradius)) - 1.0f);
 
-	CVector3 movespeedXZ = m_position - m_beforeposition;
+	CVector3 movespeedXZ = m_position - m_beforePosition;
 	movespeedXZ.y = 0.0f;
 	if (movespeedXZ.LengthSq() <= 0.01f) {
 		return;
@@ -435,15 +385,15 @@ void Player::ScreenPosition()
 void Player::PostRender()
 {
 	//ステージなら塊の大きさを表示する
-	if (m_gamedata->GetScene() == enScene_Stage) {
+	if (m_gameData->GetScene() == enScene_Stage) {
 		wchar_t output[256];
 		int playerSize = int(m_radius * 2.0f);
-		int goalSize = int(m_gamedata->GetGoalPlayerSize());
+		int goalSize = int(m_gameData->GetGoalPlayerSize());
 		swprintf_s(output, L"%d\n", playerSize);
 		//swprintf_s(output, L"%f\n", m_position.y);
 		//swprintf_s(output, L"x %f y %f z %f\n", m_position.x , m_position.y ,m_position.z);
 		CVector4 color;
-		if (playerSize >= goalSize && !m_gamedata->GetisBattle()) {
+		if (playerSize >= goalSize && !m_gameData->GetisBattle()) {
 			color = CVector4::Blue();
 		}
 		else {
@@ -457,7 +407,7 @@ void Player::PostRender()
 	
 		//m_font.DrawScreenPos(L"cm\n", CVector2(78.0f, 38.0f), color, { 0.8f,0.8f });
 
-		if (m_gamedata->GetisBattle()) {
+		if (m_gameData->GetisBattle()) {
 			if (m_playerNumber == 0) {
 				color = CVector4::Red();
 			}

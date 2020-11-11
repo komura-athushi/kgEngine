@@ -33,7 +33,7 @@ public:
 	/**
 	 * \brief	デストラクタ.
 	 */
-	~GameCamera();
+	~GameCamera() override final;
 	/**
 	 * \brief Start関数.
 	 * 
@@ -49,7 +49,7 @@ public:
 	 * 
 	 * \return スティックの入力状態
 	 */
-	StateEnterStick GetStateStick() const
+	const StateEnterStick GetStateStick() const
 	{
 		return m_state;
 	}
@@ -76,7 +76,7 @@ public:
 	 * 
 	 * \return 注視点と座標の距離
 	 */
-	float GetRadius() const
+	const float GetRadius() const
 	{
 		return m_radius;
 	}
@@ -117,15 +117,15 @@ private:
 private:
 	CVector3 m_position = CVector3::Zero();				//!視点
 	CVector3 m_target = CVector3::One();				//!注視点
-	float m_degreey = 0.0f, m_degreexz = 20.0f;			//!それぞれカメラの角度
+	float m_degreeY = 0.0f, m_degreeXZ = 20.0f;			//!それぞれカメラの角度
 	Player* m_player = nullptr;							//プレイヤーのポインタ
 	float m_radius = 0.0f;								//カメラの半径
-	const float m_protradius = 170.0f;					//カメラの最初の半径
+	const float m_protRadius = 170.0f;					//カメラの最初の半径
 	StateEnterStick m_state = enStick_NoEnterStick;		//スティックの入力について
-	float m_Multiply = 1.0f;							//カメラと塊の距離の倍率
+	float m_multiply = 1.0f;							//カメラと塊の距離の倍率
 	float m_timer = 0.0f;								//L3とR3が同時に押された時に時間を計る
 	bool m_transView = false;							//L3とR3が同時に押された時のカメラを遷移しているか
-	GameData* m_gamedata = nullptr;						//ゲームデータ
+	GameData* m_gameData = nullptr;						//ゲームデータ
 	SpringCamera m_springCamera;						//ばねカメラ
 	int m_playerNumber = 0;								//プレイヤーの番号
 };

@@ -26,7 +26,7 @@ public:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~Collection();
+	~Collection() override final;
 	/**
 	 * \brief 更新前の初期化処理.
 	 * 
