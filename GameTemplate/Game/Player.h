@@ -243,6 +243,16 @@ private:
 	 */
 	void Move();
 	/**
+	 * \brief スティック入力.
+	 * 
+	 */
+	void Stick();
+	/**
+	 * \brief 衝突処理.
+	 * 
+	 */
+	void Collision();
+	/**
 	 * \brief 回転.
 	 * 
 	 */
@@ -318,5 +328,9 @@ private:
 	bool m_isStopTime = false;
 	float m_stopTimer = 0.0f;
 	float m_respawnTimer = 0.0f;
+	CVector3 m_stick = CVector3::Zero();
+	CVector3 m_frontXZ = CVector3::Zero();
+	CVector3 m_rightXZ = CVector3::Zero();
+
 };
 
