@@ -18,6 +18,10 @@ namespace {
 	const float limitStickDegree = 90.0f;
 	//スティック入力の補正
 	float multiPly = 1.0f;
+	const float height = 60.0f;
+	const float limitStickX = 0.5f;
+	const float limitStickDegree2 = 50.0f;
+	const float multiply = 2.0f;
 }
 
 GameCamera::GameCamera()
@@ -113,33 +117,28 @@ void GameCamera::TransRadius()
 	m_radius = m_protRadius + ((m_protRadius * (m_player->GetRadius() / m_player->GetStandardSize())) - m_protRadius) * 0.9f;
 }
 
-void GameCamera::Calculation()
+void GameCamera::Stick()
 {
-	//注視点をプレイヤーより↑にする
-	const float heightTarget = 60.0f + ((60.0f * (m_player->GetRadius() / m_player->GetStandardSize())) - 60.0f) * 0.9f;
-	const float angle = m_degreeY;
-	//スティックの入力量をはかる
-	CVector3 stickR;
-	stickR.x = GetPad(m_player->GetPlayerNumber()).GetRStickXF();
-	stickR.y = GetPad(m_player->GetPlayerNumber()).GetRStickYF();
-	stickR.z = 0.0f;
-	CVector3 stickL;
-	stickL.x = GetPad(m_player->GetPlayerNumber()).GetLStickXF();
-	stickL.y = GetPad(m_player->GetPlayerNumber()).GetLStickYF();
-	stickL.z = 0.0f;
-	CVector3 degree = CVector3::Zero();
+	//スティックの入力量をはかる	
+	m_stickR.x = GetPad(m_player->GetPlayerNumber()).GetRStickXF();
+	m_stickR.y = GetPad(m_player->GetPlayerNumber()).GetRStickYF();
+	m_stickR.z = 0.0f;
+	m_stickL.x = GetPad(m_player->GetPlayerNumber()).GetLStickXF();
+	m_stickL.y = GetPad(m_player->GetPlayerNumber()).GetLStickYF();
+	m_stickL.z = 0.0f;
+	m_degree = CVector3::Zero();
 
 	if (!m_gameData->GetisStart()) {
-		stickR = CVector3::Zero();
-		stickL = CVector3::Zero();
+		m_stickR = CVector3::Zero();
+		m_stickL = CVector3::Zero();
 	}
 
 	//右スティックの入力がありかつ
-	if (stickR.LengthSq() >= enterStick) {
+	if (m_stickR.LengthSq() >= enterStick) {
 		//左スティックの入力が無いなら
-		if (stickL.LengthSq() <= enterStick) {
+		if (m_stickL.LengthSq() <= enterStick) {
 			//右スティックの入力で回転する
-			degree = stickR;
+			m_degree = m_stickR;
 			m_state = enStick_EnterStickR;
 		}
 		else {
@@ -148,11 +147,11 @@ void GameCamera::Calculation()
 		}
 	}
 	//左スティックの入力がありかつ
-	else if (stickL.LengthSq() >= enterStick) {
+	else if (m_stickL.LengthSq() >= enterStick) {
 		//右スティックの入力が無いなら
-		if (stickR.LengthSq() <= enterStick) {
+		if (m_stickR.LengthSq() <= enterStick) {
 			//左スティックの入力で回転する
-			degree = stickL;
+			m_degree = m_stickL;
 			m_state = enStick_EnterStickL;
 		}
 		else {
@@ -166,65 +165,73 @@ void GameCamera::Calculation()
 	if (m_transView) {
 		m_state = enStick_NoEnterStick;
 	}
+}
+
+void GameCamera::Calculation()
+{
+	//注視点をプレイヤーより↑にする
+	const float heightTarget = height + ((height * (m_player->GetRadius() / m_player->GetStandardSize())) - 60.0f) * 0.9f;
+	const float angle = m_degreeY;
+
+	Stick();
+
 	//両方のスティックに入力があったら
 	if (m_state == enStick_EnterStickBoth) {
 		if (m_player->GetisStopTime()) {
-			stickR = CVector3::Zero();
-			stickL = CVector3::Zero();
+			m_stickR = CVector3::Zero();
+			m_stickL = CVector3::Zero();
 		}
-		CVector3 r = stickR;
-		CVector3 l = stickL;
-		CVector3 rX(stickR.x,0.0f,0.0f);
-		CVector3 lX(stickL.x,0.0f,0.0f);
+		CVector3 r = m_stickR;
+		CVector3 l = m_stickL;
+		CVector3 rX(m_stickR.x,0.0f,0.0f);
+		CVector3 lX(m_stickL.x,0.0f,0.0f);
 		r.Normalize();
 		l.Normalize();
-		float limitStickX = 0.5f;
+	
 		float angle = acosf(r.Dot(l));
 		angle *= 180.0f / M_PI;
-		const float limitStickDegree = 50.0f;
-		const float multiply = 2.0f;
 		if (fabsf(angle) >= limitStickDegree && rX.LengthSq() <= limitStickX && lX.LengthSq() <= limitStickX) {
-			if (stickR.y >= stickL.y) {
-				m_degreeY -= stickR.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime() * multiply;
+			if (m_stickR.y >= m_stickL.y) {
+				m_degreeY -= m_stickR.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime() * multiply;
 				m_state = enStick_EnterStickBothOppositeRight;
 			}
 			else {
-				m_degreeY += stickL.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime() * multiply;
+				m_degreeY += m_stickL.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime() * multiply;
 				m_state = enStick_EnterStickBothOppositeLeft;
 			}
-			degree = stickR + stickL; 
-			degree /= 2;
+			m_degree = m_stickR + m_stickL; 
+			m_degree /= 2;
 		}
 	}
 	if (m_state != enStick_NoEnterStick && m_state != enStick_EnterStickBoth) {
 		CVector3 front = MainCamera(m_player->GetPlayerNumber()).GetFront();
 		CVector3 back = front * -1;
-		CVector3 stick = degree;
+		CVector3 stick = m_degree;
 		stick.Normalize();
 		float angle = fabsf(acosf(stick.Dot(CVector3::AxisY())));
 		angle *= 180.0f / M_PI;
-		if (angle <= limitStickDegree) {
-			multiPly = (limitStickDegree - angle) / limitStickDegree;
+		if (angle <= limitStickDegree2) {
+			multiPly = (limitStickDegree2 - angle) / limitStickDegree2;
 			if (m_state == enStick_EnterStickL) {
-				degree *= multiPly;
-				m_degreeY += degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
+				m_degree *= multiPly;
+				m_degreeY += m_degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
 			}
 			else if (m_state == enStick_EnterStickR) {
-				degree *= multiPly;
-				m_degreeY -= degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
+				m_degree *= multiPly;
+				m_degreeY -= m_degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
 			} 
 		}
 		else {
 			float angle2 = fabsf(acosf(stick.Dot(CVector3::AxisY() * -1)));
 			angle2 *= 180.0f / M_PI;
-			multiPly = (limitStickDegree - angle2) / limitStickDegree;
+			multiPly = (limitStickDegree2 - angle2) / limitStickDegree2;
 			if (m_state == enStick_EnterStickL) {
-				degree *= multiPly;
-				m_degreeY -= degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
+				m_degree *= multiPly;
+				m_degreeY -= m_degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
 			}
 			else if (m_state == enStick_EnterStickR) {
-				degree *= multiPly;
-				m_degreeY += degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
+				m_degree *= multiPly;
+				m_degreeY += m_degree.LengthSq() * stickMultiply * GameTime().GetFrameDeltaTime();
 			}
 		}
 	}

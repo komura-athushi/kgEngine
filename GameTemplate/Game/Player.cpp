@@ -189,13 +189,13 @@ void Player::Collision()
 		auto effectEngine = CEffektEngine::GetInstance();
 		m_playEffectHandle = effectEngine.Play(m_hitEffect);
 		effectEngine.SetPosition(m_playEffectHandle, m_charaCon.GetHitPos());
-		effectEngine.SetScale(m_playEffectHandle, CVector3::One() * (m_radius / m_gameData->GetFirstPlayerSize()) * 4.0f);
+		effectEngine.SetScale(m_playEffectHandle, CVector3::One() * (m_radius / m_gameData->GetFirstPlayerSize()) * effectScale);
 		//キャラクタ属性のコリジョンと衝突したら
 		if (m_charaCon.GetisHitCharacter()) {
 			//ある程度早さがあったら
 			if (!m_isBrake &&
-				moveSpeed.LengthSq() >= (m_moveSpeedMultiply * 55.0f) * (m_moveSpeedMultiply * 55.0f) &&
-				addMoveSpeed.LengthSq() >= 0.8f) {
+				moveSpeed.LengthSq() >= (m_moveSpeedMultiply * brakeSpeed) * (m_moveSpeedMultiply * brakeSpeed) &&
+				addMoveSpeed.LengthSq() >= brakeSpeed2) {
 				moveSpeed.Normalize();
 				CVector3 hitVector = m_charaCon.GetHitPos() - m_position;
 				hitVector.y = 0.0f;
@@ -211,6 +211,33 @@ void Player::Collision()
 	}
 
 	m_count2++;
+}
+
+void Player::Brake()
+{
+	//ブレーキしてないかつ、移動速度がある程度あったら
+	if (!m_isBrake &&
+		m_moveSpeed.LengthSq() >= (m_moveSpeedMultiply * brakeSpeed) * (m_moveSpeedMultiply * brakeSpeed) &&
+		m_addMoveSpeed.LengthSq() >= brakeSpeed2) {
+
+		CVector3 addMove = m_addMoveSpeed;
+		CVector3 move = m_moveSpeed;
+		addMove.Normalize();
+		move.Normalize();
+		float angle = addMove.Dot(move);
+		//移動方向とスティックの入力の角度がある程度大きかったらブレーキ
+		if (fabs(acosf(angle)) >= CMath::PI * brakeAngle && m_collisionTimer >= collisionTime) {
+			m_moveSpeed *= moveSpeedAtten2;
+			CSoundSource* se = new CSoundSource();
+			se->Init(L"Assets/sound/brake.wav");
+			se->Play(false);
+			se->SetVolume(brakeVolume);
+			m_isBrake = true;
+		}
+	}
+	else {
+		m_isBrake = false;
+	}
 }
 
 void Player::Move()
@@ -262,34 +289,12 @@ void Player::Move()
 	else {
 		m_frontXZ *= m_stick.y;
 		m_rightXZ *= m_stick.x;
-		CVector3 addMoveSpeed = (m_frontXZ + m_rightXZ);
-		CVector3 moveSpeed = m_moveSpeed;
-		moveSpeed.y = 0.0f;
-		addMoveSpeed.y = 0.0f;
-		//ブレーキしてないかつ、移動速度がある程度あったら
-		if (!m_isBrake &&
-			moveSpeed.LengthSq() >= (m_moveSpeedMultiply * 55.0f) * (m_moveSpeedMultiply * 55.0f) &&
-			addMoveSpeed.LengthSq() >= 0.8f) {
+		m_addMoveSpeed = (m_frontXZ + m_rightXZ);
+		m_addMoveSpeed.y = 0.0f;
 
-			CVector3 addMove = addMoveSpeed;
-			CVector3 move = moveSpeed;
-			addMove.Normalize();
-			move.Normalize();
-			float angle = addMove.Dot(move);
-			//移動方向とスティックの入力の角度がある程度大きかったらブレーキ
-			if (fabs(acosf(angle)) >= CMath::PI * 0.5f && m_collisionTimer >= collisionTime) {
-				m_moveSpeed *= moveSpeedAtten2;
-				CSoundSource* se = new CSoundSource();
-				se->Init(L"Assets/sound/brake.wav");
-				se->Play(false);
-				se->SetVolume(brakeVolume);
-				m_isBrake = true;
-			}
-		}
-		else {
-			m_isBrake = false;
-		}
-		m_moveSpeed += addMoveSpeed * m_moveSpeedMultiply;
+		Brake();
+
+		m_moveSpeed += m_addMoveSpeed * m_moveSpeedMultiply;
 		m_moveSpeed.y -= gravityMoveSpeed * GameTime().GetFrameDeltaTime();
 
 		if (!m_gameData->GetisStart()) {
@@ -314,14 +319,15 @@ void Player::Move()
 	m_charaCon.SetPosition(m_position);
 
 	m_skinModelRender.SetPosition(m_position + CVector3::AxisY() * m_radius);
-	m_skinModelRender.SetRotation(m_rotation);
 	CVector3 pos = MainCamera(m_playerNumber).GetFront();
-	CQuaternion rot;
-	rot.SetRotation(CVector3::AxisY(), atan2f(pos.x, pos.z));
-	m_skinModelRender2.SetRotation(rot);
 	pos = pos * m_radius * 1.2f;
 	pos = m_position - pos;
 	m_skinModelRender2.SetPosition(pos);
+	m_skinModelRender.SetRotation(m_rotation);
+	CVector3 pos2 = MainCamera(m_playerNumber).GetFront();
+	CQuaternion rot2;
+	rot2.SetRotation(CVector3::AxisY(), atan2f(pos2.x, pos2.z));
+	m_skinModelRender2.SetRotation(rot2);
 }
 
 void Player::Turn()
@@ -344,6 +350,7 @@ void Player::Turn()
 	rot.SetRotationDeg(pos, lengh * rotationSpeed);
 	//求めたクォータニオンを乗算する
 	m_rotation.Multiply(rot,m_rotation);
+
 }
 
 void Player::ScreenPosition()

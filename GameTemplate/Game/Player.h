@@ -262,6 +262,11 @@ private:
 	 * 
 	 */
 	void ScreenPosition();
+	/**
+	 * \brief ブレーキ処理.
+	 * 
+	 */
+	void Brake();
 private:
 	CharacterController m_charaCon;																//キャラコン
 	CVector3 m_position = { 0.0f,200.0f,0.0f }, m_beforePosition = CVector3::Zero();			//座標
@@ -331,6 +336,7 @@ private:
 	CVector3 m_stick = CVector3::Zero();
 	CVector3 m_frontXZ = CVector3::Zero();
 	CVector3 m_rightXZ = CVector3::Zero();
+	CVector3 m_addMoveSpeed = CVector3::Zero();
 
 };
 

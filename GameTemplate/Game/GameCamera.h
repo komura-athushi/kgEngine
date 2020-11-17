@@ -110,10 +110,15 @@ private:
 	 */
 	void TransRadius();
 	/**
-	 * 	L3とR3を同時押しした時に視点を変更する.
+	 * \brief L3とR3を同時押しした時に視点を変更する.
 	 * 
 	 */
 	void TransView();
+	/**
+	 * \brief スティック処理.
+	 * 
+	 */
+	void Stick();
 private:
 	CVector3 m_position = CVector3::Zero();				//!視点
 	CVector3 m_target = CVector3::One();				//!注視点
@@ -128,5 +133,8 @@ private:
 	GameData* m_gameData = nullptr;						//ゲームデータ
 	SpringCamera m_springCamera;						//ばねカメラ
 	int m_playerNumber = 0;								//プレイヤーの番号
+	CVector3 m_stickR = CVector3::Zero();
+	CVector3 m_stickL = CVector3::Zero();	
+	CVector3 m_degree = CVector3::Zero();
 };
 

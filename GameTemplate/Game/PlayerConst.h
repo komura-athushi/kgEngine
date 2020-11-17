@@ -40,4 +40,8 @@ namespace nsPlayerCnst{
     //ダッシュの初速時にループして速度を加算する
     const float roopDush = 30;
     const float speed = 5.0f * 0.9f;
+    const float brakeSpeed = 55.0f;
+    const float brakeSpeed2 = 0.8f;
+    const float brakeAngle = 0.5f;
+    const float effectScale = 4.0f;
 }

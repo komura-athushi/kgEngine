@@ -11,6 +11,15 @@
 #include "Fade.h"
 #include "Ranking.h"
 
+namespace {
+	const float time = 2.0f;
+	const float multiply = 2.0f;
+	const float disance = 15.0f;
+	const float time2 = 1.0f;
+	const float time3 = 0.3f;
+	const float SeVolume = 3.0f;
+}
+
 Result::Result()
 {
 
@@ -110,15 +119,11 @@ void Result::Update()
 
 void Result::MovePlayer()
 {
-	const float Time = 2.0f;
-	const float Multiply = 2.0f;
-	const float Disance = 15.0f;
-
 	//ÉvÉåÉCÉÑÅ[ìÆÇ©Ç∑
-	if (m_timer <= Time) {
+	if (m_timer <= time) {
 		m_timer += GameTime().GetFrameDeltaTime();
 		CVector3 position = m_player->GetCharaconPosition();
-		position.x += Disance * GameTime().GetFrameDeltaTime() * Multiply;
+		position.x += disance * GameTime().GetFrameDeltaTime() * multiply;
 		m_player->SetPosition(position);
 	}
 	else {
@@ -133,8 +138,8 @@ void Result::MovePlayer()
 
 void Result::MoveGoal()
 {
-	const float Time = 1.0f;
-	if (m_timer <= Time) {
+	
+	if (m_timer <= time2) {
 		m_timer += GameTime().GetFrameDeltaTime();
 	}
 	else {
@@ -148,11 +153,9 @@ void Result::MoveGoal()
 
 void Result::MoveResult()
 {
-	const float Time2 = 0.3f;
-	const float SeVolume = 3.0f;
 
 	m_timer2 += GameTime().GetFrameDeltaTime();
-	if (m_timer2 >= Time2) {
+	if (m_timer2 >= time3) {
 		if (m_isBattle) {
 			m_se.InitStreaming(L"Assets/sound/clear.wav");
 		}
