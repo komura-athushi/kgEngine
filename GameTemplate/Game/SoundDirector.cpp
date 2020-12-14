@@ -23,6 +23,7 @@ void SoundDirector::SetBGM(EnBGM state)
 			delete m_bgm;
 		}
 		m_bgm = new CSoundSource();
+		//設定されたステートによって再生するBGMを決定
 		switch (state)
 		{
 		case enBGM_Title:

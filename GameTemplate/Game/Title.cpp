@@ -9,6 +9,10 @@
 #include "sound/SoundSource.h"
 #include "GameData.h"
 
+namespace {
+	const float speed = 100.0f;
+}
+
 Title::Title()
 {
 
@@ -42,6 +46,7 @@ bool Title::Start()
 	m_staticobject.CreateMeshObject(m_model,CVector3::Zero(),CQuaternion::Identity());
 	m_pressStart.Init(L"Resource/sprite/pressstart.dds");
 
+	//シーンをタイトルに設定して
 	SoundData().SetBGM(enBGM_Title);
 
 	GameData::GetInstance().SetScene(enScene_Title);
@@ -60,7 +65,7 @@ bool Title::Start()
 
 void Title::Update()
 {
-	const float Speed = 100.0f;
+	
 
 	if (m_player != nullptr) {
 		m_model->GetSkinModel().SetKatamariMatrix(m_player->GetScreenPos());
@@ -76,7 +81,7 @@ void Title::Update()
 	else {
 		if (!m_isStart) {
 			//タイトルの画像を移動させる
-			m_titlePosition.y += GameTime().GetFrameDeltaTime() * Speed;
+			m_titlePosition.y += GameTime().GetFrameDeltaTime() * speed;
 			if (m_titlePosition.y >= FRAME_BUFFER_H / 2) {
 				m_titlePosition.y = FRAME_BUFFER_H / 2;
 				m_isStart = true;
@@ -101,16 +106,14 @@ void Title::Update()
 				m_fade->StartFadeOut();
 			}
 		}
-		//m_player->SetPosition({ 0.0f,0.0f,0.0f });
 		
 	}
-	//m_player->SetPosition({ 0.0f,500.0f,0.0f });
-
 }
 
 void Title::PostRender()
 {
 	m_sprite.DrawScreenPos(m_titlePosition);
+	//スタートしたら画像表示
 	if (m_isStart) {
 		m_pressStart.DrawScreenPos();
 	}

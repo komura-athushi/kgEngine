@@ -126,6 +126,7 @@ void StageSelect::Update()
 				DeleteGO(this);
 			}
 			else {
+				//ŽŸ‚ÌƒV[ƒ“‚ð¶¬‚·‚é
 				switch (m_stageSelectPoint->GetPoint()) {
 				case enPoint_Stage1:
 				case enPoint_Stage2:

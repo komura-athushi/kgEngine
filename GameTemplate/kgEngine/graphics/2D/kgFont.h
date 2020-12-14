@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   kgFont.h
+ * \brief  CFontクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 
 //SpriteのFactory
@@ -10,27 +17,34 @@ private:
 	std::unordered_map<int, std::unique_ptr<DirectX::SpriteFont>> m_fontmap;
 };
 
+/**
+ * \brief フォントを描画.
+ */
 class CFont
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	CFont();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~CFont();
-	//フォントをロードする
-	void LoadFont(const wchar_t* path) 
-	{
-		m_spriteFont = m_fontfactory.Load(path);
-	}
-	/// <summary>
-	/// 描画する
-	/// </summary>
-	/// <param name="text">文字</param>
-	/// <param name="pos">座標、{0.0f,0.0f}～{1.0f,1.0f}の間</param>
-	/// <param name="color">色</param>
-	/// <param name="scale">大きさ</param>
-	/// <param name="pivot">ピボット</param>
-	/// <param name="rotation">回転</param>
-	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
-	/// <param name="layerDepth">描画する順番(今は機能してません。。。)</param>
+	/**
+	 * \brief 描画する.
+	 * 
+	 * \param text 文字
+	 * \param pos 座標、{0.0f,0.0f}～{1.0f,1.0f}の間
+	 * \param color 色
+	 * \param scale 大きさ
+	 * \param pivot ピボット
+	 * \param rotation 回転
+	 * \param effects デフォルトはDirectX::SpriteEffects_None
+	 * \param layerDepth 描画する順番(今は機能してません。。。)
+	 */
 	void Draw(
 		wchar_t const* text,
 		const CVector2& pos,
@@ -41,18 +55,19 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layerDepth = 0.5f
 	);
-	/// <summary>
-	///描画、座標をスクリーン座標で指定 
-	/// </summary>
-	/// <param name="text">文字</param>
-	/// <param name="pos">スクリーン座標</param>
-	/// <param name="color">色</param>
-	/// <param name="scale">大きさ</param>
-	/// <param name="pivot">ピボット</param>
-	/// <param name="rotation">回転</param>
-	/// <param name="effects">デフォルトはDirectX::SpriteEffects_None</param>
-	/// <param name="layerDepth">描画する順番</param>
-	/// <param name="isIgnoreSplit">画面分割無視して画像描画</param>
+	/**
+	 * \brief 描画、座標をスクリーン座標で指定 .
+	 * 
+	 * \param text 文字
+	 * \param pos スクリーン座標
+	 * \param color 色
+	 * \param scale 大きさ
+	 * \param pivot ピボット
+	 * \param rotation 回転
+	 * \param effects デフォルトはDirectX::SpriteEffects_None
+	 * \param layerDepth 描画する順番
+	 * \param isIgnoreSplit 画面分割無視して画像描画
+	 */
 	void DrawScreenPos(
 		wchar_t const* text,
 		const CVector2& pos,

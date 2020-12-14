@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   EdgeDetection.h
+ * \brief  EdgeDitectionクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 
 #include "graphics/RenderTarget.h"
@@ -6,15 +13,34 @@
 
 class PostEffect;
 class NormalMap;
-//エッジ検出をばっこりしていくぅ～
+/**
+ * \brief エッジ検出とエッジ合成をするクラス.
+ */
 class EdgeDetection
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	EdgeDetection();
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~EdgeDetection();
-	//エッジ検出
+	/**
+	 * \brief エッジ検出.
+	 * 
+	 * \param postEffect ポストエフェクト
+	 */
 	void EdgeRender(PostEffect& postEffect);
-	//合成していく
+	/**
+	 * \brief エッジ合成.
+	 * 
+	 * \param postEffect ポストエフェクト
+	 * \param renderTarget 合成先のレンダリングターゲット
+	 */
 	void Draw(PostEffect& postEffect ,RenderTarget* renderTarget = nullptr);
 	//ガウスフィルターの初期化だけど今は必要ないね
 	void InitGaussian(NormalMap* normalMap);

@@ -27,7 +27,7 @@ public:
 	 * \brief デストラクタ.
 	 * 
 	 */
-	~Title();
+	~Title() override final;
 	/**
 	 * \brief 初期化処理.
 	 * 

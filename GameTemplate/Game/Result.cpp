@@ -86,6 +86,7 @@ void Result::Update()
 		}
 	}
 	else {
+		//ƒV[ƒ“‚Ìó‘Ô‚É‚æ‚Á‚Äˆ—‚ğ•ª‚¯‚é
 		switch (m_resultScene)
 		{
 		case EnResultScene_FadeIn:

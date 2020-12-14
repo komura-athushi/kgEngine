@@ -43,50 +43,6 @@ CascadeShadowMap::CascadeShadowMap()
 	);*/
 }
 
-void CascadeShadowMap::UpdateFromLightDirection(const CVector3& lightCameraPos, const CVector3& lightDir)
-{
-	//ライトの方向によって、ライトカメラの上方向を決める
-	CVector3 lightCameraUpAxis;
-
-	if (fabsf(lightDir.y) > 0.999998f) {
-		//ほぼ真上or真下を向いているので、1,0,0を上方向とする
-		lightCameraUpAxis = CVector3::AxisX();
-	}
-	else {
-		//それ以外のときは、0,1,0を上方向とする
-		lightCameraUpAxis = CVector3::AxisY();
-	}
-	m_lightViewMatrix.MakeLookAt(
-		m_lightCameraPosition,
-		m_lightCamerataraget,
-		lightCameraUpAxis
-	);
-
-	m_lightProjMatrix.MakeOrthoProjectionMatrix(
-		500,
-		500,
-		10.0f,
-		1500.0f
-	);
-}
-
-void CascadeShadowMap::UpdateFromLightTaraget(const CVector3& lightCameraPos,const CVector3& lightCameraTarget)
-{
-	m_lightCameraPosition = lightCameraPos;
-	m_lightCamerataraget = lightCameraTarget;
-	//ライトの方向を計算する
-	auto lightDir = m_lightCamerataraget - m_lightCameraPosition;
-	if (lightDir.Length() < 0.00001f) {
-		//ライトカメラの座標と注視点が近すぎるのでクラッシュさせる
-		std::abort();
-	}
-
-	//正規化して、方向ベクトルに変換する
-	lightDir.Normalize();
-
-	UpdateFromLightDirection(lightCameraPos, lightDir);
-}
-
 void CascadeShadowMap::Update()
 {
 	

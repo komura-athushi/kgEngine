@@ -1,32 +1,69 @@
+/*****************************************************************//**
+ * \file   ToonMap.h
+ * \brief  ToomMapクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
-//トゥーンシェーダー用のテクスチャを読み込むぜ
+/**
+ * \brief トゥーンマップを読み込む.
+ */
 class ToonMap
 {
-private: 
+private:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	ToonMap() {
 		Init();
 	}
+	/**
+	 * \brief デストラクタ.
+	 * 
+	 */
 	~ToonMap() {}
 public:
+	/**
+	 * \brief インスタンスを取得.
+	 * 
+	 * \return インスタンス
+	 */
 	static ToonMap& GetIntance()
 	{
 		static ToonMap instance;
 		return instance;
 	}
-	//初期化
+	/**
+	 * \brief 初期化処理.
+	 * 
+	 */
 	void Init();
-	/*!
-	*@brief	サンプラステートの初期化。
-	*/
+	/**
+	 * \brief サンプラステートの初期化.
+	 * 
+	 */
 	void InitSamplerState();
-	//トゥーンシェーダー用のテクスチャを読み込む
+	/**
+	 * \brief トゥーンシェーダー用のテクスチャを読み込む.
+	 * 
+	 */
 	void InitTextuer();
-	//SRVを取得
+	/**
+	 * \brief シェーダーリソースビューを取得.
+	 * 
+	 * \return シェーダーリソースビュー
+	 */
 	ID3D11ShaderResourceView* GetSRV()
 	{
 		return m_srv;
 	}
-	//サンプラステートを取得
+	/**
+	 * \brief サンプラステートを取得.
+	 * 
+	 * \return サンプラステート
+	 */
 	ID3D11SamplerState* GetSamplerState()
 	{
 		return m_samplerState;

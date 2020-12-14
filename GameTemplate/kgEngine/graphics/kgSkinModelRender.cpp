@@ -20,7 +20,7 @@ bool CSkinModelRender::Start()
 void CSkinModelRender::Init(	
 		const wchar_t* filePath,
 		AnimationClip* animationClip,
-		int numAnimationClips,
+		const int numAnimationClips,
 		EnFbxUpAxis fbxUpAxis,
 		bool isInstancing
 		)
@@ -35,7 +35,7 @@ void CSkinModelRender::Init(
 	m_update = true;
 }
 
-void CSkinModelRender::SetInstanceNumber(const int& maxInstance)
+void CSkinModelRender::SetInstanceNumber(const int maxInstance)
 {
 	m_maxInstance = maxInstance;
 	for (auto itr = m_skinModelList.begin(); itr != m_skinModelList.end(); ++itr) {
@@ -44,7 +44,7 @@ void CSkinModelRender::SetInstanceNumber(const int& maxInstance)
 	m_isSetInstance = true;
 }
 
-void CSkinModelRender::InitAnimation(AnimationClip* animationClips, int numAnimationClips, const wchar_t* filePath)
+void CSkinModelRender::InitAnimation(AnimationClip* animationClips,const int numAnimationClips, const wchar_t* filePath)
 {
 	if (m_isInitAnimation) {
 		return;

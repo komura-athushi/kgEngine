@@ -72,6 +72,7 @@ bool Player::Start()
 	pos.y -= m_radius;
 	m_skinModelRender2.SetPosition(pos);
 
+	//オブジェクトにぶつかったときにエフェクトを読み込む
 	m_hitEffect = CEffektEngine::GetInstance().CreateEffekseerEffect(L"Assets/effect/hit.efk");
 	return true;
 }
@@ -172,20 +173,22 @@ void Player::Collision()
 		CVector3 moveSpeed = m_moveSpeed;
 		moveSpeed.y = 0.0f;
 		addMoveSpeed.y = 0.0f;
-		CVector3 Normal = m_charaCon.GetWallNormalVector();
-		Normal.y = 0.0f;
-		Normal.Normalize();
-		float t = Normal.Dot(m_moveSpeed);
-		CVector3 vt = Normal * t;
+		CVector3 normal = m_charaCon.GetWallNormalVector();
+		normal.y = 0.0f;
+		normal.Normalize();
+		float t = normal.Dot(m_moveSpeed);
+		CVector3 vt = normal * t;
 		CVector3 InversionSpeed = CVector3(-m_moveSpeed.x, 0.0f, -m_moveSpeed.z);
 		CVector3 va = InversionSpeed + vt * 2;
 		m_moveSpeed.x = -va.x * collisionAtten;
 		m_moveSpeed.z = -va.z * collisionAtten;
+		//衝突音を出す
 		CSoundSource* se = new CSoundSource();
 		se->Init(L"Assets/sound/syoutotu.wav");
 		se->Play(false);
 		se->SetVolume(collisionVolume);
 		m_collisionTimer = 0.0f;
+		//エフェクト
 		auto effectEngine = CEffektEngine::GetInstance();
 		m_playEffectHandle = effectEngine.Play(m_hitEffect);
 		effectEngine.SetPosition(m_playEffectHandle, m_charaCon.GetHitPos());
@@ -261,6 +264,7 @@ void Player::Move()
 		m_respawnTimer = 0.0f;
 	}
 
+	//スティックの入力を計算
 	Stick();
 
 	//カウントが一定数だったらダッシュする
@@ -292,6 +296,7 @@ void Player::Move()
 		m_addMoveSpeed = (m_frontXZ + m_rightXZ);
 		m_addMoveSpeed.y = 0.0f;
 
+		//ブレーキ
 		Brake();
 
 		m_moveSpeed += m_addMoveSpeed * m_moveSpeedMultiply;

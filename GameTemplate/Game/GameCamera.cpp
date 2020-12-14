@@ -88,17 +88,21 @@ void GameCamera::Update()
 		m_player = FindGO<Player>();
 		return;
 	}*/
+	//リザルトシーンはカメラ固定
 	if (m_gameData->GetScene() == enScene_Result) {
 		MainCamera(m_player->GetPlayerNumber()).SetPosition(m_position);
 		MainCamera(m_player->GetPlayerNumber()).SetTarget(m_target);
 		MainCamera(m_player->GetPlayerNumber()).Update();
 	}
 	else {
+		//停止してなかったら
 		if (!m_gameData->GetisPose() || !m_gameData->GetisStart()) {
 			if (!m_player->GetisStopTime()) {
 				TransView();
 			}
+			//プレイヤーとカメラとの距離を計算
 			TransRadius();
+			//注視点と座標を計算
 			Calculation();
 		}
 		else {
@@ -268,9 +272,11 @@ void GameCamera::Calculation()
 
 void GameCamera::TransView()
 {
+	//L3とR3が同時に押されていたら
 	if (GetPad(m_player->GetPlayerNumber()).IsTrigger(enButtonLB3) && GetPad(m_player->GetPlayerNumber()).IsTrigger(enButtonRB3) && !m_transView) {
 		m_transView = true;
 	}
+	//カメラを180度回転させる
 	if (m_transView) {
 		m_timer += GameTime().GetFrameDeltaTime();
 		m_degreeY += 180.0f * GameTime().GetFrameDeltaTime();

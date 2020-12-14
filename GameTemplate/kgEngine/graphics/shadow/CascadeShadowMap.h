@@ -1,55 +1,43 @@
+/*****************************************************************//**
+ * \file   CascadeShadowMap.h
+ * \brief  CascadeShadowMapクラス
+ * 
+ * \author komura
+ * \date   November 2020
+ *********************************************************************/
 #pragma once
 #include "graphics/RenderTarget.h"
 
 
 class SkinModel;
+/**
+ * \brief カスケードシャドウマップを生成するクラス.
+ */
 class CascadeShadowMap
 
 
 {
 public:
+	/**
+	 * \brief コンストラクタ.
+	 * 
+	 */
 	CascadeShadowMap();
-	/// <summary>
-	/// ライトビュー行列を取得
-	/// </summary>
-	/// <returns></returns>
-	CMatrix GetLightViewMatrix()
-	{
-		return m_lightViewMatrix;
-	}
-	/// <summary>
-	/// ライトプロジェクション行列を取得
-	/// </summary>
-	/// <returns></returns>
-	CMatrix GetLightProjMatrix()
-	{
-		return m_lightProjMatrix;
-	}
-	/// <summary>
-	/// 更新
-	/// </summary>
+	/**
+	 * \brief 更新.
+	 * 
+	 */
 	void Update();
-	void UpdateLightViewProjMatrix(const int splitNumber);
-	/// <summary>
-	/// ライトビュー行列やライトプロジェクション行列を更新
-	/// </summary>
-	/// <param name="lightCameraPos"></param>
-	/// <param name="lightCameraTarget"></param>
-	void UpdateFromLightTaraget(const CVector3& lightCameraPos, const CVector3& lightCameraTarget);
-	/// <summary>
-	/// 更新(ライトカメラの向きを指定するバージョン)
-	/// </summary>
-	/// <param name="lightCameraPos"></param>
-	/// <param name="lightDir"></param>
-	void UpdateFromLightDirection(const CVector3& lightCameraPos, const CVector3& lightDir);
-	/// <summary>
-	/// シャドウマップにシャドウキャスターをレンダリング
-	/// </summary>
+	/**
+	 * \brief シャドウマップを生成.
+	 * 
+	 */
 	void RenderToShadowMap();
-	/// <summary>
-	/// シャドウキャスターを追加
-	/// </summary>
-	/// <param name="shadowCaster"></param>
+	/**
+	 * \brief シャドウキャスターを追加.
+	 * 
+	 * \param shadowCaster スキンモデル
+	 */
 	void RegistShadowCaster(SkinModel* shadowCaster)
 	{
 		m_shadowCaters.push_back(shadowCaster);
@@ -59,73 +47,70 @@ public:
 	/// レンダリングターゲットを取得
 	/// </summary>
 	/// <returns></returns>
-	RenderTarget* GetRenderTarget(const int splitNumber, int number)
+	/**
+	 * \brief レンダリングターゲットを取得.
+	 * 
+	 * \param splitNumber 画面分割の番号
+	 * \param number シャドウマップの番号
+	 * \return レンダリングターゲット
+	 */
+	RenderTarget* GetRenderTarget(const int splitNumber,const int number)
 	{
 		return &m_shadowMapRT[splitNumber][number];
-	}
-	/// <summary>
-	/// ライトの高さ
-	/// </summary>
-	/// <param name="lightHeight"></param>
-	void SetLightHeight(const float lightHeight)
-	{
-		m_lightHeight = lightHeight;
-	}
-	/// <summary>
-	/// ライトの方向を設定
-	/// </summary>
-	/// <param name="lightDir"></param>
-	void SetLightDirection(const CVector3& lightDir)
-	{
-		m_lightDir = lightDir;
 	}
 	/// <summary>
 	/// ライトビュープロジェクション行列を取得
 	/// </summary>
 	/// <returns></returns>
-	CMatrix& GetLightViewProjMatrix(const int splitNumber)
+	/**
+	 * \brief ライトビュープロジェクション行列を取得.
+	 * 
+	 * \param splitNumber 画面分割の番号
+	 * \return ライトビュープロジェクション行列
+	 */
+	const CMatrix& GetLightViewProjMatrix(const int splitNumber) const
 	{
 		return m_lightVieProjMatrix[splitNumber][m_shadowMapNumber];
 	}
-	CMatrix& GetLightViewProjMatrix(const int splitNumber, int number)
+	/**
+	 * \brief ライトビュープロジェクション行列を取得.
+	 * 
+	 * \param splitNumber 画面分割の番号
+	 * \param number シャドウマップの番号
+	 * \return ライトビュープロジェクション行列
+	 */
+	const CMatrix& GetLightViewProjMatrix(const int splitNumber,const int number) const
 	{
 		return m_lightVieProjMatrix[splitNumber][number];
 	}
-	/// <summary>
-	/// シャドウマップの番号を取得、0からよ
-	/// </summary>
-	/// <returns></returns>
-	int GetShadowMapNumber() const
+	/**
+	 * \brief シャドウマップの番号を取得(1番目が0).
+	 * 
+	 * \return シャドウマップの番号
+	 */
+	const int GetShadowMapNumber() const
 	{
 		return m_shadowMapNumber;
 	}
-	/// <summary>
-	/// ライトの方向を取得
-	/// </summary>
-	/// <returns></returns>
-	CVector3& GetLightDir()
-	{
-		return m_lightDir;
-	}
-	/// <summary>
-	/// 各シャドウマップの深度値を取得
-	/// </summary>
-	/// <param name="number"></param>
-	/// <returns></returns>
-	float GetFar(const int splitNumber, int number)
+	/**
+	 * \brief シャドウマップの深度値を取得.
+	 * 
+	 * \param splitNumber 画面分割の番号
+	 * \param number シャドウマップの番号
+	 * \return 深度値
+	 */
+	const float GetFar(const int splitNumber,const int number) const
 	{
 		return m_farList[splitNumber][number];
 	}
-	/// <summary>
-	/// 各シャドウマップのライトビューの逆行列を取得
-	/// </summary>
-	/// <param name="number"></param>
-	/// <returns></returns>
-	CMatrix& GetLightViewInv(const int splitNumber,const int number)
-	{
-		return m_lightViewMatrixInv[splitNumber][number];
-	}
 	static const int SHADOWMAP_NUM = 3;
+private:
+	/**
+	 * \brief ライトビュープロジェクション行列を計算.
+	 * 
+	 * \param splitNumber 画面分割の番号
+	 */
+	void UpdateLightViewProjMatrix(const int splitNumber);
 private:
 	CVector3 m_lightCameraPosition = CVector3(300.0f, 300.0f, -300.0f);		//ライトカメラの座標	
 	CVector3 m_lightCamerataraget = CVector3(0.0f, 0.0f, 0.0f);		//ライトカメラの注視点

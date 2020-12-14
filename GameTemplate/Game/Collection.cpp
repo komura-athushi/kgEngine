@@ -49,8 +49,6 @@ Collection::~Collection()
 
 bool Collection::Start()
 {
-	
-
 	//レンダーターゲットの初期化
 	m_offRenderTarget.Create(OFF_BUFFER_W, OFF_BUFFER_H, DXGI_FORMAT_R16G16B16A16_FLOAT);
 	m_vs.Load("Assets/shader/bloom.fx", "VSMain", Shader::EnType::VS);
@@ -61,8 +59,8 @@ bool Collection::Start()
 	desc.DepthClipEnable = true;
 	desc.MultisampleEnable = true;
 
-	float DifferenceX = MaxX - MimX;
-	float DifferenceY = MaxY - MimY;
+	float differenceX = MaxX - MimX;
+	float differenceY = MaxY - MimY;
 	//ラスタライザとビューポートを初期化。
 	Engine().GetGraphicsEngine().GetD3DDevice()->CreateRasterizerState(&desc, &m_rasterizerState);
 	InitSamplerState();
@@ -70,10 +68,10 @@ bool Collection::Start()
 	for (int i = 0; i < H_NUMBER; i++) {
 		for (int j = 0; j < W_NUMBER; j++) {
 			m_postEffect[i * W_NUMBER + j].InitScreenQuadPrimitive(
-				CVector2(MimX + ((DifferenceX / W_NUMBER) * j), MaxY - (DifferenceY / H_NUMBER) - (DifferenceY / H_NUMBER) * i),
-			    CVector2(MimX + (DifferenceX / W_NUMBER) + (( DifferenceX / W_NUMBER) * j), MaxY - (DifferenceY / H_NUMBER) - (DifferenceY / H_NUMBER) * i),
-				CVector2(MimX + (DifferenceX / W_NUMBER) * j, MaxY - (DifferenceY / H_NUMBER) * i),
-				CVector2(MimX + (DifferenceX / W_NUMBER) + ((DifferenceX / W_NUMBER) * j), MaxY - (DifferenceY / H_NUMBER) * i));
+				CVector2(MimX + ((differenceX / W_NUMBER) * j), MaxY - (differenceY / H_NUMBER) - (differenceY / H_NUMBER) * i),
+			    CVector2(MimX + (differenceX / W_NUMBER) + (( differenceX / W_NUMBER) * j), MaxY - (differenceY / H_NUMBER) - (differenceY / H_NUMBER) * i),
+				CVector2(MimX + (differenceX / W_NUMBER) * j, MaxY - (differenceY / H_NUMBER) * i),
+				CVector2(MimX + (differenceX / W_NUMBER) + ((differenceX / W_NUMBER) * j), MaxY - (differenceY / H_NUMBER) * i));
 		}
 	}
 
